@@ -3,27 +3,32 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GolemBehaviour : MonoBehaviour
+public class GolemBehaviour : IHasHealth
 {
-    private float health;
     private float damages;
     private bool isInside;
     //Modify that to the player's class
-    private GameObject target;
+    private PlayerCompetences target;
     private float attackCooldown;
-
 
     public void Start()
     {
         attackCooldown = 0;
-        health = 50000;
         isInside = false;
         target = null;
+        SetHealth(200);
+        damages = 10;
     }
 
     public void Update()
     {
         Attack();
+        CheckDestroy();
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            TakeDamages(100);
+        }
+        Debug.Log(GetHealth());
     }
 
     public void Attack()
@@ -33,22 +38,16 @@ public class GolemBehaviour : MonoBehaviour
             if (isInside)
             {
                 //Replace function by the player's one that deals damages
-                //target.ReceiveDamages(damages);
-                target.SetActive(false);
+                target.TakeDamages(damages);
                 attackCooldown = 5;
             }
         }
         attackCooldown -= Time.deltaTime;
     }
 
-    public void takeDamage(float dmg)
-    {
-        health -= dmg;
-    }
-
     public void CheckDestroy()
     {
-        if (health <= 0)
+        if (IsDead())
         {
             GameObject.Destroy(gameObject, 0);
         }
@@ -61,8 +60,8 @@ public class GolemBehaviour : MonoBehaviour
             //Modify GameObject with the player's class
             if(target == null)
             {
-                //target = other.GetComponent<GameObject>();
-                target = other.gameObject;
+                target = other.GetComponent<PlayerCompetences>();
+                //target = other.gameObject;
             }
             isInside = true;
             Debug.Log("Inside");
