@@ -148,6 +148,30 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &345643159
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 345643157}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1981f11f55f63ce46843ee67b2ee24e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Health: 500
+  MoveSpeed: 4.5
+  AttackSpeed: 0.5
+  Mana: 100
+  ResistancePhysique: 40
+  ResistanceMagique: 40
+  Exp: 0
+  MaxExp: 100
+  ExpRate: 1.75
+  DegatsPhysique: 100
+  DegatsMagique: 100
+  lvl: 1
 --- !u!1 &501398450
 GameObject:
   m_ObjectHideFlags: 0
