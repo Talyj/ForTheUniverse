@@ -56,10 +56,10 @@ GameObject:
   - component: {fileID: 2470890344991082087}
   - component: {fileID: 2470890344991082086}
   - component: {fileID: 2470890344991082085}
-  - component: {fileID: 2470890344991082080}
   - component: {fileID: 2470890344991082081}
   - component: {fileID: 2470890344991082082}
   - component: {fileID: 2470890344991082083}
+  - component: {fileID: 609623454987428046}
   m_Layer: 0
   m_Name: Golem
   m_TagString: Untagged
@@ -133,18 +133,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &2470890344991082080
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2470890344991082091}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9aad9b93598025a4f8e4fdd800d5f997, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!54 &2470890344991082081
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -188,3 +176,15 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &609623454987428046
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2470890344991082091}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfb01a4ad8f9c224c97e40aa651aab61, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
