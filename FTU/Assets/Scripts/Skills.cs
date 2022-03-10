@@ -13,6 +13,7 @@ public class Skills : ScriptableObject
     public float Cost;
     public float CastTime;
     public float Cooldown;
+    public bool isCooldown;
     public TypeSkills type;
     public float DamagePhy;
     public float DamageMag;

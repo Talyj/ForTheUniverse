@@ -3,5 +3,5 @@ using UnityEngine;
 
 public interface IDamegeable
 {
-    void TakeDamage(float damage);
+    void TakeDamage(float DegatsRecu, string type);
 }

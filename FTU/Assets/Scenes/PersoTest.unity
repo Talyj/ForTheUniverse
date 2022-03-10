@@ -172,6 +172,8 @@ MonoBehaviour:
   DegatsPhysique: 100
   DegatsMagique: 100
   lvl: 1
+  Skills:
+  - {fileID: 11400000, guid: 845e614cecab33a4a804ad158759af12, type: 2}
 --- !u!1 &501398450
 GameObject:
   m_ObjectHideFlags: 0
