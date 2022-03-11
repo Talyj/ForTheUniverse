@@ -30,28 +30,113 @@ public class PlayerStats : MonoBehaviour, IDamegeable, ISkill
     int DegatsMagique = 100;
     [SerializeField]
     int lvl = 1;
+    [Header("Competences")]
+    [SerializeField]
+    Passifs passif;
     [SerializeField]
     Skills[] Skills;
+    [SerializeField]
+    bool canUlt = false;
 
-    public void TakeDamage(float DegatsRecu,string type)
+
+
+
+    #region Getter and Setter
+
+    #region Getter
+    public float GetHealth()
     {
-        //application des res, a modifier pour les differents type de degats
-        if(type == "Physique")
-        {
-            Health = Health - (DegatsRecu - ((ResistancePhysique * DegatsRecu) / 100)); // physique
-        }
-        else if (type == "Magique")
-        {
-            Health = Health - (DegatsRecu - ((ResistanceMagique * DegatsRecu) / 100)); // magique
-        }
-        else if (type == "Brut")
-        {
-            Health -= DegatsRecu;
-        }
-
-
-
+        return Health;
     }
+    public float GetMaxHealth()
+    {
+        return MaxHealth;
+    }
+    public float GetMana()
+    {
+        return Mana;
+    }
+    public float GetMoveSpeed()
+    {
+        return MoveSpeed;
+    }
+    public float GetAttackSpeed()
+    {
+        return AttackSpeed;
+    }
+    public float GetArmor()
+    {
+        return ResistancePhysique;
+    }
+    public float GetRM()
+    {
+        return ResistanceMagique;
+    }
+    public float GetExp()
+    {
+        return Exp;
+    }
+    public int GetAD()
+    {
+        return DegatsPhysique;
+    }
+    public int GetAP()
+    {
+        return DegatsMagique;
+    }
+    public int GetLvl()
+    {
+        return lvl;
+    }
+    #endregion
+    #region Setter
+    public void SetHealth(float value)
+    {
+        Health += value;
+    }
+    public void SetMaxHealth(float value)
+    {
+        MaxHealth += value;
+    }
+    public void SetMana(float value)
+    {
+        Mana += value;
+    }
+    public void SetMoveSpeed(float value)
+    {
+        MoveSpeed += value;
+    }
+    public void SetAttackSpeed(float value)
+    {
+         AttackSpeed += value;
+    }
+    public void SetArmor(float value)
+    {
+        ResistancePhysique += value;
+    }
+    public void SetRM(float value)
+    {
+        ResistanceMagique += value;
+    }
+    public void SetExp(float value)
+    {
+        Exp += value;
+    }
+    public void SetAD(int value)
+    {
+         DegatsPhysique += value;
+    }
+    public void SetAP(int value)
+    {
+        DegatsMagique += value;
+    }
+    public void SetLvl(int value)
+    {
+        lvl += value;
+    }
+    #endregion
+
+    #endregion
 
 
 
@@ -60,6 +145,7 @@ public class PlayerStats : MonoBehaviour, IDamegeable, ISkill
     // Start is called before the first frame update
     void Start()
     {
+        //Skills = new Skills[3];
         Passif();
     }
 
@@ -84,6 +170,12 @@ public class PlayerStats : MonoBehaviour, IDamegeable, ISkill
             lvl += 1;
             Exp = 0 + reste;
             MaxExp = MaxExp * ExpRate;
+            print("lvl up");
+            Passif();
+            if (lvl == 6)
+            {
+                canUlt = true;
+            }
             // augmentation des stats a faire
         }
 
@@ -94,7 +186,7 @@ public class PlayerStats : MonoBehaviour, IDamegeable, ISkill
         // test des touches
         if (Input.GetKeyDown(KeyCode.K))
         {
-            TakeDamage(100,"Physique");
+            //TakeDamage(Skills[1].Damage,Skills[1].degats.ToString());
             
         }
         if (Input.GetKeyDown(KeyCode.J))
@@ -109,22 +201,31 @@ public class PlayerStats : MonoBehaviour, IDamegeable, ISkill
         }
         if (Input.GetKeyDown(KeyCode.X))
         {
-            Exp += 90;
-            print(Health);
+            Exp += 150;
+           
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             Skill1();
         }
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            Skill2();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha4) && canUlt == true)
+        {
+            Ultime();
+        }
     }
 
-    // a rendre plus generique
-    IEnumerator CoolDown(float cd)
+    
+    IEnumerator CoolDown(Skills skill)
     {
-        yield return new WaitForSeconds(cd);
+        yield return new WaitForSeconds(skill.Cooldown);
         Debug.Log("fin des cd");
-        Skills[0].isCooldown = false;
+        skill.isCooldown = false;
     }
 
     //function de regen mana et vie
@@ -137,10 +238,34 @@ public class PlayerStats : MonoBehaviour, IDamegeable, ISkill
 
     public void Passif()
     {
-        //test bigED passif
-        ResistanceMagique = ResistanceMagique * 1.05f;//augmentation 5%
-        ResistancePhysique = ResistancePhysique * 1.05f;
-        MoveSpeed = MoveSpeed * 0.95f;//reduction 5%
+        // test generique
+        switch (lvl)
+        {
+            case 1:
+                ResistanceMagique = ResistanceMagique * passif.Bonus;//augmentation 5%
+                ResistancePhysique = ResistancePhysique * passif.Bonus;
+                MoveSpeed = MoveSpeed * passif.Malus;//reduction 5%
+                break;
+            case 6:
+                passif.Bonus = 1.075f;
+                passif.Malus = 0.925f;
+                ResistanceMagique = ResistanceMagique * passif.Bonus;//augmentation 7.5%
+                ResistancePhysique = ResistancePhysique * passif.Bonus;
+                MoveSpeed = MoveSpeed * passif.Malus;//reduction 7.5%
+                break;
+            case 12:
+                passif.Bonus = 1.1f;
+                passif.Malus = 0.8f;
+                ResistanceMagique = ResistanceMagique * passif.Bonus;//augmentation 10%
+                ResistancePhysique = ResistancePhysique * passif.Bonus;
+                MoveSpeed = MoveSpeed * passif.Malus;//reduction s
+                break;
+            default:
+                break;
+        }
+
+
+        
     }
 
     public void Skill1()
@@ -152,7 +277,7 @@ public class PlayerStats : MonoBehaviour, IDamegeable, ISkill
             Skills[0].isCooldown = true;
             if (Skills[0].isCooldown == true)
             {
-                StartCoroutine(CoolDown(Skills[0].Cooldown));
+                StartCoroutine(CoolDown(Skills[0]));
             }
         }
         else if (Skills[0].isCooldown == true)
@@ -167,16 +292,67 @@ public class PlayerStats : MonoBehaviour, IDamegeable, ISkill
 
     public void Skill2()
     {
-        throw new System.NotImplementedException();
+        if (Skills[1].isCooldown == false && Mana >= Skills[1].Cost)
+        {
+            //buff
+            Mana -= Skills[1].Cost;
+            Debug.Log(Skills[1].Name + " lancée");
+            StartCoroutine(Buff(Skills[1]));
+            Skills[1].isCooldown = true;
+
+            if (Skills[1].isCooldown == true)
+            {
+                StartCoroutine(CoolDown(Skills[1]));
+            }
+        }
+        else if (Skills[0].isCooldown == true)
+        {
+            Debug.Log("en cd");
+        }
+        else if (Mana < Skills[0].Cost)
+        {
+            Debug.Log("pas assez de mana");
+        }
+    }
+
+    IEnumerator Buff(Skills skill)
+    {
+        //while(Time.deltaTime != skill.CastTime)
+        //{
+        //    ResistanceMagique = ResistanceMagique * 1.25f;
+        //}
+
+        yield return new WaitForSeconds(skill.Cooldown);
+        Debug.Log("fin des cd");
+        skill.isCooldown = false;
     }
 
     public void Ultime()
     {
-        throw new System.NotImplementedException();
+        Debug.Log("ULT");
     }
 
     public void Eveil()
     {
         throw new System.NotImplementedException();
+    }
+    public void TakeDamage(float DegatsRecu, string type)
+    {
+        //application des res, a modifier pour les differents type de degats
+        if (type == "Physique")
+        {
+            Health = Health - (DegatsRecu - ((ResistancePhysique * DegatsRecu) / 100)); // physique
+        }
+        else if (type == "Magique")
+        {
+            Health = Health - (DegatsRecu - ((ResistanceMagique * DegatsRecu) / 100)); // magique
+        }
+        else if (type == "Brut")
+        {
+            Health -= DegatsRecu;
+        }
+
+
+
     }
 }

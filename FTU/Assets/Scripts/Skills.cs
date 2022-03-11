@@ -15,12 +15,20 @@ public class Skills : ScriptableObject
     public float Cooldown;
     public bool isCooldown;
     public TypeSkills type;
-    public float DamagePhy;
-    public float DamageMag;
+    public float Damage;
+    public TypeDegats degats;
     public Image image;
 
 
 }
+
+public enum TypeDegats
+{
+    Physique,
+    Magique,
+    Brut
+}
+
 public enum TypeSkills
 {
     Normal,

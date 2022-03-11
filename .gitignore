@@ -61,3 +61,16 @@ sysinfo.txt
 # Crashlytics generated file
 crashlytics-build.properties
 
+FTU/obj/Debug/Assembly-CSharp.csproj.AssemblyReference.cache
+FTU/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
+FTU/obj/Debug/PhotonChat.csproj.AssemblyReference.cache
+FTU/obj/Debug/PhotonRealtime.csproj.AssemblyReference.cache
+FTU/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
+FTU/obj/Debug/PhotonUnityNetworking.csproj.AssemblyReference.cache
+FTU/obj/Debug/PhotonUnityNetworking.Utilities.csproj.AssemblyReference.cache
+FTU/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
+FTU/obj/Debug/PhotonUnityNetworking.Utilities.Culling.Editor.csproj.AssemblyReference.cache
+FTU/obj/Debug/PunDemos.DemoSlotcarEditor.csproj.AssemblyReference.cache
+FTU/UserSettings/Layouts/default-2021.dwlt
+FTU/Packages/packages-lock.json
+FTU/obj/Debug/PunDemos.DemoHubEditor.csproj.AssemblyReference.cache
