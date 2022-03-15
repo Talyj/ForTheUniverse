@@ -10,5 +10,5 @@ public class Passifs : ScriptableObject
     public float Bonus;
     public float Malus;
     public bool isCooldown;
-    public Image image;
+    public Sprite image;
 }

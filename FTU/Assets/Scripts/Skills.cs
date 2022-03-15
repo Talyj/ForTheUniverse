@@ -17,7 +17,7 @@ public class Skills : ScriptableObject
     public TypeSkills type;
     public float Damage;
     public TypeDegats degats;
-    public Image image;
+    public Sprite image;
 
 
 }

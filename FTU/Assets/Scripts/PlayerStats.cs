@@ -12,6 +12,7 @@ public class PlayerStats : MonoBehaviour, IDamegeable, ISkill
     float MoveSpeed = 4.5f;
     [SerializeField]
     float AttackSpeed = 0.5f;
+    float AttackRange = 1.5f;
     [SerializeField]
     float Mana = 100,MaxMana=100;
     [SerializeField]
@@ -34,7 +35,7 @@ public class PlayerStats : MonoBehaviour, IDamegeable, ISkill
     [SerializeField]
     Passifs passif;
     [SerializeField]
-    Skills[] Skills;
+    public Skills[] Skills;
     [SerializeField]
     bool canUlt = false;
 
@@ -64,6 +65,10 @@ public class PlayerStats : MonoBehaviour, IDamegeable, ISkill
     {
         return AttackSpeed;
     }
+    public float GetAttackRange()
+    {
+        return AttackRange;
+    }
     public float GetArmor()
     {
         return ResistancePhysique;
@@ -88,6 +93,11 @@ public class PlayerStats : MonoBehaviour, IDamegeable, ISkill
     {
         return lvl;
     }
+
+    public Skills[] GetSkills()
+    {
+        return Skills;
+    }
     #endregion
     #region Setter
     public void SetHealth(float value)
@@ -109,6 +119,10 @@ public class PlayerStats : MonoBehaviour, IDamegeable, ISkill
     public void SetAttackSpeed(float value)
     {
          AttackSpeed += value;
+    }
+    public void SetAttackRange(float value)
+    {
+        AttackRange += value;
     }
     public void SetArmor(float value)
     {

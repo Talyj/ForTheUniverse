@@ -10,12 +10,14 @@ public class PlayerMovement : MonoBehaviour
     Vector3 velocity;
     Rigidbody myRigidbody;
     Camera viewCamera;
+    Animator anim;
     
     void Awake()
     {
         myRigidbody = GetComponent<Rigidbody>();
         stats = GetComponent<PlayerStats>();
         viewCamera = Camera.main;
+        anim = GetComponent<Animator>();
     }
 
 
@@ -25,7 +27,8 @@ public class PlayerMovement : MonoBehaviour
         Vector3 moveInput = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
         Vector3 moveVelocity = moveInput.normalized * stats.GetMoveSpeed();
         Move(moveVelocity);
-
+        anim.SetFloat("MoveX", Input.GetAxisRaw("Horizontal"));
+        anim.SetFloat("MoveY", Input.GetAxisRaw("Vertical"));
         // Look input
         Ray ray = viewCamera.ScreenPointToRay(Input.mousePosition);
         Plane groundPlane = new Plane(Vector3.up, Vector3.zero);

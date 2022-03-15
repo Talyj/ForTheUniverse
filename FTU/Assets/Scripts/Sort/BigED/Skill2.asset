@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2671233c37ce0b42887809b2be138db, type: 3}
   m_Name: Skill2
   m_EditorClassIdentifier: 
-  Name: 
-  Cost: 0
-  CastTime: 0
-  Cooldown: 0
+  Name: Skill 2
+  Cost: 20
+  CastTime: 0.7
+  Cooldown: 3
   isCooldown: 0
   type: 0
   Damage: 0
   degats: 0
-  image: {fileID: 0}
+  image: {fileID: 21300000, guid: 7cd4d8906c0bc2a40b7099bd52679df7, type: 3}
