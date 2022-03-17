@@ -4,7 +4,10 @@ using UnityEngine;
 
 public class PlayerStats : MonoBehaviour, IDamegeable, ISkill
 {
-
+    Animator anim;
+    public enum AttackType { Melee,Ranged}
+    public AttackType attackType;
+    public GameObject Cible;
     [Header("Stats")]
     [SerializeField]
     float Health = 500,MaxHealth=500;
@@ -12,6 +15,7 @@ public class PlayerStats : MonoBehaviour, IDamegeable, ISkill
     float MoveSpeed = 4.5f;
     [SerializeField]
     float AttackSpeed = 0.5f;
+    [SerializeField]
     float AttackRange = 1.5f;
     [SerializeField]
     float Mana = 100,MaxMana=100;
@@ -26,19 +30,29 @@ public class PlayerStats : MonoBehaviour, IDamegeable, ISkill
     [SerializeField]
     float ExpRate = 1.75f;//multiplicateur de l'exp max
     [SerializeField]
-    int DegatsPhysique = 100;
+    float DegatsPhysique = 100;
     [SerializeField]
-    int DegatsMagique = 100;
+    float DegatsMagique = 100;
     [SerializeField]
     int lvl = 1;
     [Header("Competences")]
     [SerializeField]
     Passifs passif;
     [SerializeField]
-    public Skills[] Skills;
+    Skills[] Skills;
     [SerializeField]
     bool canUlt = false;
+    [SerializeField]
+    bool InCombat = false;
+    [SerializeField]
+    bool InRegen = false;
+    bool IsDead = false;
 
+    [Header("Ranged variables")]
+    [SerializeField]
+    GameObject projPrefab;
+    [SerializeField]
+    Transform SpawnPrefab;
 
 
 
@@ -56,6 +70,10 @@ public class PlayerStats : MonoBehaviour, IDamegeable, ISkill
     public float GetMana()
     {
         return Mana;
+    }
+    public float GetMaxMana()
+    {
+        return MaxMana;
     }
     public float GetMoveSpeed()
     {
@@ -81,11 +99,11 @@ public class PlayerStats : MonoBehaviour, IDamegeable, ISkill
     {
         return Exp;
     }
-    public int GetAD()
+    public float GetAD()
     {
         return DegatsPhysique;
     }
-    public int GetAP()
+    public float GetAP()
     {
         return DegatsMagique;
     }
@@ -97,6 +115,18 @@ public class PlayerStats : MonoBehaviour, IDamegeable, ISkill
     public Skills[] GetSkills()
     {
         return Skills;
+    }
+    public Skills GetSkill1()
+    {
+        return Skills[0];
+    }
+    public Skills GetSkill2()
+    {
+        return Skills[1];
+    }
+    public Skills GetUlt()
+    {
+        return Skills[2];
     }
     #endregion
     #region Setter
@@ -153,19 +183,40 @@ public class PlayerStats : MonoBehaviour, IDamegeable, ISkill
     #endregion
 
 
-
-
-
     // Start is called before the first frame update
     void Start()
     {
-        //Skills = new Skills[3];
+        anim = GetComponent<Animator>();
         Passif();
     }
 
     // Update is called once per frame
     void Update()
     {
+
+        //attack sys
+        if(Cible != null)
+        {
+            if (Input.GetMouseButtonDown(1))
+            {
+                if (Vector3.Distance(gameObject.transform.position, Cible.transform.position) > AttackRange)
+                {
+                    print("Hors d portée");
+                }
+                else
+                {
+                    if (attackType == AttackType.Melee)
+                    {
+                        StartCoroutine(AutoAttack());
+                    }
+                    if (attackType == AttackType.Ranged)
+                    {
+                        StartCoroutine(RangeAutoAttack());
+                    }
+                }
+            }
+            
+        }
 
         if (Health >= MaxHealth)
         {
@@ -176,6 +227,12 @@ public class PlayerStats : MonoBehaviour, IDamegeable, ISkill
             Mana = MaxMana;
         }
 
+        //if(InCombat == false && InRegen == false)
+        //{
+        //    InRegen = true;
+        //    Debug.Log("regen");
+        //    Regen();
+        //}
         //Xp avec calcule des reste d'exp si lvl up
 
         if (Exp >= MaxExp)
@@ -191,6 +248,15 @@ public class PlayerStats : MonoBehaviour, IDamegeable, ISkill
                 canUlt = true;
             }
             // augmentation des stats a faire
+            //test en dur a rendre plus automatique par scriptableobject surement
+            MaxHealth += 106;
+            MaxMana += 65;
+            AttackSpeed += .12f;
+            DegatsPhysique += 3.75f;
+            DegatsMagique += 2.75f;
+            ResistanceMagique += 2.25f;
+            ResistancePhysique += 2.25f;
+            MoveSpeed += 0.75f;
         }
 
 
@@ -234,7 +300,69 @@ public class PlayerStats : MonoBehaviour, IDamegeable, ISkill
         }
     }
 
-    
+    IEnumerator AutoAttack()
+    {
+        anim.SetBool("AA", true);
+        yield return new WaitForSeconds(AttackSpeed / ((100 / +AttackSpeed) * 0.01f));
+        if ( Vector3.Distance(gameObject.transform.position, Cible.transform.position) > AttackRange)
+        {
+            anim.SetBool("AA", false);
+        }
+        
+    }
+
+    IEnumerator RangeAutoAttack()
+    {
+        anim.SetBool("AA", true);
+        yield return new WaitForSeconds(AttackSpeed / ((100 / +AttackSpeed) * 0.01f));
+        if (Vector3.Distance(gameObject.transform.position, Cible.transform.position) > AttackRange)
+        {
+            anim.SetBool("AA", false);
+        }
+
+    }
+
+    public void MeleeAttack()
+    {
+        if(Cible != null && Vector3.Distance(gameObject.transform.position, Cible.transform.position) < AttackRange)
+        {
+            if(Cible.GetComponent<Targetable>().enemytype == Targetable.EnemyType.minion)
+            {
+                Cible.GetComponent<EnnemyStats>().TakeDamage(DegatsPhysique, "Physique");
+            }
+        }
+        else
+        {
+            anim.SetBool("AA", false);
+        }
+    }
+    public void RangeAttack()
+    {
+        if (Cible != null && Vector3.Distance(gameObject.transform.position, Cible.transform.position) < AttackRange)
+        {
+            if (Cible.GetComponent<Targetable>().enemytype == Targetable.EnemyType.minion)
+            {
+                SpawnRangeAttack(Targetable.EnemyType.minion, Cible);
+            }
+        }
+        else
+        {
+            anim.SetBool("AA", false);
+        }
+    }
+
+    public void SpawnRangeAttack(Targetable.EnemyType typeEnemy,GameObject Target)
+    {
+        float dmg = DegatsMagique;
+        Instantiate(projPrefab, SpawnPrefab.transform.position, Quaternion.identity);
+        if(typeEnemy == Targetable.EnemyType.minion)
+        {
+            projPrefab.GetComponent<Projectile>().degats = dmg;
+            projPrefab.GetComponent<Projectile>().target = Target;
+            projPrefab.GetComponent<Projectile>().targetSet = true;
+        }
+    }
+
     IEnumerator CoolDown(Skills skill)
     {
         yield return new WaitForSeconds(skill.Cooldown);
@@ -244,10 +372,25 @@ public class PlayerStats : MonoBehaviour, IDamegeable, ISkill
 
     //function de regen mana et vie
 
-    public void Regen(float rateHp, float rateMana)
+    public void Regen()
     {
-        Health = Health * rateHp;
-        Mana = Mana * rateMana;
+        StartCoroutine(RegenHealAndMana());
+    }
+
+    IEnumerator RegenHealAndMana()
+    {
+        
+            if (Health < MaxHealth)
+            {
+                float val = Mathf.FloorToInt(MaxHealth * 0.05f);
+                Health += val;
+                Debug.Log("+ " + val);
+            }
+        
+            
+        
+        yield return new WaitForSeconds(1.5f);
+        
     }
 
     public void Passif()
@@ -368,5 +511,11 @@ public class PlayerStats : MonoBehaviour, IDamegeable, ISkill
 
 
 
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(transform.position, AttackRange);
     }
 }

@@ -37,9 +37,12 @@ public class PlayerMovement : MonoBehaviour
         if (groundPlane.Raycast(ray, out rayDistance))
         {
             Vector3 point = ray.GetPoint(rayDistance);
-            //Debug.DrawLine(ray.origin,point,Color.red);
+            //Debug.DrawLine(ray.origin, point, Color.red);
             LookAt(point);
+            
         }
+        
+        
 
     }
     void FixedUpdate()
@@ -57,4 +60,6 @@ public class PlayerMovement : MonoBehaviour
         Vector3 heightCorrectedPoint = new Vector3(lookPoint.x, transform.position.y, lookPoint.z);
         transform.LookAt(heightCorrectedPoint);
     }
+
+    
 }
