@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c09fc8ee72fff73469d21082305a1f06, type: 3}
-  m_Name: Skill2
+  m_Name: Skills 1
   m_EditorClassIdentifier: 
   Name: 
   Cost: 0

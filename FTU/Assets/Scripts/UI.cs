@@ -31,7 +31,7 @@ public class UI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        costs[5].text = "Niveau : " + stats.GetLvl();
+        //costs[5].text = "Niveau : " + stats.GetLvl();
         float percentHP = ((stats.GetHealth() * 100) / stats.GetMaxHealth()) / 100;
         health.fillAmount = percentHP;
         costs[3].text = stats.GetHealth() + " / " + stats.GetMaxHealth();

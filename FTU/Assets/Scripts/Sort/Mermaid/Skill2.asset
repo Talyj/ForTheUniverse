@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c09fc8ee72fff73469d21082305a1f06, type: 3}
   m_Name: Skill2
   m_EditorClassIdentifier: 
-  Name: 
-  Cost: 0
-  CastTime: 0
-  Cooldown: 0
+  Name: Tempete
+  Cost: 50
+  CastTime: 5
+  Cooldown: 60
   isCooldown: 0
-  type: 0
-  Damage: 0
-  degats: 0
+  type: 1
+  Damage: 20
+  degats: 1
   image: {fileID: 0}

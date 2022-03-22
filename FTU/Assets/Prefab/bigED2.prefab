@@ -281,8 +281,8 @@ Animator:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 154828725250332481}
   m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 976a95c2dbdb3cd459459def5c6cb6e7, type: 3}
-  m_Controller: {fileID: 9100000, guid: 2d7399f4032b98843ba74b3844779f78, type: 2}
+  m_Avatar: {fileID: 9000000, guid: 473dc44f4b8713942b7a0851bcddc9ef, type: 3}
+  m_Controller: {fileID: 9100000, guid: 617ecadccff89754c8752862ce407b75, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -358,7 +358,8 @@ MonoBehaviour:
   spells: []
   health: {fileID: 0}
   mana: {fileID: 0}
-  costs: []
+  costs:
+  - {fileID: 0}
 --- !u!1 &817504032038060592
 GameObject:
   m_ObjectHideFlags: 0

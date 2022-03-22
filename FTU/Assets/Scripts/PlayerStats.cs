@@ -2,16 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerStats :  IDamegeable, ISkill
+public class PlayerStats :  IDamegeable
 {
     Animator anim;
     
     
     [Header("Competences")]
-    [SerializeField]
-    Passifs passif;
-    [SerializeField]
-    Skills[] Skills;
+    public Passifs passif;
+    public Skills[] skills;
     
 
 
@@ -24,19 +22,19 @@ public class PlayerStats :  IDamegeable, ISkill
 
     public Skills[] GetSkills()
     {
-        return Skills;
+        return skills;
     }
     public Skills GetSkill1()
     {
-        return Skills[0];
+        return skills[0];
     }
     public Skills GetSkill2()
     {
-        return Skills[1];
+        return skills[1];
     }
     public Skills GetUlt()
     {
-        return Skills[2];
+        return skills[2];
     }
     #endregion
 
@@ -47,7 +45,6 @@ public class PlayerStats :  IDamegeable, ISkill
     void Start()
     {
         anim = GetComponent<Animator>();
-        Passif();
     }
 
     // Update is called once per frame
@@ -102,7 +99,6 @@ public class PlayerStats :  IDamegeable, ISkill
             Exp = 0 + reste;
             MaxExp = MaxExp * ExpRate;
             print("lvl up");
-            Passif();
             if (lvl == 6)
             {
                 canUlt = true;
@@ -145,19 +141,6 @@ public class PlayerStats :  IDamegeable, ISkill
            
         }
 
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            Skill1();
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            Skill2();
-        }
-
-        if (Input.GetKeyDown(KeyCode.Alpha4) && canUlt == true)
-        {
-            Ultime();
-        }
     }
 
     IEnumerator AutoAttack()
@@ -223,12 +206,12 @@ public class PlayerStats :  IDamegeable, ISkill
         }
     }
 
-    IEnumerator CoolDown(Skills skill)
-    {
-        yield return new WaitForSeconds(skill.Cooldown);
-        Debug.Log("fin des cd");
-        skill.isCooldown = false;
-    }
+    //IEnumerator CoolDown(Skills skill)
+    //{
+    //    yield return new WaitForSeconds(skill.Cooldown);
+    //    Debug.Log("fin des cd");
+    //    skill.isCooldown = false;
+    //}
 
     //function de regen mana et vie
 
@@ -253,106 +236,106 @@ public class PlayerStats :  IDamegeable, ISkill
         
     }
 
-    public void Passif()
-    {
-        // test generique
-        switch (lvl)
-        {
-            case 1:
-                ResistanceMagique = ResistanceMagique * passif.Bonus;//augmentation 5%
-                ResistancePhysique = ResistancePhysique * passif.Bonus;
-                MoveSpeed = MoveSpeed * passif.Malus;//reduction 5%
-                break;
-            case 6:
-                passif.Bonus = 1.075f;
-                passif.Malus = 0.925f;
-                ResistanceMagique = ResistanceMagique * passif.Bonus;//augmentation 7.5%
-                ResistancePhysique = ResistancePhysique * passif.Bonus;
-                MoveSpeed = MoveSpeed * passif.Malus;//reduction 7.5%
-                break;
-            case 12:
-                passif.Bonus = 1.1f;
-                passif.Malus = 0.8f;
-                ResistanceMagique = ResistanceMagique * passif.Bonus;//augmentation 10%
-                ResistancePhysique = ResistancePhysique * passif.Bonus;
-                MoveSpeed = MoveSpeed * passif.Malus;//reduction s
-                break;
-            default:
-                break;
-        }
+    //public void Passif()
+    //{
+    //    // test generique
+    //    switch (lvl)
+    //    {
+    //        case 1:
+    //            ResistanceMagique = ResistanceMagique * passif.Bonus;//augmentation 5%
+    //            ResistancePhysique = ResistancePhysique * passif.Bonus;
+    //            MoveSpeed = MoveSpeed * passif.Malus;//reduction 5%
+    //            break;
+    //        case 6:
+    //            passif.Bonus = 1.075f;
+    //            passif.Malus = 0.925f;
+    //            ResistanceMagique = ResistanceMagique * passif.Bonus;//augmentation 7.5%
+    //            ResistancePhysique = ResistancePhysique * passif.Bonus;
+    //            MoveSpeed = MoveSpeed * passif.Malus;//reduction 7.5%
+    //            break;
+    //        case 12:
+    //            passif.Bonus = 1.1f;
+    //            passif.Malus = 0.8f;
+    //            ResistanceMagique = ResistanceMagique * passif.Bonus;//augmentation 10%
+    //            ResistancePhysique = ResistancePhysique * passif.Bonus;
+    //            MoveSpeed = MoveSpeed * passif.Malus;//reduction s
+    //            break;
+    //        default:
+    //            break;
+    //    }
 
 
         
-    }
+    //}
 
-    public void Skill1()
-    {
-        if(Skills[0].isCooldown == false && Mana >= Skills[0].Cost)
-        {
-            Mana -= Skills[0].Cost;
-            Debug.Log(Skills[0].Name + " lancée");
-            Skills[0].isCooldown = true;
-            if (Skills[0].isCooldown == true)
-            {
-                StartCoroutine(CoolDown(Skills[0]));
-            }
-        }
-        else if (Skills[0].isCooldown == true)
-        {
-            Debug.Log("en cd");
-        }
-        else if ( Mana < Skills[0].Cost)
-        {
-            Debug.Log("pas assez de mana");
-        }
-    }
+    //public void Skill1()
+    //{
+    //    if (skills[0].isCooldown == false && Mana >= skills[0].Cost)
+    //    {
+    //        Mana -= skills[0].Cost;
+    //        Debug.Log(skills[0].Name + " lancée");
+    //        skills[0].isCooldown = true;
+    //        if (skills[0].isCooldown == true)
+    //        {
+    //            StartCoroutine(CoolDown(skills[0]));
+    //        }
+    //    }
+    //    else if (skills[0].isCooldown == true)
+    //    {
+    //        Debug.Log("en cd");
+    //    }
+    //    else if (Mana < skills[0].Cost)
+    //    {
+    //        Debug.Log("pas assez de mana");
+    //    }
+    //}
 
-    public void Skill2()
-    {
-        if (Skills[1].isCooldown == false && Mana >= Skills[1].Cost)
-        {
-            //buff
-            Mana -= Skills[1].Cost;
-            Debug.Log(Skills[1].Name + " lancée");
-            StartCoroutine(Buff(Skills[1]));
-            Skills[1].isCooldown = true;
+    //public void Skill2()
+    //{
+    //    if (skills[1].isCooldown == false && Mana >= skills[1].Cost)
+    //    {
+    //        //buff
+    //        Mana -= skills[1].Cost;
+    //        Debug.Log(skills[1].Name + " lancée");
+    //        StartCoroutine(Buff(skills[1]));
+    //        skills[1].isCooldown = true;
 
-            if (Skills[1].isCooldown == true)
-            {
-                StartCoroutine(CoolDown(Skills[1]));
-            }
-        }
-        else if (Skills[0].isCooldown == true)
-        {
-            Debug.Log("en cd");
-        }
-        else if (Mana < Skills[0].Cost)
-        {
-            Debug.Log("pas assez de mana");
-        }
-    }
+    //        if (skills[1].isCooldown == true)
+    //        {
+    //            StartCoroutine(CoolDown(skills[1]));
+    //        }
+    //    }
+    //    else if (skills[0].isCooldown == true)
+    //    {
+    //        Debug.Log("en cd");
+    //    }
+    //    else if (Mana < skills[0].Cost)
+    //    {
+    //        Debug.Log("pas assez de mana");
+    //    }
+    //}
 
-    IEnumerator Buff(Skills skill)
-    {
-        //while(Time.deltaTime != skill.CastTime)
-        //{
-        //    ResistanceMagique = ResistanceMagique * 1.25f;
-        //}
+    //IEnumerator Buff(Skills skill)
+    //{
+    //    //while(Time.deltaTime != skill.CastTime)
+    //    //{
+    //    //    ResistanceMagique = ResistanceMagique * 1.25f;
+    //    //}
 
-        yield return new WaitForSeconds(skill.Cooldown);
-        Debug.Log("fin des cd");
-        skill.isCooldown = false;
-    }
+    //    yield return new WaitForSeconds(skill.Cooldown);
+    //    Debug.Log("fin des cd");
+    //    skill.isCooldown = false;
+    //}
 
-    public void Ultime()
-    {
-        Debug.Log("ULT");
-    }
+    //public void Ultime()
+    //{
+    //    Debug.Log("ULT");
+    //}
 
-    public void Eveil()
-    {
-        throw new System.NotImplementedException();
-    }
+    //public void Eveil()
+    //{
+    //    throw new System.NotImplementedException();
+    //}
     public void TakeDamage(float DegatsRecu, string type)
     {
         //application des res, a modifier pour les differents type de degats

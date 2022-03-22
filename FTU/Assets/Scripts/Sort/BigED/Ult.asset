@@ -9,15 +9,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b2671233c37ce0b42887809b2be138db, type: 3}
+  m_Script: {fileID: 11500000, guid: c09fc8ee72fff73469d21082305a1f06, type: 3}
   m_Name: Ult
   m_EditorClassIdentifier: 
-  Name: Head
-  Cost: 100
-  CastTime: 1
-  Cooldown: 60
+  Name: 
+  Cost: 0
+  CastTime: 0
+  Cooldown: 0
   isCooldown: 0
   type: 0
-  Damage: 75
+  Damage: 0
   degats: 0
-  image: {fileID: 21300000, guid: 816e04f307b65e344a876af579201df4, type: 3}
+  image: {fileID: 0}

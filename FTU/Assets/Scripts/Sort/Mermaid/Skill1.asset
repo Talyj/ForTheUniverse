@@ -9,15 +9,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b2671233c37ce0b42887809b2be138db, type: 3}
-  m_Name: Skills
+  m_Script: {fileID: 11500000, guid: c09fc8ee72fff73469d21082305a1f06, type: 3}
+  m_Name: Skill1
   m_EditorClassIdentifier: 
-  Name: toto
-  Cost: 150
-  CastTime: 2
-  Cooldown: 5
+  Name: Poissoin
+  Cost: 20
+  CastTime: 20
+  Cooldown: 30
   isCooldown: 0
-  type: 0
-  Damage: 0
-  degats: 0
+  type: 1
+  Damage: 30
+  degats: 1
   image: {fileID: 0}
