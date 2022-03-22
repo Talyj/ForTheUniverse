@@ -226,9 +226,9 @@ GameObject:
   - component: {fileID: 679444633547361787}
   - component: {fileID: 1073939418632151151}
   - component: {fileID: 1073939418632151139}
-  - component: {fileID: 1073939418632151138}
-  - component: {fileID: 1073939418632151148}
-  - component: {fileID: 1073939418632151145}
+  - component: {fileID: 1135167546221201323}
+  - component: {fileID: 2230977705847347216}
+  - component: {fileID: 3636205391649640499}
   m_Layer: 0
   m_Name: bigED2
   m_TagString: Player
@@ -292,7 +292,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &1073939418632151138
+--- !u!114 &1135167546221201323
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -301,16 +301,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 154828725250332481}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1981f11f55f63ce46843ee67b2ee24e5, type: 3}
+  m_Script: {fileID: 11500000, guid: 2687f11106452394993cb68db07a0f97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackType: 1
+  attackType: 0
   Cible: {fileID: 0}
   Health: 500
   MaxHealth: 500
-  MoveSpeed: 7.5
+  MoveSpeed: 4.5
   AttackSpeed: 0.5
-  AttackRange: 8.23
+  AttackRange: 1.5
   Mana: 100
   MaxMana: 100
   ResistancePhysique: 40
@@ -324,14 +324,11 @@ MonoBehaviour:
   canUlt: 0
   InCombat: 0
   InRegen: 0
-  projPrefab: {fileID: 3524439937703818370, guid: a8b6f0e65a7be0c4291631ead2b31bd2, type: 3}
-  SpawnPrefab: {fileID: 1073939420040192571}
-  passif: {fileID: 11400000, guid: c867352ce35eb30469b09a1b8bff5009, type: 2}
-  Skills:
-  - {fileID: 11400000, guid: 845e614cecab33a4a804ad158759af12, type: 2}
-  - {fileID: 11400000, guid: 681e79c0edf8c034392fa694a6dc0c65, type: 2}
-  - {fileID: 11400000, guid: fb6d47712776ce845a404ebd3548c724, type: 2}
---- !u!114 &1073939418632151148
+  projPrefab: {fileID: 0}
+  SpawnPrefab: {fileID: 0}
+  passif: {fileID: 0}
+  Skills: []
+--- !u!114 &2230977705847347216
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -340,12 +337,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 154828725250332481}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b452b66df2d5e2a40bf61287f85cc0a7, type: 3}
+  m_Script: {fileID: 11500000, guid: 8cf9dcb4805867f42aac487bd7797cc4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Position:
     m_InternalValue: {x: 0, y: 0, z: 0}
---- !u!114 &1073939418632151145
+--- !u!114 &3636205391649640499
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -354,23 +351,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 154828725250332481}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 99911e94857f6394c841f945a3213b35, type: 3}
+  m_Script: {fileID: 11500000, guid: 400bbc4498ed0b24ea71791c827e3a3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stats: {fileID: 1073939418632151138}
-  spells:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  stats: {fileID: 0}
+  spells: []
   health: {fileID: 0}
   mana: {fileID: 0}
-  costs:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  costs: []
 --- !u!1 &817504032038060592
 GameObject:
   m_ObjectHideFlags: 0

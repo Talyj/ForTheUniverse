@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7171494745755472303}
   - component: {fileID: 8154035254244371047}
   - component: {fileID: 5641691423760722106}
-  - component: {fileID: 4380473762627759047}
+  - component: {fileID: 6021962298796288833}
   m_Layer: 0
   m_Name: Projectile
   m_TagString: Untagged
@@ -98,7 +98,7 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &4380473762627759047
+--- !u!114 &6021962298796288833
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -107,12 +107,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 3524439937703818370}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a39188d82b1055142a22feef42d0041a, type: 3}
+  m_Script: {fileID: 11500000, guid: f901a6fb10d89fe4992f02e15f03d395, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   typeDegats: 0
-  degats: 100
-  vitesse: 1
+  degats: 0
+  vitesse: 0
   target: {fileID: 0}
   stopProjectile: 0
-  targetSet: 1
+  targetSet: 0
