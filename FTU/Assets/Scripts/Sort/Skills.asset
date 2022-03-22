@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2671233c37ce0b42887809b2be138db, type: 3}
   m_Name: Skills
   m_EditorClassIdentifier: 
-  Name: 
-  Cost: 0
-  CastTime: 0
-  Cooldown: 0
+  Name: toto
+  Cost: 150
+  CastTime: 2
+  Cooldown: 5
   isCooldown: 0
   type: 0
   Damage: 0
