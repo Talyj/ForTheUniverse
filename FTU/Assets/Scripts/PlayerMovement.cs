@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
 [RequireComponent(typeof(PlayerStats))]
@@ -11,7 +12,7 @@ public class PlayerMovement : MonoBehaviour
     Rigidbody myRigidbody;
     Camera viewCamera;
     Animator anim;
-    
+    public NetworkVariable<Vector3> Position = new NetworkVariable<Vector3>();
     void Awake()
     {
         myRigidbody = GetComponent<Rigidbody>();
@@ -22,6 +23,13 @@ public class PlayerMovement : MonoBehaviour
 
 
     void Update()
+    {
+        Movement();
+        //transform.position = Position.Value;
+
+
+    }
+    public void Movement()
     {
         // Movement input
         Vector3 moveInput = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
@@ -39,12 +47,10 @@ public class PlayerMovement : MonoBehaviour
             Vector3 point = ray.GetPoint(rayDistance);
             //Debug.DrawLine(ray.origin, point, Color.red);
             LookAt(point);
-            
-        }
-        
-        
 
+        }
     }
+
     void FixedUpdate()
     {
         myRigidbody.MovePosition(myRigidbody.position + velocity * Time.fixedDeltaTime);
@@ -61,5 +67,14 @@ public class PlayerMovement : MonoBehaviour
         transform.LookAt(heightCorrectedPoint);
     }
 
-    
+    [ServerRpc]
+    void SubmitPositionRequestServerRpc(ServerRpcParams rpcParams = default)
+    {
+        Position.Value = GetRandomPositionOnPlane();
+    }
+
+    static Vector3 GetRandomPositionOnPlane()
+    {
+        return new Vector3(Random.Range(-3f, 3f), 1f, Random.Range(-3f, 3f));
+    }
 }

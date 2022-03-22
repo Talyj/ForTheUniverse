@@ -111,8 +111,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   typeDegats: 0
-  degats: 75
-  vitesse: 10
+  degats: 100
+  vitesse: 1
   target: {fileID: 0}
   stopProjectile: 0
-  targetSet: 0
+  targetSet: 1
