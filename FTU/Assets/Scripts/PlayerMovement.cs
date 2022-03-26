@@ -5,49 +5,54 @@ using UnityEngine;
 
 [RequireComponent(typeof(PlayerStats))]
 [RequireComponent(typeof(Rigidbody))]
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : IDamegeable
 {
     PlayerStats stats;
     Vector3 velocity;
     Rigidbody myRigidbody;
     Camera viewCamera;
-    Animator anim;
+    protected bool canMove;
+    //Animator anim;
     public NetworkVariable<Vector3> Position = new NetworkVariable<Vector3>();
     void Awake()
     {
         myRigidbody = GetComponent<Rigidbody>();
         stats = GetComponent<PlayerStats>();
         viewCamera = Camera.main;
-        anim = GetComponent<Animator>();
+        //anim = GetComponent<Animator>();
     }
 
 
-    void Update()
-    {
-        Movement();
-        //transform.position = Position.Value;
+    //void Update()
+    //{
+    //    Movement();
+    //    //transform.position = Position.Value;
 
 
-    }
+    //}
+
     public void Movement()
     {
-        // Movement input
-        Vector3 moveInput = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
-        Vector3 moveVelocity = moveInput.normalized * stats.GetMoveSpeed();
-        Move(moveVelocity);
-        anim.SetFloat("MoveX", Input.GetAxisRaw("Horizontal"));
-        anim.SetFloat("MoveY", Input.GetAxisRaw("Vertical"));
-        // Look input
-        Ray ray = viewCamera.ScreenPointToRay(Input.mousePosition);
-        Plane groundPlane = new Plane(Vector3.up, Vector3.zero);
-        float rayDistance;
-
-        if (groundPlane.Raycast(ray, out rayDistance))
+        if (canMove)
         {
-            Vector3 point = ray.GetPoint(rayDistance);
-            //Debug.DrawLine(ray.origin, point, Color.red);
-            LookAt(point);
+            // Movement input
+            Vector3 moveInput = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
+            Vector3 moveVelocity = moveInput.normalized * stats.GetMoveSpeed();
+            Move(moveVelocity);
+            //anim.SetFloat("MoveX", Input.GetAxisRaw("Horizontal"));
+            //anim.SetFloat("MoveY", Input.GetAxisRaw("Vertical"));
+            // Look input
+            Ray ray = viewCamera.ScreenPointToRay(Input.mousePosition);
+            Plane groundPlane = new Plane(Vector3.up, Vector3.zero);
+            float rayDistance;
 
+            if (groundPlane.Raycast(ray, out rayDistance))
+            {
+                Vector3 point = ray.GetPoint(rayDistance);
+                //Debug.DrawLine(ray.origin, point, Color.red);
+                LookAt(point);
+
+            }
         }
     }
 

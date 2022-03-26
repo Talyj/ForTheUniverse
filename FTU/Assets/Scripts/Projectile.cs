@@ -8,15 +8,26 @@ public class Projectile : NetworkBehaviour
 
     public TypeDegats typeDegats;
     public float degats;
-    public float vitesse;
+    private float vitesse = 30;
     PlayerStats stats;
     public GameObject target;
-    public bool stopProjectile = false;
     public bool targetSet;
-    
-    void Update()
+    protected bool stopProjectile = false;
+    protected bool touched;
+
+    public void Start()
     {
-         
+        touched = false;
+    }
+
+    private void Update()
+    {
+
+        Behaviour();
+    }
+
+    public void Behaviour()
+    {
         if (target)
         {
             if (target == null)
@@ -24,7 +35,7 @@ public class Projectile : NetworkBehaviour
                 Destroy(gameObject);
             }
 
-            transform.position = Vector3.MoveTowards(transform.position, target.transform.position,vitesse * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, target.transform.position, vitesse * Time.deltaTime);
 
             if (stopProjectile == false)
             {
@@ -32,10 +43,11 @@ public class Projectile : NetworkBehaviour
                 {
                     if (target.GetComponent<Targetable>().enemytype == Targetable.EnemyType.minion)
                     {
-                        target.GetComponent<EnnemyStats>().TakeDamage(degats, typeDegats.ToString());
+                        touched = true;
+                        target.GetComponent<Targetable>().TakeDamage(degats, typeDegats.ToString());
                         Destroy(gameObject);
                         stopProjectile = true;
-                        
+
                     }
                 }
             }

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerStats :  IDamegeable
+public class PlayerStats :  PlayerMovement
 {
     Animator anim;
     
@@ -42,19 +42,16 @@ public class PlayerStats :  IDamegeable
 
 
     // Start is called before the first frame update
-    void Start()
+    public void Start()
     {
         anim = GetComponent<Animator>();
-    }
+    }    
 
-    // Update is called once per frame
-    void Update()
+    public void AttackSystem()
     {
-
-        //attack sys
-        if(Cible != null)
+        if (Cible != null)
         {
-            if (Input.GetMouseButtonDown(1))
+            if (Input.GetMouseButtonDown(0))
             {
                 if (Vector3.Distance(gameObject.transform.position, Cible.transform.position) > AttackRange)
                 {
@@ -72,76 +69,10 @@ public class PlayerStats :  IDamegeable
                     }
                 }
             }
-            
-        }
-
-        if (Health >= MaxHealth)
-        {
-            Health = MaxHealth;
-        }
-        if (Mana >= MaxMana)
-        {
-            Mana = MaxMana;
-        }
-
-        //if(InCombat == false && InRegen == false)
-        //{
-        //    InRegen = true;
-        //    Debug.Log("regen");
-        //    Regen();
-        //}
-        //Xp avec calcule des reste d'exp si lvl up
-
-        if (Exp >= MaxExp)
-        {
-            float reste = Exp - MaxExp;
-            lvl += 1;
-            Exp = 0 + reste;
-            MaxExp = MaxExp * ExpRate;
-            print("lvl up");
-            if (lvl == 6)
-            {
-                canUlt = true;
-            }
-            // augmentation des stats a faire
-            //test en dur a rendre plus automatique par scriptableobject surement
-            MaxHealth += 106;
-            MaxMana += 65;
-            AttackSpeed += .12f;
-            DegatsPhysique += 3.75f;
-            DegatsMagique += 2.75f;
-            ResistanceMagique += 2.25f;
-            ResistancePhysique += 2.25f;
-            MoveSpeed += 0.75f;
-        }
-
-
-
-
-
-        // test des touches
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            //TakeDamage(Skills[1].Damage,Skills[1].degats.ToString());
-            
-        }
-        if (Input.GetKeyDown(KeyCode.J))
-        {
-            TakeDamage(100, "Magique");
 
         }
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            TakeDamage(50, "Brut");
-
-        }
-        if (Input.GetKeyDown(KeyCode.X))
-        {
-            Exp += 150;
-           
-        }
-
     }
+    
 
     IEnumerator AutoAttack()
     {
@@ -156,11 +87,12 @@ public class PlayerStats :  IDamegeable
 
     IEnumerator RangeAutoAttack()
     {
-        anim.SetBool("AA", true);
+        //anim.SetBool("AA", true);
+        RangeAttack();
         yield return new WaitForSeconds(AttackSpeed / ((100 / +AttackSpeed) * 0.01f));
         if (Vector3.Distance(gameObject.transform.position, Cible.transform.position) > AttackRange)
         {
-            anim.SetBool("AA", false);
+            //anim.SetBool("AA", false);
         }
 
     }

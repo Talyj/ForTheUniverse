@@ -4,19 +4,19 @@ using UnityEngine;
 
 public class Targeting : MonoBehaviour
 {
-    public GameObject player;
+    private GameObject player;
     RaycastHit hit;
     // Start is called before the first frame update
     void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player");
+        player = gameObject;
     }
 
     // Update is called once per frame
     void Update()
     {
         
-        if (Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButtonDown(0))
         {
             
             if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, Mathf.Infinity))

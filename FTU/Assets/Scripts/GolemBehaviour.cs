@@ -3,12 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GolemBehaviour : IHasHealth
+public class GolemBehaviour : IDamegeable
 {
     private float damages;
     private bool isInside;
     //Modify that to the player's class
-    private PlayerCompetences target;
+    private PlayerStats target;
     private float attackCooldown;
 
     public void Start()
@@ -24,10 +24,6 @@ public class GolemBehaviour : IHasHealth
     {
         Attack();
         CheckDestroy();
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            TakeDamages(100);
-        }
         Debug.Log(GetHealth());
     }
 
@@ -38,7 +34,7 @@ public class GolemBehaviour : IHasHealth
             if (isInside)
             {
                 //Replace function by the player's one that deals damages
-                target.TakeDamages(damages);
+                target.TakeDamage(damages, "Brut");
                 attackCooldown = 5;
             }
         }
@@ -60,8 +56,7 @@ public class GolemBehaviour : IHasHealth
             //Modify GameObject with the player's class
             if(target == null)
             {
-                target = other.GetComponent<PlayerCompetences>();
-                //target = other.gameObject;
+                target = other.GetComponent<PlayerStats>();
             }
             isInside = true;
             Debug.Log("Inside");

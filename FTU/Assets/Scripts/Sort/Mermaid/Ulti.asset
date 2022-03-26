@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: Ulti
   m_EditorClassIdentifier: 
   Name: MermaidSong
-  Cost: 100
+  Cost: 0
   CastTime: 5
-  Cooldown: 90
+  Cooldown: 1
   isCooldown: 0
   type: 1
-  Damage: 80
+  Damage: 0
   degats: 1
   image: {fileID: 0}

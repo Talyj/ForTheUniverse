@@ -27,7 +27,6 @@ public abstract class IDamegeable : NetworkBehaviour
     public bool canUlt = false;
     public bool InCombat = false;
     public bool InRegen = false;
-    bool IsDead = false;
 
     [Header("Ranged variables")]
     public GameObject projPrefab;
@@ -153,13 +152,9 @@ public abstract class IDamegeable : NetworkBehaviour
        
     }
 
-    // Update is called once per frame
-    void Update()
+    //Has to be present in the final update
+    public void HealthBehaviour()
     {
-
-        //attack sys
-        
-
         if (Health >= MaxHealth)
         {
             Health = MaxHealth;
@@ -168,15 +163,11 @@ public abstract class IDamegeable : NetworkBehaviour
         {
             Mana = MaxMana;
         }
+    }
 
-        //if(InCombat == false && InRegen == false)
-        //{
-        //    InRegen = true;
-        //    Debug.Log("regen");
-        //    Regen();
-        //}
-        //Xp avec calcule des reste d'exp si lvl up
-
+    //Has to be present in the final update
+    public void ExperienceBehaviour()
+    {
         if (Exp >= MaxExp)
         {
             float reste = Exp - MaxExp;
@@ -199,37 +190,8 @@ public abstract class IDamegeable : NetworkBehaviour
             ResistancePhysique += 2.25f;
             MoveSpeed += 0.75f;
         }
-
-
-
-
-
-        // test des touches
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            //TakeDamage(Skills[1].Damage,Skills[1].degats.ToString());
-
-        }
-        if (Input.GetKeyDown(KeyCode.J))
-        {
-            TakeDamage(100, "Magique");
-
-        }
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            TakeDamage(50, "Brut");
-
-        }
-        if (Input.GetKeyDown(KeyCode.X))
-        {
-            Exp += 150;
-
-        }
-
-
     }
-
-    
+   
 
     IEnumerator CoolDown(Skills skill)
     {
@@ -279,9 +241,15 @@ public abstract class IDamegeable : NetworkBehaviour
         {
             Health -= DegatsRecu;
         }
+    }
 
-
-
+    public bool IsDead()
+    {
+        if (Health <= 0)
+        {
+            return true;
+        }
+        return false;
     }
 
     private void OnDrawGizmos()

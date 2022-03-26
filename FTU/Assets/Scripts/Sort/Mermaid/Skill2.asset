@@ -15,7 +15,7 @@ MonoBehaviour:
   Name: Tempete
   Cost: 50
   CastTime: 5
-  Cooldown: 60
+  Cooldown: 1
   isCooldown: 0
   type: 1
   Damage: 20
