@@ -6,7 +6,7 @@ public class PoissoinProjBehaviour : Projectile
 {
     public MermaidBehaviour source;
 
-    public void Update()
+    public new void Update()
     {
         Behaviour();
         if(touched == true)

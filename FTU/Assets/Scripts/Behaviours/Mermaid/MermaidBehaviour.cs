@@ -7,17 +7,24 @@ public class MermaidBehaviour : PlayerStats
     private int _passiveCounter;
     private bool isPassiveStart;
 
+    //Skill 1
     public GameObject poissoin;
 
+    //Skill 2
+    public float speedPush;
+    private float windTimerDefault = 0.2f;
+    public GameObject windArea;
+    public MermaidBehaviour Instance;
+
+    //Ulti
     private float ultiTimerDefault = 1;
     private float charmSpeed;
     private List<GameObject> charmTargets;
     public GameObject charmArea;
 
-    public MermaidBehaviour Instance;
-
-    public void Start()
+    public new void Start()
     {
+        speedPush = 3;
         charmSpeed = 5;
         charmTargets = new List<GameObject>();
         canMove = true;
@@ -37,19 +44,16 @@ public class MermaidBehaviour : PlayerStats
         ExperienceBehaviour();
         AttackSystem();
         Passif();
-        if (Input.GetKeyDown(KeyCode.A))
+        if (Input.GetKeyDown(KeyCode.A) && Cible != null && Vector3.Distance(gameObject.transform.position, Cible.transform.position) < AttackRange)
         {
-            if(Cible != null && Vector3.Distance(gameObject.transform.position, Cible.transform.position) < AttackRange)
-            {
-                Poissoin(Targetable.EnemyType.minion, Cible);
-            }
+            Poissoin(Targetable.EnemyType.minion, Cible);
         }
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.E) && Cible != null)
         {
-            Skill2();
+            MagicWind(Cible);
         }
 
-        if (Input.GetKeyDown(KeyCode.Space)/* && canUlt == true*/)
+        if (Input.GetKeyDown(KeyCode.Space) && canUlt == true)
         {
             Ultime();
         }
@@ -81,7 +85,7 @@ public class MermaidBehaviour : PlayerStats
         _passiveCounter++;
     }
 
-    public void Poissoin(Targetable.EnemyType typeEnemy, GameObject Target)
+    public void Poissoin(Targetable.EnemyType typeEnemy, GameObject target)
     {
         if (skills[0].isCooldown == false && Mana >= skills[0].Cost)
         {
@@ -89,13 +93,12 @@ public class MermaidBehaviour : PlayerStats
             Debug.Log(skills[0].Name + " lancée");
             skills[0].isCooldown = true;
 
-            //TODO
             float dmg = DegatsMagique;
             if (typeEnemy == Targetable.EnemyType.minion /*||typeEnemy == Targetable.EnemyType.Adversaire*/)
             {
                 var proj = Instantiate(poissoin, SpawnPrefab.transform.position, Quaternion.identity);
                 proj.GetComponent<PoissoinProjBehaviour>().degats = dmg;
-                proj.GetComponent<PoissoinProjBehaviour>().target = Target;
+                proj.GetComponent<PoissoinProjBehaviour>().target = target;
                 proj.GetComponent<PoissoinProjBehaviour>().targetSet = true;
                 proj.GetComponent<PoissoinProjBehaviour>().source = Instance;
             }
@@ -112,14 +115,24 @@ public class MermaidBehaviour : PlayerStats
         }
     }
 
-    public void Skill2()
+    public void MagicWind(GameObject target)
     {
         if (skills[1].isCooldown == false && Mana >= skills[1].Cost)
         {
             //buff
             Mana -= skills[1].Cost;
             Debug.Log(skills[1].Name + " lancée");
-            //TODO
+            
+            Quaternion rotation = Quaternion.LookRotation(target.transform.position - transform.position);
+            Vector3 direction = target.transform.position - transform.position;
+
+            float dmg = DegatsMagique;
+            var proj = Instantiate(windArea, SpawnPrefab.transform.position, rotation);
+            proj.GetComponent<WindAreaBehaviour>().degats = dmg;
+            proj.GetComponent<WindAreaBehaviour>().direction = direction;
+            proj.GetComponent<WindAreaBehaviour>().source = Instance;
+
+            CheckPassive();
             StartCoroutine(CoolDown(skills[1]));
         }
         else if (skills[0].isCooldown == true)
@@ -130,6 +143,27 @@ public class MermaidBehaviour : PlayerStats
         {
             Debug.Log("pas assez de mana");
         }
+    }
+    public void AddWindedTarget(GameObject target)
+    {
+        charmTargets.Add(target);
+        target.GetComponent<Targetable>().canMove = false;
+        StartCoroutine(GoAway(target));
+    }
+
+    public IEnumerator GoAway(GameObject target)
+    {
+        var timer = windTimerDefault;
+        while (timer >= 0)
+        {
+            Vector3 direction = target.transform.position - transform.position;
+            target.transform.position += direction * Time.deltaTime * speedPush;
+            //target.transform.position += (transform.position + target.transform.position).normalized * charmSpeed * Time.deltaTime;
+            timer -= Time.deltaTime;
+            yield return new WaitForEndOfFrame();
+        }
+        target.GetComponent<Targetable>().canMove = true;
+        yield return 0;
     }
 
     IEnumerator Buff(Skills skill)

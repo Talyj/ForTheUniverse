@@ -20,7 +20,7 @@ public class Projectile : NetworkBehaviour
         touched = false;
     }
 
-    private void Update()
+    public void Update()
     {
 
         Behaviour();
@@ -43,8 +43,8 @@ public class Projectile : NetworkBehaviour
                 {
                     if (target.GetComponent<Targetable>().enemytype == Targetable.EnemyType.minion)
                     {
-                        touched = true;
-                        target.GetComponent<Targetable>().TakeDamage(degats, typeDegats.ToString());
+                        touched = true;                        
+                        DealDamage(target, degats, typeDegats.ToString());
                         Destroy(gameObject);
                         stopProjectile = true;
 
@@ -52,5 +52,10 @@ public class Projectile : NetworkBehaviour
                 }
             }
         }
+    }
+
+    public void DealDamage(GameObject target, float dmg, string typeDmg)
+    {
+        target.GetComponent<Targetable>().TakeDamage(dmg, typeDmg);
     }
 }

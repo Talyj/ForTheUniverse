@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 36354089619044051}
   - component: {fileID: 36354089619044050}
   - component: {fileID: 36354089619044054}
-  - component: {fileID: 36354089619044055}
   - component: {fileID: 36354089619044056}
+  - component: {fileID: 6702782953934390515}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -118,19 +118,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 10
   m_CollisionDetection: 0
---- !u!114 &36354089619044055
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 36354089619044049}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5536e349aed275846ae27b2e203f27b2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerSpeed: 10
 --- !u!114 &36354089619044056
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -147,6 +134,44 @@ MonoBehaviour:
   AlwaysReplicateAsRoot: 0
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
+--- !u!114 &6702782953934390515
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 36354089619044049}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2687f11106452394993cb68db07a0f97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackType: 0
+  Cible: {fileID: 0}
+  Health: 500
+  MaxHealth: 500
+  MoveSpeed: 4.5
+  AttackSpeed: 0.5
+  AttackRange: 1.5
+  Mana: 100
+  MaxMana: 100
+  ResistancePhysique: 40
+  ResistanceMagique: 40
+  Exp: 0
+  MaxExp: 100
+  ExpRate: 1.75
+  DegatsPhysique: 100
+  DegatsMagique: 100
+  lvl: 1
+  canUlt: 0
+  InCombat: 0
+  InRegen: 0
+  projPrefab: {fileID: 0}
+  SpawnPrefab: {fileID: 0}
+  Position:
+    m_InternalValue: {x: 0, y: 0, z: 0}
+  passif: {fileID: 0}
+  skills: []
 --- !u!1 &36354090557071864
 GameObject:
   m_ObjectHideFlags: 0

@@ -2,6 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/*                                                    */
+/*     This class can be replaced by IDamageable      */
+/*                                                    */
+
 public class Targetable : MonoBehaviour
 {
     public enum EnemyType
@@ -18,6 +22,11 @@ public class Targetable : MonoBehaviour
     private void Start()
     {
         Health = 200;
+    }
+
+    private void Update()
+    {
+        Debug.Log(Health);
     }
 
     public void TakeDamage(float DegatsRecu, string type)

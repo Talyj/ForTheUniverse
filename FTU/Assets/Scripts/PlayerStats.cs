@@ -76,11 +76,12 @@ public class PlayerStats :  PlayerMovement
 
     IEnumerator AutoAttack()
     {
-        anim.SetBool("AA", true);
+        //anim.SetBool("AA", true);
+        MeleeAttack();
         yield return new WaitForSeconds(AttackSpeed / ((100 / +AttackSpeed) * 0.01f));
         if ( Vector3.Distance(gameObject.transform.position, Cible.transform.position) > AttackRange)
         {
-            anim.SetBool("AA", false);
+            //anim.SetBool("AA", false);
         }
         
     }

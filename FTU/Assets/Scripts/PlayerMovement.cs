@@ -53,6 +53,14 @@ public class PlayerMovement : IDamegeable
                 LookAt(point);
 
             }
+            if(Cible != null)
+            {
+                if (Vector3.Distance(gameObject.transform.position, Cible.transform.position) > AttackRange)
+                {
+                    print("Hors d portée");
+                    Cible = null;
+                }
+            }
         }
     }
 
