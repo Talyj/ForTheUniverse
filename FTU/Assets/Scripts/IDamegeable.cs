@@ -23,6 +23,7 @@ public abstract class IDamegeable : NetworkBehaviour
     public float DegatsPhysique = 100;
     public float DegatsMagique = 100;
     public int lvl = 1;
+    //public bool canMove;
 
     public bool canUlt = false;
     public bool InCombat = false;
@@ -31,6 +32,15 @@ public abstract class IDamegeable : NetworkBehaviour
     [Header("Ranged variables")]
     public GameObject projPrefab;
     public Transform SpawnPrefab;
+
+    //public enum EnemyType
+    //{
+    //    minion,
+    //    golem,
+    //    joueur,
+    //    dieu,
+    //    voister
+    //}
 
 
 
@@ -256,6 +266,19 @@ public abstract class IDamegeable : NetworkBehaviour
     {
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, AttackRange);
+    }
+
+    public bool IsTargetable(Targetable.EnemyType enemyToCompare)
+    {
+        if(enemyToCompare == Targetable.EnemyType.minion ||
+        enemyToCompare == Targetable.EnemyType.voister ||
+        enemyToCompare == Targetable.EnemyType.joueur ||
+        enemyToCompare == Targetable.EnemyType.dieu ||
+        enemyToCompare == Targetable.EnemyType.golem)
+        {
+            return true;
+        }
+        return false;
     }
 }
 

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class MermaidBehaviour : PlayerStats
 {
+    //Passive
     private int _passiveCounter;
     private bool isPassiveStart;
 

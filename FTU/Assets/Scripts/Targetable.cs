@@ -13,7 +13,8 @@ public class Targetable : MonoBehaviour
         minion,
         golem,
         joueur,
-        dieu
+        dieu,
+        voister
     }
     public EnemyType enemytype;
 

@@ -14,7 +14,7 @@ public class PlayerMovement : IDamegeable
     protected bool canMove;
     //Animator anim;
     public NetworkVariable<Vector3> Position = new NetworkVariable<Vector3>();
-    void Awake()
+    public void Awake()
     {
         myRigidbody = GetComponent<Rigidbody>();
         stats = GetComponent<PlayerStats>();
@@ -64,7 +64,7 @@ public class PlayerMovement : IDamegeable
         }
     }
 
-    void FixedUpdate()
+    public void FixedUpdate()
     {
         myRigidbody.MovePosition(myRigidbody.position + velocity * Time.fixedDeltaTime);
 

@@ -7,13 +7,13 @@ public class Targeting : MonoBehaviour
     private GameObject player;
     RaycastHit hit;
     // Start is called before the first frame update
-    void Start()
+    public void Start()
     {
         player = gameObject;
     }
 
     // Update is called once per frame
-    void Update()
+    public void Update()
     {
         
         if (Input.GetMouseButtonDown(0))
@@ -23,7 +23,11 @@ public class Targeting : MonoBehaviour
             {
                 if (hit.collider.GetComponent<Targetable>() != null)
                 {
-                    if (hit.collider.GetComponent<Targetable>().enemytype == Targetable.EnemyType.minion)
+                    if (hit.collider.GetComponent<Targetable>().enemytype == Targetable.EnemyType.minion || 
+                        hit.collider.GetComponent<Targetable>().enemytype == Targetable.EnemyType.voister || 
+                        hit.collider.GetComponent<Targetable>().enemytype == Targetable.EnemyType.joueur || 
+                        hit.collider.GetComponent<Targetable>().enemytype == Targetable.EnemyType.dieu ||
+                        hit.collider.GetComponent<Targetable>().enemytype == Targetable.EnemyType.golem)
                     {
                         player.GetComponent<PlayerStats>().Cible = hit.collider.gameObject;
                     }
