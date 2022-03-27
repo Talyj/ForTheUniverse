@@ -456,6 +456,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29c303a32cabf5d4b87c0fb3b065a590, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  attackType: 0
+  Cible: {fileID: 0}
+  Health: 0
+  MaxHealth: 500
+  MoveSpeed: 4.5
+  AttackSpeed: 0.5
+  AttackRange: 1.5
+  Mana: 100
+  MaxMana: 100
+  ResistancePhysique: 40
+  ResistanceMagique: 40
+  Exp: 0
+  MaxExp: 100
+  ExpRate: 1.75
+  DegatsPhysique: 100
+  DegatsMagique: 100
+  lvl: 1
+  canAct: 0
+  canUlt: 0
+  InCombat: 0
+  InRegen: 0
+  projPrefab: {fileID: 0}
+  SpawnPrefab: {fileID: 0}
   enemytype: 0
   canMove: 0
 --- !u!54 &229935692
@@ -585,7 +608,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29c303a32cabf5d4b87c0fb3b065a590, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemytype: 0
+  attackType: 0
+  Cible: {fileID: 0}
+  Health: 0
+  MaxHealth: 500
+  MoveSpeed: 4.5
+  AttackSpeed: 0.5
+  AttackRange: 1.5
+  Mana: 100
+  MaxMana: 100
+  ResistancePhysique: 40
+  ResistanceMagique: 40
+  Exp: 0
+  MaxExp: 100
+  ExpRate: 1.75
+  DegatsPhysique: 100
+  DegatsMagique: 100
+  lvl: 1
+  canAct: 0
+  canUlt: 0
+  InCombat: 0
+  InRegen: 0
+  projPrefab: {fileID: 0}
+  SpawnPrefab: {fileID: 0}
+  enemytype: 2
   canMove: 0
 --- !u!54 &313276834
 Rigidbody:
@@ -714,6 +760,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29c303a32cabf5d4b87c0fb3b065a590, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  attackType: 0
+  Cible: {fileID: 0}
+  Health: 0
+  MaxHealth: 500
+  MoveSpeed: 4.5
+  AttackSpeed: 0.5
+  AttackRange: 1.5
+  Mana: 100
+  MaxMana: 100
+  ResistancePhysique: 40
+  ResistanceMagique: 40
+  Exp: 0
+  MaxExp: 100
+  ExpRate: 1.75
+  DegatsPhysique: 100
+  DegatsMagique: 100
+  lvl: 1
+  canAct: 0
+  canUlt: 0
+  InCombat: 0
+  InRegen: 0
+  projPrefab: {fileID: 0}
+  SpawnPrefab: {fileID: 0}
   enemytype: 0
   canMove: 0
 --- !u!54 &420934909
@@ -1021,7 +1090,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29c303a32cabf5d4b87c0fb3b065a590, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemytype: 4
+  attackType: 0
+  Cible: {fileID: 0}
+  Health: 0
+  MaxHealth: 500
+  MoveSpeed: 20
+  AttackSpeed: 0.5
+  AttackRange: 1.5
+  Mana: 100
+  MaxMana: 100
+  ResistancePhysique: 40
+  ResistanceMagique: 40
+  Exp: 0
+  MaxExp: 100
+  ExpRate: 1.75
+  DegatsPhysique: 100
+  DegatsMagique: 100
+  lvl: 1
+  canAct: 0
+  canUlt: 0
+  InCombat: 0
+  InRegen: 0
+  projPrefab: {fileID: 0}
+  SpawnPrefab: {fileID: 0}
+  enemytype: 2
   canMove: 0
 --- !u!1 &1356089163
 GameObject:
@@ -1183,11 +1275,12 @@ MonoBehaviour:
   DegatsPhysique: 100
   DegatsMagique: 100
   lvl: 1
+  canAct: 0
   canUlt: 0
   InCombat: 0
   InRegen: 0
   projPrefab: {fileID: 0}
-  SpawnPrefab: {fileID: 0}
+  SpawnPrefab: {fileID: 1356089167}
   Position:
     m_InternalValue: {x: 0, y: 0, z: 0}
   passif: {fileID: 0}
@@ -1196,6 +1289,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 1a23975b049b9a24999dd77bcf858d41, type: 2}
   - {fileID: 11400000, guid: 1a09e620cb887864fb6fd1d958b30dd9, type: 2}
   damageSupp: 0
+  stickTP: {fileID: 3431704481046487142, guid: a09069b3be2d08648a222b5efb919207, type: 3}
+  step: 0
+  defaultTimer: 2
+  isTouched: 0
   Instance: {fileID: 0}
 --- !u!54 &1356089171
 Rigidbody:
@@ -1547,6 +1644,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29c303a32cabf5d4b87c0fb3b065a590, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  attackType: 0
+  Cible: {fileID: 0}
+  Health: 0
+  MaxHealth: 500
+  MoveSpeed: 4.5
+  AttackSpeed: 0.5
+  AttackRange: 1.5
+  Mana: 100
+  MaxMana: 100
+  ResistancePhysique: 40
+  ResistanceMagique: 40
+  Exp: 0
+  MaxExp: 100
+  ExpRate: 1.75
+  DegatsPhysique: 100
+  DegatsMagique: 100
+  lvl: 1
+  canAct: 0
+  canUlt: 0
+  InCombat: 0
+  InRegen: 0
+  projPrefab: {fileID: 0}
+  SpawnPrefab: {fileID: 0}
   enemytype: 0
   canMove: 0
 --- !u!54 &2100866362

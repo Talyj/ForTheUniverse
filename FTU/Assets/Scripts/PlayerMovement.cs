@@ -5,7 +5,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(PlayerStats))]
 [RequireComponent(typeof(Rigidbody))]
-public class PlayerMovement : IDamegeable
+public class PlayerMovement : IDamageable
 {
     PlayerStats stats;
     Vector3 velocity;
@@ -58,7 +58,7 @@ public class PlayerMovement : IDamegeable
                 if (Vector3.Distance(gameObject.transform.position, Cible.transform.position) > AttackRange)
                 {
                     print("Hors d portée");
-                    Cible = null;
+                    //Cible = null;
                 }
             }
         }

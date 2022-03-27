@@ -6,7 +6,7 @@ using UnityEngine;
 /*     This class can be replaced by IDamageable      */
 /*                                                    */
 
-public class Targetable : MonoBehaviour
+public class Targetable : IDamageable
 {
     public enum EnemyType
     {
@@ -18,16 +18,17 @@ public class Targetable : MonoBehaviour
     }
     public EnemyType enemytype;
 
-    private float Health;
     public bool canMove;
-    private void Start()
+    public void Start()
     {
         Health = 200;
+        canAct = true;
+        canMove = true;
     }
 
-    private void Update()
+    public void Update()
     {
-        Debug.Log(Health);
+        Debug.Log("Health : " + Health);
     }
 
     public void TakeDamage(float DegatsRecu, string type)

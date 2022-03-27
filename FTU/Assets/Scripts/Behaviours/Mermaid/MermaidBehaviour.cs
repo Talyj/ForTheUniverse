@@ -29,6 +29,7 @@ public class MermaidBehaviour : PlayerStats
         charmSpeed = 5;
         charmTargets = new List<GameObject>();
         canMove = true;
+        canAct = true;
         Instance = this;
         isPassiveStart = false;
         _passiveCounter = 0;
@@ -40,25 +41,27 @@ public class MermaidBehaviour : PlayerStats
 
     public void Update()
     {
-        Movement();
         HealthBehaviour();
         ExperienceBehaviour();
-        AttackSystem();
         Passif();
-        if (Input.GetKeyDown(KeyCode.A) && Cible != null && Vector3.Distance(gameObject.transform.position, Cible.transform.position) < AttackRange)
+        if (canAct)
         {
-            Poissoin(Targetable.EnemyType.minion, Cible);
-        }
-        if (Input.GetKeyDown(KeyCode.E) && Cible != null)
-        {
-            MagicWind(Cible);
-        }
+            Movement();
+            AttackSystem();
+            if (Input.GetKeyDown(KeyCode.A) && Cible != null && Vector3.Distance(gameObject.transform.position, Cible.transform.position) < AttackRange)
+            {
+                Poissoin(Targetable.EnemyType.minion, Cible);
+            }
+            if (Input.GetKeyDown(KeyCode.E) && Cible != null)
+            {
+                MagicWind(Cible);
+            }
 
-        if (Input.GetKeyDown(KeyCode.Space) && canUlt == true)
-        {
-            Ultime();
+            if (Input.GetKeyDown(KeyCode.Space) && canUlt == true)
+            {
+                Ultime();
+            }
         }
-        Debug.Log(charmTargets);
     }
 
     public void Passif()

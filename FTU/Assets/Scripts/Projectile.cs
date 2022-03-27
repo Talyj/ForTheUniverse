@@ -13,7 +13,7 @@ public class Projectile : NetworkBehaviour
     public GameObject target;
     public bool targetSet;
     protected bool stopProjectile = false;
-    protected bool touched;
+    public bool touched;
 
     public void Start()
     {
@@ -40,14 +40,18 @@ public class Projectile : NetworkBehaviour
             if (stopProjectile == false)
             {
                 if (Vector3.Distance(transform.position, target.transform.position) < 0.75f)
+                    //if (touched)
                 {
-                    if (target.GetComponent<Targetable>().enemytype == Targetable.EnemyType.minion)
+                    if (target.GetComponent<Targetable>().enemytype == Targetable.EnemyType.minion ||
+                       target.GetComponent<Targetable>().enemytype == Targetable.EnemyType.voister ||
+                       target.GetComponent<Targetable>().enemytype == Targetable.EnemyType.joueur ||
+                       target.GetComponent<Targetable>().enemytype == Targetable.EnemyType.dieu ||
+                       target.GetComponent<Targetable>().enemytype == Targetable.EnemyType.golem)
                     {
-                        touched = true;                        
+                        touched = true;
                         DealDamage(target, degats, typeDegats.ToString());
-                        Destroy(gameObject);
                         stopProjectile = true;
-
+                        Destroy(gameObject);
                     }
                 }
             }
@@ -58,4 +62,19 @@ public class Projectile : NetworkBehaviour
     {
         target.GetComponent<Targetable>().TakeDamage(dmg, typeDmg);
     }
+
+    //    public void OnTriggerEnter(Collider other)
+    //    {
+    //        if(other.GetComponent<Targetable>().enemytype == Targetable.EnemyType.minion ||
+    //        other.GetComponent<Targetable>().enemytype == Targetable.EnemyType.voister ||
+    //        other.GetComponent<Targetable>().enemytype == Targetable.EnemyType.joueur ||
+    //        other.GetComponent<Targetable>().enemytype == Targetable.EnemyType.dieu ||
+    //        other.GetComponent<Targetable>().enemytype == Targetable.EnemyType.golem)
+    //        {
+    //            touched = true;
+    //            DealDamage(target, degats, typeDegats.ToString());
+    //            stopProjectile = true;
+    //            Destroy(gameObject);
+    //        }
+    //    }
 }

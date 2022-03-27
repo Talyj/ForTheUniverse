@@ -2,7 +2,7 @@ using System.Collections;
 using Unity.Netcode;
 using UnityEngine;
 
-public abstract class IDamegeable : NetworkBehaviour
+public abstract class IDamageable : NetworkBehaviour
 {
 
     
@@ -15,8 +15,8 @@ public abstract class IDamegeable : NetworkBehaviour
     public float AttackSpeed = 0.5f;
     public float AttackRange = 1.5f;
     public float Mana = 100, MaxMana = 100;
-    public float ResistancePhysique = 40; // calcul des resistance health = health - (DegatsPhysiqueReçu -((ResistancePhysique * DegatsPhysiqueReçu)/100)
-    public float ResistanceMagique = 40; //calcul des resistance health = health - (DegatsMagiqueReçu - ((ResistanceMagique * DegatsMagiqueReçu) / 100)
+    public float ResistancePhysique = 0; // calcul des resistance health = health - (DegatsPhysiqueReçu -((ResistancePhysique * DegatsPhysiqueReçu)/100)
+    public float ResistanceMagique = 0; //calcul des resistance health = health - (DegatsMagiqueReçu - ((ResistanceMagique * DegatsMagiqueReçu) / 100)
     public float Exp = 0;
     public float MaxExp = 100;
     public float ExpRate = 1.75f;//multiplicateur de l'exp max
@@ -24,6 +24,7 @@ public abstract class IDamegeable : NetworkBehaviour
     public float DegatsMagique = 100;
     public int lvl = 1;
     //public bool canMove;
+    public bool canAct;
 
     public bool canUlt = false;
     public bool InCombat = false;
