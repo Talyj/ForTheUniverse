@@ -28,17 +28,20 @@ public class MermaidBehaviour : PlayerStats
         speedPush = 3;
         charmSpeed = 5;
         charmTargets = new List<GameObject>();
+        //Copy that in a new character file
         canMove = true;
         canAct = true;
-        Instance = this;
-        isPassiveStart = false;
-        _passiveCounter = 0;
         foreach(var elmt in skills)
         {
             elmt.isCooldown = false;
         }
+
+        Instance = this;
+        isPassiveStart = false;
+        _passiveCounter = 0;
     }
 
+    //Copy that in a new character file
     public void Update()
     {
         HealthBehaviour();
@@ -64,6 +67,8 @@ public class MermaidBehaviour : PlayerStats
         }
     }
 
+    //Copy that in a new character file
+
     public void Passif()
     {
        if(_passiveCounter >= 3)
@@ -73,6 +78,7 @@ public class MermaidBehaviour : PlayerStats
             _passiveCounter = 0;
         }
     }
+
 
     //Have to test after each skills to make sure the buff doesn't stay indefinitely
     private void CheckPassive()
@@ -89,6 +95,7 @@ public class MermaidBehaviour : PlayerStats
         _passiveCounter++;
     }
 
+    //Copy that in a new character file (skill1)
     public void Poissoin(Targetable.EnemyType typeEnemy, GameObject target)
     {
         if (skills[0].isCooldown == false && Mana >= skills[0].Cost)
@@ -119,6 +126,7 @@ public class MermaidBehaviour : PlayerStats
         }
     }
 
+    //Copy that in a new character file (skill2)
     public void MagicWind(GameObject target)
     {
         if (skills[1].isCooldown == false && Mana >= skills[1].Cost)
@@ -182,6 +190,8 @@ public class MermaidBehaviour : PlayerStats
         skill.isCooldown = false;
     }
 
+
+    //Copy that in a new character file
     public void Ultime()
     {
         if (skills[2].isCooldown == false && Mana >= skills[2].Cost)
@@ -228,11 +238,13 @@ public class MermaidBehaviour : PlayerStats
         yield return 0;
     }
 
+    //Copy that in a new character file
     public void Eveil()
     {
         throw new System.NotImplementedException();
     }
 
+    //Copy that in a new character file
     IEnumerator CoolDown(Skills skill)
     {
         yield return new WaitForSeconds(skill.Cooldown);
