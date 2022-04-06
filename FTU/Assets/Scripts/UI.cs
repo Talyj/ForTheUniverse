@@ -12,10 +12,19 @@ public class UI : MonoBehaviour
     [SerializeField]
     Image health, mana;
     [SerializeField]
+    Image healthCible, manaCible;
+    [SerializeField]
+    Text[] costsCible;
+    [SerializeField]
     Text[] costs;
+
+    [SerializeField]
+    GameObject cibleHp, ciblePm;
+
     // Start is called before the first frame update
     void Start()
     {
+        stats = gameObject.GetComponent<PlayerStats>();
         BaseStats();
     }
 
@@ -31,7 +40,34 @@ public class UI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //costs[5].text = "Niveau : " + stats.GetLvl();
+        if( stats.Cible != null)
+        {
+            cibleHp.SetActive(true);
+            ciblePm.SetActive(true);
+            costsCible[0].enabled = true;
+            costsCible[1].enabled = true;
+            float percentHPCible = ((stats.Cible.GetComponent<IDamageable>().GetHealth() * 100) / stats.Cible.GetComponent<IDamageable>().GetMaxHealth()) / 100;
+            healthCible.fillAmount = percentHPCible;
+            costsCible[0].text = stats.Cible.GetComponent<IDamageable>().GetHealth() + " / " + stats.Cible.GetComponent<IDamageable>().GetMaxHealth();
+            float percentManaCible = ((stats.Cible.GetComponent<IDamageable>().GetMana() * 100) / stats.Cible.GetComponent<IDamageable>().GetMaxMana()) / 100;
+            manaCible.fillAmount = percentManaCible;
+            costsCible[1].text = stats.Cible.GetComponent<IDamageable>().GetMana() + " / " + stats.Cible.GetComponent<IDamageable>().GetMaxMana();
+        }
+        else
+        {
+            cibleHp.SetActive(false);
+            ciblePm.SetActive(false);
+            costsCible[0].enabled = false;
+            costsCible[1].enabled = false;
+        }
+        //stats a modfier
+        costs[6].text = "RM : " + stats.GetRM() + "\n";
+        costs[6].text += "Armor : " + stats.GetArmor() + "\n";
+        costs[6].text += "AP : " + stats.GetAP() + "\n";
+        costs[6].text += "AD : " + stats.GetAD() + "\n";
+        costs[6].text += "MS : " + stats.GetMoveSpeed() + "\n";
+
+        costs[5].text = "Niveau : " + stats.GetLvl();
         float percentHP = ((stats.GetHealth() * 100) / stats.GetMaxHealth()) / 100;
         health.fillAmount = percentHP;
         costs[3].text = stats.GetHealth() + " / " + stats.GetMaxHealth();
@@ -54,13 +90,14 @@ public class UI : MonoBehaviour
             {
                 spells[1].fillAmount = 1;
             }
-            if (stats.GetUlt().isCooldown)
+            
+        }
+        if (stats.GetUlt().isCooldown)
+        {
+            spells[2].fillAmount -= 1 / stats.GetUlt().Cooldown * Time.deltaTime;//cd
+            if (spells[2].fillAmount <= 0)
             {
-                spells[2].fillAmount -= 1 / stats.GetUlt().Cooldown * Time.deltaTime;//cd
-                if (spells[2].fillAmount <= 0)
-                {
-                    spells[2].fillAmount = 1;
-                }
+                spells[2].fillAmount = 1;
             }
         }
 

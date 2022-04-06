@@ -29,7 +29,7 @@ public class MermaidBehaviour : PlayerStats
         charmSpeed = 5;
         charmTargets = new List<GameObject>();
         //Copy that in a new character file
-        canMove = true;
+        //canMove = true;
         canAct = true;
         foreach(var elmt in skills)
         {
@@ -49,8 +49,8 @@ public class MermaidBehaviour : PlayerStats
         Passif();
         if (canAct)
         {
-            Movement();
-            AttackSystem();
+            //Movement();
+            //AttackSystem();
             if (Input.GetKeyDown(KeyCode.A) && Cible != null && Vector3.Distance(gameObject.transform.position, Cible.transform.position) < AttackRange)
             {
                 Poissoin(Targetable.EnemyType.minion, Cible);

@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class Targeting : MonoBehaviour
 {
+    [SerializeField]
     private GameObject player;
     RaycastHit hit;
     // Start is called before the first frame update
     public void Start()
     {
-        player = gameObject;
+        //player = gameObject;
+        //Debug.Log(player);
     }
 
     // Update is called once per frame

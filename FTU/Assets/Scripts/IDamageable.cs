@@ -199,12 +199,12 @@ public abstract class IDamageable : NetworkBehaviour
             DegatsMagique += 2.75f;
             ResistanceMagique += 2.25f;
             ResistancePhysique += 2.25f;
-            MoveSpeed += 0.75f;
+            MoveSpeed += 0.55f;
         }
     }
    
 
-    IEnumerator CoolDown(Skills skill)
+    public IEnumerator CoolDown(Skills skill)
     {
         yield return new WaitForSeconds(skill.Cooldown);
         Debug.Log("fin des cd");

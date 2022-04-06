@@ -26,7 +26,7 @@ public class SunBehaviour : PlayerStats
     public new void Start()
     {
         currentStick = Sticks.AuraStick;
-        canMove = true;
+        //canMove = true;
         canAct = true;
         step = 0;
         Instance = this;
@@ -47,8 +47,8 @@ public class SunBehaviour : PlayerStats
         }
         if (canAct)
         {
-            Movement();
-            AttackSystem();
+            //Movement();
+            //AttackSystem();
             if (Input.GetKeyDown(KeyCode.A) && Cible != null)
             {
                 if(Vector3.Distance(Cible.transform.position, transform.position) <= AttackRange)
