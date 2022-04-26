@@ -53,7 +53,7 @@ public class MermaidBehaviour : PlayerStats
             AttackSystem();
             if (Input.GetKeyDown(KeyCode.A) && Cible != null && Vector3.Distance(gameObject.transform.position, Cible.transform.position) < AttackRange)
             {
-                Poissoin(Targetable.EnemyType.minion, Cible);
+                Poissoin(EnemyType.minion, Cible);
             }
             if (Input.GetKeyDown(KeyCode.E) && Cible != null)
             {
@@ -65,6 +65,7 @@ public class MermaidBehaviour : PlayerStats
                 Ultime();
             }
         }
+        Debug.Log(Health);
     }
 
     //Copy that in a new character file
@@ -96,7 +97,7 @@ public class MermaidBehaviour : PlayerStats
     }
 
     //Copy that in a new character file (skill1)
-    public void Poissoin(Targetable.EnemyType typeEnemy, GameObject target)
+    public void Poissoin(EnemyType typeEnemy, GameObject target)
     {
         if (skills[0].isCooldown == false && Mana >= skills[0].Cost)
         {
@@ -105,7 +106,7 @@ public class MermaidBehaviour : PlayerStats
             skills[0].isCooldown = true;
 
             float dmg = DegatsMagique;
-            if (typeEnemy == Targetable.EnemyType.minion /*||typeEnemy == Targetable.EnemyType.Adversaire*/)
+            if (typeEnemy == EnemyType.minion /*||typeEnemy == Targetable.EnemyType.Adversaire*/)
             {
                 var proj = Instantiate(poissoin, SpawnPrefab.transform.position, Quaternion.identity);
                 proj.GetComponent<PoissoinProjBehaviour>().degats = dmg;
@@ -159,7 +160,7 @@ public class MermaidBehaviour : PlayerStats
     public void AddWindedTarget(GameObject target)
     {
         charmTargets.Add(target);
-        target.GetComponent<Targetable>().canMove = false;
+        target.GetComponent<IDamageable>().canMove = false;
         StartCoroutine(GoAway(target));
     }
 
@@ -174,7 +175,7 @@ public class MermaidBehaviour : PlayerStats
             timer -= Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
-        target.GetComponent<Targetable>().canMove = true;
+        target.GetComponent<IDamageable>().canMove = true;
         yield return 0;
     }
 
@@ -220,7 +221,7 @@ public class MermaidBehaviour : PlayerStats
     public void AddTCharmedTargets(GameObject target)
     {        
         charmTargets.Add(target);
-        target.GetComponent<Targetable>().canMove = false;
+        target.GetComponent<IDamageable>().canMove = false;
         StartCoroutine(GetNear(target));
     }
 
@@ -234,7 +235,7 @@ public class MermaidBehaviour : PlayerStats
             timer -= Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
-        target.GetComponent<Targetable>().canMove = true;
+        target.GetComponent<IDamageable>().canMove = true;
         yield return 0;
     }
 

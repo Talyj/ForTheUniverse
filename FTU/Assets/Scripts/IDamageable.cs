@@ -23,7 +23,7 @@ public abstract class IDamageable : NetworkBehaviour
     public float DegatsPhysique = 100;
     public float DegatsMagique = 100;
     public int lvl = 1;
-    //public bool canMove;
+    public bool canMove;
     public bool canAct;
 
     public bool canUlt = false;
@@ -34,14 +34,15 @@ public abstract class IDamageable : NetworkBehaviour
     public GameObject projPrefab;
     public Transform SpawnPrefab;
 
-    //public enum EnemyType
-    //{
-    //    minion,
-    //    golem,
-    //    joueur,
-    //    dieu,
-    //    voister
-    //}
+    public EnemyType enemytype;
+    public enum EnemyType
+    {
+        minion,
+        golem,
+        joueur,
+        dieu,
+        voister
+    }
 
 
 
@@ -269,13 +270,13 @@ public abstract class IDamageable : NetworkBehaviour
         Gizmos.DrawWireSphere(transform.position, AttackRange);
     }
 
-    public bool IsTargetable(Targetable.EnemyType enemyToCompare)
+    public bool IsTargetable(EnemyType enemyToCompare)
     {
-        if(enemyToCompare == Targetable.EnemyType.minion ||
-        enemyToCompare == Targetable.EnemyType.voister ||
-        enemyToCompare == Targetable.EnemyType.joueur ||
-        enemyToCompare == Targetable.EnemyType.dieu ||
-        enemyToCompare == Targetable.EnemyType.golem)
+        if(enemyToCompare == EnemyType.minion ||
+        enemyToCompare == EnemyType.voister ||
+        enemyToCompare == EnemyType.joueur ||
+        enemyToCompare == EnemyType.dieu ||
+        enemyToCompare == EnemyType.golem)
         {
             return true;
         }

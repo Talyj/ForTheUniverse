@@ -8,7 +8,7 @@ public class Projectile : NetworkBehaviour
 
     public TypeDegats typeDegats;
     public float degats;
-    private float vitesse = 30;
+    public float vitesse = 30;
     PlayerStats stats;
     public GameObject target;
     public bool targetSet;
@@ -42,11 +42,11 @@ public class Projectile : NetworkBehaviour
                 if (Vector3.Distance(transform.position, target.transform.position) < 0.75f)
                     //if (touched)
                 {
-                    if (target.GetComponent<Targetable>().enemytype == Targetable.EnemyType.minion ||
-                       target.GetComponent<Targetable>().enemytype == Targetable.EnemyType.voister ||
-                       target.GetComponent<Targetable>().enemytype == Targetable.EnemyType.joueur ||
-                       target.GetComponent<Targetable>().enemytype == Targetable.EnemyType.dieu ||
-                       target.GetComponent<Targetable>().enemytype == Targetable.EnemyType.golem)
+                    if (target.GetComponent<IDamageable>().enemytype == IDamageable.EnemyType.minion ||
+                       target.GetComponent<IDamageable>().enemytype == IDamageable.EnemyType.voister ||
+                       target.GetComponent<IDamageable>().enemytype == IDamageable.EnemyType.joueur ||
+                       target.GetComponent<IDamageable>().enemytype == IDamageable.EnemyType.dieu ||
+                       target.GetComponent<IDamageable>().enemytype == IDamageable.EnemyType.golem)
                     {
                         touched = true;
                         DealDamage(target, degats, typeDegats.ToString());
@@ -60,7 +60,7 @@ public class Projectile : NetworkBehaviour
 
     public void DealDamage(GameObject target, float dmg, string typeDmg)
     {
-        target.GetComponent<Targetable>().TakeDamage(dmg, typeDmg);
+        target.GetComponent<IDamageable>().TakeDamage(dmg, typeDmg);
     }
 
     //    public void OnTriggerEnter(Collider other)

@@ -21,18 +21,18 @@ public class Targeting : MonoBehaviour
             
             if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, Mathf.Infinity))
             {
-                if (hit.collider.GetComponent<Targetable>() != null)
+                if (hit.collider.GetComponent<IDamageable>() != null)
                 {
-                    if (hit.collider.GetComponent<Targetable>().enemytype == Targetable.EnemyType.minion || 
-                        hit.collider.GetComponent<Targetable>().enemytype == Targetable.EnemyType.voister || 
-                        hit.collider.GetComponent<Targetable>().enemytype == Targetable.EnemyType.joueur || 
-                        hit.collider.GetComponent<Targetable>().enemytype == Targetable.EnemyType.dieu ||
-                        hit.collider.GetComponent<Targetable>().enemytype == Targetable.EnemyType.golem)
+                    if (hit.collider.GetComponent<IDamageable>().enemytype == IDamageable.EnemyType.minion || 
+                        hit.collider.GetComponent<IDamageable>().enemytype == IDamageable.EnemyType.voister || 
+                        hit.collider.GetComponent<IDamageable>().enemytype == IDamageable.EnemyType.joueur || 
+                        hit.collider.GetComponent<IDamageable>().enemytype == IDamageable.EnemyType.dieu ||
+                        hit.collider.GetComponent<IDamageable>().enemytype == IDamageable.EnemyType.golem)
                     {
                         player.GetComponent<PlayerStats>().Cible = hit.collider.gameObject;
                     }
                 }
-                else if (hit.collider.GetComponent<Targetable>() == null)
+                else if (hit.collider.GetComponent<IDamageable>() == null)
                 {
                     player.GetComponent<PlayerStats>().Cible = null;
                 }

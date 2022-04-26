@@ -111,9 +111,9 @@ public class PlayerStats :  PlayerMovement
     {
         if(Cible != null && Vector3.Distance(gameObject.transform.position, Cible.transform.position) < AttackRange)
         {
-            if(IsTargetable(Cible.GetComponent<Targetable>().enemytype))
+            if(IsTargetable(Cible.GetComponent<IDamageable>().enemytype))
             {
-                Cible.GetComponent<Targetable>().TakeDamage(DegatsPhysique + damageSupp, "Physique");
+                Cible.GetComponent<IDamageable>().TakeDamage(DegatsPhysique + damageSupp, "Physique");
             }
         }
         else
@@ -125,9 +125,9 @@ public class PlayerStats :  PlayerMovement
     {
         if (Cible != null && Vector3.Distance(gameObject.transform.position, Cible.transform.position) < AttackRange)
         {
-            if (IsTargetable(Cible.GetComponent<Targetable>().enemytype))
+            if (IsTargetable(Cible.GetComponent<IDamageable>().enemytype))
             {
-                SpawnRangeAttack(Targetable.EnemyType.minion, Cible, damageSupp);
+                SpawnRangeAttack(EnemyType.minion, Cible, damageSupp);
             }
         }
         else
@@ -136,7 +136,7 @@ public class PlayerStats :  PlayerMovement
         }
     }
 
-    public void SpawnRangeAttack(Targetable.EnemyType typeEnemy,GameObject Target, float dmgSupp = 0)
+    public void SpawnRangeAttack(EnemyType typeEnemy,GameObject Target, float dmgSupp = 0)
     {
         float dmg = DegatsMagique;
         Instantiate(projPrefab, SpawnPrefab.transform.position, Quaternion.identity);
