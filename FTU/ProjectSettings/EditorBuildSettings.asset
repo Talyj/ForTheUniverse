@@ -4,5 +4,14 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/PhotonTuto.unity
+    guid: 59828ab08e54a8844b064d6b7a471ae0
+  - enabled: 1
+    path: Assets/Scenes/TutoPhoton/RoomFor1.unity
+    guid: 2a7bbaf24391e9f4f9fc2345cadd17da
+  - enabled: 1
+    path: Assets/Scenes/TutoPhoton/RoomFor2.unity
+    guid: 570fd3d425ec2a04da2d9d5b037c6068
   m_configObjects: {}
