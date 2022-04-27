@@ -13,6 +13,9 @@ public class SunBehaviour : PlayerStats
     public float defaultTimer = 10;
     public bool isTouched;
 
+    //Ulti
+    public GameObject bigStick;
+
     public SunBehaviour Instance;
 
     //Passif
@@ -225,9 +228,14 @@ public class SunBehaviour : PlayerStats
             Mana -= skills[2].Cost;
             Debug.Log(skills[2].Name + " lancée");
             //TODO
-            float dmg = DegatsMagique;
+
+            Quaternion rotation = Quaternion.LookRotation(Cible.transform.position - transform.position);
+            Vector3 direction = Cible.transform.position - transform.position;
 
             //TODO
+            var proj = Instantiate(bigStick, SpawnPrefab.transform.position, rotation);
+            proj.GetComponent<BigStickBehaviour>().degats = DegatsMagique;
+            proj.GetComponent<BigStickBehaviour>().direction = direction;
 
             StartCoroutine(CoolDown(skills[2]));
         }

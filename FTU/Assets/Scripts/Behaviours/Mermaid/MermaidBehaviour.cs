@@ -139,9 +139,8 @@ public class MermaidBehaviour : PlayerStats
             Quaternion rotation = Quaternion.LookRotation(target.transform.position - transform.position);
             Vector3 direction = target.transform.position - transform.position;
 
-            float dmg = DegatsMagique;
             var proj = Instantiate(windArea, SpawnPrefab.transform.position, rotation);
-            proj.GetComponent<WindAreaBehaviour>().degats = dmg;
+            proj.GetComponent<WindAreaBehaviour>().degats = DegatsMagique;
             proj.GetComponent<WindAreaBehaviour>().direction = direction;
             proj.GetComponent<WindAreaBehaviour>().source = Instance;
 

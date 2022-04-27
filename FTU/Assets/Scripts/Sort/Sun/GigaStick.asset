@@ -18,6 +18,6 @@ MonoBehaviour:
   Cooldown: 0
   isCooldown: 0
   type: 0
-  Damage: 50
+  Damage: 100
   degats: 0
   image: {fileID: 0}

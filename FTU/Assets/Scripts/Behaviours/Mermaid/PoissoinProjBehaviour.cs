@@ -15,11 +15,44 @@ public class PoissoinProjBehaviour : Projectile
 
     public new void Update()
     {
-        Behaviour();
         if(touched == true)
         {
-            source.AddPassive();
-        }        
+            source.AddPassive();            
+        }
+        Behaviour();        
+    }
+
+    private new void Behaviour()
+    {
+        if (target)
+        {
+            if (target == null)
+            {
+                Destroy(gameObject);
+            }
+
+            transform.position = Vector3.MoveTowards(transform.position, target.transform.position, vitesse * Time.deltaTime);
+
+            if (stopProjectile == false)
+            {
+                if (Vector3.Distance(transform.position, target.transform.position) < 0.75f)
+                //if (touched)
+                {
+                    if (target.GetComponent<IDamageable>().enemytype == IDamageable.EnemyType.minion ||
+                       target.GetComponent<IDamageable>().enemytype == IDamageable.EnemyType.voister ||
+                       target.GetComponent<IDamageable>().enemytype == IDamageable.EnemyType.joueur ||
+                       target.GetComponent<IDamageable>().enemytype == IDamageable.EnemyType.dieu ||
+                       target.GetComponent<IDamageable>().enemytype == IDamageable.EnemyType.golem)
+                    {
+                        Instantiate(puddle, new Vector3(transform.position.x, 1, transform.position.z), Quaternion.identity);
+                        touched = true;
+                        DealDamage(target, degats, typeDegats.ToString());
+                        stopProjectile = true;
+                        Destroy(gameObject);
+                    }
+                }
+            }
+        }
     }
 
     private IEnumerator SpawnPuddle()
