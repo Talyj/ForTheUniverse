@@ -8,7 +8,7 @@ public class Projectile : NetworkBehaviour
 
     public TypeDegats typeDegats;
     public float degats;
-    private float vitesse = 30;
+    public float vitesse = 30;
     PlayerStats stats;
     public GameObject target;
     public bool targetSet;

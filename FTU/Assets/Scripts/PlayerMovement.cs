@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
-[RequireComponent(typeof(PlayerStats))]
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerMovement : MonoBehaviour
 {
-    PlayerStats stats;
+    IDamageable stats;
     Vector3 velocity;
     Rigidbody myRigidbody;
     Camera viewCamera;
@@ -17,7 +16,7 @@ public class PlayerMovement : MonoBehaviour
     public void Awake()
     {
         myRigidbody = GetComponent<Rigidbody>();
-        stats = GetComponent<PlayerStats>();
+        stats = GetComponent<IDamageable>();
         viewCamera = Camera.main;
         //anim = GetComponent<Animator>();
     }

@@ -8,9 +8,11 @@ using UnityEngine;
 
 public enum ControlType
 {
-    stun,
+    none,//aucun cc
+    stun,//etourdit
     bump,//en l'air
     root,//immobiliser mais pas stun
+    slow,//move speed ralenti
     charme
 }
 public class Targetable : IDamageable
@@ -25,7 +27,7 @@ public class Targetable : IDamageable
     }
     public EnemyType enemytype;
 
-    public bool canMove;
+    //public bool canMove;
     //public void Start()
     //{
     //    Health = 200;

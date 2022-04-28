@@ -31,12 +31,12 @@ public class Targeting : MonoBehaviour
                         hit.collider.GetComponent<Targetable>().enemytype == Targetable.EnemyType.dieu ||
                         hit.collider.GetComponent<Targetable>().enemytype == Targetable.EnemyType.golem)
                     {
-                        player.GetComponent<PlayerStats>().Cible = hit.collider.gameObject;
+                        player.GetComponent<Dps1>().Cible = hit.collider.gameObject;
                     }
                 }
                 else if (hit.collider.GetComponent<Targetable>() == null)
                 {
-                    player.GetComponent<PlayerStats>().Cible = null;
+                    player.GetComponent<Dps1>().Cible = null;
                 }
             }
         }
