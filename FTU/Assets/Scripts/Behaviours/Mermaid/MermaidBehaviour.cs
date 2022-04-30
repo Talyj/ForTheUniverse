@@ -65,7 +65,6 @@ public class MermaidBehaviour : PlayerStats
                 Ultime();
             }
         }
-        Debug.Log(Health);
     }
 
     //Copy that in a new character file

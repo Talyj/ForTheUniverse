@@ -177,12 +177,13 @@ public class PlayerStats : PlayerMovement, ISkill
     }
 
 
-    IEnumerator AutoAttack()
+    public IEnumerator AutoAttack()
     {
         while(Cible != null)
         {
             //anim.SetBool("AA", true);
-            yield return new WaitForSeconds(AttackSpeed / ((100 / +AttackSpeed) * 0.01f));
+            var test = AttackSpeed / ((100 / +AttackSpeed) * 0.01f);
+            yield return new WaitForSeconds(test);
             MeleeAttack();
             yield return new WaitForSeconds(AttackSpeed / ((100 / +AttackSpeed) * 0.01f));
             if ( Vector3.Distance(gameObject.transform.position, Cible.transform.position) > AttackRange)
@@ -194,7 +195,7 @@ public class PlayerStats : PlayerMovement, ISkill
         
     }
 
-    IEnumerator RangeAutoAttack()
+    public IEnumerator RangeAutoAttack()
     {
         while (Cible != null)
         {
@@ -254,49 +255,7 @@ public class PlayerStats : PlayerMovement, ISkill
     {
         var res = dmgSource * dmgMultiplier;
         return res;
-    }
-
-    public void Regen()
-    {
-        StartCoroutine(RegenHealAndMana());
-    }
-
-    IEnumerator RegenHealAndMana()
-    {
-        
-            if (Health < MaxHealth)
-            {
-                float val = Mathf.FloorToInt(MaxHealth * 0.05f);
-                Health += val;
-                Debug.Log("+ " + val);
-            }
-        
-            
-        
-        yield return new WaitForSeconds(1.5f);
-        
-    }
-
-    public void TakeDamage(float DegatsRecu, string type)
-    {
-        //application des res, a modifier pour les differents type de degats
-        if (type == "Physique")
-        {
-            Health = Health - (DegatsRecu - ((ResistancePhysique * DegatsRecu) / 100)); // physique
-        }
-        else if (type == "Magique")
-        {
-            Health = Health - (DegatsRecu - ((ResistanceMagique * DegatsRecu) / 100)); // magique
-        }
-        else if (type == "Brut")
-        {
-            Health -= DegatsRecu;
-        }
-
-
-
-    }
-
+    }   
 
     public void Passif()
     {

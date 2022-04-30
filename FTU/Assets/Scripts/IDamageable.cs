@@ -47,6 +47,14 @@ public abstract class IDamageable : NetworkBehaviour
         dieu,
         voister
     }
+
+    public Team team;
+    public enum Team
+    {
+        Veritas,
+        Dominion
+    }
+
     public Transform SpawnPrefab2;
 
     #region Getter and Setter
@@ -173,7 +181,13 @@ public abstract class IDamageable : NetworkBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Init();
+    }
+
+    public void Init()
+    {
         canMove = true;
+        canAct = true;
         useSkills = true;
         canUlt = false;
         InCombat = false;

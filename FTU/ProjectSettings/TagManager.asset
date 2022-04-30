@@ -6,6 +6,7 @@ TagManager:
   tags:
   - cube
   - minion
+  - golem
   layers:
   - Default
   - TransparentFX

@@ -8,7 +8,7 @@ public class GolemBehaviour : IDamageable
     private float damages;
     private bool isInside;
     //Modify that to the player's class
-    private PlayerStats target;
+    private IDamageable target;
     private float attackCooldown;
 
     public void Start()
@@ -16,7 +16,7 @@ public class GolemBehaviour : IDamageable
         attackCooldown = 0;
         isInside = false;
         target = null;
-        SetHealth(200);
+        //SetHealth(200);
         damages = 10;
     }
 
@@ -24,7 +24,6 @@ public class GolemBehaviour : IDamageable
     {
         Attack();
         CheckDestroy();
-        Debug.Log(GetHealth());
     }
 
     public void Attack()
@@ -51,12 +50,12 @@ public class GolemBehaviour : IDamageable
 
     public void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("cube"))
+        if (other.gameObject.CompareTag("minion") || other.gameObject.CompareTag("Player"))
         {
             //Modify GameObject with the player's class
             if(target == null)
             {
-                target = other.GetComponent<PlayerStats>();
+                target = other.GetComponent<IDamageable>();
             }
             isInside = true;
             Debug.Log("Inside");
@@ -65,7 +64,7 @@ public class GolemBehaviour : IDamageable
 
     public void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.CompareTag("cube"))
+        if (other.gameObject.CompareTag("minion") || other.gameObject.CompareTag("Player"))
         {
             target = null;
             isInside = false;
