@@ -73,13 +73,13 @@ public class SunBehaviour : PlayerStats
         switch (currentStick)
         {
             case Sticks.AuraStick:
-                if(Cible.GetComponent<Targetable>().enemytype == Targetable.EnemyType.voister)
+                if(Cible.GetComponent<IDamageable>().GetEnemyType() == EnemyType.voister)
                 {
                     damageSupp = DamageMultiplier(DegatsPhysique, 0.5f);
                 }
                 break;
             case Sticks.SpiritSitck:
-                if (Cible.GetComponent<Targetable>().enemytype == Targetable.EnemyType.joueur)
+                if (Cible.GetComponent<IDamageable>().GetEnemyType() == EnemyType.joueur)
                 {
                     damageSupp = DamageMultiplier(DegatsMagique, 0.5f);
                 }
@@ -108,12 +108,12 @@ public class SunBehaviour : PlayerStats
             skills[0].isCooldown = true;
 
             SwitchStick();
-            if(currentStick == Sticks.AuraStick && target.GetComponent<Targetable>().enemytype == Targetable.EnemyType.voister)
+            if(currentStick == Sticks.AuraStick && target.GetComponent<IDamageable>().GetEnemyType() == EnemyType.voister)
             {
                 target.GetComponent<IDamageable>().canAct = false;
                 StartCoroutine(SwapCooldown(target));
             }
-            else if(currentStick == Sticks.SpiritSitck && target.GetComponent<Targetable>().enemytype == Targetable.EnemyType.joueur)
+            else if(currentStick == Sticks.SpiritSitck && target.GetComponent<IDamageable>().GetEnemyType() == EnemyType.joueur)
             {
                 var speedTemp = target.GetComponent<IDamageable>().MoveSpeed;
                 target.GetComponent<IDamageable>().MoveSpeed /= 2;

@@ -6,26 +6,8 @@ using UnityEngine;
 /*     This class can be replaced by IDamageable      */
 /*                                                    */
 
-public enum ControlType
-{
-    none,//aucun cc
-    stun,//etourdit
-    bump,//en l'air
-    root,//immobiliser mais pas stun
-    slow,//move speed ralenti
-    charme
-}
 public class Targetable : IDamageable
 {
-    public enum EnemyType
-    {
-        minion,
-        golem,
-        joueur,
-        dieu,
-        voister
-    }
-    public EnemyType enemytype;
 
     //public bool canMove;
     //public void Start()

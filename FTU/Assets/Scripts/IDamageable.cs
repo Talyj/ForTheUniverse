@@ -10,6 +10,8 @@ public abstract class IDamageable : NetworkBehaviour
     public AttackType attackType;
     [SerializeField]
     ControlType cc;
+    [SerializeField]
+    EnemyType enemyType;
     public GameObject Cible;
     [Header("Stats")]
     public float Health = 500, MaxHealth = 500;
@@ -109,6 +111,11 @@ public abstract class IDamageable : NetworkBehaviour
     public ControlType GetControl()
     {
         return cc;
+    }
+
+    public EnemyType GetEnemyType()
+    {
+        return enemyType;
     }
 
     #endregion
@@ -327,26 +334,26 @@ public abstract class IDamageable : NetworkBehaviour
         Gizmos.DrawWireSphere(transform.position, AttackRange);
     }
 
-    public bool IsTargetable(Targetable.EnemyType enemyToCompare)
+    public bool IsTargetable(EnemyType enemyToCompare)
     {
-        if(enemyToCompare == Targetable.EnemyType.minion ||
-        enemyToCompare == Targetable.EnemyType.voister ||
-        enemyToCompare == Targetable.EnemyType.joueur ||
-        enemyToCompare == Targetable.EnemyType.dieu ||
-        enemyToCompare == Targetable.EnemyType.golem)
+        if(enemyToCompare == EnemyType.minion ||
+        enemyToCompare == EnemyType.voister ||
+        enemyToCompare == EnemyType.joueur ||
+        enemyToCompare == EnemyType.dieu ||
+        enemyToCompare == EnemyType.golem)
         {
             return true;
         }
         return false;
     }
 
-    public bool IsControl(Targetable.EnemyType enemyToCompare, ControlType cc)
+    public bool IsControl(EnemyType enemyToCompare, ControlType cc)
     {
-        if (enemyToCompare == Targetable.EnemyType.minion ||
-        enemyToCompare == Targetable.EnemyType.voister ||
-        enemyToCompare == Targetable.EnemyType.joueur ||
-        enemyToCompare == Targetable.EnemyType.dieu ||
-        enemyToCompare == Targetable.EnemyType.golem && cc != ControlType.none)
+        if (enemyToCompare == EnemyType.minion ||
+        enemyToCompare == EnemyType.voister ||
+        enemyToCompare == EnemyType.joueur ||
+        enemyToCompare == EnemyType.dieu ||
+        enemyToCompare == EnemyType.golem && cc != ControlType.none)
         {
             return true;
         }
@@ -354,4 +361,22 @@ public abstract class IDamageable : NetworkBehaviour
     }
 }
 
+public enum EnemyType
+{
+    minion,
+    golem,
+    joueur,
+    dieu,
+    voister
+}
+
+public enum ControlType
+{
+    none,//aucun cc
+    stun,//etourdit
+    bump,//en l'air
+    root,//immobiliser mais pas stun
+    slow,//move speed ralenti
+    charme
+}
 

@@ -25,11 +25,11 @@ public class Targeting : MonoBehaviour
             {
                 if (hit.collider.GetComponent<Targetable>() != null)
                 {
-                    if (hit.collider.GetComponent<Targetable>().enemytype == Targetable.EnemyType.minion || 
-                        hit.collider.GetComponent<Targetable>().enemytype == Targetable.EnemyType.voister || 
-                        hit.collider.GetComponent<Targetable>().enemytype == Targetable.EnemyType.joueur || 
-                        hit.collider.GetComponent<Targetable>().enemytype == Targetable.EnemyType.dieu ||
-                        hit.collider.GetComponent<Targetable>().enemytype == Targetable.EnemyType.golem)
+                    if (hit.collider.GetComponent<IDamageable>().GetEnemyType()== EnemyType.minion || 
+                        hit.collider.GetComponent<IDamageable>().GetEnemyType()== EnemyType.voister || 
+                        hit.collider.GetComponent<IDamageable>().GetEnemyType()== EnemyType.joueur || 
+                        hit.collider.GetComponent<IDamageable>().GetEnemyType()== EnemyType.dieu ||
+                        hit.collider.GetComponent<IDamageable>().GetEnemyType()== EnemyType.golem)
                     {
                         player.GetComponent<Dps1>().Cible = hit.collider.gameObject;
                     }

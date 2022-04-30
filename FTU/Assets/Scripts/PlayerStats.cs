@@ -210,7 +210,7 @@ public class PlayerStats : IDamageable, ISkill
     {
         if(Cible != null && Vector3.Distance(gameObject.transform.position, Cible.transform.position) < AttackRange)
         {
-            if(IsTargetable(Cible.GetComponent<Targetable>().enemytype))
+            if(IsTargetable(Cible.GetComponent<IDamageable>().GetEnemyType()))
             {
                 Cible.GetComponent<Targetable>().TakeDamage(DegatsPhysique + damageSupp, "Physique");
             }
@@ -224,9 +224,9 @@ public class PlayerStats : IDamageable, ISkill
     {
         if (Cible != null && Vector3.Distance(gameObject.transform.position, Cible.transform.position) < AttackRange)
         {
-            if (IsTargetable(Cible.GetComponent<Targetable>().enemytype))
+            if (IsTargetable(Cible.GetComponent<IDamageable>().GetEnemyType()))
             {
-                SpawnRangeAttack(Targetable.EnemyType.minion, Cible, damageSupp);
+                SpawnRangeAttack(EnemyType.minion, Cible, damageSupp);
             }
         }
         else
@@ -235,7 +235,7 @@ public class PlayerStats : IDamageable, ISkill
         }
     }
 
-    public void SpawnRangeAttack(Targetable.EnemyType typeEnemy,GameObject Target, float dmgSupp = 0)
+    public void SpawnRangeAttack(EnemyType typeEnemy,GameObject Target, float dmgSupp = 0)
     {
         float dmg = DegatsMagique;
         Instantiate(projPrefab, SpawnPrefab.transform.position, Quaternion.identity);
@@ -360,10 +360,10 @@ public class PlayerStats : IDamageable, ISkill
 
                 if (hitCollider.TryGetComponent(typeof(Targetable), out Component component))
                 {
-                    if (IsTargetable(hitCollider.GetComponent<Targetable>().enemytype))
+                    if (IsTargetable(hitCollider.GetComponent<IDamageable>().GetEnemyType()))
                     {
-                        hitCollider.GetComponent<Targetable>().TakeDamage(skills[0].Damage, skills[0].degats.ToString());
-                        hitCollider.GetComponent<Targetable>().TakeCC(ControlType.stun,1.5f);
+                        hitCollider.GetComponent<IDamageable>().TakeDamage(skills[0].Damage, skills[0].degats.ToString());
+                        hitCollider.GetComponent<IDamageable>().TakeCC(ControlType.stun,1.5f);
                         Debug.Log("<color=green> damage: </color>" + skills[0].Damage+" "+ skills[0].degats.ToString());
                     }
                 }
@@ -455,11 +455,11 @@ public class PlayerStats : IDamageable, ISkill
             try
             {
                 
-                if (hitCollider.TryGetComponent(typeof(Targetable), out Component component))
+                if (hitCollider.TryGetComponent(typeof(IDamageable), out Component component))
                 {
-                    if(IsTargetable(hitCollider.GetComponent<Targetable>().enemytype))
+                    if(IsTargetable(hitCollider.GetComponent<IDamageable>().GetEnemyType()))
                     {
-                        hitCollider.GetComponent<Targetable>().TakeDamage(skills[2].Damage, skills[2].degats.ToString());
+                        hitCollider.GetComponent<IDamageable>().TakeDamage(skills[2].Damage, skills[2].degats.ToString());
                     }
                 }
             }

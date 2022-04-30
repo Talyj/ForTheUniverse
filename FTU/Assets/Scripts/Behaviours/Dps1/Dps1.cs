@@ -200,7 +200,7 @@ public class Dps1 : IDamageable, ISkill
     {
         if (Cible != null && Vector3.Distance(gameObject.transform.position, Cible.transform.position) < AttackRange)
         {
-            if (IsTargetable(Cible.GetComponent<Targetable>().enemytype))
+            if (IsTargetable(Cible.GetComponent<IDamageable>().GetEnemyType()))
             {
                 Cible.GetComponent<Targetable>().TakeDamage(DegatsPhysique + damageSupp, "Physique");
             }
@@ -214,9 +214,9 @@ public class Dps1 : IDamageable, ISkill
     {
         if (Cible != null && Vector3.Distance(gameObject.transform.position, Cible.transform.position) < AttackRange)
         {
-            if (IsTargetable(Cible.GetComponent<Targetable>().enemytype))
+            if (IsTargetable(Cible.GetComponent<IDamageable>().GetEnemyType()))
             {
-                SpawnRangeAttack(Targetable.EnemyType.minion, Cible, damageSupp);
+                SpawnRangeAttack(EnemyType.minion, Cible, damageSupp);
             }
         }
         else
@@ -225,7 +225,7 @@ public class Dps1 : IDamageable, ISkill
         }
     }
 
-    public void SpawnRangeAttack(Targetable.EnemyType typeEnemy, GameObject Target, float dmgSupp = 0)
+    public void SpawnRangeAttack(EnemyType typeEnemy, GameObject Target, float dmgSupp = 0)
     {
         float dmg = DegatsPhysique;
         Instantiate(projPrefab, SpawnPrefab.transform.position, Quaternion.identity);
@@ -246,7 +246,7 @@ public class Dps1 : IDamageable, ISkill
     {
         if( Cible != null)
         {
-            if (IsControl(Cible.GetComponent<Targetable>().enemytype, Cible.GetComponent<Targetable>().GetControl()))
+            if (IsControl(Cible.GetComponent<IDamageable>().GetEnemyType(), Cible.GetComponent<Targetable>().GetControl()))
             {
                 DegatsPhysique += 15;
             }
