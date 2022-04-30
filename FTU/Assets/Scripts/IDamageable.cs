@@ -8,6 +8,10 @@ public abstract class IDamageable : NetworkBehaviour
     
     public enum AttackType { Melee, Ranged }
     public AttackType attackType;
+    [SerializeField]
+    ControlType cc;
+    [SerializeField]
+    EnemyType enemyType;
     public GameObject Cible;
     [Header("Stats")]
     public float Health = 500, MaxHealth = 500;
@@ -15,8 +19,8 @@ public abstract class IDamageable : NetworkBehaviour
     public float AttackSpeed = 0.5f;
     public float AttackRange = 1.5f;
     public float Mana = 100, MaxMana = 100;
-    public float ResistancePhysique = 0; // calcul des resistance health = health - (DegatsPhysiqueReçu -((ResistancePhysique * DegatsPhysiqueReçu)/100)
-    public float ResistanceMagique = 0; //calcul des resistance health = health - (DegatsMagiqueReçu - ((ResistanceMagique * DegatsMagiqueReçu) / 100)
+    public float ResistancePhysique = 0; // calcul des resistance health = health - (DegatsPhysiqueReï¿½u -((ResistancePhysique * DegatsPhysiqueReï¿½u)/100)
+    public float ResistanceMagique = 0; //calcul des resistance health = health - (DegatsMagiqueReï¿½u - ((ResistanceMagique * DegatsMagiqueReï¿½u) / 100)
     public float Exp = 0;
     public float MaxExp = 100;
     public float ExpRate = 1.75f;//multiplicateur de l'exp max
@@ -25,7 +29,8 @@ public abstract class IDamageable : NetworkBehaviour
     public int lvl = 1;
     public bool canMove;
     public bool canAct;
-
+    public bool canMove = true;
+    public bool useSkills = true;
     public bool canUlt = false;
     public bool InCombat = false;
     public bool InRegen = false;
@@ -43,6 +48,16 @@ public abstract class IDamageable : NetworkBehaviour
         dieu,
         voister
     }
+    public Transform SpawnPrefab2;
+
+    //public enum EnemyType
+    //{
+    //    minion,
+    //    golem,
+    //    joueur,
+    //    dieu,
+    //    voister
+    //}
 
 
 
@@ -102,6 +117,15 @@ public abstract class IDamageable : NetworkBehaviour
         return lvl;
     }
 
+    public ControlType GetControl()
+    {
+        return cc;
+    }
+
+    public EnemyType GetEnemyType()
+    {
+        return enemyType;
+    }
 
     #endregion
     #region Setter
@@ -164,6 +188,36 @@ public abstract class IDamageable : NetworkBehaviour
        
     }
 
+    private void CheckCC()
+    {
+        switch (cc)
+        {
+            case ControlType.none:
+                canMove = true;
+                useSkills = true;
+                break;
+            case ControlType.stun:
+                canMove = false;
+                useSkills = false;
+                break;
+            case ControlType.bump:
+                canMove = false;
+                useSkills = false;
+                break;
+            case ControlType.charme:
+                canMove = false;
+                useSkills = false;
+                break;
+            case ControlType.root:
+                canMove = false;
+                break;
+            case ControlType.slow:
+                canMove = true;
+                useSkills = true;
+                break;
+
+        }
+    }
     //Has to be present in the final update
     public void HealthBehaviour()
     {
@@ -200,15 +254,15 @@ public abstract class IDamageable : NetworkBehaviour
             DegatsMagique += 2.75f;
             ResistanceMagique += 2.25f;
             ResistancePhysique += 2.25f;
-            MoveSpeed += 0.75f;
+            MoveSpeed += 0.55f;
         }
     }
    
 
-    IEnumerator CoolDown(Skills skill)
+    public IEnumerator CoolDown(Skills skill)
     {
         yield return new WaitForSeconds(skill.Cooldown);
-        Debug.Log("fin des cd");
+        //Debug.Log("fin des cd");
         skill.isCooldown = false;
     }
 
@@ -255,6 +309,25 @@ public abstract class IDamageable : NetworkBehaviour
         }
     }
 
+    public void TakeCC(ControlType _cc,float time)
+    {
+        cc = _cc;
+        if(_cc == ControlType.slow)
+        {
+            MoveSpeed = MoveSpeed / 2;
+        }
+        StartCoroutine(TimeCC(time));
+    }
+    
+    IEnumerator TimeCC(float time)
+    {
+        Debug.Log("cc");
+        CheckCC();
+        yield return new WaitForSeconds(time);
+        
+        cc = ControlType.none;
+        CheckCC();
+    }
     public bool IsDead()
     {
         if (Health <= 0)
@@ -282,6 +355,37 @@ public abstract class IDamageable : NetworkBehaviour
         }
         return false;
     }
+
+    public bool IsControl(EnemyType enemyToCompare, ControlType cc)
+    {
+        if (enemyToCompare == EnemyType.minion ||
+        enemyToCompare == EnemyType.voister ||
+        enemyToCompare == EnemyType.joueur ||
+        enemyToCompare == EnemyType.dieu ||
+        enemyToCompare == EnemyType.golem && cc != ControlType.none)
+        {
+            return true;
+        }
+        return false;
+    }
 }
 
+public enum EnemyType
+{
+    minion,
+    golem,
+    joueur,
+    dieu,
+    voister
+}
+
+public enum ControlType
+{
+    none,//aucun cc
+    stun,//etourdit
+    bump,//en l'air
+    root,//immobiliser mais pas stun
+    slow,//move speed ralenti
+    charme
+}
 

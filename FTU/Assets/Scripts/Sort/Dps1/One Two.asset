@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c09fc8ee72fff73469d21082305a1f06, type: 3}
-  m_Name: Passif
+  m_Name: One Two
   m_EditorClassIdentifier: 
-  Name: 
-  Cost: 0
-  CastTime: 0
-  Cooldown: 0
+  Name: One Two
+  Cost: 25
+  CastTime: 0.2
+  Cooldown: 4
   isCooldown: 0
-  type: 0
-  Damage: 0
+  type: 1
+  Damage: 75
   degats: 0
-  image: {fileID: 0}
+  image: {fileID: 21300000, guid: 256115db472ba9e4e90868573bbc6a75, type: 3}

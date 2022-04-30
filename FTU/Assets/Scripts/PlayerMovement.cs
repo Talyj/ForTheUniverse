@@ -3,37 +3,36 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
-[RequireComponent(typeof(PlayerStats))]
 [RequireComponent(typeof(Rigidbody))]
-public class PlayerMovement : IDamageable
+public class PlayerMovement : MonoBehaviour
 {
-    PlayerStats stats;
+    IDamageable stats;
     Vector3 velocity;
     Rigidbody myRigidbody;
     Camera viewCamera;
-    protected bool canMove;
+    
     //Animator anim;
     public NetworkVariable<Vector3> Position = new NetworkVariable<Vector3>();
     public void Awake()
     {
         myRigidbody = GetComponent<Rigidbody>();
-        stats = GetComponent<PlayerStats>();
+        stats = GetComponent<IDamageable>();
         viewCamera = Camera.main;
         //anim = GetComponent<Animator>();
     }
 
 
-    //void Update()
-    //{
-    //    Movement();
-    //    //transform.position = Position.Value;
+    void Update()
+    {
+        Movement();
+        //transform.position = Position.Value;
 
 
-    //}
+    }
 
     public void Movement()
     {
-        if (canMove)
+        if (stats.canMove)
         {
             // Movement input
             Vector3 moveInput = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
@@ -53,14 +52,14 @@ public class PlayerMovement : IDamageable
                 LookAt(point);
 
             }
-            if(Cible != null)
-            {
-                if (Vector3.Distance(gameObject.transform.position, Cible.transform.position) > AttackRange)
-                {
-                    print("Hors d portée");
-                    //Cible = null;
-                }
-            }
+            //if(stats.Cible != null)
+            //{
+            //    if (Vector3.Distance(gameObject.transform.position, stats.Cible.transform.position) > stats.AttackRange)
+            //    {
+            //        print("Hors d portée");
+            //        //Cible = null;
+            //    }
+            //}
         }
     }
 

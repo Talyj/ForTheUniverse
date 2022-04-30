@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class Targeting : MonoBehaviour
 {
+    [SerializeField]
     private GameObject player;
     RaycastHit hit;
     // Start is called before the first frame update
     public void Start()
     {
-        player = gameObject;
+        //player = gameObject;
+        //Debug.Log(player);
     }
 
     // Update is called once per frame
@@ -23,18 +25,18 @@ public class Targeting : MonoBehaviour
             {
                 if (hit.collider.GetComponent<IDamageable>() != null)
                 {
-                    if (hit.collider.GetComponent<IDamageable>().enemytype == IDamageable.EnemyType.minion || 
-                        hit.collider.GetComponent<IDamageable>().enemytype == IDamageable.EnemyType.voister || 
-                        hit.collider.GetComponent<IDamageable>().enemytype == IDamageable.EnemyType.joueur || 
-                        hit.collider.GetComponent<IDamageable>().enemytype == IDamageable.EnemyType.dieu ||
-                        hit.collider.GetComponent<IDamageable>().enemytype == IDamageable.EnemyType.golem)
+                    if (hit.collider.GetComponent<IDamageable>().GetEnemyType()== EnemyType.minion || 
+                        hit.collider.GetComponent<IDamageable>().GetEnemyType()== EnemyType.voister || 
+                        hit.collider.GetComponent<IDamageable>().GetEnemyType()== EnemyType.joueur || 
+                        hit.collider.GetComponent<IDamageable>().GetEnemyType()== EnemyType.dieu ||
+                        hit.collider.GetComponent<IDamageable>().GetEnemyType()== EnemyType.golem)
                     {
-                        player.GetComponent<PlayerStats>().Cible = hit.collider.gameObject;
+                        player.GetComponent<Dps1>().Cible = hit.collider.gameObject;
                     }
                 }
                 else if (hit.collider.GetComponent<IDamageable>() == null)
                 {
-                    player.GetComponent<PlayerStats>().Cible = null;
+                    player.GetComponent<Dps1>().Cible = null;
                 }
             }
         }

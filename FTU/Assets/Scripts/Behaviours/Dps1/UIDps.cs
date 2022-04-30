@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UI : MonoBehaviour
+public class UIDps : MonoBehaviour
 {
     [SerializeField]
-    PlayerStats stats;
+    Dps1 stats;
     [SerializeField]
     Image[] spells;
     [SerializeField]
@@ -24,7 +24,7 @@ public class UI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        stats = gameObject.GetComponent<PlayerStats>();
+        stats = gameObject.GetComponent<Dps1>();
         BaseStats();
     }
 
@@ -40,7 +40,7 @@ public class UI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if( stats.Cible != null)
+        if (stats.Cible != null)
         {
             cibleHp.SetActive(true);
             ciblePm.SetActive(true);
@@ -78,7 +78,7 @@ public class UI : MonoBehaviour
         if (stats.GetSkill1().isCooldown)
         {
             spells[0].fillAmount -= 1 / stats.GetSkill1().Cooldown * Time.deltaTime;//cd
-            if(spells[0].fillAmount <= 0)
+            if (spells[0].fillAmount <= 0)
             {
                 spells[0].fillAmount = 1f;
             }
@@ -90,7 +90,7 @@ public class UI : MonoBehaviour
             {
                 spells[1].fillAmount = 1f;
             }
-            
+
         }
         if (stats.GetUlt().isCooldown)
         {
