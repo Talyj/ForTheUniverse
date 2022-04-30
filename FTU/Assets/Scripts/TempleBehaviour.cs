@@ -6,7 +6,7 @@ public class TempleBehaviour : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("cube"))
+        if (other.gameObject.CompareTag("Player"))
         {
             Debug.Log("Quelqu'un est entré dans la zone du temple");
         }

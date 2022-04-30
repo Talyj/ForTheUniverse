@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: 1744873933731375681}
   m_Layer: 0
   m_Name: Sun
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -134,7 +134,7 @@ MonoBehaviour:
   Cible: {fileID: 0}
   Health: 500
   MaxHealth: 500
-  MoveSpeed: 20
+  MoveSpeed: 60
   AttackSpeed: 0.5
   AttackRange: 10
   Mana: 100

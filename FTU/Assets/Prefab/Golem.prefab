@@ -31,7 +31,7 @@ Transform:
   m_GameObject: {fileID: 2470890344991082091}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 5, z: 0}
-  m_LocalScale: {x: 3, y: 5, z: 3}
+  m_LocalScale: {x: 3, y: 10, z: 3}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -114,7 +114,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 2
+  m_Radius: 3
   m_Center: {x: 0, y: -1, z: 0}
 --- !u!136 &2470890344991082083
 CapsuleCollider:
@@ -142,3 +142,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9aad9b93598025a4f8e4fdd800d5f997, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  attackType: 0
+  Cible: {fileID: 0}
+  Health: 500
+  MaxHealth: 500
+  MoveSpeed: 4.5
+  AttackSpeed: 0.5
+  AttackRange: 30
+  Mana: 100
+  MaxMana: 100
+  ResistancePhysique: 0
+  ResistanceMagique: 0
+  Exp: 0
+  MaxExp: 100
+  ExpRate: 1.75
+  DegatsPhysique: 100
+  DegatsMagique: 100
+  lvl: 1
+  canMove: 0
+  canAct: 0
+  canUlt: 0
+  InCombat: 0
+  InRegen: 0
+  projPrefab: {fileID: 0}
+  SpawnPrefab: {fileID: 0}
+  enemytype: 0
