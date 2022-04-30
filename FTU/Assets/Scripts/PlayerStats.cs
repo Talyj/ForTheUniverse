@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerStats : IDamageable, ISkill
+public class PlayerStats : PlayerMovement, ISkill
 {
     //Animator anim;
 
@@ -128,6 +128,11 @@ public class PlayerStats : IDamageable, ISkill
 
         }
         #endregion
+        AttackSystem();
+    }
+
+    public void AttackSystem()
+    {
         //attack sys
         if (useSkills == true)
         {
@@ -155,7 +160,7 @@ public class PlayerStats : IDamageable, ISkill
                 }
 
             }
-            
+
             if (Input.GetKeyDown(KeyCode.Alpha1))
             {
                 Skill1();
@@ -358,7 +363,7 @@ public class PlayerStats : IDamageable, ISkill
             try
             {
 
-                if (hitCollider.TryGetComponent(typeof(Targetable), out Component component))
+                if (hitCollider.TryGetComponent(typeof(IDamageable), out Component component))
                 {
                     if (IsTargetable(hitCollider.GetComponent<IDamageable>().GetEnemyType()))
                     {

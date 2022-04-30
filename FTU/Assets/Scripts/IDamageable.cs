@@ -29,11 +29,10 @@ public abstract class IDamageable : NetworkBehaviour
     public int lvl = 1;
     public bool canMove;
     public bool canAct;
-    public bool canMove = true;
-    public bool useSkills = true;
-    public bool canUlt = false;
-    public bool InCombat = false;
-    public bool InRegen = false;
+    public bool useSkills;
+    public bool canUlt;
+    public bool InCombat;
+    public bool InRegen;
 
     [Header("Ranged variables")]
     public GameObject projPrefab;
@@ -49,17 +48,6 @@ public abstract class IDamageable : NetworkBehaviour
         voister
     }
     public Transform SpawnPrefab2;
-
-    //public enum EnemyType
-    //{
-    //    minion,
-    //    golem,
-    //    joueur,
-    //    dieu,
-    //    voister
-    //}
-
-
 
     #region Getter and Setter
 
@@ -185,7 +173,11 @@ public abstract class IDamageable : NetworkBehaviour
     // Start is called before the first frame update
     void Start()
     {
-       
+        canMove = true;
+        useSkills = true;
+        canUlt = false;
+        InCombat = false;
+        InRegen = false;
     }
 
     private void CheckCC()

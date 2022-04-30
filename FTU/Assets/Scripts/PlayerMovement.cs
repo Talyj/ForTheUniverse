@@ -4,7 +4,7 @@ using Unity.Netcode;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : IDamageable
 {
     IDamageable stats;
     Vector3 velocity;

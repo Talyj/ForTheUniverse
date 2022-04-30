@@ -131,6 +131,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackType: 0
+  cc: 0
+  enemyType: 0
   Cible: {fileID: 0}
   Health: 500
   MaxHealth: 500
@@ -149,12 +151,14 @@ MonoBehaviour:
   lvl: 1
   canMove: 0
   canAct: 0
+  useSkills: 0
   canUlt: 0
   InCombat: 0
   InRegen: 0
   projPrefab: {fileID: 0}
   SpawnPrefab: {fileID: 1744873933731375710}
   enemytype: 0
+  SpawnPrefab2: {fileID: 0}
   Position:
     m_InternalValue: {x: 0, y: 0, z: 0}
   passif: {fileID: 0}
@@ -163,6 +167,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 1a23975b049b9a24999dd77bcf858d41, type: 2}
   - {fileID: 11400000, guid: 1a09e620cb887864fb6fd1d958b30dd9, type: 2}
   damageSupp: 0
+  ult: {fileID: 0}
   stickTP: {fileID: 3431704481046487142, guid: a09069b3be2d08648a222b5efb919207, type: 3}
   step: 0
   defaultTimer: 2
@@ -181,6 +186,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c05414265093b144c96b60392aa38dd2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 1744873933731375706}
 --- !u!114 &1744873933731375681
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -197,4 +203,9 @@ MonoBehaviour:
   spells: []
   health: {fileID: 0}
   mana: {fileID: 0}
+  healthCible: {fileID: 0}
+  manaCible: {fileID: 0}
+  costsCible: []
   costs: []
+  cibleHp: {fileID: 0}
+  ciblePm: {fileID: 0}

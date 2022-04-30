@@ -202,7 +202,7 @@ public class Dps1 : IDamageable, ISkill
         {
             if (IsTargetable(Cible.GetComponent<IDamageable>().GetEnemyType()))
             {
-                Cible.GetComponent<Targetable>().TakeDamage(DegatsPhysique + damageSupp, "Physique");
+                Cible.GetComponent<IDamageable>().TakeDamage(DegatsPhysique + damageSupp, "Physique");
             }
         }
         else
@@ -246,7 +246,7 @@ public class Dps1 : IDamageable, ISkill
     {
         if( Cible != null)
         {
-            if (IsControl(Cible.GetComponent<IDamageable>().GetEnemyType(), Cible.GetComponent<Targetable>().GetControl()))
+            if (IsControl(Cible.GetComponent<IDamageable>().GetEnemyType(), Cible.GetComponent<IDamageable>().GetControl()))
             {
                 DegatsPhysique += 15;
             }
@@ -370,7 +370,7 @@ public class Ball1 : MonoBehaviour
 {
     private void OnCollisionEnter(Collision col)
     {
-        if (col.gameObject.GetComponent<Targetable>())
+        if (col.gameObject.GetComponent<IDamageable>())
         {
             
             col.gameObject.GetComponent<IDamageable>().TakeCC(ControlType.slow,2.55f);
@@ -387,7 +387,7 @@ public class Ball2 : MonoBehaviour
     private void OnCollisionEnter(Collision col)
     {
         float dmg = dps.skills[0].Damage;
-        if (col.gameObject.GetComponent<Targetable>())
+        if (col.gameObject.GetComponent<IDamageable>())
         {
             if (col.gameObject.GetComponent<IDamageable>().GetControl()== ControlType.slow)
             {

@@ -42,11 +42,11 @@ public class Projectile : NetworkBehaviour
                 if (Vector3.Distance(transform.position, target.transform.position) < 0.75f)
                     //if (touched)
                 {
-                    if (target.GetComponent<IDamageable>().GetEnemyType() == EnemyType.minion ||
-                       target.GetComponent<IDamageable>().GetEnemyType() == EnemyType.voister ||
-                       target.GetComponent<IDamageable>().GetEnemyType() == EnemyType.joueur ||
-                       target.GetComponent<IDamageable>().GetEnemyType() == EnemyType.dieu ||
-                       target.GetComponent<IDamageable>().GetEnemyType() == EnemyType.golem)
+                    if (target.GetComponent<IDamageable>().GetEnemyType() == IDamageable.EnemyType.minion ||
+                       target.GetComponent<IDamageable>().GetEnemyType() == IDamageable.EnemyType.voister ||
+                       target.GetComponent<IDamageable>().GetEnemyType() == IDamageable.EnemyType.joueur ||
+                       target.GetComponent<IDamageable>().GetEnemyType() == IDamageable.EnemyType.dieu ||
+                       target.GetComponent<IDamageable>().GetEnemyType() == IDamageable.EnemyType.golem)
                     {
                         touched = true;
                         DealDamage(target, degats, typeDegats.ToString());

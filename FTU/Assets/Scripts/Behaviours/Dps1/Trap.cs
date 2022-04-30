@@ -23,7 +23,7 @@ public class Trap : MonoBehaviour
     {
         
             
-        if (col.gameObject.GetComponent<Targetable>())
+        if (col.gameObject.GetComponent<IDamageable>())
         {
             float DmgPerHeal;
             float heal = col.gameObject.GetComponent<IDamageable>().GetHealth();
