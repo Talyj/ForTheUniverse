@@ -6,6 +6,19 @@ public class PlayerStats : PlayerMovement, ISkill
 {
     //Animator anim;
 
+    //Path Auto
+    public Transform[] targetsUp;
+    public Transform[] targetsDown;
+    private Transform[] tempArray;
+    public Way way;
+    public bool isAttacking;
+
+    public enum Way
+    {
+        up,
+        down
+    }
+
     //[SerializeField]
     //ControlType cc;
     [Header("Competences")]
@@ -18,6 +31,7 @@ public class PlayerStats : PlayerMovement, ISkill
     public float damageSupp;
     public GameObject ult;
 
+    public bool isAI;
 
 
 
@@ -47,7 +61,6 @@ public class PlayerStats : PlayerMovement, ISkill
     #endregion
 
 
-    // Start is called before the first frame update
     // Start is called before the first frame update
     void Start()
     {
@@ -128,10 +141,10 @@ public class PlayerStats : PlayerMovement, ISkill
 
         }
         #endregion
-        AttackSystem();
+        AttackSystemPlayer();
     }
 
-    public void AttackSystem()
+    public IEnumerator AttackSystemPlayer()
     {
         //attack sys
         if (useSkills == true)
@@ -174,6 +187,136 @@ public class PlayerStats : PlayerMovement, ISkill
                 Ultime();
             }
         }
+        yield return 0;
+    }
+
+    public IEnumerator AttackSystemAI()
+    {
+        WalkToward();
+        if (attackType == AttackType.Melee)
+        {
+            StartCoroutine(AutoAttack());
+        }
+        if (attackType == AttackType.Ranged)
+        {
+            StartCoroutine(RangeAutoAttack());
+        }
+        yield return 0;
+    }
+
+    public void DefaultHeroBehaviourAI()
+    {
+        if (!isAttacking && Cible != null)
+        {
+            isAttacking = true;
+            StartCoroutine(AttackSystemHeroAI());
+        }
+
+        if (!pathDone && !isAttacking && Cible == null)
+        {
+            isAttacking = false;
+            if (way == Way.up)
+            {
+                MovementAI(whichTeam(targetsUp));
+            }
+            else MovementAI(whichTeam(targetsDown));
+        }
+    }
+
+    public IEnumerator AttackSystemHeroAI()
+    {
+        if (Cible != null)
+        {
+            WalkToward();
+            var attackValue = Random.Range(0, 3);
+
+            if (attackType == AttackType.Melee)
+            {
+                StartCoroutine(AutoAttack());
+            }
+            if (attackType == AttackType.Ranged)
+            {
+                StartCoroutine(RangeAutoAttack());
+            }
+
+            switch (attackValue)
+            {
+                case 0:
+                    if (!skills[0].isCooldown && GetMana() >= skills[0].Cost)
+                    {
+                        Skill1();
+                    }
+                    break;
+                case 1:
+                    if (!skills[1].isCooldown && GetMana() >= skills[1].Cost)
+                    {
+                        Skill2();
+                    }
+                    break;
+                case 2:
+                    if (!skills[2].isCooldown && GetMana() >= skills[2].Cost)
+                    {
+                        Ultime();
+                    }
+                    break;
+            }
+        }
+        yield return new WaitForSeconds(5);
+    }
+
+    public void DefaultMinionBehaviour()
+    {
+        if (!isAttacking && Cible != null)
+        {
+            isAttacking = true;
+            StartCoroutine(AttackSystemAI());
+        }
+
+        if (!pathDone && !isAttacking && Cible == null)
+        {
+            isAttacking = false;
+            if (way == Way.up)
+            {
+                MovementAI(whichTeam(targetsUp));
+            }
+            else MovementAI(whichTeam(targetsDown));
+        }
+    }
+
+    public void GetNearestTarget()
+    {
+        Collider[] hitColliders = Physics.OverlapSphere(gameObject.transform.position, AttackRange);
+        if(hitColliders != null)
+        {
+            foreach(var col in hitColliders)
+            {
+                if(col.gameObject.CompareTag("Player") ||
+                    col.gameObject.CompareTag("minion") ||
+                    col.gameObject.CompareTag("golem"))
+                {
+                    if(col.gameObject.GetComponent<IDamageable>().team != team)
+                    {
+                        Cible = col.gameObject;
+                        break;
+                    }
+                }
+
+            }
+        }
+    }
+
+    public Transform[] whichTeam(Transform[] way)
+    {
+        tempArray = new Transform[way.Length];
+        if (team == Team.Veritas)
+        {
+            for (int i = 0; i < way.Length; i++)
+            {
+                tempArray[way.Length - 1 - i] = way[i];
+            }
+            return tempArray;
+        }
+        return way;
     }
 
 
@@ -232,7 +375,7 @@ public class PlayerStats : PlayerMovement, ISkill
         {
             if (IsTargetable(Cible.GetComponent<IDamageable>().GetEnemyType()))
             {
-                SpawnRangeAttack(EnemyType.minion, Cible, damageSupp);
+                SpawnRangeAttack(Cible, damageSupp);
             }
         }
         else
@@ -241,10 +384,10 @@ public class PlayerStats : PlayerMovement, ISkill
         }
     }
 
-    public void SpawnRangeAttack(EnemyType typeEnemy,GameObject Target, float dmgSupp = 0)
+    public void SpawnRangeAttack(GameObject Target, float dmgSupp = 0)
     {
         float dmg = DegatsMagique;
-        Instantiate(projPrefab, SpawnPrefab.transform.position, Quaternion.identity);
+        Instantiate(projPrefab, transform.position, Quaternion.identity);
 
         projPrefab.GetComponent<Projectile>().degats = dmg + dmgSupp;
         projPrefab.GetComponent<Projectile>().target = Target;

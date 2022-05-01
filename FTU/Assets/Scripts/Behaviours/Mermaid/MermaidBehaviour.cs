@@ -23,8 +23,9 @@ public class MermaidBehaviour : PlayerStats
     private List<GameObject> charmTargets;
     public GameObject charmArea;
 
-    public new void Start()
+    public void Start()
     {
+        Init();
         speedPush = 3;
         charmSpeed = 5;
         charmTargets = new List<GameObject>();
@@ -47,29 +48,45 @@ public class MermaidBehaviour : PlayerStats
         HealthBehaviour();
         ExperienceBehaviour();
         Passif();
+
         if (canAct)
         {
-            //Movement();
-            //AttackSystem();
-            if (Input.GetKeyDown(KeyCode.A) && Cible != null && Vector3.Distance(gameObject.transform.position, Cible.transform.position) < AttackRange)
+            if (isAI)
             {
-                Poissoin(EnemyType.minion, Cible);
+                if(Cible == null)
+                {
+                    GetNearestTarget();
+                }
+                DefaultHeroBehaviourAI();
             }
-            if (Input.GetKeyDown(KeyCode.E) && Cible != null)
+            else
             {
-                MagicWind(Cible);
+                if(!isAttacking && Cible != null)
+                {
+                    AttackSystemPlayer();
+                }
+                MovementPlayer();
+                if (Input.GetKeyDown(KeyCode.A) && Cible != null && Vector3.Distance(gameObject.transform.position, Cible.transform.position) < AttackRange)
+                {
+                    Poissoin(EnemyType.minion, Cible);
+                }
+                if (Input.GetKeyDown(KeyCode.E) && Cible != null)
+                {
+                    MagicWind(Cible);
+                }
+
+                if (Input.GetKeyDown(KeyCode.Space) && canUlt == true)
+                {
+                    Ultime();
+                }
             }
 
-            if (Input.GetKeyDown(KeyCode.Space) && canUlt == true)
-            {
-                Ultime();
-            }
         }
     }
 
     //Copy that in a new character file
 
-    public void Passif()
+    public new void Passif()
     {
        if(_passiveCounter >= 3)
         {
@@ -107,7 +124,7 @@ public class MermaidBehaviour : PlayerStats
             float dmg = DegatsMagique;
             if (typeEnemy == EnemyType.minion /*||typeEnemy == Targetable.EnemyType.Adversaire*/)
             {
-                var proj = Instantiate(poissoin, SpawnPrefab.transform.position, Quaternion.identity);
+                var proj = Instantiate(poissoin, transform.position, Quaternion.identity);
                 proj.GetComponent<PoissoinProjBehaviour>().degats = dmg;
                 proj.GetComponent<PoissoinProjBehaviour>().target = target;
                 proj.GetComponent<PoissoinProjBehaviour>().targetSet = true;
@@ -138,7 +155,7 @@ public class MermaidBehaviour : PlayerStats
             Quaternion rotation = Quaternion.LookRotation(target.transform.position - transform.position);
             Vector3 direction = target.transform.position - transform.position;
 
-            var proj = Instantiate(windArea, SpawnPrefab.transform.position, rotation);
+            var proj = Instantiate(windArea, transform.position, rotation);
             proj.GetComponent<WindAreaBehaviour>().degats = DegatsMagique;
             proj.GetComponent<WindAreaBehaviour>().direction = direction;
             proj.GetComponent<WindAreaBehaviour>().source = Instance;
@@ -201,7 +218,7 @@ public class MermaidBehaviour : PlayerStats
             //TODO
             float dmg = DegatsMagique;
 
-            var area = Instantiate(charmArea, SpawnPrefab.transform.position, Quaternion.identity);
+            var area = Instantiate(charmArea, transform.position, Quaternion.identity);
             area.GetComponent<CharmAreaBehaviour>().source = Instance;
 
             StartCoroutine(CoolDown(skills[2]));

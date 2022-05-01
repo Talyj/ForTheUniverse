@@ -158,10 +158,11 @@ MonoBehaviour:
   projPrefab: {fileID: 0}
   SpawnPrefab: {fileID: 1744873933731375710}
   enemytype: 0
+  team: 0
   SpawnPrefab2: {fileID: 0}
   Position:
     m_InternalValue: {x: 0, y: 0, z: 0}
-  passif: {fileID: 0}
+  passif: {fileID: 11400000, guid: d2c9dc6b1ca2bc94ebe53101f1a9a950, type: 2}
   skills:
   - {fileID: 11400000, guid: b3ddb4caa02019446aef21fb9f053f80, type: 2}
   - {fileID: 11400000, guid: 1a23975b049b9a24999dd77bcf858d41, type: 2}

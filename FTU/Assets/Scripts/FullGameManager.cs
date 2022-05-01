@@ -46,7 +46,7 @@ namespace HelloWorld
             {
                 var playerObject = NetworkManager.Singleton.SpawnManager.GetLocalPlayerObject();
                 var player = playerObject.GetComponent<PlayerMovement>();
-                player.Movement();
+                player.MovementPlayer();
             }
         }
     }

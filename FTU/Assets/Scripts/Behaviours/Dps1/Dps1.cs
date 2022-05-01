@@ -228,7 +228,7 @@ public class Dps1 : IDamageable, ISkill
     public void SpawnRangeAttack(EnemyType typeEnemy, GameObject Target, float dmgSupp = 0)
     {
         float dmg = DegatsPhysique;
-        Instantiate(projPrefab, SpawnPrefab.transform.position, Quaternion.identity);
+        Instantiate(projPrefab, transform.position, Quaternion.identity);
 
         projPrefab.GetComponent<Projectile>().degats = dmg + dmgSupp;
         projPrefab.GetComponent<Projectile>().target = Target;
@@ -288,12 +288,12 @@ public class Dps1 : IDamageable, ISkill
     {
         GameObject sp = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         sp.GetComponent<Transform>().localScale *= 0.25f;
-        GameObject tir1 = Instantiate(sp,SpawnPrefab.transform.position, Quaternion.identity);
+        GameObject tir1 = Instantiate(sp,transform.position, Quaternion.identity);
         tir1.AddComponent<Rigidbody>();
         tir1.AddComponent<Ball1>();
         tir1.GetComponent<Rigidbody>().useGravity = false;
         tir1.GetComponent<Rigidbody>().collisionDetectionMode = CollisionDetectionMode.Continuous;
-        var dir = SpawnPrefab2.transform.position - SpawnPrefab.transform.position;
+        var dir = SpawnPrefab2.transform.position - transform.position;
         tir1.GetComponent<Rigidbody>().AddForce(dir.normalized * 7.5f, ForceMode.Impulse);
         Destroy(sp);
         yield return new WaitForSeconds(2f );
@@ -303,8 +303,8 @@ public class Dps1 : IDamageable, ISkill
 
         GameObject sp2 = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         sp2.GetComponent<Transform>().localScale *= 0.25f;
-        var dir2 = SpawnPrefab2.transform.position - SpawnPrefab.transform.position;
-        GameObject tir2 = Instantiate(sp2, SpawnPrefab.transform.position, Quaternion.identity);
+        var dir2 = SpawnPrefab2.transform.position - transform.position;
+        GameObject tir2 = Instantiate(sp2, transform.position, Quaternion.identity);
         tir2.AddComponent<Rigidbody>();
         tir2.AddComponent<Ball2>();
         tir2.GetComponent<Ball2>().dps = this;
@@ -347,7 +347,7 @@ public class Dps1 : IDamageable, ISkill
         {
             Mana -= skills[2].Cost;
             Debug.Log(skills[2].Name + " lancée");
-            Instantiate(ult, SpawnPrefab.transform.position, Quaternion.identity);
+            Instantiate(ult, transform.position, Quaternion.identity);
             skills[2].isCooldown = true;
             if (skills[2].isCooldown == true)
             {

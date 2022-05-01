@@ -50,8 +50,8 @@ public class SunBehaviour : PlayerStats
         }
         if (canAct)
         {
-            Movement();
-            AttackSystem();
+            MovementPlayer();
+            AttackSystemPlayer();
             if (Input.GetKeyDown(KeyCode.A) && Cible != null)
             {
                 if(Vector3.Distance(Cible.transform.position, transform.position) <= AttackRange)
@@ -76,13 +76,13 @@ public class SunBehaviour : PlayerStats
         switch (currentStick)
         {
             case Sticks.AuraStick:
-                if(Cible.GetComponent<IDamageable>().enemytype == EnemyType.voister)
+                if(Cible.GetComponent<IDamageable>().enemyType == EnemyType.voister)
                 {
                     damageSupp = DamageMultiplier(DegatsPhysique, 0.5f);
                 }
                 break;
             case Sticks.SpiritSitck:
-                if (Cible.GetComponent<IDamageable>().enemytype == EnemyType.joueur)
+                if (Cible.GetComponent<IDamageable>().enemyType == EnemyType.joueur)
                 {
                     damageSupp = DamageMultiplier(DegatsMagique, 0.5f);
                 }
@@ -111,12 +111,12 @@ public class SunBehaviour : PlayerStats
             skills[0].isCooldown = true;
 
             SwitchStick();
-            if(currentStick == Sticks.AuraStick && target.GetComponent<IDamageable>().enemytype == EnemyType.voister)
+            if(currentStick == Sticks.AuraStick && target.GetComponent<IDamageable>().enemyType == EnemyType.voister)
             {
                 target.GetComponent<IDamageable>().canAct = false;
                 StartCoroutine(SwapCooldown(target));
             }
-            else if(currentStick == Sticks.SpiritSitck && target.GetComponent<IDamageable>().enemytype == EnemyType.joueur)
+            else if(currentStick == Sticks.SpiritSitck && target.GetComponent<IDamageable>().enemyType == EnemyType.joueur)
             {
                 var speedTemp = target.GetComponent<IDamageable>().MoveSpeed;
                 target.GetComponent<IDamageable>().MoveSpeed /= 2;
@@ -164,7 +164,7 @@ public class SunBehaviour : PlayerStats
 
                 float dmg = DegatsPhysique;
 
-                var proj = Instantiate(stickTP, SpawnPrefab.transform.position, Quaternion.identity);
+                var proj = Instantiate(stickTP, transform.position, Quaternion.identity);
                 proj.GetComponent<ThrowStickBehaviour>().degats = 0;
                 proj.GetComponent<ThrowStickBehaviour>().target = target;
                 proj.GetComponent<ThrowStickBehaviour>().targetSet = true;
@@ -233,7 +233,7 @@ public class SunBehaviour : PlayerStats
             Vector3 direction = Cible.transform.position - transform.position;
 
             //TODO
-            var proj = Instantiate(bigStick, SpawnPrefab.transform.position, rotation);
+            var proj = Instantiate(bigStick, transform.position, rotation);
             proj.GetComponent<BigStickBehaviour>().degats = DegatsMagique;
             proj.GetComponent<BigStickBehaviour>().direction = direction;
 

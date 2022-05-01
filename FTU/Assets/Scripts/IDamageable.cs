@@ -10,8 +10,6 @@ public abstract class IDamageable : NetworkBehaviour
     public AttackType attackType;
     [SerializeField]
     ControlType cc;
-    [SerializeField]
-    EnemyType enemyType;
     public GameObject Cible;
     [Header("Stats")]
     public float Health = 500, MaxHealth = 500;
@@ -36,9 +34,9 @@ public abstract class IDamageable : NetworkBehaviour
 
     [Header("Ranged variables")]
     public GameObject projPrefab;
-    public Transform SpawnPrefab;
+    //public Transform SpawnPrefab;
 
-    public EnemyType enemytype;
+    public EnemyType enemyType;
     public enum EnemyType
     {
         minion,

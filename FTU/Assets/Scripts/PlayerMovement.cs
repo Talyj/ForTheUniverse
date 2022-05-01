@@ -6,11 +6,16 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerMovement : IDamageable
 {
+    //Movement Controlled by players
     IDamageable stats;
     Vector3 velocity;
     Rigidbody myRigidbody;
     Camera viewCamera;
-    
+
+    //Movement AI
+    public int current;
+    public bool pathDone;
+
     //Animator anim;
     public NetworkVariable<Vector3> Position = new NetworkVariable<Vector3>();
     public void Awake()
@@ -22,15 +27,15 @@ public class PlayerMovement : IDamageable
     }
 
 
-    void Update()
-    {
-        Movement();
-        //transform.position = Position.Value;
+    //void Update()
+    //{
+    //    MovementPlayer();
+    //    //transform.position = Position.Value;
 
 
-    }
+    //}
 
-    public void Movement()
+    public void MovementPlayer()
     {
         if (stats.canMove)
         {
@@ -60,6 +65,27 @@ public class PlayerMovement : IDamageable
             //        //Cible = null;
             //    }
             //}
+        }
+    }
+
+    public void MovementAI(Transform[] moveTo)
+    {
+        if (canMove && canAct && Cible == null)
+        {
+            if (transform.position != moveTo[current].position)
+            {
+                transform.position = Vector3.MoveTowards(transform.position, moveTo[current].position, MoveSpeed * Time.deltaTime);
+            }
+            else current = (current + 1)/* % targets.Length*/;
+        }
+        if (current == moveTo.Length) pathDone = true;
+    }
+
+    public void WalkToward()
+    {
+        while (transform.position != Cible.transform.position)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, Cible.transform.position, MoveSpeed * Time.deltaTime);
         }
     }
 
