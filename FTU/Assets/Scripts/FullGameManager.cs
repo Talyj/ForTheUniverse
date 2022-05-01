@@ -45,7 +45,7 @@ namespace HelloWorld
             if (GUILayout.Button(NetworkManager.Singleton.IsServer ? "Move" : "Request Position Change"))
             {
                 var playerObject = NetworkManager.Singleton.SpawnManager.GetLocalPlayerObject();
-                var player = playerObject.GetComponent<PlayerBehaviour>();
+                var player = playerObject.GetComponent<PlayerMovement>();
                 player.Movement();
             }
         }

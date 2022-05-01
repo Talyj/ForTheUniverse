@@ -2,21 +2,18 @@
 #
 # Get latest from https://github.com/github/gitignore/blob/master/Unity.gitignore
 #
-FTU/[Ll]ibrary/
-FTU/[Tt]emp/
-FTU/[Oo]bj/
-FTU/[Bb]uild/
-FTU/[Bb]uilds/
-[Bb]uild/
-[Bb]uilds/
-FTU/[Ll]ogs/
-FTU/[Mm]emoryCaptures/
-FTU/[Uu]serSettings/
+[Ll]ibrary/
+[Tt]emp/
+/[Oo]bj/
+/[Bb]uild/
+/[Bb]uilds/
+[Ll]ogs/
+/[Mm]emoryCaptures/
 
 # Asset meta data should only be ignored when the corresponding asset is also ignored
 /[Aa]ssets/**/*.meta
 
-*.meta
+#*.meta
 
 # Uncomment this line if you wish to ignore the asset store tools plugin
 # /[Aa]ssets/AssetStoreTools*
@@ -64,3 +61,16 @@ sysinfo.txt
 # Crashlytics generated file
 crashlytics-build.properties
 
+FTU/obj/Debug/Assembly-CSharp.csproj.AssemblyReference.cache
+FTU/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
+FTU/obj/Debug/PhotonChat.csproj.AssemblyReference.cache
+FTU/obj/Debug/PhotonRealtime.csproj.AssemblyReference.cache
+FTU/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
+FTU/obj/Debug/PhotonUnityNetworking.csproj.AssemblyReference.cache
+FTU/obj/Debug/PhotonUnityNetworking.Utilities.csproj.AssemblyReference.cache
+FTU/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
+FTU/obj/Debug/PhotonUnityNetworking.Utilities.Culling.Editor.csproj.AssemblyReference.cache
+FTU/obj/Debug/PunDemos.DemoSlotcarEditor.csproj.AssemblyReference.cache
+FTU/UserSettings/Layouts/default-2021.dwlt
+FTU/Packages/packages-lock.json
+FTU/obj/Debug/PunDemos.DemoHubEditor.csproj.AssemblyReference.cache
