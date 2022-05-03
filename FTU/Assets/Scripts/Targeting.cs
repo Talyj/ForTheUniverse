@@ -10,7 +10,7 @@ public class Targeting : MonoBehaviour
     // Start is called before the first frame update
     public void Start()
     {
-        //player = gameObject;
+        player = GameObject.FindGameObjectWithTag("Player");
         //Debug.Log(player);
     }
 
@@ -31,7 +31,7 @@ public class Targeting : MonoBehaviour
                         hit.collider.GetComponent<IDamageable>().GetEnemyType()== IDamageable.EnemyType.dieu ||
                         hit.collider.GetComponent<IDamageable>().GetEnemyType()== IDamageable.EnemyType.golem)
                     {
-                        player.GetComponent<Dps1>().Cible = hit.collider.gameObject;
+                        player.GetComponent<IDamageable>().Cible = hit.collider.gameObject;
                     }
                 }
                 else if (hit.collider.GetComponent<IDamageable>() == null)

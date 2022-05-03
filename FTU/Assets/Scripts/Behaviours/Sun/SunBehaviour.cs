@@ -48,23 +48,52 @@ public class SunBehaviour : PlayerStats
         {
             Passif();
         }
+
+         #region test
+
+        // test des touches
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            TakeDamage(100, "Physique");
+
+        }
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            Health = MaxHealth;
+            Mana = MaxMana;
+        }
+        if (Input.GetKeyDown(KeyCode.J))
+        {
+            TakeDamage(100, "Magique");
+        }
+        if (Input.GetKeyDown(KeyCode.L))//execute methode
+        {
+            TakeDamage(9999, "Brut");
+        }
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            Exp = MaxExp + 1;
+
+        }
+        #endregion
+
         if (canAct)
         {
-            Movement();
+            //Movement();
             AttackSystem();
-            if (Input.GetKeyDown(KeyCode.A) && Cible != null)
+            if (Input.GetKeyDown(KeyCode.Alpha1) && Cible != null)
             {
                 if(Vector3.Distance(Cible.transform.position, transform.position) <= AttackRange)
                 {
                     Swap(Cible);
                 }
             }
-            if (Input.GetKeyDown(KeyCode.E) && Cible != null && Vector3.Distance(Cible.transform.position, transform.position) <= AttackRange * 3)
+            if (Input.GetKeyDown(KeyCode.Alpha2) && Cible != null && Vector3.Distance(Cible.transform.position, transform.position) <= AttackRange * 3)
             {
                 StickTeleportation(Cible);
             }
 
-            if (Input.GetKeyDown(KeyCode.Space) && canUlt == true)
+            if (Input.GetKeyDown(KeyCode.Alpha3) && canUlt == true)
             {
                 Ultime();
             }
@@ -174,11 +203,11 @@ public class SunBehaviour : PlayerStats
                 step = 1;
             }
         }
-        else if (skills[0].isCooldown == true)
+        else if (skills[1].isCooldown == true)
         {
             Debug.Log("en cd");
         }
-        else if (Mana < skills[0].Cost)
+        else if (Mana < skills[1].Cost)
         {
             Debug.Log("pas assez de mana");
         }
@@ -202,7 +231,7 @@ public class SunBehaviour : PlayerStats
             }
             yield return new WaitForEndOfFrame();
         }
-        skills[0].isCooldown = true;
+        skills[1].isCooldown = true;
         step = 0;
         isTouched = false;
         StartCoroutine(CoolDown(skills[1]));

@@ -44,23 +44,24 @@ public class MermaidBehaviour : PlayerStats
     //Copy that in a new character file
     public void Update()
     {
+        
         HealthBehaviour();
         ExperienceBehaviour();
         Passif();
         if (canAct)
         {
             //Movement();
-            //AttackSystem();
-            if (Input.GetKeyDown(KeyCode.A) && Cible != null && Vector3.Distance(gameObject.transform.position, Cible.transform.position) < AttackRange)
+            AttackSystem();
+            if (Input.GetKeyDown(KeyCode.Alpha1) && Cible != null && Vector3.Distance(gameObject.transform.position, Cible.transform.position) < AttackRange)
             {
                 Poissoin(EnemyType.minion, Cible);
             }
-            if (Input.GetKeyDown(KeyCode.E) && Cible != null)
+            if (Input.GetKeyDown(KeyCode.Alpha2) && Cible != null)
             {
                 MagicWind(Cible);
             }
 
-            if (Input.GetKeyDown(KeyCode.Space) && canUlt == true)
+            if (Input.GetKeyDown(KeyCode.Alpha3) && canUlt == true)
             {
                 Ultime();
             }

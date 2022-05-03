@@ -16,7 +16,8 @@ public abstract class IDamageable : NetworkBehaviour
     [Header("death")]
     [SerializeField]
     Behaviour[] disableOnDeath;
-    bool[] wasEnableOnStart;
+    //[SerializeField]
+    //public GameObject deathEffect;
     [SerializeField]
     bool isDead = false;
     [SerializeField]
@@ -202,6 +203,8 @@ public abstract class IDamageable : NetworkBehaviour
     public void SetDefault()
     {
         Health = MaxHealth;
+        //deathEffect.SetActive(false);
+        isDead = false;
         for (int i = 0; i < disableOnDeath.Length; i++)
         {
             disableOnDeath[i].enabled = true;
@@ -373,6 +376,7 @@ public abstract class IDamageable : NetworkBehaviour
     public void Die()
     {
         isDead = true;
+        //deathEffect.SetActive(true);
         for (int i = 0; i < disableOnDeath.Length; i++)
         {
              disableOnDeath[i].enabled = false;
@@ -393,8 +397,9 @@ public abstract class IDamageable : NetworkBehaviour
 
     IEnumerator Spawn()
     {
+        
         yield return new WaitForSeconds(5f);
-        isDead = false;
+        
         SetDefault();
         Transform spawnPoint = templeSpawn;
         transform.position = spawnPoint.position;
@@ -402,7 +407,7 @@ public abstract class IDamageable : NetworkBehaviour
     }
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.green;
+        Gizmos.color = Color.cyan;
         Gizmos.DrawWireSphere(transform.position, AttackRange);
     }
 

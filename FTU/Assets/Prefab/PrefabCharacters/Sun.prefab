@@ -134,13 +134,18 @@ MonoBehaviour:
   cc: 0
   enemyType: 0
   Cible: {fileID: 0}
+  disableOnDeath:
+  - {fileID: 1744873933731375683}
+  deathEffect: {fileID: 0}
+  isDead: 0
+  templeSpawn: {fileID: 0}
   Health: 500
   MaxHealth: 500
-  MoveSpeed: 60
+  MoveSpeed: 6
   AttackSpeed: 0.5
-  AttackRange: 10
-  Mana: 100
-  MaxMana: 100
+  AttackRange: 10.53
+  Mana: 500
+  MaxMana: 500
   ResistancePhysique: 40
   ResistanceMagique: 40
   Exp: 0
@@ -194,18 +199,30 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1744873933731375706}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 400bbc4498ed0b24ea71791c827e3a3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stats: {fileID: 0}
-  spells: []
+  stats: {fileID: 1744873933731375683}
+  spells:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   health: {fileID: 0}
   mana: {fileID: 0}
   healthCible: {fileID: 0}
   manaCible: {fileID: 0}
-  costsCible: []
-  costs: []
+  costsCible:
+  - {fileID: 0}
+  - {fileID: 0}
+  costs:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   cibleHp: {fileID: 0}
   ciblePm: {fileID: 0}
