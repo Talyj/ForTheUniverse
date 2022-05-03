@@ -45,6 +45,7 @@ public class MermaidBehaviour : PlayerStats
     //Copy that in a new character file
     public void Update()
     {
+        
         HealthBehaviour();
         ExperienceBehaviour();
         Passif();
@@ -52,6 +53,9 @@ public class MermaidBehaviour : PlayerStats
         if (canAct)
         {
             if (isAI)
+            //Movement();
+            AttackSystem();
+            if (Input.GetKeyDown(KeyCode.Alpha1) && Cible != null && Vector3.Distance(gameObject.transform.position, Cible.transform.position) < AttackRange)
             {
                 if(Cible == null)
                 {
@@ -61,7 +65,7 @@ public class MermaidBehaviour : PlayerStats
                 DefaultHeroBehaviourAI();
                 CheckTarget();
             }
-            else
+            if (Input.GetKeyDown(KeyCode.Alpha2) && Cible != null)
             {
                 if(!isAttacking && Cible != null)
                 {
@@ -83,6 +87,10 @@ public class MermaidBehaviour : PlayerStats
                 }
             }
 
+            if (Input.GetKeyDown(KeyCode.Alpha3) && canUlt == true)
+            {
+                Ultime();
+            }
         }
     }
 
@@ -120,7 +128,7 @@ public class MermaidBehaviour : PlayerStats
         if (skills[0].isCooldown == false && Mana >= skills[0].Cost)
         {
             Mana -= skills[0].Cost;
-            Debug.Log(skills[0].Name + " lancée");
+            Debug.Log(skills[0].Name + " lancï¿½e");
             skills[0].isCooldown = true;
 
             float dmg = DegatsMagique;
@@ -152,7 +160,7 @@ public class MermaidBehaviour : PlayerStats
         {
             //buff
             Mana -= skills[1].Cost;
-            Debug.Log(skills[1].Name + " lancée");
+            Debug.Log(skills[1].Name + " lancï¿½e");
             
             Quaternion rotation = Quaternion.LookRotation(target.transform.position - transform.position);
             Vector3 direction = target.transform.position - transform.position;
@@ -216,7 +224,7 @@ public class MermaidBehaviour : PlayerStats
         {
             //buff
             Mana -= skills[2].Cost;
-            Debug.Log(skills[2].Name + " lancée");
+            Debug.Log(skills[2].Name + " lancï¿½e");
             //TODO
             float dmg = DegatsMagique;
 

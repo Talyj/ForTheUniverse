@@ -20,4 +20,4 @@ MonoBehaviour:
   type: 2
   Damage: 0
   degats: 0
-  image: {fileID: 21300000, guid: 6c22e75398f83fa4a8def509733d2743, type: 3}
+  image: {fileID: 21300000, guid: ef2b7210e4dbece4d9186eed38ed611b, type: 3}

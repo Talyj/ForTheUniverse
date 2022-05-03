@@ -30,6 +30,16 @@ public class MinionsBehaviour : PlayerStats
         if(Cible)
         {
             WalkToTarget();
+        }   
+        if (IsDead() == true)
+        {
+            ExpFor();
         }
-    }   
+    }
+
+    public void ExpFor()
+    {
+        Instantiate(xp, transform.position, Quaternion.identity);
+        Destroy(gameObject);
+    }
 }

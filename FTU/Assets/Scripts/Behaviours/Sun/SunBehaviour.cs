@@ -48,9 +48,41 @@ public class SunBehaviour : PlayerStats
         {
             Passif();
         }
+
+         #region test
+
+        // test des touches
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            TakeDamage(100, "Physique");
+
+        }
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            Health = MaxHealth;
+            Mana = MaxMana;
+        }
+        if (Input.GetKeyDown(KeyCode.J))
+        {
+            TakeDamage(100, "Magique");
+        }
+        if (Input.GetKeyDown(KeyCode.L))//execute methode
+        {
+            TakeDamage(9999, "Brut");
+        }
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            Exp = MaxExp + 1;
+
+        }
+        #endregion
+
         if (canAct)
         {
             if (isAI)
+            //Movement();
+            AttackSystem();
+            if (Input.GetKeyDown(KeyCode.Alpha1) && Cible != null)
             {
                 if (Cible == null)
                 {
@@ -60,7 +92,7 @@ public class SunBehaviour : PlayerStats
                 CheckTarget();
                 DefaultHeroBehaviourAI();
             }
-            else
+            if (Input.GetKeyDown(KeyCode.Alpha2) && Cible != null && Vector3.Distance(Cible.transform.position, transform.position) <= AttackRange * 3)
             {
                 MovementPlayer();
                 AttackSystemPlayer();
@@ -76,10 +108,9 @@ public class SunBehaviour : PlayerStats
                     StickTeleportation(Cible);
                 }
 
-                if (Input.GetKeyDown(KeyCode.Space) && canUlt == true)
-                {
-                    Ultime();
-                }
+            if (Input.GetKeyDown(KeyCode.Alpha3) && canUlt == true)
+            {
+                Ultime();
             }
         }
     }
@@ -120,7 +151,7 @@ public class SunBehaviour : PlayerStats
         if (skills[0].isCooldown == false && Mana >= skills[0].Cost)
         {
             Mana -= skills[0].Cost;
-            Debug.Log(skills[0].Name + " lancée");
+            Debug.Log(skills[0].Name + " lancï¿½e");
             skills[0].isCooldown = true;
 
             SwitchStick();
@@ -170,7 +201,7 @@ public class SunBehaviour : PlayerStats
             {
                 //buff
                 Mana -= skills[1].Cost;
-                Debug.Log(skills[1].Name + " lancée");
+                Debug.Log(skills[1].Name + " lancï¿½e");
 
                 Quaternion rotation = Quaternion.LookRotation(target.transform.position - transform.position);
                 Vector3 direction = target.transform.position - transform.position;
@@ -187,11 +218,11 @@ public class SunBehaviour : PlayerStats
                 step = 1;
             }
         }
-        else if (skills[0].isCooldown == true)
+        else if (skills[1].isCooldown == true)
         {
             Debug.Log("en cd");
         }
-        else if (Mana < skills[0].Cost)
+        else if (Mana < skills[1].Cost)
         {
             Debug.Log("pas assez de mana");
         }
@@ -215,7 +246,7 @@ public class SunBehaviour : PlayerStats
             }
             yield return new WaitForEndOfFrame();
         }
-        skills[0].isCooldown = true;
+        skills[1].isCooldown = true;
         step = 0;
         isTouched = false;
         StartCoroutine(CoolDown(skills[1]));
@@ -239,7 +270,7 @@ public class SunBehaviour : PlayerStats
         {
             //buff
             Mana -= skills[2].Cost;
-            Debug.Log(skills[2].Name + " lancée");
+            Debug.Log(skills[2].Name + " lancï¿½e");
             //TODO
 
             Quaternion rotation = Quaternion.LookRotation(Cible.transform.position - transform.position);

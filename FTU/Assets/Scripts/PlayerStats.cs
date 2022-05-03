@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerStats : PlayerMovement, ISkill
+public class PlayerStats : IDamageable, ISkill
 {
     //Animator anim;
 
@@ -500,7 +500,7 @@ public class PlayerStats : PlayerMovement, ISkill
         sp.GetComponent<Transform>().localScale *= 2.5f;
         GameObject skill1 = Instantiate(sp, SpawnPrefab2.transform.position, Quaternion.identity);
         Destroy(sp);
-        Collider[] hitColliders = Physics.OverlapSphere(skill1.transform.position,2.5f);
+        Collider[] hitColliders = Physics.OverlapSphere(skill1.transform.position,2f);
         foreach (var hitCollider in hitColliders)
         {
             //Debug.Log("<color=green> touch: </color>" + hitCollider.name);

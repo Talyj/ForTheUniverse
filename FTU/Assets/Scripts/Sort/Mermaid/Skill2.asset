@@ -20,4 +20,4 @@ MonoBehaviour:
   type: 1
   Damage: 20
   degats: 1
-  image: {fileID: 0}
+  image: {fileID: 21300000, guid: 8964c5858481cd248b37e1ec21ca51d7, type: 3}

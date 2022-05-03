@@ -10,7 +10,7 @@ public class Targeting : MonoBehaviour
     // Start is called before the first frame update
     public void Start()
     {
-        //player = gameObject;
+        player = GameObject.FindGameObjectWithTag("Player");
         //Debug.Log(player);
     }
 

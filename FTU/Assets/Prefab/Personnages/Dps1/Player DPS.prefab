@@ -43,7 +43,7 @@ GameObject:
   m_Layer: 0
   m_Name: spawn
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 1206586993520771344, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -55,7 +55,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8597483264112776019}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.249, z: 0.598}
+  m_LocalPosition: {x: 0, y: 0.249, z: 0.64}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -242,7 +242,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackType: 1
   cc: 0
+  enemyType: 0
   Cible: {fileID: 0}
+  disableOnDeath:
+  - {fileID: 8597483264512879778}
+  deathEffect: {fileID: 0}
+  isDead: 0
+  templeSpawn: {fileID: 0}
   Health: 500
   MaxHealth: 500
   MoveSpeed: 4.5
@@ -250,22 +256,23 @@ MonoBehaviour:
   AttackRange: 7
   Mana: 100
   MaxMana: 100
-  ResistancePhysique: 0
-  ResistanceMagique: 0
+  ResistancePhysique: 20
+  ResistanceMagique: 20
   Exp: 0
   MaxExp: 100
   ExpRate: 1.75
   DegatsPhysique: 100
   DegatsMagique: 100
   lvl: 1
-  canAct: 0
   canMove: 1
+  canAct: 0
   useSkills: 1
   canUlt: 0
   InCombat: 0
   InRegen: 0
   projPrefab: {fileID: 3524439937703818370, guid: ca45cb44d81306e409c4149613d2cdd6, type: 3}
   SpawnPrefab: {fileID: 8597483264112776020}
+  enemytype: 0
   SpawnPrefab2: {fileID: 8597483263996633619}
   passif: {fileID: 11400000, guid: 87fae4db772d3424d9371539600022d8, type: 2}
   skills:
@@ -273,7 +280,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ed0b927bc1b3ed2448745b507ecaedfb, type: 2}
   - {fileID: 11400000, guid: bd80d36f60f8c984cb6f4c6f960344fe, type: 2}
   damageSupp: 0
-  ult: {fileID: 8597483264365766044}
+  ult: {fileID: 661485606619552371, guid: 1687fa648e140dd4ca567e13a9f52450, type: 3}
 --- !u!114 &8597483264512879834
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -286,7 +293,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 565ac1ae301c0da42a11039be786a638, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stats: {fileID: 0}
+  stats: {fileID: 8597483264512879777}
   spells:
   - {fileID: 0}
   - {fileID: 0}

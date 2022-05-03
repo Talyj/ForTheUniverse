@@ -1,18 +1,24 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Dps1 : IDamageable, ISkill
+public class BigED : IDamageable, ISkill
 {
+    //Animator anim;
 
+    //[SerializeField]
+    //ControlType cc;
     [Header("Competences")]
     public Passifs passif;
     public Skills[] skills;
+    //public bool canMove = true;
+    //public bool useSkills = true;//pour les cc
 
+    //Damage
     public float damageSupp;
     public GameObject ult;
+    public GameObject s1;
 
-    UIDps ui;
 
 
 
@@ -41,17 +47,18 @@ public class Dps1 : IDamageable, ISkill
 
     #endregion
 
+
+    // Start is called before the first frame update
     // Start is called before the first frame update
     void Start()
     {
-        ui = GetComponent<UIDps>();
+        //anim = GetComponent<Animator>();
         Passif();
         for (int i = 0; i < skills.Length; i++)
         {
             skills[i].isCooldown = false;
         }
     }
-
     // Update is called once per frame
     void Update()
     {
@@ -87,10 +94,9 @@ public class Dps1 : IDamageable, ISkill
 
         #endregion
 
-        if (Health <= 0)
-        {
-            IsDead();
-        }
+
+
+
         if (Exp >= MaxExp)
         {
             ExperienceBehaviour();
@@ -113,9 +119,9 @@ public class Dps1 : IDamageable, ISkill
         {
             TakeDamage(100, "Magique");
         }
-        if (Input.GetKeyDown(KeyCode.L))//execute methode
+        if (Input.GetKeyDown(KeyCode.L))
         {
-            TakeDamage(9999, "Brut");
+            TakeDamage(50, "Brut");
         }
         if (Input.GetKeyDown(KeyCode.X))
         {
@@ -123,6 +129,11 @@ public class Dps1 : IDamageable, ISkill
 
         }
         #endregion
+        AttackSystem();
+    }
+
+    public void AttackSystem()
+    {
         //attack sys
         if (useSkills == true)
         {
@@ -134,7 +145,7 @@ public class Dps1 : IDamageable, ISkill
                 {
                     if (Vector3.Distance(gameObject.transform.position, Cible.transform.position) > AttackRange)
                     {
-                        print("Hors d portée");
+                        print("Hors d portï¿½e");
                     }
                     else
                     {
@@ -165,6 +176,7 @@ public class Dps1 : IDamageable, ISkill
             }
         }
     }
+
 
     IEnumerator AutoAttack()
     {
@@ -231,47 +243,98 @@ public class Dps1 : IDamageable, ISkill
 
     public void SpawnRangeAttack(EnemyType typeEnemy, GameObject Target, float dmgSupp = 0)
     {
-        float dmg = DegatsPhysique;
+        float dmg = DegatsMagique;
         Instantiate(projPrefab, SpawnPrefab.transform.position, Quaternion.identity);
 
         projPrefab.GetComponent<Projectile>().degats = dmg + dmgSupp;
         projPrefab.GetComponent<Projectile>().target = Target;
         projPrefab.GetComponent<Projectile>().targetSet = true;
-        projPrefab.GetComponent<Projectile>().vitesse = 15f;
     }
 
-
-    public void Eveil()
+    public float DamageMultiplier(float dmgSource, float dmgMultiplier)
     {
-        throw new System.NotImplementedException();
+        var res = dmgSource * dmgMultiplier;
+        return res;
     }
 
+    public void Regen()
+    {
+        StartCoroutine(RegenHealAndMana());
+    }
+
+    IEnumerator RegenHealAndMana()
+    {
+
+        if (Health < MaxHealth)
+        {
+            float val = Mathf.FloorToInt(MaxHealth * 0.05f);
+            Health += val;
+            Debug.Log("+ " + val);
+        }
+
+
+
+        yield return new WaitForSeconds(1.5f);
+
+    }
+
+    public void TakeDamage(float DegatsRecu, string type)
+    {
+        //application des res, a modifier pour les differents type de degats
+        if (type == "Physique")
+        {
+            Health = Health - (DegatsRecu - ((ResistancePhysique * DegatsRecu) / 100)); // physique
+        }
+        else if (type == "Magique")
+        {
+            Health = Health - (DegatsRecu - ((ResistanceMagique * DegatsRecu) / 100)); // magique
+        }
+        else if (type == "Brut")
+        {
+            Health -= DegatsRecu;
+        }
+
+
+
+    }
+
+    #region skill
     public void Passif()
     {
-        if( Cible != null)
+        switch (lvl)
         {
-            if (IsControl(Cible.GetComponent<IDamageable>().GetEnemyType(), Cible.GetComponent<IDamageable>().GetControl()))
-            {
-                DegatsPhysique += 15;
-            }
-            else
-            {
-                DegatsPhysique -= 15;
-            }
+            case 1:
+                ResistanceMagique = ResistanceMagique * passif.Bonus;//augmentation 5%
+                ResistancePhysique = ResistancePhysique * passif.Bonus;
+                MoveSpeed = MoveSpeed * passif.Malus;//reduction 5%
+                break;
+            case 6:
+                passif.Bonus = 1.075f;
+                passif.Malus = 0.925f;
+                ResistanceMagique = ResistanceMagique * passif.Bonus;//augmentation 7.5%
+                ResistancePhysique = ResistancePhysique * passif.Bonus;
+                MoveSpeed = MoveSpeed * passif.Malus;//reduction 7.5%
+                break;
+            case 12:
+                passif.Bonus = 1.1f;
+                passif.Malus = 0.8f;
+                ResistanceMagique = ResistanceMagique * passif.Bonus;//augmentation 10%
+                ResistancePhysique = ResistancePhysique * passif.Bonus;
+                MoveSpeed = MoveSpeed * passif.Malus;//reduction s
+                break;
+            default:
+                break;
         }
-        
     }
-
     public void Skill1()
     {
-        //double tirs 
-        //1er slow
-        //2 dmg et +dmg si slow
         if (skills[0].isCooldown == false && Mana >= skills[0].Cost)
         {
             Mana -= skills[0].Cost;
-            Debug.Log(skills[0].Name + " lancée");
+            Debug.Log(skills[0].Name + " lancï¿½e");
+
             StartCoroutine(skill1());
+
             skills[0].isCooldown = true;
             if (skills[0].isCooldown == true)
             {
@@ -280,7 +343,7 @@ public class Dps1 : IDamageable, ISkill
         }
         else if (skills[0].isCooldown == true)
         {
-            Debug.Log("en cd");
+            //Debug.Log("en cd");
         }
         else if (Mana < skills[0].Cost)
         {
@@ -290,44 +353,22 @@ public class Dps1 : IDamageable, ISkill
 
     IEnumerator skill1()
     {
-        GameObject sp = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-        sp.GetComponent<Transform>().localScale *= 0.25f;
-        GameObject tir1 = Instantiate(sp,SpawnPrefab.transform.position, Quaternion.identity);
-        tir1.AddComponent<Rigidbody>();
-        tir1.AddComponent<Ball1>();
-        tir1.GetComponent<Rigidbody>().useGravity = false;
-        //tir1.GetComponent<Rigidbody>().collisionDetectionMode = CollisionDetectionMode.Continuous;
-        var dir = SpawnPrefab2.transform.position - SpawnPrefab.transform.position;
-        tir1.GetComponent<Rigidbody>().AddForce(dir.normalized * 7.5f, ForceMode.Impulse);
-        Destroy(sp);
-        yield return new WaitForSeconds(2f );
-        //yield return new WaitForSeconds(skills[0].CastTime );
-
-
-
-        GameObject sp2 = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-        sp2.GetComponent<Transform>().localScale *= 0.25f;
-        var dir2 = SpawnPrefab2.transform.position - SpawnPrefab.transform.position;
-        GameObject tir2 = Instantiate(sp2, SpawnPrefab.transform.position, Quaternion.identity);
-        tir2.AddComponent<Rigidbody>();
-        tir2.AddComponent<Ball2>();
-        tir2.GetComponent<Ball2>().dps = this;
-        tir2.GetComponent<Rigidbody>().useGravity = false;
-        tir2.GetComponent<Rigidbody>().collisionDetectionMode = CollisionDetectionMode.Continuous;
-        tir2.GetComponent<Rigidbody>().AddForce(dir2.normalized * 15f, ForceMode.Impulse);
-        Destroy(sp2);
         
-        yield return new WaitForSeconds(2f);
-        Destroy(tir1);
-        Destroy(tir2);
+        GameObject skill1 = Instantiate(s1, SpawnPrefab2.transform.position, Quaternion.identity);
+        skill1.AddComponent<HeadImpact>();
+        skill1.GetComponent<HeadImpact>().bg=this;
+        yield return new WaitForSeconds(skills[0].CastTime);
+        Destroy(skill1);
+
     }
+
     public void Skill2()
     {
         if (skills[1].isCooldown == false && Mana >= skills[1].Cost)
         {
             Mana -= skills[1].Cost;
-            Debug.Log(skills[1].Name + " lancée");
-            gameObject.transform.Translate(Vector3.back * 1000f * Time.deltaTime);
+            Debug.Log(skills[1].Name + " lancï¿½e");
+            StartCoroutine(skill2());
             skills[1].isCooldown = true;
             if (skills[1].isCooldown == true)
             {
@@ -342,16 +383,24 @@ public class Dps1 : IDamageable, ISkill
         {
             Debug.Log("pas assez de mana");
         }
-        
     }
 
+    IEnumerator skill2()
+    {
+        ResistanceMagique *= 1.1f;
+        ResistancePhysique *= 1.1f;
+        yield return new WaitForSeconds(skills[1].CastTime * 2);
+        ResistanceMagique *= .8f;
+        ResistancePhysique *= .8f;
+    }
     public void Ultime()
     {
         if (skills[2].isCooldown == false && Mana >= skills[2].Cost)
         {
             Mana -= skills[2].Cost;
-            Debug.Log(skills[2].Name + " lancée");
-            Instantiate(ult, SpawnPrefab.transform.position, Quaternion.identity);
+            Debug.Log(skills[2].Name + " lancï¿½e");
+
+            StartCoroutine(UltEffect());
             skills[2].isCooldown = true;
             if (skills[2].isCooldown == true)
             {
@@ -367,47 +416,72 @@ public class Dps1 : IDamageable, ISkill
             Debug.Log("pas assez de mana");
         }
     }
+    IEnumerator UltEffect()
+    {
+        float baseHealth = Health;
+
+        ResistanceMagique += 45;
+        ResistancePhysique += 45f;
+        yield return new WaitForSeconds(skills[2].CastTime);
+        Transform holder = GameObject.Find("Ult Rangeholder").transform;
+        GameObject ultime = Instantiate(ult, holder.position, Quaternion.identity);
+        ResistanceMagique -= 45;
+        ResistancePhysique -= 45;
+        float endHealth = baseHealth - Health;
+        Debug.Log("<color=blue>Endhealth full: </color>" + endHealth);
+        float fulldmg = ultime.GetComponent<Projectile>().degats = (endHealth * 10) / 100;
+        skills[2].Damage += fulldmg;
+        Collider[] hitColliders = Physics.OverlapSphere(ultime.transform.position, 1.5f);
+        foreach (var hitCollider in hitColliders)
+        {
+            //Debug.Log("<color=green> touch: </color>" + hitCollider.name);
+            try
+            {
+
+                if (hitCollider.TryGetComponent(typeof(IDamageable), out Component component))
+                {
+                    if (IsTargetable(hitCollider.GetComponent<IDamageable>().GetEnemyType()))
+                    {
+                        hitCollider.GetComponent<IDamageable>().TakeDamage(skills[2].Damage, skills[2].degats.ToString());
+                    }
+                }
+            }
+            catch
+            {
+                print("r");
+            }
+
+        }
+        //Debug.Log("<color=yellow>Endhealth 10%: </color>" + fulldmg);
+        yield return new WaitForSeconds(.75f);
+        Destroy(ultime);
+
+        //Debug.Log("<color=red> full damage: </color>" + skills[2].Damage + " infligï¿½");
+        yield return new WaitForSeconds(.05f);
+        skills[2].Damage -= fulldmg;
+    }
+    public void Eveil()
+    {
+        throw new System.NotImplementedException();
+    }
+    #endregion
 
 }
+
+
 [System.Serializable]
-public class Ball1 : MonoBehaviour
+public class HeadImpact : MonoBehaviour
 {
-    private void OnCollisionEnter(Collision col)
+    public BigED bg;
+    private void OnTriggerEnter(Collider col)
     {
         if (col.gameObject.GetComponent<IDamageable>())
         {
-            
-            col.gameObject.GetComponent<IDamageable>().TakeCC(ControlType.slow,2.55f);
-            Destroy(gameObject);
-        }
-        
-    }
-}
 
-[System.Serializable]
-public class Ball2 : MonoBehaviour
-{
-    public Dps1 dps;
-    private void OnCollisionEnter(Collision col)
-    {
-        float dmg = dps.skills[0].Damage;
-        if (col.gameObject.GetComponent<IDamageable>())
-        {
-            if (col.gameObject.GetComponent<IDamageable>().GetControl()== ControlType.slow)
-            {
-                dmg *= 1.15f;
-                col.gameObject.GetComponent<IDamageable>().TakeDamage(dmg, dps.skills[0].degats.ToString());
-                Debug.Log("<color=green> damage: </color>" + dmg + " " + dps.skills[0].degats.ToString());
-            }
-            else
-            {
-                col.gameObject.GetComponent<IDamageable>().TakeDamage(dmg, dps.skills[0].degats.ToString());
-                Debug.Log("<color=blue> damage: </color>" + dmg + " " + dps.skills[0].degats.ToString());
-            }
-            
-            Destroy(gameObject);
+            col.gameObject.GetComponent<IDamageable>().TakeCC(ControlType.stun, 2.55f);
+            col.gameObject.GetComponent<IDamageable>().TakeDamage(bg.skills[0].Damage, bg.skills[0].degats.ToString());
+            //Destroy(gameObject);
         }
-        
+
     }
-    
 }

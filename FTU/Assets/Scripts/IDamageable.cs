@@ -12,6 +12,15 @@ public abstract class IDamageable : NetworkBehaviour
     [SerializeField]
     ControlType cc;
     public GameObject Cible;
+    [Header("death")]
+    [SerializeField]
+    Behaviour[] disableOnDeath;
+    //[SerializeField]
+    //public GameObject deathEffect;
+    [SerializeField]
+    bool isDead = false;
+    [SerializeField]
+    Transform templeSpawn;
     [Header("Stats")]
     public float Health = 500, MaxHealth = 500;
     public float MoveSpeed = 4.5f;
@@ -192,8 +201,58 @@ public abstract class IDamageable : NetworkBehaviour
         canUlt = false;
         InCombat = false;
         InRegen = false;
+
+        Health = MaxHealth;
+        //deathEffect.SetActive(false);
+        isDead = false;
+        for (int i = 0; i < disableOnDeath.Length; i++)
+        {
+            disableOnDeath[i].enabled = true;
+        }
+        Rigidbody rb = GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            rb.useGravity = true;
+        }
+        Collider col = GetComponent<Collider>();
+        if(col != null)
+        {
+            col.enabled = true;
+        }
     }
 
+    //public void Setup()
+    //{
+        
+    //    wasEnableOnStart = new bool[disableOnDeath.Length];
+    //    for(int i = 0; i < disableOnDeath.Length; i++)
+    //    {
+    //        wasEnableOnStart[i] = disableOnDeath[i].enabled;
+    //    }
+    //    SetDefault();
+    //}
+    public void SetDefault()
+    {
+        Health = MaxHealth;
+        //deathEffect.SetActive(false);
+        isDead = false;
+        for (int i = 0; i < disableOnDeath.Length; i++)
+        {
+            disableOnDeath[i].enabled = true;
+        }
+        Rigidbody rb = GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            rb.useGravity = true;
+        }
+        Collider col = GetComponent<Collider>();
+        if(col != null)
+        {
+            col.enabled = true;
+        }
+    }
+
+    
     private void CheckCC()
     {
         switch (cc)
@@ -350,9 +409,41 @@ public abstract class IDamageable : NetworkBehaviour
         }
     }
 
+    public void Die()
+    {
+        isDead = true;
+        //deathEffect.SetActive(true);
+        for (int i = 0; i < disableOnDeath.Length; i++)
+        {
+             disableOnDeath[i].enabled = false;
+        }
+        Rigidbody rb = GetComponent<Rigidbody>();
+        if(rb != null)
+        {
+            rb.useGravity = false;
+        }
+        Collider col = GetComponent<Collider>();
+        if (col != null)
+        {
+            col.enabled = false;
+        }
+        Debug.Log(transform.name + " est mort");
+        StartCoroutine(Spawn());
+    }
+
+    IEnumerator Spawn()
+    {
+        
+        yield return new WaitForSeconds(5f);
+        
+        SetDefault();
+        Transform spawnPoint = templeSpawn;
+        transform.position = spawnPoint.position;
+        //transform.rotation = spawnPoint.rotation;
+    }
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.green;
+        Gizmos.color = Color.cyan;
         Gizmos.DrawWireSphere(transform.position, AttackRange);
     }
 
