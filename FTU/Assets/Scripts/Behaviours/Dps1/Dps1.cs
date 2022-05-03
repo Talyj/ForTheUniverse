@@ -87,6 +87,10 @@ public class Dps1 : IDamageable, ISkill
 
         #endregion
 
+        if (Health <= 0)
+        {
+            IsDead();
+        }
         if (Exp >= MaxExp)
         {
             ExperienceBehaviour();
@@ -109,9 +113,9 @@ public class Dps1 : IDamageable, ISkill
         {
             TakeDamage(100, "Magique");
         }
-        if (Input.GetKeyDown(KeyCode.L))
+        if (Input.GetKeyDown(KeyCode.L))//execute methode
         {
-            TakeDamage(50, "Brut");
+            TakeDamage(9999, "Brut");
         }
         if (Input.GetKeyDown(KeyCode.X))
         {

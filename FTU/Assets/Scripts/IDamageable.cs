@@ -13,6 +13,14 @@ public abstract class IDamageable : NetworkBehaviour
     [SerializeField]
     EnemyType enemyType;
     public GameObject Cible;
+    [Header("death")]
+    [SerializeField]
+    Behaviour[] disableOnDeath;
+    bool[] wasEnableOnStart;
+    [SerializeField]
+    bool isDead = false;
+    [SerializeField]
+    Transform templeSpawn;
     [Header("Stats")]
     public float Health = 500, MaxHealth = 500;
     public float MoveSpeed = 4.5f;
@@ -173,6 +181,7 @@ public abstract class IDamageable : NetworkBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        SetDefault();
         canMove = true;
         useSkills = true;
         canUlt = false;
@@ -180,6 +189,36 @@ public abstract class IDamageable : NetworkBehaviour
         InRegen = false;
     }
 
+    //public void Setup()
+    //{
+        
+    //    wasEnableOnStart = new bool[disableOnDeath.Length];
+    //    for(int i = 0; i < disableOnDeath.Length; i++)
+    //    {
+    //        wasEnableOnStart[i] = disableOnDeath[i].enabled;
+    //    }
+    //    SetDefault();
+    //}
+    public void SetDefault()
+    {
+        Health = MaxHealth;
+        for (int i = 0; i < disableOnDeath.Length; i++)
+        {
+            disableOnDeath[i].enabled = true;
+        }
+        Rigidbody rb = GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            rb.useGravity = true;
+        }
+        Collider col = GetComponent<Collider>();
+        if(col != null)
+        {
+            col.enabled = true;
+        }
+    }
+
+    
     private void CheckCC()
     {
         switch (cc)
@@ -324,11 +363,43 @@ public abstract class IDamageable : NetworkBehaviour
     {
         if (Health <= 0)
         {
+            Die();
             return true;
+            
         }
         return false;
     }
 
+    public void Die()
+    {
+        isDead = true;
+        for (int i = 0; i < disableOnDeath.Length; i++)
+        {
+             disableOnDeath[i].enabled = false;
+        }
+        Rigidbody rb = GetComponent<Rigidbody>();
+        if(rb != null)
+        {
+            rb.useGravity = false;
+        }
+        Collider col = GetComponent<Collider>();
+        if (col != null)
+        {
+            col.enabled = false;
+        }
+        Debug.Log(transform.name + " est mort");
+        StartCoroutine(Spawn());
+    }
+
+    IEnumerator Spawn()
+    {
+        yield return new WaitForSeconds(5f);
+        isDead = false;
+        SetDefault();
+        Transform spawnPoint = templeSpawn;
+        transform.position = spawnPoint.position;
+        //transform.rotation = spawnPoint.rotation;
+    }
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.green;

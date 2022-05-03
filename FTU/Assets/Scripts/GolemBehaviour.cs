@@ -24,7 +24,7 @@ public class GolemBehaviour : IDamageable
     {
         Attack();
         CheckDestroy();
-        Debug.Log(GetHealth());
+        //Debug.Log(GetHealth());
     }
 
     public void Attack()

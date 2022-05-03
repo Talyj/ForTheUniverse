@@ -296,7 +296,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &3853125026446671200
 Transform:
   m_ObjectHideFlags: 0
@@ -392,7 +392,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 400bbc4498ed0b24ea71791c827e3a3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stats: {fileID: 0}
+  stats: {fileID: 3853125026446671205}
   spells:
   - {fileID: 0}
   - {fileID: 0}
@@ -428,7 +428,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackType: 1
   cc: 0
+  enemyType: 0
   Cible: {fileID: 0}
+  disableOnDeath:
+  - {fileID: 3853125026446671211}
+  isDead: 0
+  templeSpawn: {fileID: 0}
   Health: 500
   MaxHealth: 500
   MoveSpeed: 4.5
@@ -444,15 +449,18 @@ MonoBehaviour:
   DegatsPhysique: 20
   DegatsMagique: 15
   lvl: 1
-  canAct: 0
   canMove: 1
+  canAct: 0
   useSkills: 1
   canUlt: 0
   InCombat: 0
   InRegen: 0
   projPrefab: {fileID: 3524439937703818370, guid: ca45cb44d81306e409c4149613d2cdd6, type: 3}
   SpawnPrefab: {fileID: 3853125024926037199}
+  enemytype: 0
   SpawnPrefab2: {fileID: 3853125026226610735}
+  Position:
+    m_InternalValue: {x: 0, y: 0, z: 0}
   passif: {fileID: 11400000, guid: 1ccf4fbedf3245f4790812ff7d16efe3, type: 2}
   skills:
   - {fileID: 11400000, guid: 56b04604e98bd404e908c187e82e491b, type: 2}
@@ -488,5 +496,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8cf9dcb4805867f42aac487bd7797cc4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  attackType: 0
+  cc: 0
+  enemyType: 0
+  Cible: {fileID: 0}
+  disableOnDeath: []
+  isDead: 0
+  templeSpawn: {fileID: 0}
+  Health: 500
+  MaxHealth: 500
+  MoveSpeed: 4.5
+  AttackSpeed: 0.5
+  AttackRange: 1.5
+  Mana: 100
+  MaxMana: 100
+  ResistancePhysique: 0
+  ResistanceMagique: 0
+  Exp: 0
+  MaxExp: 100
+  ExpRate: 1.75
+  DegatsPhysique: 100
+  DegatsMagique: 100
+  lvl: 1
+  canMove: 0
+  canAct: 0
+  useSkills: 0
+  canUlt: 0
+  InCombat: 0
+  InRegen: 0
+  projPrefab: {fileID: 3524439937703818370, guid: ca45cb44d81306e409c4149613d2cdd6, type: 3}
+  SpawnPrefab: {fileID: 3853125024926037199}
+  enemytype: 0
+  SpawnPrefab2: {fileID: 3853125026226610735}
   Position:
     m_InternalValue: {x: 0, y: 0, z: 0}
