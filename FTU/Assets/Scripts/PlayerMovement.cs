@@ -81,12 +81,14 @@ public class PlayerMovement : IDamageable
         if (current == moveTo.Length) pathDone = true;
     }
 
-    public void WalkToward()
-    {
-        while (transform.position != Cible.transform.position)
+    public IEnumerator WalkToward()
+    {        
+        while (/*transform.position != Cible.transform.position*/Cible != null)
         {
             transform.position = Vector3.MoveTowards(transform.position, Cible.transform.position, MoveSpeed * Time.deltaTime);
         }
+
+        yield return 0;
     }
 
     public void FixedUpdate()

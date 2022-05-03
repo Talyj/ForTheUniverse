@@ -14,9 +14,12 @@ public class CharmAreaBehaviour : NetworkBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("cube"))
+        if (other.CompareTag("Player") || other.CompareTag("minion"))
         {
-            source.AddTCharmedTargets(other.gameObject);
+            if(other.gameObject.GetComponent<IDamageable>().team != source.team){
+                source.AddTCharmedTargets(other.gameObject);
+
+            }
         }
     }
 }

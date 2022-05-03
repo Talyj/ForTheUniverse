@@ -116,7 +116,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 80
+  m_Constraints: 84
   m_CollisionDetection: 0
 --- !u!114 &1744873933731375683
 MonoBehaviour:
@@ -132,7 +132,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackType: 0
   cc: 0
-  enemyType: 0
   Cible: {fileID: 0}
   Health: 500
   MaxHealth: 500
@@ -156,12 +155,17 @@ MonoBehaviour:
   InCombat: 0
   InRegen: 0
   projPrefab: {fileID: 0}
-  SpawnPrefab: {fileID: 1744873933731375710}
-  enemytype: 0
+  enemyType: 0
   team: 0
   SpawnPrefab2: {fileID: 0}
+  current: 0
+  pathDone: 0
   Position:
     m_InternalValue: {x: 0, y: 0, z: 0}
+  targetsUp: []
+  targetsDown: []
+  way: 0
+  isAttacking: 0
   passif: {fileID: 11400000, guid: d2c9dc6b1ca2bc94ebe53101f1a9a950, type: 2}
   skills:
   - {fileID: 11400000, guid: b3ddb4caa02019446aef21fb9f053f80, type: 2}
@@ -169,6 +173,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 1a09e620cb887864fb6fd1d958b30dd9, type: 2}
   damageSupp: 0
   ult: {fileID: 0}
+  isAI: 0
   stickTP: {fileID: 3431704481046487142, guid: a09069b3be2d08648a222b5efb919207, type: 3}
   step: 0
   defaultTimer: 2

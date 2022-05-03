@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44402242, g: 0.49316543, b: 0.5722324, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -451,34 +451,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29c303a32cabf5d4b87c0fb3b065a590, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackType: 0
-  cc: 0
-  Cible: {fileID: 0}
-  Health: 500
-  MaxHealth: 500
-  MoveSpeed: 4.5
-  AttackSpeed: 0.5
-  AttackRange: 1.5
-  Mana: 100
-  MaxMana: 100
-  ResistancePhysique: 0
-  ResistanceMagique: 0
-  Exp: 0
-  MaxExp: 100
-  ExpRate: 1.75
-  DegatsPhysique: 100
-  DegatsMagique: 100
-  lvl: 1
-  canAct: 0
-  canMove: 1
-  useSkills: 1
-  canUlt: 0
-  InCombat: 0
-  InRegen: 0
-  projPrefab: {fileID: 0}
-  SpawnPrefab: {fileID: 0}
-  SpawnPrefab2: {fileID: 0}
-  enemytype: 0
 --- !u!114 &206483570
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1942,13 +1914,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1223943487}
-  m_LocalRotation: {x: 0.38268343, y: 0, z: 0, w: 0.92387956}
+  m_LocalRotation: {x: 0.38268343, y: -0, z: -0, w: 0.92387956}
   m_LocalPosition: {x: 1.6, y: 8.33, z: -8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 45, y: 0, z: 0}
 --- !u!114 &1223943491
 MonoBehaviour:
@@ -2516,7 +2488,7 @@ RectTransform:
   - {fileID: 1608968855}
   - {fileID: 2094050672}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -2947,7 +2919,7 @@ PrefabInstance:
       objectReference: {fileID: 661485606619552371, guid: 1687fa648e140dd4ca567e13a9f52450, type: 3}
     - target: {fileID: 8597483264512879833, guid: 58fa13ea9462c6a41bfedaf78e7c4658, type: 3}
       propertyPath: m_RootOrder
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8597483264512879833, guid: 58fa13ea9462c6a41bfedaf78e7c4658, type: 3}
       propertyPath: m_LocalPosition.x

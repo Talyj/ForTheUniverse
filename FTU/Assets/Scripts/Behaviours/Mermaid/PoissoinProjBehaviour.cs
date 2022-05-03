@@ -44,7 +44,8 @@ public class PoissoinProjBehaviour : Projectile
                        target.GetComponent<IDamageable>().enemyType == IDamageable.EnemyType.dieu ||
                        target.GetComponent<IDamageable>().enemyType == IDamageable.EnemyType.golem)
                     {
-                        Instantiate(puddle, new Vector3(transform.position.x, 1, transform.position.z), Quaternion.identity);
+                        var pud = Instantiate(puddle, new Vector3(transform.position.x, 1, transform.position.z), Quaternion.identity);
+                        pud.GetComponent<PuddlePoissoinBehaviour>().source = source;
                         touched = true;
                         DealDamage(target, degats, typeDegats.ToString());
                         stopProjectile = true;

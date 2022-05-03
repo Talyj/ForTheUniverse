@@ -116,7 +116,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackType: 1
   cc: 0
-  enemyType: 0
   Cible: {fileID: 0}
   Health: 500
   MaxHealth: 500
@@ -140,11 +139,35 @@ MonoBehaviour:
   InCombat: 0
   InRegen: 0
   projPrefab: {fileID: 3524439937703818370, guid: ca45cb44d81306e409c4149613d2cdd6, type: 3}
-  SpawnPrefab: {fileID: 1088046490536253550}
-  enemytype: 2
+  enemyType: 2
+  team: 0
   SpawnPrefab2: {fileID: 0}
+  current: 0
+  pathDone: 0
   Position:
     m_InternalValue: {x: 0, y: 0, z: 0}
+  targetsUp:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  targetsDown:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  way: 0
+  isAttacking: 0
   passif: {fileID: 11400000, guid: 60a1a5ac534768a49a5c3b5156cba29a, type: 2}
   skills:
   - {fileID: 11400000, guid: e811cba326dd4964aabbdf4888a69aa6, type: 2}
@@ -152,6 +175,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 26a3a98a9c020354491222f45a76044a, type: 2}
   damageSupp: 0
   ult: {fileID: 0}
+  isAI: 0
   poissoin: {fileID: 7659772833644222945, guid: a4fb129dc3fd0c54fab8b5a4ddf46bed, type: 3}
   speedPush: 4
   windArea: {fileID: 2508449633787207300, guid: 7b6fdc55468d56e498faae2bd5737b29, type: 3}
@@ -184,7 +208,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 80
+  m_Constraints: 84
   m_CollisionDetection: 0
 --- !u!114 &6176881696067669642
 MonoBehaviour:
@@ -199,7 +223,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stats: {fileID: 0}
-  spells: []
+  spells:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   health: {fileID: 0}
   mana: {fileID: 0}
   healthCible: {fileID: 0}

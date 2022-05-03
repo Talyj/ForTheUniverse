@@ -23,7 +23,7 @@ public class GolemBehaviour : IDamageable
     public void Update()
     {
         Attack();
-        CheckDestroy();
+        IsDead();
     }
 
     public void Attack()
@@ -40,25 +40,19 @@ public class GolemBehaviour : IDamageable
         attackCooldown -= Time.deltaTime;
     }
 
-    public void CheckDestroy()
-    {
-        if (IsDead())
-        {
-            GameObject.Destroy(gameObject, 0);
-        }
-    }
-
     public void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("minion") || other.gameObject.CompareTag("Player"))
         {
-            //Modify GameObject with the player's class
-            if(target == null)
+            if(other.gameObject.GetComponent<IDamageable>().team != team)
             {
-                target = other.GetComponent<IDamageable>();
+                //Modify GameObject with the player's class
+                if(target == null)
+                {
+                    target = other.GetComponent<IDamageable>();
+                }
+                isInside = true;
             }
-            isInside = true;
-            Debug.Log("Inside");
         }
     }
 
@@ -68,7 +62,6 @@ public class GolemBehaviour : IDamageable
         {
             target = null;
             isInside = false;
-            Debug.Log("Outside");
         }
     }
 }

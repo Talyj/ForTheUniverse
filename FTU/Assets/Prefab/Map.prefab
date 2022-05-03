@@ -252,7 +252,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1203553486}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -313.35004, y: 61.62459, z: -37.11815}
+  m_LocalPosition: {x: -313.35004, y: 62, z: -37.11815}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -376,7 +376,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1537697549}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 286.64993, y: 61.62459, z: -37.11815}
+  m_LocalPosition: {x: 286.64993, y: 62, z: -37.11815}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1082,6 +1082,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Golem12
       objectReference: {fileID: 0}
+    - target: {fileID: 2470890344991082091, guid: 7d4a46d9377ebf749a29b84db3eb3b13, type: 3}
+      propertyPath: m_TagString
+      value: golem
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7d4a46d9377ebf749a29b84db3eb3b13, type: 3}
 --- !u!4 &1087998924629495729 stripped
@@ -1151,6 +1155,10 @@ PrefabInstance:
     - target: {fileID: 2470890344991082091, guid: 7d4a46d9377ebf749a29b84db3eb3b13, type: 3}
       propertyPath: m_Name
       value: Golem10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2470890344991082091, guid: 7d4a46d9377ebf749a29b84db3eb3b13, type: 3}
+      propertyPath: m_TagString
+      value: golem
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7d4a46d9377ebf749a29b84db3eb3b13, type: 3}
@@ -1222,6 +1230,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Golem23
       objectReference: {fileID: 0}
+    - target: {fileID: 2470890344991082091, guid: 7d4a46d9377ebf749a29b84db3eb3b13, type: 3}
+      propertyPath: m_TagString
+      value: golem
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7d4a46d9377ebf749a29b84db3eb3b13, type: 3}
 --- !u!4 &1087998924110597837 stripped
@@ -1291,6 +1303,10 @@ PrefabInstance:
     - target: {fileID: 2470890344991082091, guid: 7d4a46d9377ebf749a29b84db3eb3b13, type: 3}
       propertyPath: m_Name
       value: Golem11
+      objectReference: {fileID: 0}
+    - target: {fileID: 2470890344991082091, guid: 7d4a46d9377ebf749a29b84db3eb3b13, type: 3}
+      propertyPath: m_TagString
+      value: golem
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7d4a46d9377ebf749a29b84db3eb3b13, type: 3}
@@ -1362,6 +1378,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Golem22
       objectReference: {fileID: 0}
+    - target: {fileID: 2470890344991082091, guid: 7d4a46d9377ebf749a29b84db3eb3b13, type: 3}
+      propertyPath: m_TagString
+      value: golem
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7d4a46d9377ebf749a29b84db3eb3b13, type: 3}
 --- !u!4 &1087998924372034377 stripped
@@ -1432,6 +1452,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Golem21
       objectReference: {fileID: 0}
+    - target: {fileID: 2470890344991082091, guid: 7d4a46d9377ebf749a29b84db3eb3b13, type: 3}
+      propertyPath: m_TagString
+      value: golem
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7d4a46d9377ebf749a29b84db3eb3b13, type: 3}
 --- !u!4 &1087998923574191818 stripped
@@ -1501,6 +1525,10 @@ PrefabInstance:
     - target: {fileID: 2470890344991082091, guid: 7d4a46d9377ebf749a29b84db3eb3b13, type: 3}
       propertyPath: m_Name
       value: Golem13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2470890344991082091, guid: 7d4a46d9377ebf749a29b84db3eb3b13, type: 3}
+      propertyPath: m_TagString
+      value: golem
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7d4a46d9377ebf749a29b84db3eb3b13, type: 3}
@@ -1633,6 +1661,10 @@ PrefabInstance:
     - target: {fileID: 2470890344991082091, guid: 7d4a46d9377ebf749a29b84db3eb3b13, type: 3}
       propertyPath: m_Name
       value: Golem20
+      objectReference: {fileID: 0}
+    - target: {fileID: 2470890344991082091, guid: 7d4a46d9377ebf749a29b84db3eb3b13, type: 3}
+      propertyPath: m_TagString
+      value: golem
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7d4a46d9377ebf749a29b84db3eb3b13, type: 3}

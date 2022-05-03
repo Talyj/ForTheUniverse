@@ -53,10 +53,12 @@ public class WindAreaBehaviour : Projectile
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("cube"))
+        if (other.CompareTag("Player") || other.CompareTag("minion"))
         {
-            Debug.Log("yes");
-            source.AddWindedTarget(other.gameObject);
+            if(other.gameObject.GetComponent<IDamageable>().team != source.team)
+            {
+                source.AddWindedTarget(other.gameObject);
+            }
         }
     }
 }

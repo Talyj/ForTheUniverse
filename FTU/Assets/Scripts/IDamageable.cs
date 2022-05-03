@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using Unity.Netcode;
 using UnityEngine;
@@ -31,6 +32,7 @@ public abstract class IDamageable : NetworkBehaviour
     public bool canUlt;
     public bool InCombat;
     public bool InRegen;
+
 
     [Header("Ranged variables")]
     public GameObject projPrefab;
@@ -235,6 +237,14 @@ public abstract class IDamageable : NetworkBehaviour
         }
     }
 
+    public void CheckTarget()
+    {   
+        if(Cible == null)
+        {
+            Cible = null;
+        }        
+    }
+
     //Has to be present in the final update
     public void ExperienceBehaviour()
     {
@@ -332,13 +342,12 @@ public abstract class IDamageable : NetworkBehaviour
         cc = ControlType.none;
         CheckCC();
     }
-    public bool IsDead()
+    public void IsDead()
     {
         if (Health <= 0)
         {
-            return true;
+            Destroy(gameObject);
         }
-        return false;
     }
 
     private void OnDrawGizmos()

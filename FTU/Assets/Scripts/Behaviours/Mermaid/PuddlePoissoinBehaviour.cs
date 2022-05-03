@@ -7,6 +7,7 @@ public class PuddlePoissoinBehaviour : Projectile
     private int insideArea;
     private List<GameObject> targets = new List<GameObject>();
     private bool isActive;
+    public MermaidBehaviour source;
 
     // Start is called before the first frame update
     public new void Start()
@@ -34,7 +35,14 @@ public class PuddlePoissoinBehaviour : Projectile
                 isActive = true;
                 foreach(var targ in targets)
                 {
-                    targ.GetComponent<IDamageable>().TakeDamage(dmg, typeDmg);
+                    if (targ.GetComponent<IDamageable>().team != source.team)
+                    {
+                        targ.GetComponent<IDamageable>().TakeDamage(dmg, typeDmg);
+                    }
+                    else
+                    {
+                        targ.GetComponent<IDamageable>().SetHealth(targ.GetComponent<IDamageable>().Health + dmg);
+                    }
                     yield return new WaitForSeconds(0.5f);
                 }
             }
@@ -45,7 +53,7 @@ public class PuddlePoissoinBehaviour : Projectile
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("minion"))
+        if (other.CompareTag("Player") || other.CompareTag("minion") || other.CompareTag("golem"))
         {
             insideArea += 1;
             targets.Add(other.gameObject);

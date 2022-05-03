@@ -19,17 +19,17 @@ public class MinionsBehaviour : PlayerStats
 
     public void Update()
     {
-        DefaultMinionBehaviour();        
-    }   
-    
-    private void OnTriggerEnter(Collider other)
-    {
-        if(other.gameObject.GetComponent<IDamageable>().team != team)
+        //Check if target is dead
+        CheckTarget();
+        //Movement + attack
+        DefaultMinionBehaviour();
+        //Get Target in range
+        GetNearestTarget();
+        //Check if this gameobject is dead
+        IsDead();
+        if(Cible == null)
         {
-            if(other.gameObject.CompareTag("minion") || other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("golem"))
-            {
-                Cible = other.gameObject;
-            }
+            isAttacking = false;
         }
-    }
+    }   
 }

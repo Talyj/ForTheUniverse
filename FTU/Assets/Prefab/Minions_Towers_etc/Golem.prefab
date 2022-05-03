@@ -144,7 +144,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackType: 0
   cc: 0
-  enemyType: 0
   Cible: {fileID: 0}
   Health: 5000
   MaxHealth: 5000
@@ -158,8 +157,8 @@ MonoBehaviour:
   Exp: 0
   MaxExp: 100
   ExpRate: 1.75
-  DegatsPhysique: 100
-  DegatsMagique: 100
+  DegatsPhysique: 300
+  DegatsMagique: 300
   lvl: 1
   canMove: 0
   canAct: 0
@@ -168,7 +167,6 @@ MonoBehaviour:
   InCombat: 0
   InRegen: 0
   projPrefab: {fileID: 0}
-  SpawnPrefab: {fileID: 0}
-  enemytype: 0
+  enemyType: 0
   team: 0
   SpawnPrefab2: {fileID: 0}

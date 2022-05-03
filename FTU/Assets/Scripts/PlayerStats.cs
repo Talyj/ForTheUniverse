@@ -192,6 +192,7 @@ public class PlayerStats : PlayerMovement, ISkill
 
     public IEnumerator AttackSystemAI()
     {
+
         WalkToward();
         if (attackType == AttackType.Melee)
         {
@@ -201,6 +202,7 @@ public class PlayerStats : PlayerMovement, ISkill
         {
             StartCoroutine(RangeAutoAttack());
         }
+
         yield return 0;
     }
 
@@ -269,12 +271,11 @@ public class PlayerStats : PlayerMovement, ISkill
         if (!isAttacking && Cible != null)
         {
             isAttacking = true;
-            StartCoroutine(AttackSystemAI());
+            StartCoroutine(AttackSystemAI());            
         }
 
         if (!pathDone && !isAttacking && Cible == null)
         {
-            isAttacking = false;
             if (way == Way.up)
             {
                 MovementAI(whichTeam(targetsUp));
@@ -283,25 +284,40 @@ public class PlayerStats : PlayerMovement, ISkill
         }
     }
 
+    public IEnumerator WalkTo()
+    {
+        var dist = Vector3.Distance(gameObject.transform.position, Cible.transform.position);
+        while (dist > AttackRange)
+        {
+            //if( < AttackRange){
+                transform.position = Vector3.MoveTowards(transform.position, Cible.transform.position, MoveSpeed * Time.deltaTime);
+            //}
+        }
+        yield return 0;
+    }
+
     public void GetNearestTarget()
     {
-        Collider[] hitColliders = Physics.OverlapSphere(gameObject.transform.position, AttackRange);
-        if(hitColliders != null)
+        if(Cible == null) 
         {
-            foreach(var col in hitColliders)
+            Collider[] hitColliders = Physics.OverlapSphere(gameObject.transform.position, AttackRange);
+            if(hitColliders != null)
             {
-                if(col.gameObject.CompareTag("Player") ||
-                    col.gameObject.CompareTag("minion") ||
-                    col.gameObject.CompareTag("golem"))
+                foreach(var col in hitColliders)
                 {
-                    if(col.gameObject.GetComponent<IDamageable>().team != team)
+                    if(col.gameObject.CompareTag("Player") ||
+                        col.gameObject.CompareTag("minion") ||
+                        col.gameObject.CompareTag("golem"))
                     {
-                        Cible = col.gameObject;
-                        break;
+                        if(col.gameObject.GetComponent<IDamageable>().team != team)
+                        {
+                            Cible = col.gameObject;
+                            break;
+                        }
                     }
-                }
 
-            }
+                }
+            }            
         }
     }
 

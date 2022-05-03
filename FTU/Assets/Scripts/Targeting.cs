@@ -23,20 +23,21 @@ public class Targeting : MonoBehaviour
             
             if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, Mathf.Infinity))
             {
-                if (hit.collider.GetComponent<IDamageable>() != null)
+                if (hit.collider.TryGetComponent(typeof(IDamageable), out Component component))
                 {
-                    if (hit.collider.GetComponent<IDamageable>().GetEnemyType()== IDamageable.EnemyType.minion || 
-                        hit.collider.GetComponent<IDamageable>().GetEnemyType()== IDamageable.EnemyType.voister || 
-                        hit.collider.GetComponent<IDamageable>().GetEnemyType()== IDamageable.EnemyType.joueur || 
-                        hit.collider.GetComponent<IDamageable>().GetEnemyType()== IDamageable.EnemyType.dieu ||
-                        hit.collider.GetComponent<IDamageable>().GetEnemyType()== IDamageable.EnemyType.golem)
+                    if (component.GetComponent<IDamageable>().GetEnemyType()== IDamageable.EnemyType.minion ||
+                        component.GetComponent<IDamageable>().GetEnemyType()== IDamageable.EnemyType.voister ||
+                        component.GetComponent<IDamageable>().GetEnemyType()== IDamageable.EnemyType.joueur ||
+                        component.GetComponent<IDamageable>().GetEnemyType()== IDamageable.EnemyType.dieu ||
+                        component.GetComponent<IDamageable>().GetEnemyType()== IDamageable.EnemyType.golem)
                     {
-                        player.GetComponent<Dps1>().Cible = hit.collider.gameObject;
+                        if(hit.collider.GetComponent<IDamageable>().team != gameObject.GetComponent<IDamageable>().team)
+                        player.GetComponent<IDamageable>().Cible = hit.collider.gameObject;
                     }
                 }
                 else if (hit.collider.GetComponent<IDamageable>() == null)
                 {
-                    player.GetComponent<Dps1>().Cible = null;
+                    player.GetComponent<IDamageable>().Cible = null;
                 }
             }
         }

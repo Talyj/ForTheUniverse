@@ -2,15 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Dps1 : IDamageable, ISkill
+public class Dps1 : PlayerStats, ISkill
 {
 
     [Header("Competences")]
-    public Passifs passif;
-    public Skills[] skills;
+    //public Passifs passif;
+    //public Skills[] skills;
 
-    public float damageSupp;
-    public GameObject ult;
+    //public float damageSupp;
+    //public GameObject ult;
 
     UIDps ui;
 
