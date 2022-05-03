@@ -70,9 +70,9 @@ public class PlayerMovement : IDamageable
 
     public void MovementAI(Transform[] moveTo)
     {
-        if (canMove && canAct && Cible == null)
+        if (canMove && canAct)
         {
-            if (transform.position != moveTo[current].position)
+            if (Vector3.Distance(transform.position, moveTo[current].position) > 10)
             {
                 transform.position = Vector3.MoveTowards(transform.position, moveTo[current].position, MoveSpeed * Time.deltaTime);
             }
@@ -83,7 +83,7 @@ public class PlayerMovement : IDamageable
 
     public IEnumerator WalkToward()
     {        
-        while (/*transform.position != Cible.transform.position*/Cible != null)
+        while (transform.position != Cible.transform.position/*Cible != null*/)
         {
             transform.position = Vector3.MoveTowards(transform.position, Cible.transform.position, MoveSpeed * Time.deltaTime);
         }

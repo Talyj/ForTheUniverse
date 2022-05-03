@@ -206,8 +206,36 @@ public class PlayerStats : PlayerMovement, ISkill
         yield return 0;
     }
 
+    public void DefaultMinionBehaviour()
+    {
+        if (Cible == null)
+        {
+            isAttacking = false;
+        }
+
+        if (!isAttacking && Cible != null)
+        {
+            isAttacking = true;
+            StartCoroutine(AttackSystemAI());
+        }
+
+        if (!pathDone && !isAttacking && Cible == null)
+        {
+            if (way == Way.up)
+            {
+                MovementAI(whichTeam(targetsUp));
+            }
+            else MovementAI(whichTeam(targetsDown));
+        }
+    }
+
     public void DefaultHeroBehaviourAI()
     {
+        if (Cible == null)
+        {
+            isAttacking = false;
+        }
+
         if (!isAttacking && Cible != null)
         {
             isAttacking = true;
@@ -216,7 +244,6 @@ public class PlayerStats : PlayerMovement, ISkill
 
         if (!pathDone && !isAttacking && Cible == null)
         {
-            isAttacking = false;
             if (way == Way.up)
             {
                 MovementAI(whichTeam(targetsUp));
@@ -229,7 +256,10 @@ public class PlayerStats : PlayerMovement, ISkill
     {
         if (Cible != null)
         {
-            WalkToward();
+            //while(Vector3.Distance(gameObject.transform.position, Cible.transform.position) > AttackRange)
+            //{
+            //StartCoroutine(WalkTo());
+            //}
             var attackValue = Random.Range(0, 3);
 
             if (attackType == AttackType.Melee)
@@ -266,24 +296,6 @@ public class PlayerStats : PlayerMovement, ISkill
         yield return new WaitForSeconds(5);
     }
 
-    public void DefaultMinionBehaviour()
-    {
-        if (!isAttacking && Cible != null)
-        {
-            isAttacking = true;
-            StartCoroutine(AttackSystemAI());            
-        }
-
-        if (!pathDone && !isAttacking && Cible == null)
-        {
-            if (way == Way.up)
-            {
-                MovementAI(whichTeam(targetsUp));
-            }
-            else MovementAI(whichTeam(targetsDown));
-        }
-    }
-
     public IEnumerator WalkTo()
     {
         var dist = Vector3.Distance(gameObject.transform.position, Cible.transform.position);
@@ -300,7 +312,7 @@ public class PlayerStats : PlayerMovement, ISkill
     {
         if(Cible == null) 
         {
-            Collider[] hitColliders = Physics.OverlapSphere(gameObject.transform.position, AttackRange);
+            Collider[] hitColliders = Physics.OverlapSphere(gameObject.transform.position, AttackRange * 5);
             if(hitColliders != null)
             {
                 foreach(var col in hitColliders)
@@ -373,7 +385,7 @@ public class PlayerStats : PlayerMovement, ISkill
 
     public void MeleeAttack()
     {
-        if(Cible != null && Vector3.Distance(gameObject.transform.position, Cible.transform.position) < AttackRange)
+        if(Cible != null && Vector3.Distance(gameObject.transform.position, Cible.transform.position) < AttackRange || Cible != null && isAI)
         {
             if(IsTargetable(Cible.GetComponent<IDamageable>().GetEnemyType()))
             {

@@ -50,23 +50,35 @@ public class SunBehaviour : PlayerStats
         }
         if (canAct)
         {
-            MovementPlayer();
-            AttackSystemPlayer();
-            if (Input.GetKeyDown(KeyCode.A) && Cible != null)
+            if (isAI)
             {
-                if(Vector3.Distance(Cible.transform.position, transform.position) <= AttackRange)
+                if (Cible == null)
                 {
-                    Swap(Cible);
+                    GetNearestTarget();
                 }
+                CheckTarget();
+                DefaultHeroBehaviourAI();
             }
-            if (Input.GetKeyDown(KeyCode.E) && Cible != null && Vector3.Distance(Cible.transform.position, transform.position) <= AttackRange * 3)
+            else
             {
-                StickTeleportation(Cible);
-            }
+                MovementPlayer();
+                AttackSystemPlayer();
+                if (Input.GetKeyDown(KeyCode.A) && Cible != null)
+                {
+                    if(Vector3.Distance(Cible.transform.position, transform.position) <= AttackRange)
+                    {
+                        Swap(Cible);
+                    }
+                }
+                if (Input.GetKeyDown(KeyCode.E) && Cible != null && Vector3.Distance(Cible.transform.position, transform.position) <= AttackRange * 3)
+                {
+                    StickTeleportation(Cible);
+                }
 
-            if (Input.GetKeyDown(KeyCode.Space) && canUlt == true)
-            {
-                Ultime();
+                if (Input.GetKeyDown(KeyCode.Space) && canUlt == true)
+                {
+                    Ultime();
+                }
             }
         }
     }

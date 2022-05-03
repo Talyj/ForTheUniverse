@@ -58,6 +58,7 @@ public class MermaidBehaviour : PlayerStats
                     GetNearestTarget();
                 }
                 DefaultHeroBehaviourAI();
+                CheckTarget();
             }
             else
             {

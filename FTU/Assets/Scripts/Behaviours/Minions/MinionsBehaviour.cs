@@ -27,9 +27,5 @@ public class MinionsBehaviour : PlayerStats
         GetNearestTarget();
         //Check if this gameobject is dead
         IsDead();
-        if(Cible == null)
-        {
-            isAttacking = false;
-        }
     }   
 }
