@@ -36,7 +36,7 @@ public class Targeting : MonoBehaviour
                 }
                 else if (hit.collider.GetComponent<IDamageable>() == null)
                 {
-                    player.GetComponent<Dps1>().Cible = null;
+                    player.GetComponent<IDamageable>().Cible = null;
                 }
             }
         }

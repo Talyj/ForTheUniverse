@@ -10,6 +10,7 @@ public class CameraFollow : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //gameObject.transform.LookAt(player);
         camOffSetZ = gameObject.transform.position.z - player.position.z;
     }
 
