@@ -57,6 +57,7 @@ public class MermaidBehaviour : PlayerStats
                 {
                     GetNearestTarget();
                 }
+                else WalkToTarget();
                 DefaultHeroBehaviourAI();
                 CheckTarget();
             }

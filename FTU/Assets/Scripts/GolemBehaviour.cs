@@ -5,19 +5,15 @@ using UnityEngine;
 
 public class GolemBehaviour : IDamageable
 {
-    private float damages;
     private bool isInside;
     //Modify that to the player's class
-    private IDamageable target;
     private float attackCooldown;
 
     public void Start()
     {
         attackCooldown = 0;
         isInside = false;
-        target = null;
-        //SetHealth(200);
-        damages = 10;
+        Cible = null;
     }
 
     public void Update()
@@ -33,7 +29,7 @@ public class GolemBehaviour : IDamageable
             if (isInside)
             {
                 //Replace function by the player's one that deals damages
-                target.TakeDamage(damages, "Brut");
+                Cible.GetComponent<IDamageable>().TakeDamage(DegatsMagique, "Brut");
                 attackCooldown = 5;
             }
         }
@@ -47,9 +43,9 @@ public class GolemBehaviour : IDamageable
             if(other.gameObject.GetComponent<IDamageable>().team != team)
             {
                 //Modify GameObject with the player's class
-                if(target == null)
+                if(Cible == null)
                 {
-                    target = other.GetComponent<IDamageable>();
+                    Cible = other.gameObject;
                 }
                 isInside = true;
             }
@@ -60,7 +56,7 @@ public class GolemBehaviour : IDamageable
     {
         if (other.gameObject.CompareTag("minion") || other.gameObject.CompareTag("Player"))
         {
-            target = null;
+            Cible = null;
             isInside = false;
         }
     }

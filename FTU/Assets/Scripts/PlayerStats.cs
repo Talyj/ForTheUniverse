@@ -190,9 +190,8 @@ public class PlayerStats : PlayerMovement, ISkill
         yield return 0;
     }
 
-    public IEnumerator AttackSystemAI()
+    public void AttackSystemAI()
     {
-
         WalkToward();
         if (attackType == AttackType.Melee)
         {
@@ -202,8 +201,6 @@ public class PlayerStats : PlayerMovement, ISkill
         {
             StartCoroutine(RangeAutoAttack());
         }
-
-        yield return 0;
     }
 
     public void DefaultMinionBehaviour()
@@ -216,7 +213,7 @@ public class PlayerStats : PlayerMovement, ISkill
         if (!isAttacking && Cible != null)
         {
             isAttacking = true;
-            StartCoroutine(AttackSystemAI());
+            AttackSystemAI();
         }
 
         if (!pathDone && !isAttacking && Cible == null)
@@ -296,23 +293,16 @@ public class PlayerStats : PlayerMovement, ISkill
         yield return new WaitForSeconds(5);
     }
 
-    public IEnumerator WalkTo()
+    public void WalkToTarget()
     {
-        var dist = Vector3.Distance(gameObject.transform.position, Cible.transform.position);
-        while (dist > AttackRange)
-        {
-            //if( < AttackRange){
-                transform.position = Vector3.MoveTowards(transform.position, Cible.transform.position, MoveSpeed * Time.deltaTime);
-            //}
-        }
-        yield return 0;
+        transform.position = Vector3.MoveTowards(transform.position, Cible.transform.position, MoveSpeed * Time.deltaTime);
     }
 
     public void GetNearestTarget()
     {
         if(Cible == null) 
         {
-            Collider[] hitColliders = Physics.OverlapSphere(gameObject.transform.position, AttackRange * 5);
+            Collider[] hitColliders = Physics.OverlapSphere(gameObject.transform.position, AttackRange * 2);
             if(hitColliders != null)
             {
                 foreach(var col in hitColliders)
@@ -355,7 +345,19 @@ public class PlayerStats : PlayerMovement, ISkill
             //anim.SetBool("AA", true);
             var test = AttackSpeed / ((100 / +AttackSpeed) * 0.01f);
             yield return new WaitForSeconds(test);
-            MeleeAttack();
+            //MeleeAttack();
+            if (Vector3.Distance(gameObject.transform.position, Cible.transform.position) < AttackRange || 
+                Vector3.Distance(gameObject.transform.position, Cible.transform.position) < AttackRange * 5 && isAI)
+            {
+                if (IsTargetable(Cible.GetComponent<IDamageable>().GetEnemyType()))
+                {
+                    Cible.GetComponent<IDamageable>().TakeDamage(DegatsPhysique + damageSupp, "Physique");
+                }
+            }
+            else
+            {
+                //anim.SetBool("AA", false);
+            }
             yield return new WaitForSeconds(AttackSpeed / ((100 / +AttackSpeed) * 0.01f));
             if ( Vector3.Distance(gameObject.transform.position, Cible.transform.position) > AttackRange)
             {
@@ -372,7 +374,19 @@ public class PlayerStats : PlayerMovement, ISkill
         {
             //anim.SetBool("AA", true);
             yield return new WaitForSeconds(AttackSpeed + ((100 / AttackSpeed) * 0.01f));
-            RangeAttack();
+            //RangeAttack();
+            if (Vector3.Distance(gameObject.transform.position, Cible.transform.position) < AttackRange || 
+                Vector3.Distance(gameObject.transform.position, Cible.transform.position) < AttackRange * 5 && isAI)
+            {
+                if (IsTargetable(Cible.GetComponent<IDamageable>().GetEnemyType()))
+                {
+                    SpawnRangeAttack(Cible, damageSupp);
+                }
+            }
+            else
+            {
+                //anim.SetBool("AA", false);
+            }
             yield return new WaitForSeconds(AttackSpeed / ((100 / AttackSpeed) * 0.01f));
             if (Vector3.Distance(gameObject.transform.position, Cible.transform.position) > AttackRange)
             {

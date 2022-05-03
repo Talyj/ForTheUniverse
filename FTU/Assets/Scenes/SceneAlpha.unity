@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2761,16 +2761,48 @@ PrefabInstance:
       propertyPath: MoveSpeed
       value: 30
       objectReference: {fileID: 0}
+    - target: {fileID: 2615776804353589626, guid: c02b52a3635f2f5458405377a5e44286, type: 3}
+      propertyPath: enemyType
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2615776804629023998, guid: c02b52a3635f2f5458405377a5e44286, type: 3}
       propertyPath: team
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2615776804629023998, guid: c02b52a3635f2f5458405377a5e44286, type: 3}
+      propertyPath: enemyType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2615776804757062457, guid: c02b52a3635f2f5458405377a5e44286, type: 3}
+      propertyPath: enemyType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2615776805147921794, guid: c02b52a3635f2f5458405377a5e44286, type: 3}
+      propertyPath: enemyType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2615776805344777096, guid: c02b52a3635f2f5458405377a5e44286, type: 3}
+      propertyPath: enemyType
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2615776805588008427, guid: c02b52a3635f2f5458405377a5e44286, type: 3}
       propertyPath: team
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2615776805588008427, guid: c02b52a3635f2f5458405377a5e44286, type: 3}
+      propertyPath: enemyType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2615776805921507374, guid: c02b52a3635f2f5458405377a5e44286, type: 3}
+      propertyPath: enemyType
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2615776806240101625, guid: c02b52a3635f2f5458405377a5e44286, type: 3}
       propertyPath: team
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2615776806240101625, guid: c02b52a3635f2f5458405377a5e44286, type: 3}
+      propertyPath: enemyType
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3087707453656226757, guid: c02b52a3635f2f5458405377a5e44286, type: 3}

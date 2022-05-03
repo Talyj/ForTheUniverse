@@ -56,6 +56,7 @@ public class SunBehaviour : PlayerStats
                 {
                     GetNearestTarget();
                 }
+                else WalkToTarget();
                 CheckTarget();
                 DefaultHeroBehaviourAI();
             }
@@ -83,7 +84,7 @@ public class SunBehaviour : PlayerStats
         }
     }
 
-    public void Passif()
+    public new void Passif()
     {
         switch (currentStick)
         {

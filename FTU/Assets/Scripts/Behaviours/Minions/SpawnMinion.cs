@@ -57,5 +57,6 @@ public class SpawnMinion : MonoBehaviour
         minionTemp.GetComponent<MinionsBehaviour>().team = team;
         minionTemp.GetComponent<MinionsBehaviour>().targetsUp = pathUp;
         minionTemp.GetComponent<MinionsBehaviour>().targetsDown = pathDown;
+        minionTemp.GetComponent<MinionsBehaviour>().isAI = true;
     }
 }
