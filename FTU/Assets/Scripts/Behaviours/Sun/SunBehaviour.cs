@@ -26,7 +26,7 @@ public class SunBehaviour : PlayerStats
     }
     private Sticks currentStick;
 
-    public new void Start()
+    public void Start()
     {
         currentStick = Sticks.AuraStick;
         canMove = true;
@@ -44,12 +44,12 @@ public class SunBehaviour : PlayerStats
     {
         HealthBehaviour();
         ExperienceBehaviour();
-        if(Cible != null)
+        if (Cible != null)
         {
             Passif();
         }
 
-         #region test
+        #region test
 
         // test des touches
         if (Input.GetKeyDown(KeyCode.K))
@@ -80,37 +80,33 @@ public class SunBehaviour : PlayerStats
         if (canAct)
         {
             if (isAI)
-            //Movement();
-            AttackSystem();
-            if (Input.GetKeyDown(KeyCode.Alpha1) && Cible != null)
             {
+                AttackSystemPlayer();
                 if (Cible == null)
                 {
                     GetNearestTarget();
                 }
                 else WalkToTarget();
-                CheckTarget();
                 DefaultHeroBehaviourAI();
+                CheckTarget();
             }
-            if (Input.GetKeyDown(KeyCode.Alpha2) && Cible != null && Vector3.Distance(Cible.transform.position, transform.position) <= AttackRange * 3)
+            else if (!isAttacking && Cible != null)
             {
-                MovementPlayer();
                 AttackSystemPlayer();
-                if (Input.GetKeyDown(KeyCode.A) && Cible != null)
+                MovementPlayer();
+                if (Input.GetKeyDown(KeyCode.Alpha2) && Cible != null && Vector3.Distance(Cible.transform.position, transform.position) <= AttackRange * 3)
                 {
-                    if(Vector3.Distance(Cible.transform.position, transform.position) <= AttackRange)
-                    {
-                        Swap(Cible);
-                    }
+                    Swap(Cible);
                 }
                 if (Input.GetKeyDown(KeyCode.E) && Cible != null && Vector3.Distance(Cible.transform.position, transform.position) <= AttackRange * 3)
                 {
                     StickTeleportation(Cible);
                 }
 
-            if (Input.GetKeyDown(KeyCode.Alpha3) && canUlt == true)
-            {
-                Ultime();
+                if (Input.GetKeyDown(KeyCode.Alpha3) && canUlt == true)
+                {
+                    Ultime();
+                }
             }
         }
     }

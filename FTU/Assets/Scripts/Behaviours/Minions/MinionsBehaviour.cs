@@ -31,15 +31,15 @@ public class MinionsBehaviour : PlayerStats
         {
             WalkToTarget();
         }   
-        if (IsDead() == true)
-        {
-            ExpFor();
-        }
+        //if (IsDead() == true)
+        //{
+        //    ExpFor();
+        //}
     }
 
-    public void ExpFor()
-    {
-        Instantiate(xp, transform.position, Quaternion.identity);
-        Destroy(gameObject);
-    }
+    //public void ExpFor()
+    //{
+    //    Instantiate(xp, transform.position, Quaternion.identity);
+    //    Destroy(gameObject);
+    //}
 }

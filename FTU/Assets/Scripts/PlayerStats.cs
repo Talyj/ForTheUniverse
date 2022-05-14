@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerStats : IDamageable, ISkill
+public class PlayerStats : PlayerMovement, ISkill
 {
     //Animator anim;
 

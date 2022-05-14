@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BigED : IDamageable, ISkill
+public class BigED : PlayerStats, ISkill
 {
     //Animator anim;
 

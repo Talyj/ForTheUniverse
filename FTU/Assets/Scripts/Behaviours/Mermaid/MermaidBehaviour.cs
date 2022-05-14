@@ -49,14 +49,13 @@ public class MermaidBehaviour : PlayerStats
         HealthBehaviour();
         ExperienceBehaviour();
         Passif();
+        MovementPlayer();
 
         if (canAct)
         {
             if (isAI)
-            //Movement();
-            AttackSystem();
-            if (Input.GetKeyDown(KeyCode.Alpha1) && Cible != null && Vector3.Distance(gameObject.transform.position, Cible.transform.position) < AttackRange)
             {
+                AttackSystemPlayer();
                 if(Cible == null)
                 {
                     GetNearestTarget();
@@ -65,32 +64,24 @@ public class MermaidBehaviour : PlayerStats
                 DefaultHeroBehaviourAI();
                 CheckTarget();
             }
-            if (Input.GetKeyDown(KeyCode.Alpha2) && Cible != null)
+            else if(!isAttacking && Cible != null)
             {
-                if(!isAttacking && Cible != null)
-                {
-                    AttackSystemPlayer();
-                }
+                AttackSystemPlayer();
                 MovementPlayer();
-                if (Input.GetKeyDown(KeyCode.A) && Cible != null && Vector3.Distance(gameObject.transform.position, Cible.transform.position) < AttackRange)
+                if (Input.GetKeyDown(KeyCode.Alpha1) && Cible != null && Vector3.Distance(gameObject.transform.position, Cible.transform.position) < AttackRange)
                 {
                     Poissoin(EnemyType.minion, Cible);
                 }
-                if (Input.GetKeyDown(KeyCode.E) && Cible != null)
+                if (Input.GetKeyDown(KeyCode.Alpha2) && Cible != null)
                 {
                     MagicWind(Cible);
                 }
 
-                if (Input.GetKeyDown(KeyCode.Space) && canUlt == true)
+                if (Input.GetKeyDown(KeyCode.Alpha3) && canUlt == true)
                 {
                     Ultime();
                 }
-            }
-
-            if (Input.GetKeyDown(KeyCode.Alpha3) && canUlt == true)
-            {
-                Ultime();
-            }
+            }           
         }
     }
 

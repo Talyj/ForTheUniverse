@@ -45,7 +45,7 @@ public abstract class IDamageable : NetworkBehaviour
 
     [Header("Ranged variables")]
     public GameObject projPrefab;
-    //public Transform SpawnPrefab;
+    public Transform SpawnPrefab;
 
     public EnemyType enemyType;
     public enum EnemyType
