@@ -17,31 +17,28 @@ public abstract class IDamageable : NetworkBehaviour
     Behaviour[] disableOnDeath;
     //[SerializeField]
     //public GameObject deathEffect;
-    [SerializeField]
-    bool isDead = false;
-    [SerializeField]
+    //[SerializeField]
     Transform templeSpawn;
     [Header("Stats")]
-    public float Health = 500, MaxHealth = 500;
-    public float MoveSpeed = 4.5f;
-    public float AttackSpeed = 0.5f;
-    public float AttackRange = 1.5f;
-    public float Mana = 100, MaxMana = 100;
-    public float ResistancePhysique = 0; // calcul des resistance health = health - (DegatsPhysiqueRe�u -((ResistancePhysique * DegatsPhysiqueRe�u)/100)
-    public float ResistanceMagique = 0; //calcul des resistance health = health - (DegatsMagiqueRe�u - ((ResistanceMagique * DegatsMagiqueRe�u) / 100)
-    public float Exp = 0;
-    public float MaxExp = 100;
-    public float ExpRate = 1.75f;//multiplicateur de l'exp max
-    public float DegatsPhysique = 100;
-    public float DegatsMagique = 100;
-    public int lvl = 1;
-    public bool canMove;
-    public bool canAct;
-    public bool useSkills;
-    public bool canUlt;
-    public bool InCombat;
-    public bool InRegen;
-
+    private float Health, MaxHealth;
+    private float MoveSpeed;
+    private float AttackSpeed;
+    private float AttackRange;
+    private float Mana, MaxMana;
+    private float ResistancePhysique; // calcul des resistance health = health - (DegatsPhysiqueRe�u -((ResistancePhysique * DegatsPhysiqueRe�u)/100)
+    private float ResistanceMagique; //calcul des resistance health = health - (DegatsMagiqueRe�u - ((ResistanceMagique * DegatsMagiqueRe�u) / 100)
+    private float Exp;
+    private float MaxExp;
+    private float ExpRate;//multiplicateur de l'exp max
+    private float DegatsPhysique;
+    private float DegatsMagique;
+    private int lvl;
+    private bool canMove;
+    private bool canAct;
+    private bool useSkills;
+    private bool canUlt;
+    private bool InCombat;
+    private bool InRegen;
 
     [Header("Ranged variables")]
     public GameObject projPrefab;
@@ -64,11 +61,50 @@ public abstract class IDamageable : NetworkBehaviour
         Dominion
     }
 
+    public enum DamageType
+    {
+        physique,
+        magique,
+        brut
+    }
+
+    public enum ControlType
+    {
+        none,//aucun cc
+        stun,//etourdit
+        bump,//en l'air
+        root,//immobiliser mais pas stun
+        slow,//move speed ralenti
+        charme
+    }
+
+
     public Transform SpawnPrefab2;
 
     #region Getter and Setter
 
     #region Getter
+
+    public bool GetUseSkills()
+    {
+        return useSkills;
+    }
+
+    public bool GetCanMove()
+    {
+        return canMove;
+    }
+
+    public bool GetCanAct()
+    {
+        return canAct;
+    }
+
+    public bool GetCanUlt()
+    {
+        return canUlt;
+    }
+
     public float GetHealth()
     {
         return Health;
@@ -97,11 +133,11 @@ public abstract class IDamageable : NetworkBehaviour
     {
         return AttackRange;
     }
-    public float GetArmor()
+    public float GetResPhys()
     {
         return ResistancePhysique;
     }
-    public float GetRM()
+    public float GetResMag()
     {
         return ResistanceMagique;
     }
@@ -109,11 +145,17 @@ public abstract class IDamageable : NetworkBehaviour
     {
         return Exp;
     }
-    public float GetAD()
+
+    public float GetMaxExp()
+    {
+        return MaxExp;
+    }
+
+    public float GetDegPhys()
     {
         return DegatsPhysique;
     }
-    public float GetAP()
+    public float GetDegMag()
     {
         return DegatsMagique;
     }
@@ -134,64 +176,70 @@ public abstract class IDamageable : NetworkBehaviour
 
     #endregion
     #region Setter
+    public void SetCanMove(bool value)
+    {
+        canMove = value;
+    }
+    public void SetCanAct(bool value)
+    {
+        canAct = value;
+    }
+    public void SetCanUlt(bool value)
+    {
+        canUlt = value;
+    }
     public void SetHealth(float value)
     {
-        Health += value;
+        Health = value;
     }
     public void SetMaxHealth(float value)
     {
-        MaxHealth += value;
+        MaxHealth = value;
     }
     public void SetMana(float value)
     {
-        Mana += value;
+        Mana = value;
     }
     public void SetMoveSpeed(float value)
     {
-        MoveSpeed += value;
+        MoveSpeed = value;
     }
     public void SetAttackSpeed(float value)
     {
-        AttackSpeed += value;
+        AttackSpeed = value;
     }
     public void SetAttackRange(float value)
     {
-        AttackRange += value;
+        AttackRange = value;
     }
-    public void SetArmor(float value)
+    public void SetResPhys(float value)
     {
-        ResistancePhysique += value;
+        ResistancePhysique = value;
     }
-    public void SetRM(float value)
+    public void SetResMag(float value)
     {
-        ResistanceMagique += value;
+        ResistanceMagique = value;
     }
     public void SetExp(float value)
     {
-        Exp += value;
+        Exp = value;
     }
-    public void SetAD(int value)
+    public void SetDegPhys(float value)
     {
-        DegatsPhysique += value;
+        DegatsPhysique = value;
     }
-    public void SetAP(int value)
+    public void SetDegMag(float value)
     {
-        DegatsMagique += value;
+        DegatsMagique = value;
     }
     public void SetLvl(int value)
     {
-        lvl += value;
+        lvl = value;
     }
     #endregion
 
     #endregion
 
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        Init();
-    }
 
     public void Init()
     {
@@ -204,7 +252,6 @@ public abstract class IDamageable : NetworkBehaviour
 
         Health = MaxHealth;
         //deathEffect.SetActive(false);
-        isDead = false;
         for (int i = 0; i < disableOnDeath.Length; i++)
         {
             disableOnDeath[i].enabled = true;
@@ -219,6 +266,22 @@ public abstract class IDamageable : NetworkBehaviour
         {
             col.enabled = true;
         }
+
+        MaxHealth = 500;
+        Health = MaxHealth;
+        MoveSpeed = 4.5f;
+        AttackSpeed = 0.5f;
+        AttackRange = 1.5f;
+        Mana = 100;
+        MaxMana = 100;
+        ResistancePhysique = 0;
+        ResistanceMagique = 0;
+        Exp = 0;
+        MaxExp = 100;
+        ExpRate = 1.75f;
+        DegatsPhysique = 100;
+        DegatsMagique = 100;
+        lvl = 1;
     }
 
     //public void Setup()
@@ -235,7 +298,6 @@ public abstract class IDamageable : NetworkBehaviour
     {
         Health = MaxHealth;
         //deathEffect.SetActive(false);
-        isDead = false;
         for (int i = 0; i < disableOnDeath.Length; i++)
         {
             disableOnDeath[i].enabled = true;
@@ -365,18 +427,18 @@ public abstract class IDamageable : NetworkBehaviour
 
 
 
-    public void TakeDamage(float DegatsRecu, string type)
+    public void TakeDamage(float DegatsRecu, DamageType type)
     {
         //application des res, a modifier pour les differents type de degats
-        if (type == "Physique")
+        if (type == DamageType.physique)
         {
             Health = Health - (DegatsRecu - ((ResistancePhysique * DegatsRecu) / 100)); // physique
         }
-        else if (type == "Magique")
+        else if (type == DamageType.magique)
         {
             Health = Health - (DegatsRecu - ((ResistanceMagique * DegatsRecu) / 100)); // magique
         }
-        else if (type == "Brut")
+        else if (type == DamageType.brut)
         {
             Health -= DegatsRecu;
         }
@@ -411,7 +473,6 @@ public abstract class IDamageable : NetworkBehaviour
 
     public void Die()
     {
-        isDead = true;
         //deathEffect.SetActive(true);
         for (int i = 0; i < disableOnDeath.Length; i++)
         {
@@ -472,24 +533,32 @@ public abstract class IDamageable : NetworkBehaviour
         }
         return false;
     }
-}
 
-public enum EnemyType
-{
-    minion,
-    golem,
-    joueur,
-    dieu,
-    voister
-}
+    public void GetNearestTarget()
+    {
+        if (Cible == null)
+        {
+            Collider[] hitColliders = Physics.OverlapSphere(gameObject.transform.position, GetAttackRange());
+            if (hitColliders != null)
+            {
+                foreach (var col in hitColliders)
+                {
+                    if (col.gameObject.CompareTag("Player") ||
+                        col.gameObject.CompareTag("minion") ||
+                        col.gameObject.CompareTag("golem") ||
+                        col.gameObject.CompareTag("dd"))
 
-public enum ControlType
-{
-    none,//aucun cc
-    stun,//etourdit
-    bump,//en l'air
-    root,//immobiliser mais pas stun
-    slow,//move speed ralenti
-    charme
+                    {
+                        if (col.gameObject.GetComponent<IDamageable>().team != team)
+                        {
+                            Cible = col.gameObject;
+                            break;
+                        }
+                    }
+
+                }
+            }
+        }
+    }
 }
 

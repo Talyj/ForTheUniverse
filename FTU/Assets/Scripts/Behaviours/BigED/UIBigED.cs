@@ -61,10 +61,10 @@ public class UIBigED : MonoBehaviour
             costsCible[1].enabled = false;
         }
         //stats a modfier
-        costs[6].text = "RM : " + stats.GetRM() + "\n";
-        costs[6].text += "Armor : " + stats.GetArmor() + "\n";
-        costs[6].text += "AP : " + stats.GetAP() + "\n";
-        costs[6].text += "AD : " + stats.GetAD() + "\n";
+        costs[6].text = "RM : " + stats.GetResMag() + "\n";
+        costs[6].text += "Armor : " + stats.GetResPhys() + "\n";
+        costs[6].text += "AP : " + stats.GetDegMag() + "\n";
+        costs[6].text += "AD : " + stats.GetDegPhys() + "\n";
         costs[6].text += "MS : " + stats.GetMoveSpeed() + "\n";
 
         costs[5].text = "Niveau : " + stats.GetLvl();

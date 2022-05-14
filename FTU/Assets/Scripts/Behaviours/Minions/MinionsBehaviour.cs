@@ -11,9 +11,9 @@ public class MinionsBehaviour : PlayerStats
         pathDone = false;
         if (attackType == AttackType.Ranged)
         {
-            AttackRange = 30f;
+            SetAttackRange(30f);
         }
-        else AttackRange = 10f;
+        else SetAttackRange(10f);
         isAttacking = false;        
     }
 

@@ -28,9 +28,10 @@ public class SunBehaviour : PlayerStats
 
     public void Start()
     {
+        Init();
+        SetMoveSpeed(60f);
+        SetAttackRange(20f);
         currentStick = Sticks.AuraStick;
-        canMove = true;
-        canAct = true;
         step = 0;
         Instance = this;
         foreach (var elmt in skills)
@@ -52,36 +53,35 @@ public class SunBehaviour : PlayerStats
         #region test
 
         // test des touches
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            TakeDamage(100, "Physique");
+        //if (Input.GetKeyDown(KeyCode.K))
+        //{
+        //    TakeDamage(100, DamageType.physique);
 
-        }
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            Health = MaxHealth;
-            Mana = MaxMana;
-        }
-        if (Input.GetKeyDown(KeyCode.J))
-        {
-            TakeDamage(100, "Magique");
-        }
-        if (Input.GetKeyDown(KeyCode.L))//execute methode
-        {
-            TakeDamage(9999, "Brut");
-        }
-        if (Input.GetKeyDown(KeyCode.X))
-        {
-            Exp = MaxExp + 1;
+        //}
+        //if (Input.GetKeyDown(KeyCode.R))
+        //{
+        //    Health = MaxHealth;
+        //    Mana = MaxMana;
+        //}
+        //if (Input.GetKeyDown(KeyCode.J))
+        //{
+        //    TakeDamage(100, DamageType.magique);
+        //}
+        //if (Input.GetKeyDown(KeyCode.L))//execute methode
+        //{
+        //    TakeDamage(9999, DamageType.brut);
+        //}
+        //if (Input.GetKeyDown(KeyCode.X))
+        //{
+        //    Exp = MaxExp + 1;
 
-        }
+        //}
         #endregion
 
-        if (canAct)
+        if (GetCanAct())
         {
             if (isAI)
             {
-                AttackSystemPlayer();
                 if (Cible == null)
                 {
                     GetNearestTarget();
@@ -92,18 +92,17 @@ public class SunBehaviour : PlayerStats
             }
             else if (!isAttacking && Cible != null)
             {
-                AttackSystemPlayer();
                 MovementPlayer();
-                if (Input.GetKeyDown(KeyCode.Alpha2) && Cible != null && Vector3.Distance(Cible.transform.position, transform.position) <= AttackRange * 3)
+                if (Input.GetKeyDown(KeyCode.Alpha2) && Cible != null && Vector3.Distance(Cible.transform.position, transform.position) <= GetAttackRange() * 3)
                 {
                     Swap(Cible);
                 }
-                if (Input.GetKeyDown(KeyCode.E) && Cible != null && Vector3.Distance(Cible.transform.position, transform.position) <= AttackRange * 3)
+                if (Input.GetKeyDown(KeyCode.E) && Cible != null && Vector3.Distance(Cible.transform.position, transform.position) <= GetAttackRange() * 3)
                 {
                     StickTeleportation(Cible);
                 }
 
-                if (Input.GetKeyDown(KeyCode.Alpha3) && canUlt == true)
+                if (Input.GetKeyDown(KeyCode.Alpha3) && GetCanUlt() == true)
                 {
                     Ultime();
                 }
@@ -118,13 +117,13 @@ public class SunBehaviour : PlayerStats
             case Sticks.AuraStick:
                 if(Cible.GetComponent<IDamageable>().enemyType == EnemyType.voister)
                 {
-                    damageSupp = DamageMultiplier(DegatsPhysique, 0.5f);
+                    damageSupp = DamageMultiplier(GetDegPhys(), 0.5f);
                 }
                 break;
             case Sticks.SpiritSitck:
                 if (Cible.GetComponent<IDamageable>().enemyType == EnemyType.joueur)
                 {
-                    damageSupp = DamageMultiplier(DegatsMagique, 0.5f);
+                    damageSupp = DamageMultiplier(GetDegMag(), 0.5f);
                 }
                 break;
         }
@@ -144,22 +143,22 @@ public class SunBehaviour : PlayerStats
 
     public void Swap(GameObject target)
     {
-        if (skills[0].isCooldown == false && Mana >= skills[0].Cost)
+        if (skills[0].isCooldown == false && GetMana() >= skills[0].Cost)
         {
-            Mana -= skills[0].Cost;
+            SetMana(GetMana() - skills[0].Cost);
             Debug.Log(skills[0].Name + " lanc�e");
             skills[0].isCooldown = true;
 
             SwitchStick();
             if(currentStick == Sticks.AuraStick && target.GetComponent<IDamageable>().enemyType == EnemyType.voister)
             {
-                target.GetComponent<IDamageable>().canAct = false;
+                target.GetComponent<IDamageable>().SetCanAct(false);
                 StartCoroutine(SwapCooldown(target));
             }
             else if(currentStick == Sticks.SpiritSitck && target.GetComponent<IDamageable>().enemyType == EnemyType.joueur)
             {
-                var speedTemp = target.GetComponent<IDamageable>().MoveSpeed;
-                target.GetComponent<IDamageable>().MoveSpeed /= 2;
+                var speedTemp = target.GetComponent<IDamageable>().GetMoveSpeed();
+                target.GetComponent<IDamageable>().SetMoveSpeed(GetMoveSpeed()/2);
                 StartCoroutine(SwapCooldown(target, speedTemp));
             }
 
@@ -169,7 +168,7 @@ public class SunBehaviour : PlayerStats
         {
             Debug.Log("en cd");
         }
-        else if (Mana < skills[0].Cost)
+        else if (GetMana() < skills[0].Cost)
         {
             Debug.Log("pas assez de mana");
         }
@@ -180,32 +179,30 @@ public class SunBehaviour : PlayerStats
         yield return new WaitForSeconds(3);
         if(defaultSpeed != 0)
         {
-            target.GetComponent<IDamageable>().MoveSpeed = defaultSpeed;
+            target.GetComponent<IDamageable>().SetMoveSpeed(defaultSpeed);
         }
         else
         {
-            target.GetComponent<IDamageable>().canAct = true;
+            target.GetComponent<IDamageable>().SetCanAct(true);
         }
         
     }
 
     public void StickTeleportation(GameObject target)
     {
-        if (skills[1].isCooldown == false && Mana >= skills[1].Cost)
+        if (skills[1].isCooldown == false && GetMana() >= skills[1].Cost)
         {
             if(step == 0)
             {
                 //buff
-                Mana -= skills[1].Cost;
+                SetMana(GetMana() - skills[1].Cost);
                 Debug.Log(skills[1].Name + " lanc�e");
 
                 Quaternion rotation = Quaternion.LookRotation(target.transform.position - transform.position);
                 Vector3 direction = target.transform.position - transform.position;
 
-                float dmg = DegatsPhysique;
-
                 var proj = Instantiate(stickTP, transform.position, Quaternion.identity);
-                proj.GetComponent<ThrowStickBehaviour>().degats = 0;
+                proj.GetComponent<ThrowStickBehaviour>().SetDamages(GetDegMag(), DamageType.magique);
                 proj.GetComponent<ThrowStickBehaviour>().target = target;
                 proj.GetComponent<ThrowStickBehaviour>().targetSet = true;
                 proj.GetComponent<ThrowStickBehaviour>().source = Instance;
@@ -218,7 +215,7 @@ public class SunBehaviour : PlayerStats
         {
             Debug.Log("en cd");
         }
-        else if (Mana < skills[1].Cost)
+        else if (GetMana() < skills[1].Cost)
         {
             Debug.Log("pas assez de mana");
         }
@@ -236,7 +233,7 @@ public class SunBehaviour : PlayerStats
                 //if(Input.GetKeyDown(KeyCode.E))
                 //{
                 transform.position = target.transform.position;
-                target.GetComponent<IDamageable>().TakeDamage(DegatsPhysique, "Physique");
+                target.GetComponent<IDamageable>().TakeDamage(GetDegMag(), DamageType.physique);
                 break;
                 //}
             }
@@ -262,10 +259,10 @@ public class SunBehaviour : PlayerStats
 
     public void Ultime()
     {
-        if (skills[2].isCooldown == false && Mana >= skills[2].Cost)
+        if (skills[2].isCooldown == false && GetMana() >= skills[2].Cost)
         {
             //buff
-            Mana -= skills[2].Cost;
+            SetMana(GetMana() - skills[2].Cost);
             Debug.Log(skills[2].Name + " lanc�e");
             //TODO
 
@@ -274,7 +271,7 @@ public class SunBehaviour : PlayerStats
 
             //TODO
             var proj = Instantiate(bigStick, transform.position, rotation);
-            proj.GetComponent<BigStickBehaviour>().degats = DegatsMagique;
+            proj.GetComponent<BigStickBehaviour>().SetDamages(GetDegMag(), DamageType.magique);
             proj.GetComponent<BigStickBehaviour>().direction = direction;
 
             StartCoroutine(CoolDown(skills[2]));
@@ -283,7 +280,7 @@ public class SunBehaviour : PlayerStats
         {
             Debug.Log("en cd");
         }
-        else if (Mana < skills[2].Cost)
+        else if (GetMana() < skills[2].Cost)
         {
             Debug.Log("pas assez de mana");
         }
@@ -292,12 +289,5 @@ public class SunBehaviour : PlayerStats
     public void Eveil()
     {
         throw new System.NotImplementedException();
-    }
-
-    IEnumerator CoolDown(Skills skill)
-    {
-        yield return new WaitForSeconds(skill.Cooldown);
-        Debug.Log("fin des cd");
-        skill.isCooldown = false;
     }
 }

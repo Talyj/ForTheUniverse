@@ -16,17 +16,10 @@ public class Skills : ScriptableObject
     public bool isCooldown;
     public TypeSkills type;
     public float Damage;
-    public TypeDegats degats;
+    public IDamageable.DamageType degats;
     public Sprite image;
 
 
-}
-
-public enum TypeDegats
-{
-    Physique,
-    Magique,
-    Brut
 }
 
 public enum TypeSkills

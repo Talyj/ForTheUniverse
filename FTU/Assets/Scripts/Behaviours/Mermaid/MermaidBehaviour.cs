@@ -26,17 +26,15 @@ public class MermaidBehaviour : PlayerStats
     public void Start()
     {
         Init();
+        SetMoveSpeed(60f);
+        SetAttackRange(40f);
         speedPush = 3;
         charmSpeed = 5;
         charmTargets = new List<GameObject>();
-        //Copy that in a new character file
-        //canMove = true;
-        canAct = true;
         foreach(var elmt in skills)
         {
             elmt.isCooldown = false;
         }
-
         Instance = this;
         isPassiveStart = false;
         _passiveCounter = 0;
@@ -51,11 +49,11 @@ public class MermaidBehaviour : PlayerStats
         Passif();
         MovementPlayer();
 
-        if (canAct)
+        if (GetCanAct())
         {
             if (isAI)
             {
-                AttackSystemPlayer();
+                //AttackSystemPlayer();
                 if(Cible == null)
                 {
                     GetNearestTarget();
@@ -66,9 +64,8 @@ public class MermaidBehaviour : PlayerStats
             }
             else if(!isAttacking && Cible != null)
             {
-                AttackSystemPlayer();
                 MovementPlayer();
-                if (Input.GetKeyDown(KeyCode.Alpha1) && Cible != null && Vector3.Distance(gameObject.transform.position, Cible.transform.position) < AttackRange)
+                if (Input.GetKeyDown(KeyCode.Alpha1) && Cible != null && Vector3.Distance(gameObject.transform.position, Cible.transform.position) < GetAttackRange())
                 {
                     Poissoin(EnemyType.minion, Cible);
                 }
@@ -77,7 +74,7 @@ public class MermaidBehaviour : PlayerStats
                     MagicWind(Cible);
                 }
 
-                if (Input.GetKeyDown(KeyCode.Alpha3) && canUlt == true)
+                if (Input.GetKeyDown(KeyCode.Alpha3) && GetCanUlt() == true)
                 {
                     Ultime();
                 }
@@ -92,7 +89,7 @@ public class MermaidBehaviour : PlayerStats
        if(_passiveCounter >= 3)
         {
             isPassiveStart = true;
-            DegatsMagique *= 1.5f;
+            SetDegMag(GetDegMag() * 1.5f) ;
             _passiveCounter = 0;
         }
     }
@@ -104,7 +101,7 @@ public class MermaidBehaviour : PlayerStats
         if (isPassiveStart)
         {
             isPassiveStart = false;
-            DegatsMagique /= 1.5f;
+            SetDegMag(GetDegMag() / 1.5f);
         }
     }
 
@@ -116,17 +113,16 @@ public class MermaidBehaviour : PlayerStats
     //Copy that in a new character file (skill1)
     public void Poissoin(EnemyType typeEnemy, GameObject target)
     {
-        if (skills[0].isCooldown == false && Mana >= skills[0].Cost)
+        if (skills[0].isCooldown == false && GetMana() >= skills[0].Cost)
         {
-            Mana -= skills[0].Cost;
+            SetMana(GetMana() - skills[0].Cost);
             Debug.Log(skills[0].Name + " lanc�e");
             skills[0].isCooldown = true;
 
-            float dmg = DegatsMagique;
             if (typeEnemy == EnemyType.minion /*||typeEnemy == Targetable.EnemyType.Adversaire*/)
             {
                 var proj = Instantiate(poissoin, transform.position, Quaternion.identity);
-                proj.GetComponent<PoissoinProjBehaviour>().degats = dmg;
+                proj.GetComponent<PoissoinProjBehaviour>().SetDamages(GetDegMag(), DamageType.magique);
                 proj.GetComponent<PoissoinProjBehaviour>().target = target;
                 proj.GetComponent<PoissoinProjBehaviour>().targetSet = true;
                 proj.GetComponent<PoissoinProjBehaviour>().source = Instance;
@@ -138,7 +134,7 @@ public class MermaidBehaviour : PlayerStats
         {
             Debug.Log("en cd");
         }
-        else if (Mana < skills[0].Cost)
+        else if (GetMana() < skills[0].Cost)
         {
             Debug.Log("pas assez de mana");
         }
@@ -147,17 +143,20 @@ public class MermaidBehaviour : PlayerStats
     //Copy that in a new character file (skill2)
     public void MagicWind(GameObject target)
     {
-        if (skills[1].isCooldown == false && Mana >= skills[1].Cost)
+        if (skills[1].isCooldown == false && GetMana() >= skills[1].Cost)
         {
             //buff
-            Mana -= skills[1].Cost;
+            SetMana(GetMana() - skills[1].Cost);
             Debug.Log(skills[1].Name + " lanc�e");
-            
-            Quaternion rotation = Quaternion.LookRotation(target.transform.position - transform.position);
-            Vector3 direction = target.transform.position - transform.position;
+
+            var targetPos = new Vector3(Cible.transform.position.x, transform.position.y, Cible.transform.position.z);
+            var pos = new Vector3(transform.position.x, transform.position.y, transform.position.z);
+
+            Quaternion rotation = Quaternion.LookRotation(targetPos - pos);
+            Vector3 direction = targetPos - pos;
 
             var proj = Instantiate(windArea, transform.position, rotation);
-            proj.GetComponent<WindAreaBehaviour>().degats = DegatsMagique;
+            proj.GetComponent<WindAreaBehaviour>().SetDamages(GetDegMag(), DamageType.magique);
             proj.GetComponent<WindAreaBehaviour>().direction = direction;
             proj.GetComponent<WindAreaBehaviour>().source = Instance;
 
@@ -168,7 +167,7 @@ public class MermaidBehaviour : PlayerStats
         {
             Debug.Log("en cd");
         }
-        else if (Mana < skills[0].Cost)
+        else if (GetMana() < skills[0].Cost)
         {
             Debug.Log("pas assez de mana");
         }
@@ -176,7 +175,7 @@ public class MermaidBehaviour : PlayerStats
     public void AddWindedTarget(GameObject target)
     {
         charmTargets.Add(target);
-        target.GetComponent<IDamageable>().canMove = false;
+        target.GetComponent<IDamageable>().SetCanMove(false);
         StartCoroutine(GoAway(target));
     }
 
@@ -191,7 +190,7 @@ public class MermaidBehaviour : PlayerStats
             timer -= Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
-        target.GetComponent<IDamageable>().canMove = true;
+        target.GetComponent<IDamageable>().SetCanMove(true);
         yield return 0;
     }
 
@@ -211,13 +210,11 @@ public class MermaidBehaviour : PlayerStats
     //Copy that in a new character file
     public void Ultime()
     {
-        if (skills[2].isCooldown == false && Mana >= skills[2].Cost)
+        if (skills[2].isCooldown == false && GetMana() >= skills[2].Cost)
         {
             //buff
-            Mana -= skills[2].Cost;
+            SetMana(GetMana() - skills[2].Cost);
             Debug.Log(skills[2].Name + " lanc�e");
-            //TODO
-            float dmg = DegatsMagique;
 
             var area = Instantiate(charmArea, transform.position, Quaternion.identity);
             area.GetComponent<CharmAreaBehaviour>().source = Instance;
@@ -228,7 +225,7 @@ public class MermaidBehaviour : PlayerStats
         {
             Debug.Log("en cd");
         }
-        else if (Mana < skills[2].Cost)
+        else if (GetMana() < skills[2].Cost)
         {
             Debug.Log("pas assez de mana");
         }
@@ -237,7 +234,7 @@ public class MermaidBehaviour : PlayerStats
     public void AddTCharmedTargets(GameObject target)
     {        
         charmTargets.Add(target);
-        target.GetComponent<IDamageable>().canMove = false;
+        target.GetComponent<IDamageable>().SetCanMove(false);
         StartCoroutine(GetNear(target));
     }
 
@@ -251,7 +248,7 @@ public class MermaidBehaviour : PlayerStats
             timer -= Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
-        target.GetComponent<IDamageable>().canMove = true;
+        target.GetComponent<IDamageable>().SetCanMove(true);
         yield return 0;
     }
 
@@ -260,13 +257,4 @@ public class MermaidBehaviour : PlayerStats
     {
         throw new System.NotImplementedException();
     }
-
-    //Copy that in a new character file
-    IEnumerator CoolDown(Skills skill)
-    {
-        yield return new WaitForSeconds(skill.Cooldown);
-        Debug.Log("fin des cd");
-        skill.isCooldown = false;
-    }
-
 }

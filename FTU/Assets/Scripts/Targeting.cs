@@ -5,12 +5,11 @@ using UnityEngine;
 public class Targeting : MonoBehaviour
 {
     [SerializeField]
-    private GameObject player;
+    private GameObject entity;
     RaycastHit hit;
     // Start is called before the first frame update
     public void Start()
-    {
-        player = GameObject.FindGameObjectWithTag("Player");
+    {        
         //Debug.Log(player);
     }
 
@@ -32,12 +31,12 @@ public class Targeting : MonoBehaviour
                         component.GetComponent<IDamageable>().GetEnemyType()== IDamageable.EnemyType.golem)
                     {
                         if(hit.collider.GetComponent<IDamageable>().team != gameObject.GetComponent<IDamageable>().team)
-                        player.GetComponent<IDamageable>().Cible = hit.collider.gameObject;
+                        entity.GetComponent<IDamageable>().Cible = hit.collider.gameObject;
                     }
                 }
                 else if (hit.collider.GetComponent<IDamageable>() == null)
                 {
-                    player.GetComponent<IDamageable>().Cible = null;
+                    entity.GetComponent<IDamageable>().Cible = null;
                 }
             }
         }

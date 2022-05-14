@@ -47,7 +47,7 @@ public class PoissoinProjBehaviour : Projectile
                         var pud = Instantiate(puddle, new Vector3(transform.position.x, 1, transform.position.z), Quaternion.identity);
                         pud.GetComponent<PuddlePoissoinBehaviour>().source = source;
                         touched = true;
-                        DealDamage(target, degats, typeDegats.ToString());
+                        DealDamage(target, GetDamages(), GetDamageType());
                         stopProjectile = true;
                         Destroy(gameObject);
                     }

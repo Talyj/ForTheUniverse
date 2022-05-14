@@ -7,7 +7,6 @@ using UnityEngine;
 public class PlayerMovement : IDamageable
 {
     //Movement Controlled by players
-    IDamageable stats;
     Vector3 velocity;
     Rigidbody myRigidbody;
     Camera viewCamera;
@@ -21,7 +20,6 @@ public class PlayerMovement : IDamageable
     public void Awake()
     {
         myRigidbody = GetComponent<Rigidbody>();
-        stats = GetComponent<IDamageable>();
         viewCamera = Camera.main;
         //anim = GetComponent<Animator>();
     }
@@ -31,17 +29,15 @@ public class PlayerMovement : IDamageable
     //{
     //    MovementPlayer();
     //    //transform.position = Position.Value;
-
-
     //}
 
     public void MovementPlayer()
     {
-        if (stats.canMove)
+        if (GetCanMove())
         {
             // Movement input
             Vector3 moveInput = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
-            Vector3 moveVelocity = moveInput.normalized * stats.GetMoveSpeed();
+            Vector3 moveVelocity = moveInput.normalized * GetMoveSpeed();
             Move(moveVelocity);
             //anim.SetFloat("MoveX", Input.GetAxisRaw("Horizontal"));
             //anim.SetFloat("MoveY", Input.GetAxisRaw("Vertical"));
@@ -53,7 +49,6 @@ public class PlayerMovement : IDamageable
             if (groundPlane.Raycast(ray, out rayDistance))
             {
                 Vector3 point = ray.GetPoint(rayDistance);
-                //Debug.DrawLine(ray.origin, point, Color.red);
                 LookAt(point);
 
             }
@@ -70,11 +65,11 @@ public class PlayerMovement : IDamageable
 
     public void MovementAI(Transform[] moveTo)
     {
-        if (canMove && canAct)
+        if (GetCanMove() && GetCanAct())
         {
             if (Vector3.Distance(transform.position, moveTo[current].position) > 10)
             {
-                transform.position = Vector3.MoveTowards(transform.position, moveTo[current].position, MoveSpeed * Time.deltaTime);
+                transform.position = Vector3.MoveTowards(transform.position, moveTo[current].position, GetMoveSpeed() * Time.deltaTime);
             }
             else current = (current + 1)/* % targets.Length*/;
         }
@@ -85,7 +80,7 @@ public class PlayerMovement : IDamageable
     {        
         while (transform.position != Cible.transform.position/*Cible != null*/)
         {
-            transform.position = Vector3.MoveTowards(transform.position, Cible.transform.position, MoveSpeed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, Cible.transform.position, GetMoveSpeed() * Time.deltaTime);
         }
 
         yield return 0;

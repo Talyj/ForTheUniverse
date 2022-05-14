@@ -51,7 +51,7 @@ public class BigStickBehaviour : Projectile
         if (other.CompareTag("cube"))
         {
             Debug.Log("yes");
-            other.GetComponent<IDamageable>().TakeDamage(degats, "Physique");
+            other.GetComponent<IDamageable>().TakeDamage(GetDamages(), GetDamageType());
         }
     }
 }

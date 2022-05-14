@@ -6,10 +6,9 @@ using UnityEngine;
 public class Projectile : NetworkBehaviour
 {
 
-    public TypeDegats typeDegats;
-    public float degats;
+    private IDamageable.DamageType typeDegats;
+    private float degats;
     public float vitesse = 30;
-    PlayerStats stats;
     public GameObject target;
     public bool targetSet;
     protected bool stopProjectile = false;
@@ -49,7 +48,7 @@ public class Projectile : NetworkBehaviour
                        target.GetComponent<IDamageable>().GetEnemyType() == IDamageable.EnemyType.golem)
                     {
                         touched = true;
-                        DealDamage(target, degats, typeDegats.ToString());
+                        DealDamage(target, degats, typeDegats);
                         stopProjectile = true;
                         Destroy(gameObject);
                     }
@@ -58,23 +57,24 @@ public class Projectile : NetworkBehaviour
         }
     }
 
-    public void DealDamage(GameObject target, float dmg, string typeDmg)
+    public void SetDamages(float dmg, IDamageable.DamageType typeDmg)
+    {
+        degats = dmg;
+        typeDegats = typeDmg;
+    }
+
+    public float GetDamages()
+    {
+        return degats;
+    }
+
+    public IDamageable.DamageType GetDamageType()
+    {
+        return typeDegats;
+    }
+
+    public void DealDamage(GameObject target, float dmg, IDamageable.DamageType typeDmg)
     {
         target.GetComponent<IDamageable>().TakeDamage(dmg, typeDmg);
     }
-
-    //    public void OnTriggerEnter(Collider other)
-    //    {
-    //        if(other.GetComponent<Targetable>().enemytype == Targetable.EnemyType.minion ||
-    //        other.GetComponent<Targetable>().enemytype == Targetable.EnemyType.voister ||
-    //        other.GetComponent<Targetable>().enemytype == Targetable.EnemyType.joueur ||
-    //        other.GetComponent<Targetable>().enemytype == Targetable.EnemyType.dieu ||
-    //        other.GetComponent<Targetable>().enemytype == Targetable.EnemyType.golem)
-    //        {
-    //            touched = true;
-    //            DealDamage(target, degats, typeDegats.ToString());
-    //            stopProjectile = true;
-    //            Destroy(gameObject);
-    //        }
-    //    }
 }

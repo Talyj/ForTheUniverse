@@ -21,12 +21,12 @@ public class PuddlePoissoinBehaviour : Projectile
         //Behaviour();
         if (insideArea > 0 && !isActive)
         {
-            StartCoroutine(DealDamage(targets, degats, "Magique"));
+            StartCoroutine(DealDamage(targets, GetDamages(), IDamageable.DamageType.magique));
         }
         Destroy(gameObject, 10);
     }
 
-    public IEnumerator DealDamage(List<GameObject> targets, float dmg, string typeDmg)
+    public IEnumerator DealDamage(List<GameObject> targets, float dmg, IDamageable.DamageType typeDmg)
     {
         while(insideArea > 0)
         {
@@ -41,7 +41,7 @@ public class PuddlePoissoinBehaviour : Projectile
                     }
                     else
                     {
-                        targ.GetComponent<IDamageable>().SetHealth(targ.GetComponent<IDamageable>().Health + dmg);
+                        targ.GetComponent<IDamageable>().SetHealth(targ.GetComponent<IDamageable>().GetHealth() + dmg);
                     }
                     yield return new WaitForSeconds(0.5f);
                 }

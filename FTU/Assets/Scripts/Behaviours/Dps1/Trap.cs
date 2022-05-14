@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Trap : MonoBehaviour
 {
-    public TypeDegats typeDegats;
+    public IDamageable.DamageType typeDegats;
     public float degats;
     public Skills skills;
     // Start is called before the first frame update
@@ -30,7 +30,7 @@ public class Trap : MonoBehaviour
             DmgPerHeal = heal / 4;
             degats = skills.Damage + DmgPerHeal;
             Debug.Log("trap " + degats);
-            col.gameObject.GetComponent<IDamageable>().TakeDamage(degats, typeDegats.ToString());
+            col.gameObject.GetComponent<IDamageable>().TakeDamage(degats, typeDegats);
         }
         
     }

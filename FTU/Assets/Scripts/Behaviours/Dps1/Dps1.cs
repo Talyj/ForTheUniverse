@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Dps1 : IDamageable, ISkill
+public class Dps1 : PlayerStats, ISkill
 {
 
     [Header("Competences")]
@@ -42,7 +42,7 @@ public class Dps1 : IDamageable, ISkill
     #endregion
 
     // Start is called before the first frame update
-    void Start()
+    public new void Start()
     {
         ui = GetComponent<UIDps>();
         Passif();
@@ -87,11 +87,11 @@ public class Dps1 : IDamageable, ISkill
 
         #endregion
 
-        if (Health <= 0)
+        if (GetHealth() <= 0)
         {
             IsDead();
         }
-        if (Exp >= MaxExp)
+        if (GetExp() >= GetMaxExp())
         {
             ExperienceBehaviour();
         }
@@ -99,32 +99,32 @@ public class Dps1 : IDamageable, ISkill
         #region test
 
         // test des touches
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            TakeDamage(100, "Physique");
+        //if (Input.GetKeyDown(KeyCode.K))
+        //{
+        //    TakeDamage(100, DamageType.physique);
 
-        }
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            Health = MaxHealth;
-            Mana = MaxMana;
-        }
-        if (Input.GetKeyDown(KeyCode.J))
-        {
-            TakeDamage(100, "Magique");
-        }
-        if (Input.GetKeyDown(KeyCode.L))//execute methode
-        {
-            TakeDamage(9999, "Brut");
-        }
-        if (Input.GetKeyDown(KeyCode.X))
-        {
-            Exp = MaxExp + 1;
+        //}
+        //if (Input.GetKeyDown(KeyCode.R))
+        //{
+        //    Health = MaxHealth;
+        //    Mana = MaxMana;
+        //}
+        //if (Input.GetKeyDown(KeyCode.J))
+        //{
+        //    TakeDamage(100, DamageType.magique);
+        //}
+        //if (Input.GetKeyDown(KeyCode.L))//execute methode
+        //{
+        //    TakeDamage(9999, DamageType.brut);
+        //}
+        //if (Input.GetKeyDown(KeyCode.X))
+        //{
+        //    Exp = MaxExp + 1;
 
-        }
+        //}
         #endregion
         //attack sys
-        if (useSkills == true)
+        if (GetUseSkills() == true)
         {
 
 
@@ -132,7 +132,7 @@ public class Dps1 : IDamageable, ISkill
             {
                 if (Input.GetMouseButtonDown(1))
                 {
-                    if (Vector3.Distance(gameObject.transform.position, Cible.transform.position) > AttackRange)
+                    if (Vector3.Distance(gameObject.transform.position, Cible.transform.position) > GetAttackRange())
                     {
                         print("Hors d portée");
                     }
@@ -159,7 +159,7 @@ public class Dps1 : IDamageable, ISkill
             {
                 Skill2();
             }
-            if (Input.GetKeyDown(KeyCode.Alpha3) && canUlt == true)
+            if (Input.GetKeyDown(KeyCode.Alpha3) && GetCanUlt() == true)
             {
                 Ultime();
             }
@@ -171,10 +171,10 @@ public class Dps1 : IDamageable, ISkill
         while (Cible != null)
         {
             //anim.SetBool("AA", true);
-            yield return new WaitForSeconds(AttackSpeed / ((100 / +AttackSpeed) * 0.01f));
+            yield return new WaitForSeconds(GetAttackSpeed() / ((100 / +GetAttackSpeed()) * 0.01f));
             MeleeAttack();
-            yield return new WaitForSeconds(AttackSpeed / ((100 / +AttackSpeed) * 0.01f));
-            if (Vector3.Distance(gameObject.transform.position, Cible.transform.position) > AttackRange)
+            yield return new WaitForSeconds(GetAttackSpeed() / ((100 / +GetAttackSpeed()) * 0.01f));
+            if (Vector3.Distance(gameObject.transform.position, Cible.transform.position) > GetAttackRange())
             {
                 //anim.SetBool("AA", false);
                 Debug.Log("AA");
@@ -188,10 +188,10 @@ public class Dps1 : IDamageable, ISkill
         while (Cible != null)
         {
             //anim.SetBool("AA", true);
-            yield return new WaitForSeconds(AttackSpeed + ((100 / AttackSpeed) * 0.01f));
+            yield return new WaitForSeconds(GetAttackSpeed() + ((100 / GetAttackSpeed()) * 0.01f));
             RangeAttack();
-            yield return new WaitForSeconds(AttackSpeed / ((100 / AttackSpeed) * 0.01f));
-            if (Vector3.Distance(gameObject.transform.position, Cible.transform.position) > AttackRange)
+            yield return new WaitForSeconds(GetAttackSpeed() / ((100 / GetAttackSpeed()) * 0.01f));
+            if (Vector3.Distance(gameObject.transform.position, Cible.transform.position) > GetAttackRange())
             {
                 Debug.Log("stop aa");
                 //anim.SetBool("AA", false);
@@ -202,11 +202,11 @@ public class Dps1 : IDamageable, ISkill
 
     public void MeleeAttack()
     {
-        if (Cible != null && Vector3.Distance(gameObject.transform.position, Cible.transform.position) < AttackRange)
+        if (Cible != null && Vector3.Distance(gameObject.transform.position, Cible.transform.position) < GetAttackRange())
         {
             if (IsTargetable(Cible.GetComponent<IDamageable>().GetEnemyType()))
             {
-                Cible.GetComponent<IDamageable>().TakeDamage(DegatsPhysique + damageSupp, "Physique");
+                Cible.GetComponent<IDamageable>().TakeDamage(GetDegPhys() + damageSupp, DamageType.physique);
             }
         }
         else
@@ -216,7 +216,7 @@ public class Dps1 : IDamageable, ISkill
     }
     public void RangeAttack()
     {
-        if (Cible != null && Vector3.Distance(gameObject.transform.position, Cible.transform.position) < AttackRange)
+        if (Cible != null && Vector3.Distance(gameObject.transform.position, Cible.transform.position) < GetAttackRange())
         {
             if (IsTargetable(Cible.GetComponent<IDamageable>().GetEnemyType()))
             {
@@ -231,10 +231,9 @@ public class Dps1 : IDamageable, ISkill
 
     public void SpawnRangeAttack(EnemyType typeEnemy, GameObject Target, float dmgSupp = 0)
     {
-        float dmg = DegatsPhysique;
         Instantiate(projPrefab, SpawnPrefab.transform.position, Quaternion.identity);
 
-        projPrefab.GetComponent<Projectile>().degats = dmg + dmgSupp;
+        projPrefab.GetComponent<Projectile>().SetDamages(GetDegPhys(), DamageType.physique);
         projPrefab.GetComponent<Projectile>().target = Target;
         projPrefab.GetComponent<Projectile>().targetSet = true;
         projPrefab.GetComponent<Projectile>().vitesse = 15f;
@@ -252,11 +251,11 @@ public class Dps1 : IDamageable, ISkill
         {
             if (IsControl(Cible.GetComponent<IDamageable>().GetEnemyType(), Cible.GetComponent<IDamageable>().GetControl()))
             {
-                DegatsPhysique += 15;
+                SetDegPhys(GetDegPhys() + 15);
             }
             else
             {
-                DegatsPhysique -= 15;
+                SetDegPhys(GetDegPhys() - 15);
             }
         }
         
@@ -267,9 +266,9 @@ public class Dps1 : IDamageable, ISkill
         //double tirs 
         //1er slow
         //2 dmg et +dmg si slow
-        if (skills[0].isCooldown == false && Mana >= skills[0].Cost)
+        if (skills[0].isCooldown == false && GetMana() >= skills[0].Cost)
         {
-            Mana -= skills[0].Cost;
+            SetMana(GetMana() - skills[0].Cost);
             Debug.Log(skills[0].Name + " lancée");
             StartCoroutine(skill1());
             skills[0].isCooldown = true;
@@ -282,7 +281,7 @@ public class Dps1 : IDamageable, ISkill
         {
             Debug.Log("en cd");
         }
-        else if (Mana < skills[0].Cost)
+        else if (GetMana() < skills[0].Cost)
         {
             Debug.Log("pas assez de mana");
         }
@@ -323,9 +322,9 @@ public class Dps1 : IDamageable, ISkill
     }
     public void Skill2()
     {
-        if (skills[1].isCooldown == false && Mana >= skills[1].Cost)
+        if (skills[1].isCooldown == false && GetMana() >= skills[1].Cost)
         {
-            Mana -= skills[1].Cost;
+            SetMana(GetMana() - skills[1].Cost);
             Debug.Log(skills[1].Name + " lancée");
             gameObject.transform.Translate(Vector3.back * 1000f * Time.deltaTime);
             skills[1].isCooldown = true;
@@ -338,7 +337,7 @@ public class Dps1 : IDamageable, ISkill
         {
             Debug.Log("en cd");
         }
-        else if (Mana < skills[1].Cost)
+        else if (GetMana() < skills[1].Cost)
         {
             Debug.Log("pas assez de mana");
         }
@@ -347,9 +346,9 @@ public class Dps1 : IDamageable, ISkill
 
     public void Ultime()
     {
-        if (skills[2].isCooldown == false && Mana >= skills[2].Cost)
+        if (skills[2].isCooldown == false && GetMana() >= skills[2].Cost)
         {
-            Mana -= skills[2].Cost;
+            SetMana(GetMana() - skills[2].Cost);
             Debug.Log(skills[2].Name + " lancée");
             Instantiate(ult, SpawnPrefab.transform.position, Quaternion.identity);
             skills[2].isCooldown = true;
@@ -362,7 +361,7 @@ public class Dps1 : IDamageable, ISkill
         {
             Debug.Log("en cd");
         }
-        else if (Mana < skills[2].Cost)
+        else if (GetMana() < skills[2].Cost)
         {
             Debug.Log("pas assez de mana");
         }
@@ -377,7 +376,7 @@ public class Ball1 : MonoBehaviour
         if (col.gameObject.GetComponent<IDamageable>())
         {
             
-            col.gameObject.GetComponent<IDamageable>().TakeCC(ControlType.slow,2.55f);
+            col.gameObject.GetComponent<IDamageable>().TakeCC(IDamageable.ControlType.slow,2.55f);
             Destroy(gameObject);
         }
         
@@ -393,15 +392,15 @@ public class Ball2 : MonoBehaviour
         float dmg = dps.skills[0].Damage;
         if (col.gameObject.GetComponent<IDamageable>())
         {
-            if (col.gameObject.GetComponent<IDamageable>().GetControl()== ControlType.slow)
+            if (col.gameObject.GetComponent<IDamageable>().GetControl()== IDamageable.ControlType.slow)
             {
                 dmg *= 1.15f;
-                col.gameObject.GetComponent<IDamageable>().TakeDamage(dmg, dps.skills[0].degats.ToString());
+                col.gameObject.GetComponent<IDamageable>().TakeDamage(dmg, dps.skills[0].degats);
                 Debug.Log("<color=green> damage: </color>" + dmg + " " + dps.skills[0].degats.ToString());
             }
             else
             {
-                col.gameObject.GetComponent<IDamageable>().TakeDamage(dmg, dps.skills[0].degats.ToString());
+                col.gameObject.GetComponent<IDamageable>().TakeDamage(dmg, dps.skills[0].degats);
                 Debug.Log("<color=blue> damage: </color>" + dmg + " " + dps.skills[0].degats.ToString());
             }
             

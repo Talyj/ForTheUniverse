@@ -2,9 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WindAreaBehaviour : Projectile
+public class RoarBehaviour : Projectile
 {
-    public MermaidBehaviour source;
+
+    public MauBehaviour source;
     public Vector3 direction;
     private float timerDefault;
     //Speed bigger
@@ -12,22 +13,21 @@ public class WindAreaBehaviour : Projectile
 
     public new void Start()
     {
-        //scaleChange = new Vector3(0.1f, 0.0f, 0.0f);
-        //speed = 50;
-        timerDefault = 0.5f;
+        timerDefault = 1f;
         StartCoroutine(Movement());
         StartCoroutine(SizeModification());
     }
 
+    // Update is called once per frame
     public new void Update()
     {
-        //Destroy(gameObject, 1);
+        
     }
 
     public IEnumerator Movement()
     {
         float timer = timerDefault;
-        while(timer >= 0)
+        while (timer >= 0)
         {
             //transform.Translate(direction * speed * Time.deltaTime);
             transform.position += direction.normalized * Time.deltaTime * vitesse;
@@ -52,11 +52,11 @@ public class WindAreaBehaviour : Projectile
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") || other.CompareTag("minion"))
+        if (other.CompareTag("Player") || other.CompareTag("minion") || other.CompareTag("golem"))
         {
-            if(other.gameObject.GetComponent<IDamageable>().team != source.team)
+            if (other.gameObject.GetComponent<IDamageable>().team != source.team)
             {
-                source.AddWindedTarget(other.gameObject);
+                source.RoaredDamageTarget(other.gameObject);
             }
         }
     }

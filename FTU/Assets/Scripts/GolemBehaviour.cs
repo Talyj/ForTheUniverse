@@ -5,20 +5,33 @@ using UnityEngine;
 
 public class GolemBehaviour : IDamageable
 {
-    private bool isInside;
-    //Modify that to the player's class
     private float attackCooldown;
 
     public void Start()
     {
+        Init();
+        SetHealth(5000);
+        SetMaxHealth(5000);
+        SetAttackRange(30f);
         attackCooldown = 0;
-        isInside = false;
         Cible = null;
     }
 
     public void Update()
     {
-        Attack();
+        if(Cible == null)
+        {
+            GetNearestTarget();
+        }
+        else
+        {
+            Attack();
+            var test = Vector3.Distance(transform.position, Cible.transform.position);
+            if (test > GetAttackRange() + 5)
+            {
+                Cible = null;
+            }
+        }
         IsDead();
     }
 
@@ -26,38 +39,9 @@ public class GolemBehaviour : IDamageable
     {
         if(attackCooldown <= 0)
         {
-            if (isInside)
-            {
-                //Replace function by the player's one that deals damages
-                Cible.GetComponent<IDamageable>().TakeDamage(DegatsMagique, "Brut");
-                attackCooldown = 5;
-            }
+            Cible.GetComponent<IDamageable>().TakeDamage(GetDegMag(), DamageType.brut);
+            attackCooldown = 5;
         }
         attackCooldown -= Time.deltaTime;
-    }
-
-    public void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.CompareTag("minion") || other.gameObject.CompareTag("Player"))
-        {
-            if(other.gameObject.GetComponent<IDamageable>().team != team)
-            {
-                //Modify GameObject with the player's class
-                if(Cible == null)
-                {
-                    Cible = other.gameObject;
-                }
-                isInside = true;
-            }
-        }
-    }
-
-    public void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject.CompareTag("minion") || other.gameObject.CompareTag("Player"))
-        {
-            Cible = null;
-            isInside = false;
-        }
     }
 }
