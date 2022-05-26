@@ -14,6 +14,7 @@ public class MinionsBehaviour : PlayerStats
             SetAttackRange(30f);
         }
         else SetAttackRange(10f);
+        SetMoveSpeed(40f);
         isAttacking = false;        
     }
 

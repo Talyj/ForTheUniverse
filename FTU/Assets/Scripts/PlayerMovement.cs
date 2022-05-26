@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
@@ -6,6 +7,10 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerMovement : IDamageable
 {
+    //Photon
+    [Tooltip("The local player instance. Use this to know if the local player is represented in the Scene")]
+    public static GameObject localPlayerInstance;
+
     //Movement Controlled by players
     Vector3 velocity;
     Rigidbody myRigidbody;
@@ -22,14 +27,35 @@ public class PlayerMovement : IDamageable
         myRigidbody = GetComponent<Rigidbody>();
         viewCamera = Camera.main;
         //anim = GetComponent<Animator>();
+
+        if (photonView.IsMine)
+        {
+            localPlayerInstance = gameObject;
+        }
+        // #Critical
+        // we flag as don't destroy on load so that instance survives level synchronization, thus giving a seamless experience when levels load.
+        DontDestroyOnLoad(this.gameObject);
     }
 
+    public void CameraWork()
+    {
+        CameraWork _cameraWork = this.gameObject.GetComponent<CameraWork>();
 
-    //void Update()
-    //{
-    //    MovementPlayer();
-    //    //transform.position = Position.Value;
-    //}
+
+        if (_cameraWork != null)
+        {
+            if (photonView.IsMine)
+            {
+                _cameraWork.player = gameObject.transform;
+                _cameraWork.OnStartFollowing();
+            }
+        }
+        else
+        {
+            Debug.LogError("<Color=Red><a>Missing</a></Color> CameraWork Component on playerPrefab.", this);
+        }
+    }
+
 
     public void MovementPlayer()
     {

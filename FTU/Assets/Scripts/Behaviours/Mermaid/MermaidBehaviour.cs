@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -38,33 +39,26 @@ public class MermaidBehaviour : PlayerStats
         Instance = this;
         isPassiveStart = false;
         _passiveCounter = 0;
+        CameraWork();
     }
 
     //Copy that in a new character file
     public void Update()
     {
-        
+        if(!photonView.IsMine && PhotonNetwork.IsConnected)
+        {
+            return;
+        }
+
         HealthBehaviour();
         ExperienceBehaviour();
         Passif();
-        MovementPlayer();
 
         if (GetCanAct())
         {
-            if (isAI)
+            MovementPlayer();
+            if(!isAttacking && Cible != null)
             {
-                //AttackSystemPlayer();
-                if(Cible == null)
-                {
-                    GetNearestTarget();
-                }
-                else WalkToTarget();
-                DefaultHeroBehaviourAI();
-                CheckTarget();
-            }
-            else if(!isAttacking && Cible != null)
-            {
-                MovementPlayer();
                 if (Input.GetKeyDown(KeyCode.Alpha1) && Cible != null && Vector3.Distance(gameObject.transform.position, Cible.transform.position) < GetAttackRange())
                 {
                     Poissoin(EnemyType.minion, Cible);
@@ -84,7 +78,7 @@ public class MermaidBehaviour : PlayerStats
 
     //Copy that in a new character file
 
-    public new void Passif()
+    public void Passif()
     {
        if(_passiveCounter >= 3)
         {
@@ -121,7 +115,7 @@ public class MermaidBehaviour : PlayerStats
 
             if (typeEnemy == EnemyType.minion /*||typeEnemy == Targetable.EnemyType.Adversaire*/)
             {
-                var proj = Instantiate(poissoin, transform.position, Quaternion.identity);
+                var proj = PhotonNetwork.Instantiate(poissoin.name, transform.position, Quaternion.identity);
                 proj.GetComponent<PoissoinProjBehaviour>().SetDamages(GetDegMag(), DamageType.magique);
                 proj.GetComponent<PoissoinProjBehaviour>().target = target;
                 proj.GetComponent<PoissoinProjBehaviour>().targetSet = true;
@@ -155,7 +149,7 @@ public class MermaidBehaviour : PlayerStats
             Quaternion rotation = Quaternion.LookRotation(targetPos - pos);
             Vector3 direction = targetPos - pos;
 
-            var proj = Instantiate(windArea, transform.position, rotation);
+            var proj = PhotonNetwork.Instantiate(windArea.name, transform.position, rotation);
             proj.GetComponent<WindAreaBehaviour>().SetDamages(GetDegMag(), DamageType.magique);
             proj.GetComponent<WindAreaBehaviour>().direction = direction;
             proj.GetComponent<WindAreaBehaviour>().source = Instance;
@@ -216,7 +210,7 @@ public class MermaidBehaviour : PlayerStats
             SetMana(GetMana() - skills[2].Cost);
             Debug.Log(skills[2].Name + " lanc�e");
 
-            var area = Instantiate(charmArea, transform.position, Quaternion.identity);
+            var area = PhotonNetwork.Instantiate(charmArea.name, transform.position, Quaternion.identity);
             area.GetComponent<CharmAreaBehaviour>().source = Instance;
 
             StartCoroutine(CoolDown(skills[2]));

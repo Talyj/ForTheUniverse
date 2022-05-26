@@ -1,3 +1,5 @@
+using Photon.Pun;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -70,77 +72,6 @@ public class PlayerStats : PlayerMovement
             skills[i].isCooldown = false;
         }
     }
-    // Update is called once per frame
-    void Update()
-    {
-        #region CC
-
-        //switch (cc)
-        //{
-        //    case ControlType.none:
-        //        canMove = true;
-        //        useSkills = true;
-        //        break;
-        //    case ControlType.stun:
-        //        canMove = false;
-        //        useSkills = false;
-        //        break;
-        //    case ControlType.bump:
-        //        canMove = false;
-        //        useSkills = false;
-        //        break;
-        //    case ControlType.charme:
-        //        canMove = false;
-        //        useSkills = false;
-        //        break;
-        //    case ControlType.root:
-        //        canMove = false;
-        //        break;
-        //    case ControlType.slow:
-        //        canMove = true;
-        //        useSkills = true;
-        //        break;
-
-        //}
-
-        #endregion
-
-
-        
-
-        if(GetExp() >= GetMaxExp())
-        {
-            ExperienceBehaviour();
-        }
-
-        #region test
-
-        // test des touches
-        //if (Input.GetKeyDown(KeyCode.K))
-        //{
-        //    TakeDamage(100, DamageType.physique);
-
-        //}
-        //if (Input.GetKeyDown(KeyCode.R))
-        //{
-        //    Health = MaxHealth;
-        //    Mana = MaxMana;
-        //}
-        //if (Input.GetKeyDown(KeyCode.J))
-        //{
-        //    TakeDamage(100, DamageType.magique);
-        //}
-        //if (Input.GetKeyDown(KeyCode.L))
-        //{
-        //    TakeDamage(50, DamageType.brut);
-        //}
-        //if (Input.GetKeyDown(KeyCode.X))
-        //{
-        //    Exp = MaxExp + 1;
-
-        //}
-        #endregion
-    }   
 
     public void AttackSystemAI()
     {
@@ -233,9 +164,16 @@ public class PlayerStats : PlayerMovement
             if (Vector3.Distance(gameObject.transform.position, Cible.transform.position) < GetAttackRange() || 
                 Vector3.Distance(gameObject.transform.position, Cible.transform.position) < GetAttackRange() * 5 && isAI)
             {
-                if (IsTargetable(Cible.GetComponent<IDamageable>().GetEnemyType()))
+                try
                 {
-                    Cible.GetComponent<IDamageable>().TakeDamage(GetDegPhys() + damageSupp, DamageType.physique);
+                    if (IsTargetable(Cible.GetComponent<IDamageable>().GetEnemyType()))
+                    {
+                        Cible.GetComponent<IDamageable>().TakeDamage(GetDegPhys() + damageSupp, DamageType.physique);
+                    }
+                }
+                catch(NullReferenceException e)
+                {
+                    Cible = null;
                 }
             }
             else
@@ -312,7 +250,7 @@ public class PlayerStats : PlayerMovement
 
     public void SpawnRangeAttack(GameObject Target, float dmgSupp = 0)
     {
-        Instantiate(projPrefab, transform.position, Quaternion.identity);
+        PhotonNetwork.Instantiate(projPrefab.name, transform.position, Quaternion.identity);
 
         projPrefab.GetComponent<Projectile>().SetDamages(GetDegMag() + dmgSupp, DamageType.magique);
         projPrefab.GetComponent<Projectile>().target = Target;

@@ -1,12 +1,11 @@
+using Photon.Pun;
 using System;
 using System.Collections;
 using Unity.Netcode;
 using UnityEngine;
 
-public abstract class IDamageable : NetworkBehaviour
+public abstract class IDamageable : MonoBehaviourPun, IPunObservable
 {
-
-    
     public enum AttackType { Melee, Ranged }
     public AttackType attackType;
     [SerializeField]
@@ -19,6 +18,8 @@ public abstract class IDamageable : NetworkBehaviour
     //public GameObject deathEffect;
     //[SerializeField]
     Transform templeSpawn;
+    //TODO when dev is over ad get set and change to private
+    public string userId;
     [Header("Stats")]
     private float Health, MaxHealth;
     private float MoveSpeed;
@@ -558,6 +559,18 @@ public abstract class IDamageable : NetworkBehaviour
 
                 }
             }
+        }
+    }
+
+    void IPunObservable.OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            stream.SendNext(GetHealth());
+        }
+        else
+        {
+            SetHealth((float)stream.ReceiveNext());
         }
     }
 }

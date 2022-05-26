@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Photon.Pun;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -128,7 +129,7 @@ public class MauBehaviour : PlayerStats
             Quaternion rotation = Quaternion.LookRotation(targetPos - pos);
             Vector3 direction = targetPos - pos;
 
-            var proj = Instantiate(roarArea, transform.position, rotation);
+            var proj = PhotonNetwork.Instantiate(roarArea.name, transform.position, rotation);
             proj.GetComponent<RoarBehaviour>().SetDamages(GetDegMag(), DamageType.magique);
             proj.GetComponent<RoarBehaviour>().direction = direction;
             proj.GetComponent<RoarBehaviour>().source = Instance;
