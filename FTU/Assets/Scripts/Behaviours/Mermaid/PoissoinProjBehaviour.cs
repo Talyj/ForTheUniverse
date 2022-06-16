@@ -38,11 +38,11 @@ public class PoissoinProjBehaviour : Projectile
                 if (Vector3.Distance(transform.position, target.transform.position) < 0.75f)
                 //if (touched)
                 {
-                    if (target.GetComponent<IDamageable>().enemyType == IDamageable.EnemyType.minion ||
-                       target.GetComponent<IDamageable>().enemyType == IDamageable.EnemyType.voister ||
-                       target.GetComponent<IDamageable>().enemyType == IDamageable.EnemyType.joueur ||
-                       target.GetComponent<IDamageable>().enemyType == IDamageable.EnemyType.dieu ||
-                       target.GetComponent<IDamageable>().enemyType == IDamageable.EnemyType.golem)
+                    if (target.GetComponent<PlayerStats>().enemyType == PlayerStats.EnemyType.minion ||
+                       target.GetComponent<PlayerStats>().enemyType == PlayerStats.EnemyType.voister ||
+                       target.GetComponent<PlayerStats>().enemyType == PlayerStats.EnemyType.joueur ||
+                       target.GetComponent<PlayerStats>().enemyType == PlayerStats.EnemyType.dieu ||
+                       target.GetComponent<PlayerStats>().enemyType == PlayerStats.EnemyType.golem)
                     {
                         var pud = Instantiate(puddle, new Vector3(transform.position.x, 1, transform.position.z), Quaternion.identity);
                         pud.GetComponent<PuddlePoissoinBehaviour>().source = source;

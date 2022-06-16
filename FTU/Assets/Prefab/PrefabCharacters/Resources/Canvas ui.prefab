@@ -404,7 +404,7 @@ GameObject:
   - component: {fileID: 3376652118333526909}
   - component: {fileID: 3376652118333526908}
   m_Layer: 5
-  m_Name: Text Mana
+  m_Name: Text Mana cible
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -702,7 +702,7 @@ GameObject:
   - component: {fileID: 3376652118670031578}
   - component: {fileID: 3376652118670031577}
   m_Layer: 5
-  m_Name: Mana
+  m_Name: Mana cible
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1408,7 +1408,7 @@ GameObject:
   - component: {fileID: 3376652119232126451}
   - component: {fileID: 3376652119232126450}
   m_Layer: 5
-  m_Name: Text Heal
+  m_Name: Text Heal cible
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1909,7 +1909,7 @@ GameObject:
   - component: {fileID: 3376652119847552878}
   - component: {fileID: 3376652119847552877}
   m_Layer: 5
-  m_Name: Health
+  m_Name: Health cible
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

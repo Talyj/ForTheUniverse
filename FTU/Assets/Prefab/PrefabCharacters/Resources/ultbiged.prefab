@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 6628444362340657948}
   - component: {fileID: 2600547124510744911}
   m_Layer: 0
-  m_Name: ult
+  m_Name: ultbiged
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
