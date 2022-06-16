@@ -1,16 +1,17 @@
-﻿using System.Collections;
+﻿using Photon.Pun;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BigED : PlayerStats, ISkill
+public class BigED : PlayerStats
 {
     //Animator anim;
 
     //[SerializeField]
     //ControlType cc;
-    [Header("Competences")]
-    public Passifs passif;
-    public Skills[] skills;
+    //[Header("Competences")]
+    //public Passifs passif;
+    //public Skills[] skills;
     //public bool canMove = true;
     //public bool useSkills = true;//pour les cc
 
@@ -243,7 +244,7 @@ public class BigED : PlayerStats, ISkill
 
     public void SpawnRangeAttack(EnemyType typeEnemy, GameObject Target, float dmgSupp = 0)
     {
-        Instantiate(projPrefab, SpawnPrefab.transform.position, Quaternion.identity);
+        PhotonNetwork.Instantiate(projPrefab.name, SpawnPrefab.transform.position, Quaternion.identity);
 
         projPrefab.GetComponent<Projectile>().SetDamages(GetDegMag() + dmgSupp, DamageType.physique);
         projPrefab.GetComponent<Projectile>().target = Target;
@@ -353,9 +354,9 @@ public class BigED : PlayerStats, ISkill
     IEnumerator skill1()
     {
         
-        GameObject skill1 = Instantiate(s1, SpawnPrefab2.transform.position, Quaternion.identity);
+        GameObject skill1 = PhotonNetwork.Instantiate(s1.name, SpawnPrefab2.transform.position, Quaternion.identity);
         skill1.AddComponent<HeadImpact>();
-        skill1.GetComponent<HeadImpact>().bg=this;
+        //skill1.GetComponent<HeadImpact>().bg=this;
         yield return new WaitForSeconds(skills[0].CastTime);
         Destroy(skill1);
 
@@ -399,7 +400,7 @@ public class BigED : PlayerStats, ISkill
             SetMana(GetMana() - skills[2].Cost);
             Debug.Log(skills[2].Name + " lanc�e");
 
-            //StartCoroutine(UltEffect());
+            StartCoroutine(UltEffect());
             skills[2].isCooldown = true;
             if (skills[2].isCooldown == true)
             {
@@ -415,50 +416,50 @@ public class BigED : PlayerStats, ISkill
             Debug.Log("pas assez de mana");
         }
     }
-    //IEnumerator UltEffect()
-    //{
-    //    float baseHealth = Health;
+    IEnumerator UltEffect()
+    {
+        float baseHealth = GetHealth();
 
-    //    ResistanceMagique += 45;
-    //    ResistancePhysique += 45f;
-    //    yield return new WaitForSeconds(skills[2].CastTime);
-    //    Transform holder = GameObject.Find("Ult Rangeholder").transform;
-    //    GameObject ultime = Instantiate(ult, holder.position, Quaternion.identity);
-    //    ResistanceMagique -= 45;
-    //    ResistancePhysique -= 45;
-    //    float endHealth = baseHealth - Health;
-    //    Debug.Log("<color=blue>Endhealth full: </color>" + endHealth);
-    //    float fulldmg = ultime.GetComponent<Projectile>().degats = (endHealth * 10) / 100;
-    //    skills[2].Damage += fulldmg;
-    //    Collider[] hitColliders = Physics.OverlapSphere(ultime.transform.position, 1.5f);
-    //    foreach (var hitCollider in hitColliders)
-    //    {
-    //        //Debug.Log("<color=green> touch: </color>" + hitCollider.name);
-    //        try
-    //        {
+        SetResMag(GetResMag() + 15);
+        SetResPhys(GetResPhys() + 15);
+        yield return new WaitForSeconds(skills[2].CastTime);
+        Transform holder = GameObject.Find("Ult Rangeholder").transform;
+        GameObject ultime = PhotonNetwork.Instantiate(ult.name, holder.position, Quaternion.identity);
+        SetResMag(GetResMag() - 15);
+        SetResPhys(GetResPhys() - 15);
+        float endHealth = baseHealth - GetHealth();
+        //Debug.Log("<color=blue>Endhealth full: </color>" + endHealth);
+        float fulldmg =  (endHealth * 10) / 100;
+        skills[2].Damage += fulldmg;
+        Collider[] hitColliders = Physics.OverlapSphere(ultime.transform.position, 1.5f);
+        foreach (var hitCollider in hitColliders)
+        {
+            //Debug.Log("<color=green> touch: </color>" + hitCollider.name);
+            try
+            {
 
-    //            if (hitCollider.TryGetComponent(typeof(IDamageable), out Component component))
-    //            {
-    //                if (IsTargetable(hitCollider.GetComponent<IDamageable>().GetEnemyType()))
-    //                {
-    //                    hitCollider.GetComponent<IDamageable>().TakeDamage(skills[2].Damage, skills[2].degats);
-    //                }
-    //            }
-    //        }
-    //        catch
-    //        {
-    //            print("r");
-    //        }
+                if (hitCollider.TryGetComponent(typeof(IDamageable), out Component component))
+                {
+                    if (IsTargetable(hitCollider.GetComponent<IDamageable>().GetEnemyType()))
+                    {
+                        hitCollider.GetComponent<IDamageable>().TakeDamage(skills[2].Damage, skills[2].degats);
+                    }
+                }
+            }
+            catch
+            {
+                print("r");
+            }
 
-    //    }
-    //    //Debug.Log("<color=yellow>Endhealth 10%: </color>" + fulldmg);
-    //    yield return new WaitForSeconds(.75f);
-    //    Destroy(ultime);
+        }
+        //Debug.Log("<color=yellow>Endhealth 10%: </color>" + fulldmg);
+        yield return new WaitForSeconds(.75f);
+        Destroy(ultime);
 
-    //    //Debug.Log("<color=red> full damage: </color>" + skills[2].Damage + " inflig�");
-    //    yield return new WaitForSeconds(.05f);
-    //    skills[2].Damage -= fulldmg;
-    //}
+        //Debug.Log("<color=red> full damage: </color>" + skills[2].Damage + " inflig�");
+        yield return new WaitForSeconds(.05f);
+        skills[2].Damage -= fulldmg;
+    }
     public void Eveil()
     {
         throw new System.NotImplementedException();
@@ -468,19 +469,3 @@ public class BigED : PlayerStats, ISkill
 }
 
 
-[System.Serializable]
-public class HeadImpact : MonoBehaviour
-{
-    public BigED bg;
-    private void OnTriggerEnter(Collider col)
-    {
-        if (col.gameObject.GetComponent<IDamageable>())
-        {
-
-            col.gameObject.GetComponent<IDamageable>().TakeCC(IDamageable.ControlType.slow, 2.55f);
-            col.gameObject.GetComponent<IDamageable>().TakeDamage(bg.skills[0].Damage, bg.skills[0].degats);
-            //Destroy(gameObject);
-        }
-
-    }
-}

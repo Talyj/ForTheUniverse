@@ -1,18 +1,16 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Dps1 : PlayerStats, ISkill
+public class Dps1 : PlayerStats
 {
 
-    [Header("Competences")]
-    public Passifs passif;
-    public Skills[] skills;
+    
 
     public float damageSupp;
     public GameObject ult;
-
-    UIDps ui;
+    Dps1 Instance;
 
 
 
@@ -42,14 +40,18 @@ public class Dps1 : PlayerStats, ISkill
     #endregion
 
     // Start is called before the first frame update
-    public new void Start()
+    public void Start()
     {
-        ui = GetComponent<UIDps>();
+        Init();
+        SetMoveSpeed(60f);
+        SetAttackRange(40f);
+        CameraWork();
         Passif();
-        for (int i = 0; i < skills.Length; i++)
+        foreach (var elmt in skills)
         {
-            skills[i].isCooldown = false;
+            elmt.isCooldown = false;
         }
+        Instance = this;
     }
 
     // Update is called once per frame
@@ -86,6 +88,10 @@ public class Dps1 : PlayerStats, ISkill
         //}
 
         #endregion
+        if (!photonView.IsMine && PhotonNetwork.IsConnected)
+        {
+            return;
+        }
 
         if (GetHealth() <= 0)
         {
@@ -99,69 +105,84 @@ public class Dps1 : PlayerStats, ISkill
         #region test
 
         // test des touches
-        //if (Input.GetKeyDown(KeyCode.K))
-        //{
-        //    TakeDamage(100, DamageType.physique);
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            TakeDamage(100, DamageType.physique);
 
-        //}
-        //if (Input.GetKeyDown(KeyCode.R))
-        //{
-        //    Health = MaxHealth;
-        //    Mana = MaxMana;
-        //}
-        //if (Input.GetKeyDown(KeyCode.J))
-        //{
-        //    TakeDamage(100, DamageType.magique);
-        //}
-        //if (Input.GetKeyDown(KeyCode.L))//execute methode
-        //{
-        //    TakeDamage(9999, DamageType.brut);
-        //}
-        //if (Input.GetKeyDown(KeyCode.X))
-        //{
-        //    Exp = MaxExp + 1;
+        }
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            SetHealth(GetMaxHealth());
+            SetMana(GetMaxMana());
+        }
+        if (Input.GetKeyDown(KeyCode.J))
+        {
+            TakeDamage(100, DamageType.magique);
+        }
+        if (Input.GetKeyDown(KeyCode.L))//execute methode
+        {
+            TakeDamage(9999, DamageType.brut);
+        }
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            SetExp(GetMaxExp() + 1);
 
-        //}
+        }
         #endregion
         //attack sys
-        if (GetUseSkills() == true)
+        if (GetCanAct())
         {
-
-
-            if (Cible != null)
+            if (GetUseSkills() == true)
             {
-                if (Input.GetMouseButtonDown(1))
+                if (isAI)
                 {
-                    if (Vector3.Distance(gameObject.transform.position, Cible.transform.position) > GetAttackRange())
+                    if (Cible == null)
                     {
-                        print("Hors d portée");
+                        GetNearestTarget();
                     }
-                    else
+                    else WalkToTarget();
+                    DefaultHeroBehaviourAI();
+                    CheckTarget();
+                }
+                else if (!isAttacking)
+                {
+                    MovementPlayer();
+                    if (Cible != null)
                     {
-                        if (attackType == AttackType.Melee)
+                        if (Input.GetMouseButtonDown(1))
                         {
-                            StartCoroutine(AutoAttack());
+                            if (Vector3.Distance(gameObject.transform.position, Cible.transform.position) > GetAttackRange())
+                            {
+                                print("Hors d portée");
+                            }
+                            else
+                            {
+                                if (attackType == AttackType.Melee)
+                                {
+                                    StartCoroutine(AutoAttack());
+                                }
+                                if (attackType == AttackType.Ranged)
+                                {
+                                    StartCoroutine(RangeAutoAttack());
+                                }
+                            }
                         }
-                        if (attackType == AttackType.Ranged)
-                        {
-                            StartCoroutine(RangeAutoAttack());
-                        }
+
+                    }
+
+                    if (Input.GetKeyDown(KeyCode.Alpha1))
+                    {
+                        Skill1();
+                    }
+                    if (Input.GetKeyDown(KeyCode.Alpha2))
+                    {
+                        Skill2();
+                    }
+                    if (Input.GetKeyDown(KeyCode.Alpha3) && GetCanUlt() == true)
+                    {
+                        Ultime();
                     }
                 }
-
-            }
-
-            if (Input.GetKeyDown(KeyCode.Alpha1))
-            {
-                Skill1();
-            }
-            if (Input.GetKeyDown(KeyCode.Alpha2))
-            {
-                Skill2();
-            }
-            if (Input.GetKeyDown(KeyCode.Alpha3) && GetCanUlt() == true)
-            {
-                Ultime();
             }
         }
     }
@@ -231,7 +252,7 @@ public class Dps1 : PlayerStats, ISkill
 
     public void SpawnRangeAttack(EnemyType typeEnemy, GameObject Target, float dmgSupp = 0)
     {
-        Instantiate(projPrefab, SpawnPrefab.transform.position, Quaternion.identity);
+        PhotonNetwork.Instantiate(projPrefab.name, SpawnPrefab.transform.position, Quaternion.identity);
 
         projPrefab.GetComponent<Projectile>().SetDamages(GetDegPhys(), DamageType.physique);
         projPrefab.GetComponent<Projectile>().target = Target;
@@ -291,7 +312,7 @@ public class Dps1 : PlayerStats, ISkill
     {
         GameObject sp = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         sp.GetComponent<Transform>().localScale *= 0.25f;
-        GameObject tir1 = Instantiate(sp,SpawnPrefab.transform.position, Quaternion.identity);
+        GameObject tir1 = PhotonNetwork.Instantiate(sp.name,SpawnPrefab.transform.position, Quaternion.identity);
         tir1.AddComponent<Rigidbody>();
         tir1.AddComponent<Ball1>();
         tir1.GetComponent<Rigidbody>().useGravity = false;
@@ -307,7 +328,7 @@ public class Dps1 : PlayerStats, ISkill
         GameObject sp2 = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         sp2.GetComponent<Transform>().localScale *= 0.25f;
         var dir2 = SpawnPrefab2.transform.position - SpawnPrefab.transform.position;
-        GameObject tir2 = Instantiate(sp2, SpawnPrefab.transform.position, Quaternion.identity);
+        GameObject tir2 = PhotonNetwork.Instantiate(sp2.name, SpawnPrefab.transform.position, Quaternion.identity);
         tir2.AddComponent<Rigidbody>();
         tir2.AddComponent<Ball2>();
         tir2.GetComponent<Ball2>().dps = this;
@@ -350,7 +371,7 @@ public class Dps1 : PlayerStats, ISkill
         {
             SetMana(GetMana() - skills[2].Cost);
             Debug.Log(skills[2].Name + " lancée");
-            Instantiate(ult, SpawnPrefab.transform.position, Quaternion.identity);
+            PhotonNetwork.Instantiate(ult.name, SpawnPrefab.transform.position, Quaternion.identity);
             skills[2].isCooldown = true;
             if (skills[2].isCooldown == true)
             {

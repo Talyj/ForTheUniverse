@@ -110,8 +110,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1829cc5597a08634cba95009a3ab3af6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  typeDegats: 1
-  degats: 100
   vitesse: 30
   target: {fileID: 0}
   targetSet: 0

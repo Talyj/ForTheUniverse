@@ -31,6 +31,7 @@ public class SunBehaviour : PlayerStats
         Init();
         SetMoveSpeed(60f);
         SetAttackRange(20f);
+        CameraWork();
         currentStick = Sticks.AuraStick;
         step = 0;
         Instance = this;
@@ -53,29 +54,29 @@ public class SunBehaviour : PlayerStats
         #region test
 
         // test des touches
-        //if (Input.GetKeyDown(KeyCode.K))
-        //{
-        //    TakeDamage(100, DamageType.physique);
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            TakeDamage(100, DamageType.physique);
 
-        //}
-        //if (Input.GetKeyDown(KeyCode.R))
-        //{
-        //    Health = MaxHealth;
-        //    Mana = MaxMana;
-        //}
-        //if (Input.GetKeyDown(KeyCode.J))
-        //{
-        //    TakeDamage(100, DamageType.magique);
-        //}
-        //if (Input.GetKeyDown(KeyCode.L))//execute methode
-        //{
-        //    TakeDamage(9999, DamageType.brut);
-        //}
-        //if (Input.GetKeyDown(KeyCode.X))
-        //{
-        //    Exp = MaxExp + 1;
+        }
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            SetHealth(GetMaxHealth());
+            SetMana(GetMaxMana());
+        }
+        if (Input.GetKeyDown(KeyCode.J))
+        {
+            TakeDamage(100, DamageType.magique);
+        }
+        if (Input.GetKeyDown(KeyCode.L))//execute methode
+        {
+            TakeDamage(9999, DamageType.brut);
+        }
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            SetExp(GetMaxExp() + 1);
 
-        //}
+        }
         #endregion
 
         if (GetCanAct())
@@ -90,14 +91,14 @@ public class SunBehaviour : PlayerStats
                 DefaultHeroBehaviourAI();
                 CheckTarget();
             }
-            else if (!isAttacking && Cible != null)
+            else if (!isAttacking)
             {
                 MovementPlayer();
-                if (Input.GetKeyDown(KeyCode.Alpha2) && Cible != null && Vector3.Distance(Cible.transform.position, transform.position) <= GetAttackRange() * 3)
+                if (Input.GetKeyDown(KeyCode.Alpha1))
                 {
                     Swap(Cible);
                 }
-                if (Input.GetKeyDown(KeyCode.E) && Cible != null && Vector3.Distance(Cible.transform.position, transform.position) <= GetAttackRange() * 3)
+                if (Input.GetKeyDown(KeyCode.Alpha2) && Cible != null && Vector3.Distance(Cible.transform.position, transform.position) <= GetAttackRange() * 3)
                 {
                     StickTeleportation(Cible);
                 }
@@ -115,13 +116,13 @@ public class SunBehaviour : PlayerStats
         switch (currentStick)
         {
             case Sticks.AuraStick:
-                if(Cible.GetComponent<IDamageable>().enemyType == EnemyType.voister)
+                if(Cible.GetComponent<PlayerStats>().enemyType == EnemyType.voister)
                 {
                     damageSupp = DamageMultiplier(GetDegPhys(), 0.5f);
                 }
                 break;
             case Sticks.SpiritSitck:
-                if (Cible.GetComponent<IDamageable>().enemyType == EnemyType.joueur)
+                if (Cible.GetComponent<PlayerStats>().enemyType == EnemyType.joueur)
                 {
                     damageSupp = DamageMultiplier(GetDegMag(), 0.5f);
                 }

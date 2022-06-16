@@ -34,7 +34,7 @@ public class PlayerStats : PlayerMovement
     public GameObject ult;
 
     public bool isAI;
-
+    //public EnemyType enemyType;
 
 
     #region Getter and Setter

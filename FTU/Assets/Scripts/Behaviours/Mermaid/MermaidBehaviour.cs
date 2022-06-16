@@ -57,7 +57,7 @@ public class MermaidBehaviour : PlayerStats
         if (GetCanAct())
         {
             MovementPlayer();
-            if(!isAttacking && Cible != null)
+            if(!isAttacking)
             {
                 if (Input.GetKeyDown(KeyCode.Alpha1) && Cible != null && Vector3.Distance(gameObject.transform.position, Cible.transform.position) < GetAttackRange())
                 {
