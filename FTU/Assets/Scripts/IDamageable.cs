@@ -357,6 +357,12 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         {
             Mana = MaxMana;
         }
+
+        if(Health <= 0)
+        {
+            Destroy(gameObject);
+        }
+        //TODO DEATH
     }
 
     public void CheckTarget()
@@ -364,7 +370,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         if(Cible == null)
         {
             Cible = null;
-        }        
+        }
     }
 
     //Has to be present in the final update

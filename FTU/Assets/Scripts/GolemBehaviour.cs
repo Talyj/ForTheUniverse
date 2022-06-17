@@ -32,7 +32,7 @@ public class GolemBehaviour : IDamageable
                 Cible = null;
             }
         }
-        IsDead();
+        HealthBehaviour();
     }
 
     public void Attack()

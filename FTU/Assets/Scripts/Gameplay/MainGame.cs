@@ -10,6 +10,9 @@ public class MainGame : MonoBehaviourPun
     public bool isPlaying;
     private bool isGameStarted;
 
+    //[0] = veritas, [1] = dominion
+    public GameObject[] victoryDisplay;
+
     // Start is called before the first frame update
     public void Start()
     {
@@ -20,7 +23,9 @@ public class MainGame : MonoBehaviourPun
     // Update is called once per frame
     public void Update()
     {
-        if(!isPlaying && PhotonNetwork.PlayerList.Length >= 2)
+        isPlaying = true;
+        isGameStarted = false;
+        if (!isPlaying && PhotonNetwork.PlayerList.Length >= 2)
         {
             CreateTeams();
         }
@@ -37,7 +42,29 @@ public class MainGame : MonoBehaviourPun
 
         //TODO Spawn minion
 
-        //Check game state (how many golems are destroyed, is the semi god awake ? someone in the temple ?...)           
+        //Check game state (how many golems are destroyed, is the semi god awake ? someone in the temple ?...)    
+        CheckVictory();
+    }
+
+    private void CheckVictory()
+    {
+        var Boss = FindObjectsOfType<MauBehaviour>();
+
+        foreach(var monst in Boss)
+        {
+            if (monst.GetHealth() <= 0)
+            {
+                if (monst.team == IDamageable.Team.Veritas)
+                {
+                    victoryDisplay[1].SetActive(true);
+                }
+                else
+                {
+                    victoryDisplay[0].SetActive(true);
+                }
+                Time.timeScale = 0;
+            }
+        }                
     }
 
     private void CreateTeams()

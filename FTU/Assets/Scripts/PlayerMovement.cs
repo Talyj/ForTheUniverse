@@ -95,7 +95,7 @@ public class PlayerMovement : IDamageable
         {
             if (Vector3.Distance(transform.position, moveTo[current].position) > 10)
             {
-                transform.position = Vector3.MoveTowards(transform.position, moveTo[current].position, GetMoveSpeed() * Time.deltaTime);
+                transform.position = Vector3.MoveTowards(transform.position, new Vector3(moveTo[current].position.x, transform.position.y, moveTo[current].position.z), GetMoveSpeed() * Time.deltaTime);
             }
             else current = (current + 1)/* % targets.Length*/;
         }
@@ -106,7 +106,7 @@ public class PlayerMovement : IDamageable
     {        
         while (transform.position != Cible.transform.position/*Cible != null*/)
         {
-            transform.position = Vector3.MoveTowards(transform.position, Cible.transform.position, GetMoveSpeed() * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, new Vector3(Cible.transform.position.x, transform.position.y, Cible.transform.position.z), GetMoveSpeed() * Time.deltaTime);
         }
 
         yield return 0;

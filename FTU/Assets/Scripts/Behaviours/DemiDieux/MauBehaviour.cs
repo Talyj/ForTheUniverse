@@ -13,14 +13,18 @@ public class MauBehaviour : PlayerStats
     private float baseMag;
     private float basePhys;
 
+    [HideInInspector] public Transform templeTransform;
+
+    
+
 
     // Start is called before the first frame update
     public void Start()
     {
-        baseMag = 500f;
-        basePhys = 500f;
+        baseMag = 1;
+        basePhys = 1;
         Init();
-        SetHealth(500f);
+        SetHealth(1f);
         SetMaxHealth(5000f);
         SetMoveSpeed(60f);
         SetAttackRange(30f);
@@ -31,41 +35,93 @@ public class MauBehaviour : PlayerStats
         {
             elmt.isCooldown = false;
         }
+        StartCoroutine(UseSkill());
     }
 
     // Update is called once per frame
     public void Update()
     {
         HealthBehaviour();
-        ExperienceBehaviour();
+        //ExperienceBehaviour();
         Passif();
-        MovementPlayer();
+        //MovementPlayer();
 
         if (GetCanAct())
         {
-            //    if (Cible == null)
-            //    {
-            //        GetNearestTarget();
-            //    }
-            //    else WalkToTarget();
-            //    DefaultHeroBehaviourAI();
-            //    CheckTarget();
-
-            MovementPlayer();
-            if (Input.GetKeyDown(KeyCode.Alpha1) && Cible != null && Vector3.Distance(gameObject.transform.position, Cible.transform.position) < GetAttackRange() * 4)
+            if (Cible == null)
             {
-                Roar();
+                GetNearestTarget();
             }
+            else WalkToTarget();
+            DefaultHeroBehaviourAI();
+            CheckTarget();
 
-            if (Input.GetKeyDown(KeyCode.Alpha2))
-            {
-                Stomp();
-            }
+            //Control boss as a player for TEST
+            //MovementPlayer();
+            //if (Input.GetKeyDown(KeyCode.Alpha1) && Cible != null && Vector3.Distance(gameObject.transform.position, Cible.transform.position) < GetAttackRange() * 4)
+            //{
+            //    Roar();
+            //}
 
-            if (Input.GetKeyDown(KeyCode.Alpha3)/* && GetCanUlt() == true*/)
+            //if (Input.GetKeyDown(KeyCode.Alpha2))
+            //{
+            //    Stomp();
+            //}
+
+            //if (Input.GetKeyDown(KeyCode.Alpha3)/* && GetCanUlt() == true*/)
+            //{
+            //    Ultime();
+            //}
+        }
+    }
+
+    new public void CheckTarget()
+    {
+
+        if (Cible == null)
+        {          
+            Cible = null;
+        }
+        else
+        {
+            var dist = Vector3.Distance(Cible.transform.position, templeTransform.position);
+            if (dist >= 50) { }
+        }
+    }
+
+    public IEnumerator UseSkill()
+    {
+        if(Cible != null)
+        {
+            var rdmSkill = Random.Range(0, 2);
+            switch (rdmSkill)
             {
-                Ultime();
+                case 0:
+                    Roar();
+                    break;
+                case 1:
+                    Stomp();
+                    break;
+                case 2:
+                    Ultime();
+                    break;
             }
+        }
+        yield return new WaitForSeconds(30);
+        StartCoroutine(UseSkill());
+    }
+
+    new public void DefaultHeroBehaviourAI()
+    {
+        if (Cible == null)
+        {
+            isAttacking = false;
+        }
+
+        if (!isAttacking && Cible != null)
+        {
+            isAttacking = true;
+            AttackSystemAI();
         }
     }
 

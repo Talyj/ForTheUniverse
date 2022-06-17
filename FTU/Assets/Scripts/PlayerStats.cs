@@ -133,7 +133,7 @@ public class PlayerStats : PlayerMovement
 
     public void WalkToTarget()
     {
-        transform.position = Vector3.MoveTowards(transform.position, Cible.transform.position, GetMoveSpeed() * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, new Vector3(Cible.transform.position.x, transform.position.y, Cible.transform.position.z), GetMoveSpeed() * Time.deltaTime);
     }
 
     

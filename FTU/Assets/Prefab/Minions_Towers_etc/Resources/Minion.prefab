@@ -135,6 +135,7 @@ MonoBehaviour:
   cc: 0
   Cible: {fileID: 0}
   disableOnDeath: []
+  userId: 
   projPrefab: {fileID: 0}
   SpawnPrefab: {fileID: 0}
   enemyType: 0
@@ -192,6 +193,7 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 8118329312662599780}
   - {fileID: 6199619404199492780}
+  - {fileID: 6787871341325226662}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0

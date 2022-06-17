@@ -27,7 +27,7 @@ public class MinionsBehaviour : PlayerStats
         //Get Target in range
         GetNearestTarget();
         //Check if this gameobject is dead
-        IsDead();
+        HealthBehaviour();
         if(Cible)
         {
             WalkToTarget();

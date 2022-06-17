@@ -57,7 +57,6 @@ public class PuddlePoissoinBehaviour : Projectile
         {
             insideArea += 1;
             targets.Add(other.gameObject);
-            Debug.Log("ekip");
         }
     }
 
@@ -67,7 +66,6 @@ public class PuddlePoissoinBehaviour : Projectile
         {
             insideArea -= 1;
             targets.Remove(other.gameObject);
-            Debug.Log("stop");
         }
     }
 }

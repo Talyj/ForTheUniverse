@@ -14,8 +14,6 @@ GameObject:
   - component: {fileID: 619973488328082863}
   - component: {fileID: 619973488328082858}
   - component: {fileID: 619973488328082859}
-  - component: {fileID: 619973488328082857}
-  - component: {fileID: 619973488328082856}
   - component: {fileID: -7631457125285483181}
   - component: {fileID: -3136499497585886516}
   - component: {fileID: 5735543640343210657}
@@ -120,7 +118,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 84
   m_CollisionDetection: 0
 --- !u!114 &619973488328082859
 MonoBehaviour:
@@ -138,6 +136,7 @@ MonoBehaviour:
   cc: 0
   Cible: {fileID: 0}
   disableOnDeath: []
+  userId: 
   projPrefab: {fileID: 0}
   SpawnPrefab: {fileID: 0}
   enemyType: 3
@@ -161,53 +160,7 @@ MonoBehaviour:
   isAI: 0
   roarArea: {fileID: 315106767154584745, guid: 3f33656f6f5aaf44fb14b5942e3a9a0f, type: 3}
   Instance: {fileID: 0}
---- !u!114 &619973488328082857
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 619973488328082848}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 400bbc4498ed0b24ea71791c827e3a3b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  stats: {fileID: 0}
-  spells:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  health: {fileID: 0}
-  mana: {fileID: 0}
-  healthCible: {fileID: 0}
-  manaCible: {fileID: 0}
-  costsCible:
-  - {fileID: 0}
-  - {fileID: 0}
-  costs:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  cibleHp: {fileID: 0}
-  ciblePm: {fileID: 0}
---- !u!114 &619973488328082856
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 619973488328082848}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c05414265093b144c96b60392aa38dd2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  entity: {fileID: 619973488328082848}
+  templeTransform: {fileID: 0}
 --- !u!114 &-7631457125285483181
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -229,6 +182,7 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 619973488328082859}
   - {fileID: -3136499497585886516}
+  - {fileID: -5986313207583038040}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
