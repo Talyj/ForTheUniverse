@@ -8,8 +8,6 @@ public class Dps1 : PlayerStats
 
     
 
-    public float damageSupp;
-    public GameObject ult;
     Dps1 Instance;
 
 

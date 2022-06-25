@@ -164,7 +164,6 @@ MonoBehaviour:
   damageSupp: 0
   ult: {fileID: 0}
   isAI: 0
-  enemyType: 2
   poissoin: {fileID: 7659772833644222945, guid: a4fb129dc3fd0c54fab8b5a4ddf46bed, type: 3}
   speedPush: 4
   windArea: {fileID: 2508449633787207300, guid: 7b6fdc55468d56e498faae2bd5737b29, type: 3}
