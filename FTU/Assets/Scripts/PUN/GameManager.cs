@@ -19,7 +19,6 @@ namespace Com.MyCompany.MyGame
         
         private int numberPlayer = 2;
 
-        public CharacterSelector selector;
         public void Start()
         {
             if (SceneManager.GetActiveScene().name == "WaitingRoom") return;
@@ -31,10 +30,9 @@ namespace Com.MyCompany.MyGame
             {
                 if(PlayerMovement.localPlayerInstance == null)
                 {
-                    selector = GameObject.FindObjectOfType<CharacterSelector>();
                     Debug.LogFormat("We are Instantiating LocalPlayer from {0}", SceneManager.GetActiveScene().name);
                     // we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
-                    PhotonNetwork.Instantiate(playerPrefabs[selector.selectIndex].name, new Vector3(0f, 2.14f, 0f), Quaternion.identity, 0);
+                    PhotonNetwork.Instantiate(playerPrefabs[0].name, new Vector3(0f, 2.14f, 0f), Quaternion.identity, 0);
                 }
                 else
                 {
