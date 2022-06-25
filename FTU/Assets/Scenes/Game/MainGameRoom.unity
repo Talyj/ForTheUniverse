@@ -1275,6 +1275,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7642911151125993750, guid: 0efed2e512b04ff4c9c246a3692977cb, type: 3}
+      propertyPath: playerPrefabs.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7642911151125993750, guid: 0efed2e512b04ff4c9c246a3692977cb, type: 3}
+      propertyPath: playerPrefabs.Array.data[1]
+      value: 
+      objectReference: {fileID: 3853125026446671208, guid: cec8dcfc12dd1c04391e39fefaf8894e, type: 3}
+    - target: {fileID: 7642911151125993750, guid: 0efed2e512b04ff4c9c246a3692977cb, type: 3}
+      propertyPath: playerPrefabs.Array.data[2]
+      value: 
+      objectReference: {fileID: 8597483264512879776, guid: 58fa13ea9462c6a41bfedaf78e7c4658, type: 3}
+    - target: {fileID: 7642911151125993750, guid: 0efed2e512b04ff4c9c246a3692977cb, type: 3}
+      propertyPath: playerPrefabs.Array.data[3]
+      value: 
+      objectReference: {fileID: 1744873933731375706, guid: 2618147335a510c438b898b8db7778f6, type: 3}
+    - target: {fileID: 7642911151125993750, guid: 0efed2e512b04ff4c9c246a3692977cb, type: 3}
+      propertyPath: playerPrefabs.Array.data[4]
+      value: 
+      objectReference: {fileID: 1675429051430411217, guid: f350f475da558ad448b725cea3ecc90e, type: 3}
     - target: {fileID: 8155366620173427672, guid: 0efed2e512b04ff4c9c246a3692977cb, type: 3}
       propertyPath: mainCam
       value: 
