@@ -11,10 +11,13 @@ public class MinionsBehaviour : PlayerStats
         pathDone = false;
         if (attackType == AttackType.Ranged)
         {
-            SetAttackRange(30f);
+            SetAttackRange(20f);
         }
         else SetAttackRange(10f);
-        SetMoveSpeed(40f);
+        SetMoveSpeed(30f);
+        SetDegMag(10f);
+        SetDegPhys(10f);
+        SetViewRange(30f);
         isAttacking = false;        
     }
 
@@ -28,14 +31,11 @@ public class MinionsBehaviour : PlayerStats
         GetNearestTarget();
         //Check if this gameobject is dead
         HealthBehaviour();
-        if(Cible)
+        if (Cible)
         {
-            WalkToTarget();
-        }   
-        //if (IsDead() == true)
-        //{
-        //    ExpFor();
-        //}
+            StartCoroutine(WalkToward());
+            gameObject.transform.LookAt(Cible.transform);
+        }        
     }
 
     //public void ExpFor()

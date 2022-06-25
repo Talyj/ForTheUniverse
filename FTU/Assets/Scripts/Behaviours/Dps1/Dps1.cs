@@ -93,14 +93,9 @@ public class Dps1 : PlayerStats
             return;
         }
 
-        if (GetHealth() <= 0)
-        {
-            IsDead();
-        }
-        if (GetExp() >= GetMaxExp())
-        {
-            ExperienceBehaviour();
-        }
+        HealthBehaviour();
+        ExperienceBehaviour();
+        Passif();
 
         #region test
 
@@ -132,19 +127,9 @@ public class Dps1 : PlayerStats
         //attack sys
         if (GetCanAct())
         {
-            if (GetUseSkills() == true)
-            {
-                if (isAI)
-                {
-                    if (Cible == null)
-                    {
-                        GetNearestTarget();
-                    }
-                    else WalkToTarget();
-                    DefaultHeroBehaviourAI();
-                    CheckTarget();
-                }
-                else if (!isAttacking)
+            //if (GetUseSkills() == true)
+            //{
+                if (!isAttacking)
                 {
                     MovementPlayer();
                     if (Cible != null)
@@ -183,7 +168,7 @@ public class Dps1 : PlayerStats
                         Ultime();
                     }
                 }
-            }
+            //}
         }
     }
 

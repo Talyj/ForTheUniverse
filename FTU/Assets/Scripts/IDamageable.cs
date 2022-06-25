@@ -11,20 +11,16 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     [SerializeField]
     ControlType cc;
     public GameObject Cible;
-    [Header("death")]
-    [SerializeField]
-    Behaviour[] disableOnDeath;
-    //[SerializeField]
-    //public GameObject deathEffect;
-    //[SerializeField]
-    Transform templeSpawn;
-    //TODO when dev is over ad get set and change to private
+    //[SerializeField] public GameObject deathEffect;   
+    [HideInInspector] public Vector3 respawnPos;
+    [HideInInspector] public Vector3 deathPos;
     public string userId;
     [Header("Stats")]
-    private float Health, MaxHealth;
+    [SerializeField] private float Health, MaxHealth;
     private float MoveSpeed;
     private float AttackSpeed;
-    private float AttackRange;
+    [SerializeField] private float AttackRange;
+    private float ViewRange;
     private float Mana, MaxMana;
     private float ResistancePhysique; // calcul des resistance health = health - (DegatsPhysiqueRe�u -((ResistancePhysique * DegatsPhysiqueRe�u)/100)
     private float ResistanceMagique; //calcul des resistance health = health - (DegatsMagiqueRe�u - ((ResistanceMagique * DegatsMagiqueRe�u) / 100)
@@ -36,10 +32,12 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     private int lvl;
     private bool canMove;
     private bool canAct;
-    private bool useSkills;
+    private bool isMoving;
+    //private bool useSkills;
     private bool canUlt;
     private bool InCombat;
     private bool InRegen;
+    private float respawnCooldown;
 
     [Header("Ranged variables")]
     public GameObject projPrefab;
@@ -86,11 +84,18 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
 
     #region Getter
 
-    public bool GetUseSkills()
+    //public bool GetUseSkills()
+    //{
+    //    return useSkills;
+    //}
+    public bool IsMoving()
     {
-        return useSkills;
+        return isMoving;
     }
-
+    public float GetViewRange()
+    {
+        return ViewRange;
+    }
     public bool GetCanMove()
     {
         return canMove;
@@ -177,6 +182,15 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
 
     #endregion
     #region Setter
+
+    public void SetIsMoving(bool value)
+    {
+        isMoving = value;
+    }
+    public void SetViewRange(float value)
+    {
+        ViewRange = value;
+    }
     public void SetCanMove(bool value)
     {
         canMove = value;
@@ -201,6 +215,12 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     {
         Mana = value;
     }
+
+    public void SetMaxMana(float value)
+    {
+        MaxMana = value;
+    }
+
     public void SetMoveSpeed(float value)
     {
         MoveSpeed = value;
@@ -225,6 +245,10 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     {
         Exp = value;
     }
+    public void SetMaxExp(float value)
+    {
+        MaxExp = value;
+    }
     public void SetDegPhys(float value)
     {
         DegatsPhysique = value;
@@ -246,17 +270,17 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     {
         canMove = true;
         canAct = true;
-        useSkills = true;
+        //useSkills = true;
         canUlt = false;
         InCombat = false;
         InRegen = false;
 
         Health = MaxHealth;
         //deathEffect.SetActive(false);
-        for (int i = 0; i < disableOnDeath.Length; i++)
-        {
-            disableOnDeath[i].enabled = true;
-        }
+        //for (int i = 0; i < disableOnDeath.Length; i++)
+        //{
+        //    disableOnDeath[i].enabled = true;
+        //}
         Rigidbody rb = GetComponent<Rigidbody>();
         if (rb != null)
         {
@@ -268,21 +292,44 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
             col.enabled = true;
         }
 
-        MaxHealth = 500;
-        Health = MaxHealth;
-        MoveSpeed = 4.5f;
-        AttackSpeed = 0.5f;
-        AttackRange = 1.5f;
-        Mana = 100;
-        MaxMana = 100;
-        ResistancePhysique = 0;
-        ResistanceMagique = 0;
-        Exp = 0;
-        MaxExp = 100;
-        ExpRate = 1.75f;
-        DegatsPhysique = 100;
-        DegatsMagique = 100;
-        lvl = 1;
+        //MaxHealth = 500;
+        //Health = MaxHealth;
+        //MoveSpeed = 4.5f;
+        //AttackSpeed = 0.5f;
+        //AttackRange = 1.5f;
+        //Mana = 100;
+        //MaxMana = 100;
+        //ResistancePhysique = 0;
+        //ResistanceMagique = 0;
+        //Exp = 0;
+        //MaxExp = 100;
+        //ExpRate = 1.75f;
+        //DegatsPhysique = 100;
+        //DegatsMagique = 100;
+        //lvl = 1;
+        CharacterStatsSetUp();
+    }
+
+    public void CharacterStatsSetUp()
+    {
+        SetMaxHealth(500);
+        SetHealth(GetMaxHealth());
+        SetMoveSpeed(4.5f);
+        SetAttackSpeed(0.5f);
+        SetAttackRange(1.5f);
+        SetMaxMana(100);
+        SetMana(GetMaxMana());
+        SetResPhys(0);
+        SetResMag(0);
+        SetMaxExp(100);
+        SetDegPhys(100);
+        SetDegMag(100);
+
+
+        respawnCooldown = 10.0f;
+
+        SetExp(0);
+        SetLvl(1);
     }
 
     //public void Setup()
@@ -295,26 +342,6 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     //    }
     //    SetDefault();
     //}
-    public void SetDefault()
-    {
-        Health = MaxHealth;
-        //deathEffect.SetActive(false);
-        for (int i = 0; i < disableOnDeath.Length; i++)
-        {
-            disableOnDeath[i].enabled = true;
-        }
-        Rigidbody rb = GetComponent<Rigidbody>();
-        if (rb != null)
-        {
-            rb.useGravity = true;
-        }
-        Collider col = GetComponent<Collider>();
-        if(col != null)
-        {
-            col.enabled = true;
-        }
-    }
-
     
     private void CheckCC()
     {
@@ -322,31 +349,31 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         {
             case ControlType.none:
                 canMove = true;
-                useSkills = true;
+                //useSkills = true;
                 break;
             case ControlType.stun:
                 canMove = false;
-                useSkills = false;
+                //useSkills = false;
                 break;
             case ControlType.bump:
                 canMove = false;
-                useSkills = false;
+                //useSkills = false;
                 break;
             case ControlType.charme:
                 canMove = false;
-                useSkills = false;
+                //useSkills = false;
                 break;
             case ControlType.root:
                 canMove = false;
                 break;
             case ControlType.slow:
                 canMove = true;
-                useSkills = true;
+                //useSkills = true;
                 break;
 
         }
     }
-    //Has to be present in the final update
+
     public void HealthBehaviour()
     {
         if (Health >= MaxHealth)
@@ -360,9 +387,44 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
 
         if(Health <= 0)
         {
-            Destroy(gameObject);
+            if (gameObject.CompareTag("Player"))
+            {
+                var rend = GetComponent<Renderer>();
+                if (rend != null)
+                {
+                    rend.enabled = false;
+                }
+                StartCoroutine(Spawn(rend));
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
         }
-        //TODO DEATH
+    }
+
+    IEnumerator Spawn(Renderer rend)
+    {
+        if(transform.position != deathPos)
+        {
+            transform.position = deathPos;
+            yield return new WaitForSeconds(respawnCooldown);
+
+            SetDefault(rend);
+            transform.position = respawnPos;
+        }
+    }
+
+    public void SetDefault(Renderer rend)
+    {
+        Health = MaxHealth;
+        Mana = MaxMana;
+        //deathEffect.SetActive(false);
+        //for (int i = 0; i < disableOnDeath.Length; i++)
+        //{
+        //    disableOnDeath[i].enabled = true;
+        //}
+        rend.enabled = true;
     }
 
     public void CheckTarget()
@@ -470,45 +532,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         cc = ControlType.none;
         CheckCC();
     }
-    public void IsDead()
-    {
-        if (Health <= 0)
-        {
-            Destroy(gameObject);
-        }
-    }
-
-    public void Die()
-    {
-        //deathEffect.SetActive(true);
-        for (int i = 0; i < disableOnDeath.Length; i++)
-        {
-             disableOnDeath[i].enabled = false;
-        }
-        Rigidbody rb = GetComponent<Rigidbody>();
-        if(rb != null)
-        {
-            rb.useGravity = false;
-        }
-        Collider col = GetComponent<Collider>();
-        if (col != null)
-        {
-            col.enabled = false;
-        }
-        Debug.Log(transform.name + " est mort");
-        StartCoroutine(Spawn());
-    }
-
-    IEnumerator Spawn()
-    {
-        
-        yield return new WaitForSeconds(5f);
-        
-        SetDefault();
-        Transform spawnPoint = templeSpawn;
-        transform.position = spawnPoint.position;
-        //transform.rotation = spawnPoint.rotation;
-    }
+    
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.cyan;
@@ -545,7 +569,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     {
         if (Cible == null)
         {
-            Collider[] hitColliders = Physics.OverlapSphere(gameObject.transform.position, GetAttackRange());
+            Collider[] hitColliders = Physics.OverlapSphere(gameObject.transform.position, GetViewRange());
             if (hitColliders != null)
             {
                 foreach (var col in hitColliders)

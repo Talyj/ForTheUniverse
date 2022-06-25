@@ -16,6 +16,8 @@ namespace Com.MyCompany.MyGame
     {
         [Tooltip("The list of prefab that represent the differente characters")]
         public GameObject[] playerPrefabs;
+        
+        private int numberPlayer = 2;
 
         public void Start()
         {
@@ -57,7 +59,7 @@ namespace Com.MyCompany.MyGame
                 Debug.LogError("PhotonNetwork : Trying to Load a level but we are not the master Client");
             }
             Debug.LogFormat("PhotonNetwork : Loading Level : {0}", PhotonNetwork.CurrentRoom.PlayerCount);
-            if (PhotonNetwork.CurrentRoom.PlayerCount <= 2)
+            if (PhotonNetwork.CurrentRoom.PlayerCount <= numberPlayer)
             {
                 PhotonNetwork.LoadLevel("WaitingRoom");
             }

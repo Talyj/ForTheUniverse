@@ -1,4 +1,5 @@
 using Photon.Pun;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
@@ -78,14 +79,6 @@ public class PlayerMovement : IDamageable
                 LookAt(point);
 
             }
-            //if(stats.Cible != null)
-            //{
-            //    if (Vector3.Distance(gameObject.transform.position, stats.Cible.transform.position) > stats.AttackRange)
-            //    {
-            //        print("Hors d portée");
-            //        //Cible = null;
-            //    }
-            //}
         }
     }
 
@@ -103,10 +96,21 @@ public class PlayerMovement : IDamageable
     }
 
     public IEnumerator WalkToward()
-    {        
-        while (transform.position != Cible.transform.position/*Cible != null*/)
+    {
+        try
         {
-            transform.position = Vector3.MoveTowards(transform.position, new Vector3(Cible.transform.position.x, transform.position.y, Cible.transform.position.z), GetMoveSpeed() * Time.deltaTime);
+            var dist = Vector3.Distance(transform.position, Cible.transform.position);
+            //while (transform.position != Cible.transform.position)
+            if (dist > gameObject.GetComponent<IDamageable>().GetAttackRange())
+            {
+                SetIsMoving(true);
+                transform.position = Vector3.MoveTowards(transform.position, new Vector3(Cible.transform.position.x, transform.position.y, Cible.transform.position.z), GetMoveSpeed() * Time.deltaTime);
+            }
+            SetIsMoving(false);
+        }
+        catch(NullReferenceException e)
+        {
+            Cible = null;
         }
 
         yield return 0;
@@ -126,16 +130,5 @@ public class PlayerMovement : IDamageable
     {
         Vector3 heightCorrectedPoint = new Vector3(lookPoint.x, transform.position.y, lookPoint.z);
         transform.LookAt(heightCorrectedPoint);
-    }
-
-    [ServerRpc]
-    void SubmitPositionRequestServerRpc(ServerRpcParams rpcParams = default)
-    {
-        Position.Value = GetRandomPositionOnPlane();
-    }
-
-    static Vector3 GetRandomPositionOnPlane()
-    {
-        return new Vector3(Random.Range(-3f, 3f), 1f, Random.Range(-3f, 3f));
     }
 }

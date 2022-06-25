@@ -1,4 +1,5 @@
 using Photon.Pun;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -29,6 +30,8 @@ public class MermaidBehaviour : PlayerStats
         Init();
         SetMoveSpeed(60f);
         SetAttackRange(40f);
+        SetHealth(500);
+        SetMaxHealth(500);
         speedPush = 3;
         charmSpeed = 5;
         charmTargets = new List<GameObject>();
@@ -59,6 +62,32 @@ public class MermaidBehaviour : PlayerStats
             MovementPlayer();
             if(!isAttacking)
             {
+                try
+                {
+                    if (Input.GetMouseButtonDown(0))
+                    {
+                        if (Vector3.Distance(gameObject.transform.position, Cible.transform.position) > GetAttackRange())
+                        {
+                            print("Hors d portée");
+                        }
+                        else
+                        {
+                            if (attackType == AttackType.Melee)
+                            {
+                                StartCoroutine(AutoAttack());
+                            }
+                            if (attackType == AttackType.Ranged)
+                            {
+                                StartCoroutine(RangeAutoAttack());
+                            }
+                        }
+                    }
+                }
+                catch(Exception e)
+                {
+                    Debug.Log("No target available");
+                }
+
                 if (Input.GetKeyDown(KeyCode.Alpha1) && Cible != null && Vector3.Distance(gameObject.transform.position, Cible.transform.position) < GetAttackRange())
                 {
                     Poissoin(EnemyType.minion, Cible);

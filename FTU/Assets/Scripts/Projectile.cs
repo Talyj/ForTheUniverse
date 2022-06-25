@@ -17,6 +17,7 @@ public class Projectile : NetworkBehaviour
     public void Start()
     {
         touched = false;
+        //StartCoroutine(DestroyOnTime());
     }
 
     public void Update()
@@ -31,7 +32,7 @@ public class Projectile : NetworkBehaviour
         {
             if (target == null)
             {
-                Destroy(gameObject);
+                target = null;
             }
 
             transform.position = Vector3.MoveTowards(transform.position, target.transform.position, vitesse * Time.deltaTime);
@@ -76,5 +77,11 @@ public class Projectile : NetworkBehaviour
     public void DealDamage(GameObject target, float dmg, IDamageable.DamageType typeDmg)
     {
         target.GetComponent<IDamageable>().TakeDamage(dmg, typeDmg);
+    }
+
+    public IEnumerator DestroyOnTime()
+    {
+        yield return new WaitForSeconds(6);
+        Destroy(gameObject);
     }
 }

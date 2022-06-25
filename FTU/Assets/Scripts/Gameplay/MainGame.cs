@@ -13,6 +13,10 @@ public class MainGame : MonoBehaviourPun
     //[0] = veritas, [1] = dominion
     public GameObject[] victoryDisplay;
 
+    [SerializeField] private Transform spawnTransformVeritas;
+    [SerializeField] private Transform spawnTransformDominion;
+    [SerializeField] private Transform deathPos;
+
     // Start is called before the first frame update
     public void Start()
     {
@@ -23,11 +27,12 @@ public class MainGame : MonoBehaviourPun
     // Update is called once per frame
     public void Update()
     {
-        isPlaying = true;
-        isGameStarted = false;
-        if (!isPlaying && PhotonNetwork.PlayerList.Length >= 2)
+        //isPlaying = true;
+        //isGameStarted = false;
+        if (!isPlaying && PhotonNetwork.PlayerList.Length >= 1)
         {
-            CreateTeams();
+            var players = GameObject.FindGameObjectsWithTag("Player");
+            CreateTeams(players);
         }
         else if (isPlaying && !isGameStarted)
         {
@@ -67,21 +72,38 @@ public class MainGame : MonoBehaviourPun
         }                
     }
 
-    private void CreateTeams()
-    {
-        var players = GameObject.FindGameObjectsWithTag("Player");
-
+    private void CreateTeams(GameObject[] players)
+    {        
         for (var i = 0; i < players.Length; i++)
         {
             if (i >= players.Length / 2)
             {
                 players[i].GetComponent<IDamageable>().team = IDamageable.Team.Dominion;
+                players[i].GetComponent<IDamageable>().respawnPos = new Vector3(spawnTransformDominion.position.x, 2.11f, spawnTransformDominion.position.z);
             }
             else
             {
                 players[i].GetComponent<IDamageable>().team = IDamageable.Team.Veritas;
+                players[i].GetComponent<IDamageable>().respawnPos = new Vector3(spawnTransformVeritas.position.x, 2.11f, spawnTransformVeritas.position.z);
             }
+            players[i].GetComponent<IDamageable>().deathPos = deathPos.position;
         }
         isPlaying = true;
+        Spawn(players);
+    }
+
+    private void Spawn(GameObject[] players)
+    {
+        foreach(var play in players)
+        {
+            if(play.GetComponent<IDamageable>().team == IDamageable.Team.Veritas)
+            {
+                play.transform.position = new Vector3(spawnTransformVeritas.position.x, 2.11f, spawnTransformVeritas.position.z);
+            }
+            else
+            {
+                play.transform.position = new Vector3(spawnTransformDominion.position.x, 2.11f, spawnTransformDominion.position.z);
+            }
+        }
     }
 }
