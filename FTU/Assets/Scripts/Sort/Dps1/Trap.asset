@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Trap
   m_EditorClassIdentifier: 
   Name: Trap
-  Cost: 65
+  Cost: 1
   CastTime: 1
-  Cooldown: 15
+  Cooldown: 1
   isCooldown: 0
   type: 0
   Damage: 10

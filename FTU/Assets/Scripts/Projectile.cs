@@ -7,7 +7,7 @@ public class Projectile : NetworkBehaviour
 {
 
     private IDamageable.DamageType typeDegats;
-    private float degats;
+    [SerializeField] private float degats;
     public float vitesse = 30;
     public GameObject target;
     public bool targetSet;

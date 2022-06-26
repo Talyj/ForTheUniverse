@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: EnPlace
   m_EditorClassIdentifier: 
   Name: En Place
-  Cost: 60
+  Cost: 1
   CastTime: 1.5
-  Cooldown: 8
+  Cooldown: 1
   isCooldown: 0
   type: 2
   Damage: 0

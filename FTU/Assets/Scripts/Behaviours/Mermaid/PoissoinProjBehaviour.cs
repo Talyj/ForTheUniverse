@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,61 +6,52 @@ using UnityEngine;
 public class PoissoinProjBehaviour : Projectile
 {
     public MermaidBehaviour source;
+    public IDamageable.Team team;
     [SerializeField] private GameObject puddle;
 
     public new void Start()
     {
-        StartCoroutine(SpawnPuddle());
-        touched = false;
+        StartCoroutine(DestroyBullet());
     }
 
     public new void Update()
     {
-        if(touched == true)
-        {
-            source.AddPassive();            
-        }
-        Behaviour();        
+        
     }
 
-    private new void Behaviour()
+    private IEnumerator DestroyBullet()
     {
-        if (target)
+        yield return new WaitForSeconds(2f);
+        StartCoroutine(SpawnPuddle());
+        Destroy(gameObject);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {      
+        if(other.GetComponent<IDamageable>())
         {
-            if (target == null)
+            if (other.GetComponent<IDamageable>().team != team)
             {
+                source.AddPassive();
+
+                StartCoroutine(SpawnPuddle());
+                stopProjectile = true;
                 Destroy(gameObject);
             }
 
-            transform.position = Vector3.MoveTowards(transform.position, target.transform.position, vitesse * Time.deltaTime);
-
-            if (stopProjectile == false)
+            if (other.GetComponent<IDamageable>().team != team)
             {
-                if (Vector3.Distance(transform.position, target.transform.position) < 0.75f)
-                //if (touched)
-                {
-                    if (target.GetComponent<PlayerStats>().enemyType == PlayerStats.EnemyType.minion ||
-                       target.GetComponent<PlayerStats>().enemyType == PlayerStats.EnemyType.voister ||
-                       target.GetComponent<PlayerStats>().enemyType == PlayerStats.EnemyType.joueur ||
-                       target.GetComponent<PlayerStats>().enemyType == PlayerStats.EnemyType.dieu ||
-                       target.GetComponent<PlayerStats>().enemyType == PlayerStats.EnemyType.golem)
-                    {
-                        var pud = Instantiate(puddle, new Vector3(transform.position.x, 1, transform.position.z), Quaternion.identity);
-                        pud.GetComponent<PuddlePoissoinBehaviour>().source = source;
-                        touched = true;
-                        DealDamage(target, GetDamages(), GetDamageType());
-                        stopProjectile = true;
-                        Destroy(gameObject);
-                    }
-                }
+                DealDamage(target, GetDamages(), GetDamageType());
             }
         }
+
     }
 
     private IEnumerator SpawnPuddle()
     {
-        yield return new WaitForSeconds(1);
-        Instantiate(puddle, new Vector3(transform.position.x, 1, transform.position.z), Quaternion.identity);
-        Destroy(gameObject, 1);
+        var pud = PhotonNetwork.Instantiate(puddle.name, new Vector3(transform.position.x, 1, transform.position.z), Quaternion.identity);
+        pud.GetComponent<PuddlePoissoinBehaviour>().team = team;
+        
+        yield return 0;
     }
 }

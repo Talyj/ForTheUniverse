@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using System;
 
 public class BigEdBehaviours : PlayerStats
 {
@@ -15,7 +16,9 @@ public class BigEdBehaviours : PlayerStats
     {
         Init();
         SetMoveSpeed(60f);
-        SetAttackRange(40f);
+        SetAttackRange(10f);
+        SetHealth(500000);
+        SetMaxHealth(500000);
         CameraWork();
         foreach (var elmt in skills)
         {
@@ -35,45 +38,47 @@ public class BigEdBehaviours : PlayerStats
         HealthBehaviour();
         ExperienceBehaviour();
         //Passif();
+        Behaviour();    
+    }
 
-        #region test
-
-        // test des touches
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            TakeDamage(100, DamageType.physique);
-
-        }
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            SetHealth(GetMaxHealth());
-            SetMana(GetMaxMana());
-        }
-        if (Input.GetKeyDown(KeyCode.J))
-        {
-            TakeDamage(100, DamageType.magique);
-        }
-        if (Input.GetKeyDown(KeyCode.L))//execute methode
-        {
-            TakeDamage(9999, DamageType.brut);
-        }
-        if (Input.GetKeyDown(KeyCode.X))
-        {
-            SetExp(GetMaxExp() + 1);
-
-        }
-        #endregion
-
+    private void Behaviour()
+    {
         if (GetCanAct())
         {
             MovementPlayer();
-            if (!isAttacking )
+            if (!isAttacking)
             {
-                if (Input.GetKeyDown(KeyCode.Alpha1))
+                try
+                {
+                    if (Input.GetMouseButtonDown(0))
+                    {
+                        if (Vector3.Distance(gameObject.transform.position, Cible.transform.position) > GetAttackRange())
+                        {
+                            print("Hors d portée");
+                        }
+                        else
+                        {
+                            if (attackType == AttackType.Melee)
+                            {
+                                StartCoroutine(AutoAttack());
+                            }
+                            if (attackType == AttackType.Ranged)
+                            {
+                                StartCoroutine(RangeAutoAttack());
+                            }
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    Debug.Log("No target available");
+                }
+
+                if (Input.GetKeyDown(KeyCode.Alpha1) && Cible != null)
                 {
                     HeadImpact();
                 }
-                if (Input.GetKeyDown(KeyCode.Alpha2) )
+                if (Input.GetKeyDown(KeyCode.Alpha2))
                 {
                     EnPlace();
                 }

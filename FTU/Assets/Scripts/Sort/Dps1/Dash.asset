@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Dash
   m_EditorClassIdentifier: 
   Name: Dash
-  Cost: 25
+  Cost: 1
   CastTime: 0.1
-  Cooldown: 3
+  Cooldown: 1
   isCooldown: 0
   type: 2
   Damage: 0

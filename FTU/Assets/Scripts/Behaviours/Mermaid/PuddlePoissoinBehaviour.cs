@@ -6,49 +6,42 @@ public class PuddlePoissoinBehaviour : Projectile
 {
     private int insideArea;
     private List<GameObject> targets = new List<GameObject>();
-    private bool isActive;
-    public MermaidBehaviour source;
+    public IDamageable.Team team;
+    private float cpt;
 
     // Start is called before the first frame update
     public new void Start()
     {
         insideArea = 0;
-        isActive = false;
+        cpt = 0.5f;
     }
     // Update is called once per frame
     public new void Update()
     {
         //Behaviour();
-        if (insideArea > 0 && !isActive)
+        cpt -= Time.deltaTime;
+        if (cpt < 0)
         {
-            StartCoroutine(DealDamage(targets, GetDamages(), IDamageable.DamageType.magique));
+            cpt = 0.5f;
+            DealDamage(targets, GetDamages(), IDamageable.DamageType.magique);
         }
-        Destroy(gameObject, 10);
+        Destroy(gameObject, 5f);
     }
 
-    public IEnumerator DealDamage(List<GameObject> targets, float dmg, IDamageable.DamageType typeDmg)
-    {
-        while(insideArea > 0)
+    public void DealDamage(List<GameObject> targets, float dmg, IDamageable.DamageType typeDmg)
+    {        
+        foreach(var targ in targets.ToArray())
         {
-            if(targets.Count > 0)
+            if (targ.GetComponent<IDamageable>().team != team)
             {
-                isActive = true;
-                foreach(var targ in targets)
-                {
-                    if (targ.GetComponent<IDamageable>().team != source.team)
-                    {
-                        targ.GetComponent<IDamageable>().TakeDamage(dmg, typeDmg);
-                    }
-                    else
-                    {
-                        targ.GetComponent<IDamageable>().SetHealth(targ.GetComponent<IDamageable>().GetHealth() + dmg);
-                    }
-                    yield return new WaitForSeconds(0.5f);
-                }
+                targ.GetComponent<IDamageable>().TakeDamage(dmg, typeDmg);
+            }
+            else
+            {
+                targ.GetComponent<IDamageable>().SetHealth(targ.GetComponent<IDamageable>().GetHealth() + dmg);
             }
         }
-        isActive = false;
-        yield return 0;
+
     }
 
     private void OnTriggerEnter(Collider other)
@@ -62,7 +55,7 @@ public class PuddlePoissoinBehaviour : Projectile
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.CompareTag("Player"))
+        if (other.gameObject.CompareTag("Player") || other.CompareTag("minion") || other.CompareTag("golem"))
         {
             insideArea -= 1;
             targets.Remove(other.gameObject);

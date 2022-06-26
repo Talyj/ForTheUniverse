@@ -6,15 +6,34 @@ public class ThrowStickBehaviour : Projectile
 {
     public SunBehaviour source;
 
+    public new void Start()
+    {
+        StartCoroutine(DestroyBullet());
+    }
+
     // Update is called once per frame
     public new void Update()
     {
         transform.Rotate(0, 1, 0);
-        Behaviour();
-        if (touched)
+    }
+
+    private IEnumerator DestroyBullet()
+    {
+        yield return new WaitForSeconds(2f);
+        source.TP(gameObject.transform.position);
+        Destroy(gameObject);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        var trig = other.GetComponent<IDamageable>();
+        if (trig)
         {
-            source.isTouched = true;
-            Destroy(gameObject);
+            if(trig.team != source.team)
+            {
+                source.TP(gameObject.transform.position);
+                Destroy(gameObject);
+            }
         }
     }
 }

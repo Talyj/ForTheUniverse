@@ -145,6 +145,7 @@ MonoBehaviour:
   Health: 0
   MaxHealth: 0
   AttackRange: 0
+  canUlt: 0
   projPrefab: {fileID: 0}
   SpawnPrefab: {fileID: 0}
   enemyType: 0
@@ -168,6 +169,7 @@ MonoBehaviour:
   isAI: 0
   stickTP: {fileID: 3431704481046487142, guid: a09069b3be2d08648a222b5efb919207, type: 3}
   step: 0
+  tpPos: {x: 0, y: 0, z: 0}
   defaultTimer: 2
   isTouched: 0
   bigStick: {fileID: 7277193589347999912, guid: 60808fb84e29ed944baf9e882c106f0a, type: 3}

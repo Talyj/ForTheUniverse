@@ -52,7 +52,7 @@ public class WindAreaBehaviour : Projectile
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") || other.CompareTag("minion"))
+        if (other.gameObject.GetComponent<IDamageable>())
         {
             if(other.gameObject.GetComponent<IDamageable>().team != source.team)
             {

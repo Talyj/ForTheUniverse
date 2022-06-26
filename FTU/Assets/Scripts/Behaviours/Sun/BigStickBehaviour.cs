@@ -8,6 +8,7 @@ public class BigStickBehaviour : Projectile
     public Vector3 direction;
     private Vector3 startPos;
     private Vector3 currentPos;
+    public IDamageable.Team team;
 
     // Start is called before the first frame update
     public new void Start()
@@ -48,9 +49,9 @@ public class BigStickBehaviour : Projectile
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("cube"))
+        if (other.GetComponent<IDamageable>() != null)
         {
-            Debug.Log("yes");
+            if(other.GetComponent<IDamageable>().team != team)
             other.GetComponent<IDamageable>().TakeDamage(GetDamages(), GetDamageType());
         }
     }

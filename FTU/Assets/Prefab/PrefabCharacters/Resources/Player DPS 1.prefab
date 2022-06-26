@@ -240,6 +240,7 @@ MonoBehaviour:
   Health: 0
   MaxHealth: 0
   AttackRange: 0
+  canUlt: 0
   projPrefab: {fileID: 3524439937703818370, guid: ca45cb44d81306e409c4149613d2cdd6, type: 3}
   SpawnPrefab: {fileID: 8597483264112776020}
   enemyType: 0
@@ -261,6 +262,8 @@ MonoBehaviour:
   damageSupp: 0
   ult: {fileID: 661485606619552371, guid: 1687fa648e140dd4ca567e13a9f52450, type: 3}
   isAI: 0
+  sp2: {fileID: 0}
+  sp: {fileID: 0}
 --- !u!114 &2171416797078184869
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -34,7 +34,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     private bool canAct;
     private bool isMoving;
     //private bool useSkills;
-    private bool canUlt;
+    [SerializeField] private bool canUlt;
     private bool InCombat;
     private bool InRegen;
     private float respawnCooldown;
@@ -432,6 +432,17 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         if(Cible == null)
         {
             Cible = null;
+        }
+
+        if(Cible != null)
+        {
+            if (Cible.CompareTag("Player"))
+            {
+                if(Cible.GetComponent<IDamageable>().GetHealth() <= 0)
+                {
+                    Cible = null;
+                }
+            }
         }
     }
 

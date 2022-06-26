@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: GigaStick
   m_EditorClassIdentifier: 
   Name: GigaStick
-  Cost: 175
+  Cost: 1
   CastTime: 0.3
-  Cooldown: 120
+  Cooldown: 1
   isCooldown: 0
   type: 0
   Damage: 175

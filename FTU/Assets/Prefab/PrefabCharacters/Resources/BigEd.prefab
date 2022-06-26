@@ -394,13 +394,13 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3853125026446671208}
   serializedVersion: 2
-  m_Mass: 10
+  m_Mass: 100
   m_Drag: 0
   m_AngularDrag: 0.05
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 80
+  m_Constraints: 84
   m_CollisionDetection: 1
 --- !u!114 &-8738063944459349175
 MonoBehaviour:
@@ -510,13 +510,15 @@ MonoBehaviour:
   cc: 0
   Cible: {fileID: 0}
   respawnPos: {x: 0, y: 0, z: 0}
+  deathPos: {x: 0, y: 0, z: 0}
   userId: 
   Health: 0
   MaxHealth: 0
   AttackRange: 0
+  canUlt: 0
   projPrefab: {fileID: 3524439937703818370, guid: ca45cb44d81306e409c4149613d2cdd6, type: 3}
   SpawnPrefab: {fileID: 3853125024926037199}
-  enemyType: 0
+  enemyType: 2
   team: 0
   SpawnPrefab2: {fileID: 3853125026226610735}
   current: 0

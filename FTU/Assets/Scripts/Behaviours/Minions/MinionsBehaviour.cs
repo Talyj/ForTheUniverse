@@ -23,19 +23,20 @@ public class MinionsBehaviour : PlayerStats
 
     public void Update()
     {
-        //Check if target is dead
-        CheckTarget();
-        //Movement + attack
-        DefaultMinionBehaviour();
-        //Get Target in range
-        GetNearestTarget();
-        //Check if this gameobject is dead
         HealthBehaviour();
-        if (Cible)
+        CheckTarget();
+
+        if (GetCanAct() && GetCanMove())
         {
-            StartCoroutine(WalkToward());
-            gameObject.transform.LookAt(Cible.transform);
-        }        
+            //Movement + attack
+            DefaultMinionBehaviour();
+            GetNearestTarget();
+            if (Cible)
+            {
+                StartCoroutine(WalkToward());
+                gameObject.transform.LookAt(new Vector3(Cible.transform.position.x, transform.position.y, Cible.transform.position.z));
+            }        
+        }
     }
 
     //public void ExpFor()

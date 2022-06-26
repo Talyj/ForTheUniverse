@@ -17,7 +17,6 @@ public class MermaidBehaviour : PlayerStats
     public float speedPush;
     private float windTimerDefault = 0.2f;
     public GameObject windArea;
-    public MermaidBehaviour Instance;
 
     //Ulti
     private float ultiTimerDefault = 1;
@@ -30,8 +29,8 @@ public class MermaidBehaviour : PlayerStats
         Init();
         SetMoveSpeed(60f);
         SetAttackRange(40f);
-        SetHealth(500);
-        SetMaxHealth(500);
+        SetHealth(500000);
+        SetMaxHealth(500000);
         speedPush = 3;
         charmSpeed = 5;
         charmTargets = new List<GameObject>();
@@ -39,7 +38,6 @@ public class MermaidBehaviour : PlayerStats
         {
             elmt.isCooldown = false;
         }
-        Instance = this;
         isPassiveStart = false;
         _passiveCounter = 0;
         CameraWork();
@@ -56,11 +54,15 @@ public class MermaidBehaviour : PlayerStats
         HealthBehaviour();
         ExperienceBehaviour();
         Passif();
+        Behaviour();        
+    }
 
+    private void Behaviour()
+    {
         if (GetCanAct())
         {
             MovementPlayer();
-            if(!isAttacking)
+            if (!isAttacking)
             {
                 try
                 {
@@ -83,25 +85,25 @@ public class MermaidBehaviour : PlayerStats
                         }
                     }
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     Debug.Log("No target available");
                 }
 
-                if (Input.GetKeyDown(KeyCode.Alpha1) && Cible != null && Vector3.Distance(gameObject.transform.position, Cible.transform.position) < GetAttackRange())
+                if (Input.GetKeyDown(KeyCode.Alpha1))
                 {
-                    Poissoin(EnemyType.minion, Cible);
+                    Poissoin();
                 }
-                if (Input.GetKeyDown(KeyCode.Alpha2) && Cible != null)
+                if (Input.GetKeyDown(KeyCode.Alpha2))
                 {
-                    MagicWind(Cible);
+                    MagicWind();
                 }
 
                 if (Input.GetKeyDown(KeyCode.Alpha3) && GetCanUlt() == true)
                 {
                     Ultime();
                 }
-            }           
+            }
         }
     }
 
@@ -134,7 +136,7 @@ public class MermaidBehaviour : PlayerStats
     }
 
     //Copy that in a new character file (skill1)
-    public void Poissoin(EnemyType typeEnemy, GameObject target)
+    public void Poissoin()
     {
         if (skills[0].isCooldown == false && GetMana() >= skills[0].Cost)
         {
@@ -142,14 +144,13 @@ public class MermaidBehaviour : PlayerStats
             Debug.Log(skills[0].Name + " lanc�e");
             skills[0].isCooldown = true;
 
-            if (typeEnemy == EnemyType.minion /*||typeEnemy == Targetable.EnemyType.Adversaire*/)
-            {
-                var proj = PhotonNetwork.Instantiate(poissoin.name, transform.position, Quaternion.identity);
-                proj.GetComponent<PoissoinProjBehaviour>().SetDamages(GetDegMag(), DamageType.magique);
-                proj.GetComponent<PoissoinProjBehaviour>().target = target;
-                proj.GetComponent<PoissoinProjBehaviour>().targetSet = true;
-                proj.GetComponent<PoissoinProjBehaviour>().source = Instance;
-            }
+            var proj = PhotonNetwork.Instantiate(poissoin.name, transform.position, Quaternion.identity);
+            var dir = SpawnPrefab2.transform.position - SpawnPrefab.transform.position;
+            proj.GetComponent<PoissoinProjBehaviour>().SetDamages(GetDegMag(), DamageType.magique);
+            proj.GetComponent<PoissoinProjBehaviour>().source = this;
+            proj.GetComponent<PoissoinProjBehaviour>().team = team;
+            proj.GetComponent<Rigidbody>().AddForce(dir.normalized * 30f, ForceMode.Impulse);
+
             CheckPassive();   
             StartCoroutine(CoolDown(skills[0]));
         }
@@ -164,7 +165,7 @@ public class MermaidBehaviour : PlayerStats
     }
 
     //Copy that in a new character file (skill2)
-    public void MagicWind(GameObject target)
+    public void MagicWind()
     {
         if (skills[1].isCooldown == false && GetMana() >= skills[1].Cost)
         {
@@ -172,16 +173,13 @@ public class MermaidBehaviour : PlayerStats
             SetMana(GetMana() - skills[1].Cost);
             Debug.Log(skills[1].Name + " lanc�e");
 
-            var targetPos = new Vector3(Cible.transform.position.x, transform.position.y, Cible.transform.position.z);
-            var pos = new Vector3(transform.position.x, transform.position.y, transform.position.z);
-
-            Quaternion rotation = Quaternion.LookRotation(targetPos - pos);
-            Vector3 direction = targetPos - pos;
+            Quaternion rotation = Quaternion.LookRotation(SpawnPrefab2.position - SpawnPrefab.position);
+            Vector3 direction = SpawnPrefab2.position - SpawnPrefab.position;
 
             var proj = PhotonNetwork.Instantiate(windArea.name, transform.position, rotation);
             proj.GetComponent<WindAreaBehaviour>().SetDamages(GetDegMag(), DamageType.magique);
-            proj.GetComponent<WindAreaBehaviour>().direction = direction;
-            proj.GetComponent<WindAreaBehaviour>().source = Instance;
+            proj.GetComponent<WindAreaBehaviour>().direction = new Vector3(direction.x, direction.y, direction.z);
+            proj.GetComponent<WindAreaBehaviour>().source = this;
 
             CheckPassive();
             StartCoroutine(CoolDown(skills[1]));
@@ -209,7 +207,6 @@ public class MermaidBehaviour : PlayerStats
         {
             Vector3 direction = target.transform.position - transform.position;
             target.transform.position += direction * Time.deltaTime * speedPush;
-            //target.transform.position += (transform.position + target.transform.position).normalized * charmSpeed * Time.deltaTime;
             timer -= Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
@@ -240,7 +237,7 @@ public class MermaidBehaviour : PlayerStats
             Debug.Log(skills[2].Name + " lanc�e");
 
             var area = PhotonNetwork.Instantiate(charmArea.name, transform.position, Quaternion.identity);
-            area.GetComponent<CharmAreaBehaviour>().source = Instance;
+            area.GetComponent<CharmAreaBehaviour>().source = this;
 
             StartCoroutine(CoolDown(skills[2]));
         }

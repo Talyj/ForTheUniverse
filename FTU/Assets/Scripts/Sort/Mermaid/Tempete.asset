@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Tempete
   m_EditorClassIdentifier: 
   Name: Tempete
-  Cost: 40
+  Cost: 1
   CastTime: 1
-  Cooldown: 7
+  Cooldown: 1
   isCooldown: 0
   type: 1
   Damage: 20
