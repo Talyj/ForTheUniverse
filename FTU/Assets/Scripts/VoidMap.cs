@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -33,8 +34,8 @@ public class VoidMap : MonoBehaviour
         while (numberObjectSpawn < 6)
         {
             int index = Random.Range(0, items.Length);
-            Vector3 randomPos = new Vector3(Random.Range(-60, 60), 2, Random.Range(-30, 30));
-            Instantiate(items[index], randomPos, Quaternion.identity);
+            Vector3 randomPos = new Vector3(Random.Range(-230, 230), 2, Random.Range(-90, 90));
+            PhotonNetwork.Instantiate(items[index].name, randomPos, Quaternion.identity);
             numberObjectSpawn++;
         }
     }
