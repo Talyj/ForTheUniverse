@@ -28,7 +28,7 @@ public class TempleBehaviour : MonoBehaviour
         if (!isAwake)
         {
             isAwake = true;
-            var semiGod = PhotonNetwork.Instantiate(mau.name, new Vector3(gameObject.transform.position.x, 10, gameObject.transform.position.z), Quaternion.identity);
+            var semiGod = PhotonNetwork.Instantiate(mau.name, new Vector3(gameObject.transform.position.x, 9, gameObject.transform.position.z), Quaternion.identity);
             semiGod.GetComponent<MauBehaviour>().team = team;
             semiGod.GetComponent<MauBehaviour>().templeTransform = gameObject.transform;
         }

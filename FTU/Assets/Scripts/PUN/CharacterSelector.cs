@@ -82,26 +82,26 @@ public class CharacterSelector : MonoBehaviourPunCallbacks
         
     }
 
-    //public void Select()
-    //{
-    //    selectIndex = currentIndex;
-    //    GameObject pref = GameObject.Find(listOfCharacter[currentIndex].name + "(Clone)").gameObject;
-    //    //Debug.Log(pref);
-    //    Destroy(pref);
-    //    PhotonNetwork.LoadLevel("MainGameRoom");
-    //}
-
     public void Select()
     {
-
-        if (PhotonNetwork.CurrentRoom.PlayerCount >= numberPlayer)
-        {
-            selectIndex = currentIndex;
-            GameObject pref = GameObject.Find(listOfCharacter[currentIndex].name + "(Clone)").gameObject;
-            //Debug.Log(pref);
-            Destroy(pref);
-            PhotonNetwork.LoadLevel("MainGameRoom");
-        }
-
+        selectIndex = currentIndex;
+        GameObject pref = GameObject.Find(listOfCharacter[currentIndex].name + "(Clone)").gameObject;
+        //Debug.Log(pref);
+        Destroy(pref);
+        PhotonNetwork.LoadLevel("MainGameRoom");
     }
+
+    //public void Select()
+    //{
+
+    //    if (PhotonNetwork.CurrentRoom.PlayerCount >= numberPlayer)
+    //    {
+    //        selectIndex = currentIndex;
+    //        GameObject pref = GameObject.Find(listOfCharacter[currentIndex].name + "(Clone)").gameObject;
+    //        //Debug.Log(pref);
+    //        Destroy(pref);
+    //        PhotonNetwork.LoadLevel("MainGameRoom");
+    //    }
+
+    //}
 }

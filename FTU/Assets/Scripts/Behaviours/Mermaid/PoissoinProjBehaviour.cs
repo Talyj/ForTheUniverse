@@ -33,15 +33,10 @@ public class PoissoinProjBehaviour : Projectile
             if (other.GetComponent<IDamageable>().team != team)
             {
                 source.AddPassive();
-
+                DealDamage(other.gameObject, GetDamages(), GetDamageType());
                 StartCoroutine(SpawnPuddle());
                 stopProjectile = true;
                 Destroy(gameObject);
-            }
-
-            if (other.GetComponent<IDamageable>().team != team)
-            {
-                DealDamage(target, GetDamages(), GetDamageType());
             }
         }
 

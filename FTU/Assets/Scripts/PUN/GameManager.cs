@@ -17,7 +17,7 @@ namespace Com.MyCompany.MyGame
         [Tooltip("The list of prefab that represent the differente characters")]
         public GameObject[] playerPrefabs;
         
-        private int numberPlayer = 2;
+        private int numberPlayer = 1;
 
         public CharacterSelector selector;
         public void Start()

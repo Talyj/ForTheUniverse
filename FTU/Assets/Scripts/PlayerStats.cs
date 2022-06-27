@@ -129,19 +129,7 @@ public class PlayerStats : PlayerMovement
             }
             else MovementAI(whichTeam(targetsDown));
         }
-    }
-
-    public void WalkToTarget()
-    {
-        try
-        {
-            transform.position = Vector3.MoveTowards(transform.position, new Vector3(Cible.transform.position.x, transform.position.y, Cible.transform.position.z), GetMoveSpeed() * Time.deltaTime);
-        }
-        catch(NullReferenceException e)
-        {
-            Cible = null;
-        }
-    }    
+    }   
 
     public Transform[] whichTeam(Transform[] way)
     {

@@ -396,6 +396,10 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
                 }
                 StartCoroutine(Spawn(rend));
             }
+            else if (gameObject.CompareTag("dd"))
+            {
+
+            }
             else
             {
                 Destroy(gameObject);
@@ -580,24 +584,20 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     {
         if (Cible == null)
         {
+            var test = GetViewRange();
             Collider[] hitColliders = Physics.OverlapSphere(gameObject.transform.position, GetViewRange());
             if (hitColliders != null)
             {
                 foreach (var col in hitColliders)
-                {
-                    if (col.gameObject.CompareTag("Player") ||
-                        col.gameObject.CompareTag("minion") ||
-                        col.gameObject.CompareTag("golem") ||
-                        col.gameObject.CompareTag("dd"))
-
+                {                    
+                    if(col.GetComponent<IDamageable>())
                     {
-                        if (col.gameObject.GetComponent<IDamageable>().team != team)
+                        if (col.GetComponent<IDamageable>().team != team)
                         {
                             Cible = col.gameObject;
                             break;
                         }
                     }
-
                 }
             }
         }

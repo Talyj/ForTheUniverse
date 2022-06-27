@@ -38,6 +38,7 @@ public class MainGame : MonoBehaviourPun
         {
             Game();
         }
+        CheckVictory();
     }
 
     private void Game()
