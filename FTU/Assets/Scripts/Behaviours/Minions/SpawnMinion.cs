@@ -2,6 +2,7 @@ using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SpawnMinion : MonoBehaviour
 {
@@ -25,16 +26,19 @@ public class SpawnMinion : MonoBehaviour
     void Update()
     {
         cpt -= Time.deltaTime;
-        if (mainGame.isPlaying && cpt <= 0)
+        if(SceneManager.GetActiveScene().name == "MainGameRoom")
         {
-            cpt = 30;
-            for (int i = 0; i <= 4; i++)
+            if (mainGame.isPlaying && cpt <= 0)
             {
-                SetMinions(PlayerStats.Way.up, IDamageable.Team.Veritas, i);
-                SetMinions(PlayerStats.Way.down, IDamageable.Team.Veritas, i);
+                cpt = 30;
+                for (int i = 0; i <= 4; i++)
+                {
+                    SetMinions(PlayerStats.Way.up, IDamageable.Team.Veritas, i);
+                    SetMinions(PlayerStats.Way.down, IDamageable.Team.Veritas, i);
 
-                SetMinions(PlayerStats.Way.up, IDamageable.Team.Dominion, i);
-                SetMinions(PlayerStats.Way.down, IDamageable.Team.Dominion, i);
+                    SetMinions(PlayerStats.Way.up, IDamageable.Team.Dominion, i);
+                    SetMinions(PlayerStats.Way.down, IDamageable.Team.Dominion, i);
+                }
             }
         }
     }

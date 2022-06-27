@@ -14,6 +14,7 @@ public class CharacterSelector : MonoBehaviourPunCallbacks
     public int currentIndex;
     public int selectIndex;
     public CharacterSelector instance;
+    public int numberPlayer = 2;
     // Start is called before the first frame update
     void Start()
     {
@@ -81,12 +82,26 @@ public class CharacterSelector : MonoBehaviourPunCallbacks
         
     }
 
+    //public void Select()
+    //{
+    //    selectIndex = currentIndex;
+    //    GameObject pref = GameObject.Find(listOfCharacter[currentIndex].name + "(Clone)").gameObject;
+    //    //Debug.Log(pref);
+    //    Destroy(pref);
+    //    PhotonNetwork.LoadLevel("MainGameRoom");
+    //}
+
     public void Select()
     {
-        selectIndex = currentIndex;
-        GameObject pref = GameObject.Find(listOfCharacter[currentIndex].name + "(Clone)").gameObject;
-        //Debug.Log(pref);
-        Destroy(pref);
-        PhotonNetwork.LoadLevel("MainGameRoom");
+
+        if (PhotonNetwork.CurrentRoom.PlayerCount >= numberPlayer)
+        {
+            selectIndex = currentIndex;
+            GameObject pref = GameObject.Find(listOfCharacter[currentIndex].name + "(Clone)").gameObject;
+            //Debug.Log(pref);
+            Destroy(pref);
+            PhotonNetwork.LoadLevel("MainGameRoom");
+        }
+
     }
 }

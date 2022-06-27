@@ -67,7 +67,7 @@ namespace Com.MyCompany.MyGame
             }
             else
             {
-                PhotonNetwork.LoadLevel("MainGameRoom");
+                PhotonNetwork.LoadLevel("CharactecSelection");
             }
         }
 
