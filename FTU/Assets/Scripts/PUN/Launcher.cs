@@ -61,8 +61,7 @@ namespace Com.MyCompany.MyGame
             Debug.Log("PUN Basics Tutorial/Launcher: OnConnectedToMaster() was called by PUN");
             if (isConnecting)
             {
-                PhotonNetwork.CreateRoom("FTU", new RoomOptions { MaxPlayers = 2});
-                //PhotonNetwork.JoinRoom();
+                PhotonNetwork.JoinRandomRoom();
                 isConnecting = false;
             }
         }
