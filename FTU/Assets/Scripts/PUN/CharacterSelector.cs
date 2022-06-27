@@ -2,6 +2,7 @@ using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class CharacterSelector : MonoBehaviourPunCallbacks
@@ -12,17 +13,29 @@ public class CharacterSelector : MonoBehaviourPunCallbacks
     public Text characterName;
     public int currentIndex;
     public int selectIndex;
+    public CharacterSelector instance;
     // Start is called before the first frame update
     void Start()
     {
         DontDestroyOnLoad(this);
-        Instantiate(listOfCharacter[currentIndex].gameObject, spwan.position, Quaternion.identity);
+        instance = this;
+        GameObject other = GameObject.Find("manage");
+        if (other.GetComponent<CharacterSelector>().instance != this)
+        {
+            Destroy(other);
+        }
+        selectIndex = currentIndex;
+        PhotonNetwork.Instantiate(listOfCharacter[currentIndex].gameObject.name, spwan.position, Quaternion.identity);
     }
 
     // Update is called once per frame
     void Update()
     {
-        characterName.text = listOfCharacter[currentIndex].name;
+        if(SceneManager.GetActiveScene().name =="CharacterSelection")
+        {
+            characterName.text = listOfCharacter[currentIndex].name;
+        }
+        
         
 
     }
