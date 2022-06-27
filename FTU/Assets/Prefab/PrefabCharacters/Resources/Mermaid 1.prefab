@@ -128,6 +128,7 @@ MonoBehaviour:
   Health: 0
   MaxHealth: 0
   AttackRange: 0
+  canUlt: 0
   projPrefab: {fileID: 3524439937703818370, guid: ca45cb44d81306e409c4149613d2cdd6, type: 3}
   SpawnPrefab: {fileID: 1675429051430411221}
   enemyType: 2
@@ -170,7 +171,6 @@ MonoBehaviour:
   poissoin: {fileID: 7659772833644222945, guid: a4fb129dc3fd0c54fab8b5a4ddf46bed, type: 3}
   speedPush: 4
   windArea: {fileID: 2508449633787207300, guid: 7b6fdc55468d56e498faae2bd5737b29, type: 3}
-  Instance: {fileID: 1675429051430411220}
   charmArea: {fileID: 1991124717125365115, guid: b9be727e9d299204e9fc027ae70790a7, type: 3}
 --- !u!114 &1675429051430411223
 MonoBehaviour:
