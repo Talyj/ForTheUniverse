@@ -3,6 +3,7 @@ using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MainGame : MonoBehaviourPun
 {
@@ -29,7 +30,7 @@ public class MainGame : MonoBehaviourPun
     {
         //isPlaying = true;
         //isGameStarted = false;
-        if (!isPlaying && PhotonNetwork.PlayerList.Length >= 1)
+        if (!isPlaying && PhotonNetwork.PlayerList.Length >= 2 && SceneManager.GetActiveScene().name == "MainGameRoom")
         {
             var players = GameObject.FindGameObjectsWithTag("Player");
             CreateTeams(players);

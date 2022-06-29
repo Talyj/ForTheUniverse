@@ -81,7 +81,7 @@ public class Projectile : NetworkBehaviour
 
     public IEnumerator DestroyOnTime()
     {
-        yield return new WaitForSeconds(6);
+        yield return new WaitForSeconds(2f);
         Destroy(gameObject);
     }
 }
