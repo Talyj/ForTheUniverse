@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Com.MyCompany.MyGame;
 
 public class CharacterSelector : MonoBehaviourPunCallbacks
 {
@@ -14,25 +15,28 @@ public class CharacterSelector : MonoBehaviourPunCallbacks
     public int currentIndex;
     public int selectIndex;
     public CharacterSelector instance;
-    public int numberPlayer = 2;
+    public Launcher launch;
     // Start is called before the first frame update
     void Start()
     {
         DontDestroyOnLoad(this);
         instance = this;
-        GameObject other = GameObject.Find("manage");
+        //if (SceneManager.GetActiveScene().name == "Launcher")
+        //{
+        GameObject other = GameObject.Find("Manage");
         if (other.GetComponent<CharacterSelector>().instance != this)
         {
             Destroy(other);
         }
+        //}
         selectIndex = currentIndex;
-        PhotonNetwork.Instantiate(listOfCharacter[currentIndex].gameObject.name, spwan.position, Quaternion.identity);
+       Instantiate(listOfCharacter[currentIndex].gameObject, spwan.position, Quaternion.identity);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(SceneManager.GetActiveScene().name =="CharacterSelection")
+        if(SceneManager.GetActiveScene().name =="Launcher")
         {
             characterName.text = listOfCharacter[currentIndex].name;
         }
@@ -46,7 +50,7 @@ public class CharacterSelector : MonoBehaviourPunCallbacks
         if(currentIndex >= listOfCharacter.Length-1)
         {
             currentIndex = 0;
-            PhotonNetwork.Instantiate(listOfCharacter[currentIndex].gameObject.name, spwan.position, Quaternion.identity);
+            Instantiate(listOfCharacter[currentIndex].gameObject, spwan.position, Quaternion.identity);
             GameObject pref = GameObject.Find(listOfCharacter[listOfCharacter.Length - 1].name + "(Clone)").gameObject;
             //Debug.Log(pref);
             Destroy(pref);
@@ -54,19 +58,19 @@ public class CharacterSelector : MonoBehaviourPunCallbacks
         else
         {
             currentIndex += 1;
-            PhotonNetwork.Instantiate(listOfCharacter[currentIndex].gameObject.name, spwan.position, Quaternion.identity);
+            Instantiate(listOfCharacter[currentIndex].gameObject, spwan.position, Quaternion.identity);
             GameObject pref = GameObject.Find(listOfCharacter[currentIndex - 1].name + "(Clone)").gameObject;
             //Debug.Log(pref);
             Destroy(pref);
         }
-        
+        selectIndex = currentIndex;
     }
     public void PreviousButton()
     {
         if(currentIndex <= 0)
         {
             currentIndex = listOfCharacter.Length-1;
-            PhotonNetwork.Instantiate(listOfCharacter[listOfCharacter.Length - 1].gameObject.name, spwan.position, Quaternion.identity);
+           Instantiate(listOfCharacter[listOfCharacter.Length - 1].gameObject, spwan.position, Quaternion.identity);
             GameObject pref = GameObject.Find(listOfCharacter[0].name + "(Clone)").gameObject;
             //Debug.Log(pref);
             Destroy(pref);
@@ -74,34 +78,19 @@ public class CharacterSelector : MonoBehaviourPunCallbacks
         else
         {
             currentIndex -= 1;
-            PhotonNetwork.Instantiate(listOfCharacter[currentIndex].gameObject.name, spwan.position, Quaternion.identity);
+            Instantiate(listOfCharacter[currentIndex].gameObject, spwan.position, Quaternion.identity);
             GameObject pref = GameObject.Find(listOfCharacter[currentIndex + 1].name + "(Clone)").gameObject;
             //Debug.Log(pref);
             Destroy(pref);
         }
-        
+        selectIndex = currentIndex;
     }
 
     public void Select()
     {
         selectIndex = currentIndex;
         GameObject pref = GameObject.Find(listOfCharacter[currentIndex].name + "(Clone)").gameObject;
-        //Debug.Log(pref);
         Destroy(pref);
-        PhotonNetwork.LoadLevel("MainGameRoom");
+        launch.Connect();
     }
-
-    //public void Select()
-    //{
-
-    //    if (PhotonNetwork.CurrentRoom.PlayerCount >= numberPlayer)
-    //    {
-    //        selectIndex = currentIndex;
-    //        GameObject pref = GameObject.Find(listOfCharacter[currentIndex].name + "(Clone)").gameObject;
-    //        //Debug.Log(pref);
-    //        Destroy(pref);
-    //        PhotonNetwork.LoadLevel("MainGameRoom");
-    //    }
-
-    //}
 }
