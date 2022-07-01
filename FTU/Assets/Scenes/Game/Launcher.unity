@@ -1308,7 +1308,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1305639872}
   - component: {fileID: 1305639873}
-  - component: {fileID: 1305639874}
   m_Layer: 0
   m_Name: Launcher
   m_TagString: Untagged
@@ -1346,29 +1345,6 @@ MonoBehaviour:
   maxPlayersPerRoom: 4
   controlPanel: {fileID: 1899048335}
   progressLabel: {fileID: 402254806}
---- !u!114 &1305639874
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1305639871}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e303885bf3b6d964e988437b997bea84, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  listOfCharacter:
-  - {fileID: 1675429051430411217, guid: abe053dd301b0b942b61d74119e34286, type: 3}
-  - {fileID: 3853125026446671208, guid: 128c131d819261b4b9f2ed67823d59a8, type: 3}
-  - {fileID: 8597483264512879776, guid: ce35168bee6d54649b149a8ab53ec910, type: 3}
-  - {fileID: 1744873933731375706, guid: fddb4589d4f74964893a17ff8e2580a5, type: 3}
-  spwan: {fileID: 676679373}
-  characterName: {fileID: 1136762208}
-  currentIndex: 0
-  selectIndex: 0
-  instance: {fileID: 0}
-  launch: {fileID: 0}
 --- !u!1 &1347123110
 GameObject:
   m_ObjectHideFlags: 0
@@ -1483,6 +1459,7 @@ MonoBehaviour:
   - {fileID: 3853125026446671208, guid: 128c131d819261b4b9f2ed67823d59a8, type: 3}
   - {fileID: 8597483264512879776, guid: ce35168bee6d54649b149a8ab53ec910, type: 3}
   - {fileID: 1744873933731375706, guid: fddb4589d4f74964893a17ff8e2580a5, type: 3}
+  - {fileID: 9173982970317064210, guid: 32e359bf01e45de48bd6f2ebc03c7a2e, type: 3}
   spwan: {fileID: 676679373}
   characterName: {fileID: 1136762208}
   currentIndex: 0

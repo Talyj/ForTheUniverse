@@ -140,7 +140,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &81245574
 Transform:
   m_ObjectHideFlags: 0
@@ -149,8 +149,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 81245573}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 175, y: 220.58, z: 85}
+  m_LocalPosition: {x: 0, y: 26, z: 0}
+  m_LocalScale: {x: 175, y: 0, z: 85}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1624571895}
@@ -1453,7 +1453,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7642911151125993750, guid: 0efed2e512b04ff4c9c246a3692977cb, type: 3}
       propertyPath: playerPrefabs.Array.size
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7642911151125993750, guid: 0efed2e512b04ff4c9c246a3692977cb, type: 3}
       propertyPath: playerPrefabs.Array.data[1]
@@ -1470,7 +1470,7 @@ PrefabInstance:
     - target: {fileID: 7642911151125993750, guid: 0efed2e512b04ff4c9c246a3692977cb, type: 3}
       propertyPath: playerPrefabs.Array.data[4]
       value: 
-      objectReference: {fileID: 1675429051430411217, guid: f350f475da558ad448b725cea3ecc90e, type: 3}
+      objectReference: {fileID: 9173982970317064210, guid: 5819c103c89de684e92bccbd19e661ce, type: 3}
     - target: {fileID: 8155366620173427672, guid: 0efed2e512b04ff4c9c246a3692977cb, type: 3}
       propertyPath: mainCam
       value: 

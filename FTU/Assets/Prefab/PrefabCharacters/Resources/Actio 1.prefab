@@ -115,7 +115,7 @@ GameObject:
   - component: {fileID: 4678321541287554614}
   - component: {fileID: -2004355098177081931}
   m_Layer: 0
-  m_Name: Player DPS 1
+  m_Name: Actio 1
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

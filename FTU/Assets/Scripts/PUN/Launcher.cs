@@ -94,7 +94,8 @@ namespace Com.MyCompany.MyGame
                 // #Critical
                 // Load the Room Level.
                 //PhotonNetwork.LoadLevel("CharacterSelection");
-                PhotonNetwork.LoadLevel("WaitingRoom");
+                //PhotonNetwork.LoadLevel("WaitingRoom");
+                PhotonNetwork.LoadLevel("MainGameRoom");
             }
         }
     }

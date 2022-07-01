@@ -5,11 +5,11 @@ public class CameraWork : MonoBehaviour
 {
 
     [Tooltip("The distance in the local x-z plane to the target")]
-    private float distance = 15.0f;
+    private float distance = 35.0f;
 
 
     [Tooltip("The height we want the camera to be above the target")]
-    private float height = 8.0f;
+    private float height = 30.0f;
 
 
     [Tooltip("Allow the camera to be offseted vertically from the target, for example giving more view of the sceneray and less ground.")]

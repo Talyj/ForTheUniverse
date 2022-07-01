@@ -80,7 +80,7 @@ public class UI : MonoBehaviour
             spells[0].fillAmount -= 1 / stats.GetSkill1().Cooldown * Time.deltaTime;//cd
             if(spells[0].fillAmount <= 0)
             {
-                spells[0].fillAmount = 1f;
+                spells[0].fillAmount = 10f;
             }
         }
         if (stats.GetSkill2().isCooldown)

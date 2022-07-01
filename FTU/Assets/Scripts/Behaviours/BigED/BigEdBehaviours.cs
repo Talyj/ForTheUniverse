@@ -19,12 +19,15 @@ public class BigEdBehaviours : PlayerStats
         SetAttackRange(10f);
         SetHealth(500000);
         SetMaxHealth(500000);
+        SetResPhys(40);
+        SetResMag(40);
         CameraWork();
         foreach (var elmt in skills)
         {
             elmt.isCooldown = false;
         }
         Instance = this;
+        Passif();
     }
 
     // Update is called once per frame
@@ -74,7 +77,7 @@ public class BigEdBehaviours : PlayerStats
                     Debug.Log("No target available");
                 }
 
-                if (Input.GetKeyDown(KeyCode.Alpha1) && Cible != null)
+                if (Input.GetKeyDown(KeyCode.Alpha1) && Cible != null )
                 {
                     HeadImpact();
                 }
@@ -99,7 +102,7 @@ public class BigEdBehaviours : PlayerStats
             case 1:
                 SetResMag(GetResMag() * passif.Bonus);//augmentation 5%
                 SetResPhys(GetResPhys() * passif.Bonus);
-                //SetMoveSpeed(GetMoveSpeed() * passif.Malus);//reduction 5%
+                SetMoveSpeed(GetMoveSpeed() * passif.Malus);//reduction 5%
                 break;
             case 6:
                 passif.Bonus = 1.075f;
