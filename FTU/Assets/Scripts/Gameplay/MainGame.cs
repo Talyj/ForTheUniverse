@@ -30,7 +30,7 @@ public class MainGame : MonoBehaviourPun
     {
         //isPlaying = true;
         //isGameStarted = false;
-        if (!isPlaying && PhotonNetwork.PlayerList.Length >= 1 && SceneManager.GetActiveScene().name == "MainGameRoom")
+        if (!isPlaying && PhotonNetwork.PlayerList.Length >= 2 && SceneManager.GetActiveScene().name == "MainGameRoom")
         {
             var players = GameObject.FindGameObjectsWithTag("Player");
             CreateTeams(players);

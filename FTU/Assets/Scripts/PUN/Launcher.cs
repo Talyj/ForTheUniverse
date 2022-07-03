@@ -83,18 +83,18 @@ namespace Com.MyCompany.MyGame
             Debug.Log("PUN Basics Tutorial/Launcher:OnJoinRandomFailed() was called by PUN. No random room available, so we create one.\nCalling: PhotonNetwork.CreateRoom");
 
             // #Critical: we failed to join a random room, maybe none exists or they are all full. No worries, we create a new room.
-            PhotonNetwork.CreateRoom("test", new RoomOptions { MaxPlayers = maxPlayersPerRoom });
+            PhotonNetwork.CreateRoom(null, new RoomOptions { MaxPlayers = maxPlayersPerRoom });
         }
 
         public override void OnJoinedRoom()
         {
-            //Debug.Log("PUN Basics Tutorial/Launcher: OnJoinedRoom() called by PUN. Now this client is in a room.");
-            if (PhotonNetwork.CurrentRoom.PlayerCount == 1)
-            {
-                //Debug.Log("We load the Waiting Room");
-                // #Critical
+            ////Debug.Log("PUN Basics Tutorial/Launcher: OnJoinedRoom() called by PUN. Now this client is in a room.");
+            //if (PhotonNetwork.CurrentRoom.PlayerCount >= 1)
+            //{
+            //    //Debug.Log("We load the Waiting Room");
+            //    // #Critical
                 PhotonNetwork.LoadLevel("WaitingRoom");
-            }
+            //}
         }
     }
 }
