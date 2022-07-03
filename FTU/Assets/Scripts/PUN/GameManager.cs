@@ -17,12 +17,16 @@ namespace Com.MyCompany.MyGame
         [Tooltip("The list of prefab that represent the differente characters")]
         public GameObject[] playerPrefabs;
         
-        private int numberPlayer = 1;
+        private int numberPlayer = 0;
 
         public CharacterSelector selector;
         public void Start()
         {
-            if (SceneManager.GetActiveScene().name == "WaitingRoom") return;
+            if (SceneManager.GetActiveScene().name == "WaitingRoom")
+            {
+                //LoadArena(); 
+                return;
+            }
             if (playerPrefabs[0] == null)
             {
                 Debug.LogError("<Color=Red><a>Missing</a></Color> playerPrefab Reference. Please set it up in GameObject 'Game Manager'", this);
@@ -43,7 +47,6 @@ namespace Com.MyCompany.MyGame
             }
         }
 
-
         public override void OnLeftRoom()
         {
             SceneManager.LoadScene("Launcher");
@@ -61,19 +64,20 @@ namespace Com.MyCompany.MyGame
                 Debug.LogError("PhotonNetwork : Trying to Load a level but we are not the master Client");
             }
             Debug.LogFormat("PhotonNetwork : Loading Level : {0}", PhotonNetwork.CurrentRoom.PlayerCount);
-            if (PhotonNetwork.CurrentRoom.PlayerCount < numberPlayer)
+            if (PhotonNetwork.CurrentRoom.PlayerCount > numberPlayer)
             {
-                PhotonNetwork.LoadLevel("WaitingRoom");
+                PhotonNetwork.LoadLevel("MainGameRoom");
             }
             else
             {
-                PhotonNetwork.LoadLevel("CharacterSelection");
+                PhotonNetwork.LoadLevel("WaitingRoom");
             }
         }
 
         public override void OnPlayerEnteredRoom(Player other)
         {
             Debug.LogFormat("OnPlayerEnteredRoom() {0}", other.NickName); // not seen if you're the player connecting
+            Debug.Log($"OnPlayerEnteredRoom() {other.NickName}"); // not seen if you're the player connecting
 
 
             if (PhotonNetwork.IsMasterClient)
