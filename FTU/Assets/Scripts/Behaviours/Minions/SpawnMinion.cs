@@ -31,7 +31,7 @@ public class SpawnMinion : MonoBehaviour
             if (mainGame.isPlaying && cpt <= 0)
             {
                 cpt = 30;
-                for (int i = 0; i <= 4; i++)
+                for (int i = 0; i <= 0; i++)
                 {
                     SetMinions(PlayerStats.Way.up, IDamageable.Team.Veritas, i);
                     SetMinions(PlayerStats.Way.down, IDamageable.Team.Veritas, i);

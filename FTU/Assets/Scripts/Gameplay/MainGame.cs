@@ -61,15 +61,15 @@ public class MainGame : MonoBehaviourPun
         {
             if (monst.GetHealth() <= 0)
             {
-                if (monst.team == IDamageable.Team.Veritas)
-                {
-                    victoryDisplay[1].SetActive(true);
-                }
-                else
-                {
-                    victoryDisplay[0].SetActive(true);
-                }
-                Time.timeScale = 0;
+                //if (monst.team == IDamageable.Team.Veritas)
+                //{
+                //    victoryDisplay[1].SetActive(true);
+                //}
+                //else
+                //{
+                //    victoryDisplay[0].SetActive(true);
+                //}
+                //Time.timeScale = 0;
             }
         }                
     }
