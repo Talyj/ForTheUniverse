@@ -25,20 +25,22 @@ public class SpawnMinion : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!PhotonNetwork.IsMasterClient) return;
-        cpt -= Time.deltaTime;
-        if(SceneManager.GetActiveScene().name == "MainGameRoom")
+        if (PhotonNetwork.IsMasterClient)
         {
-            if (mainGame.isPlaying && cpt <= 0)
+            cpt -= Time.deltaTime;
+            if(SceneManager.GetActiveScene().name == "MainGameRoom")
             {
-                cpt = 30;
-                for (int i = 0; i <= 0; i++)
+                if (mainGame.isPlaying && cpt <= 0)
                 {
-                    SetMinions(PlayerStats.Way.up, IDamageable.Team.Veritas, i);
-                    SetMinions(PlayerStats.Way.down, IDamageable.Team.Veritas, i);
+                    cpt = 30;
+                    for (int i = 0; i <= 0; i++)
+                    {
+                        SetMinions(PlayerStats.Way.up, IDamageable.Team.Veritas, i);
+                        SetMinions(PlayerStats.Way.down, IDamageable.Team.Veritas, i);
 
-                    SetMinions(PlayerStats.Way.up, IDamageable.Team.Dominion, i);
-                    SetMinions(PlayerStats.Way.down, IDamageable.Team.Dominion, i);
+                        SetMinions(PlayerStats.Way.up, IDamageable.Team.Dominion, i);
+                        SetMinions(PlayerStats.Way.down, IDamageable.Team.Dominion, i);
+                    }
                 }
             }
         }

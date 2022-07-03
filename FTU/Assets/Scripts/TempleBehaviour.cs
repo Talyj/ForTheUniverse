@@ -16,10 +16,13 @@ public class TempleBehaviour : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Player") && other.gameObject.GetComponent<IDamageable>().team != team)
+        if (PhotonNetwork.IsMasterClient)
         {
-            Debug.Log("Quelqu'un est entré dans la zone du temple");
-            SpawnDemiGod();
+            if (other.gameObject.CompareTag("Player") && other.gameObject.GetComponent<IDamageable>().team != team)
+            {
+                Debug.Log("Quelqu'un est entré dans la zone du temple");
+                SpawnDemiGod();
+            }
         }
     }
 
