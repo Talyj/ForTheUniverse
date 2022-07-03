@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Photon.Pun;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -23,19 +24,22 @@ public class MinionsBehaviour : PlayerStats
 
     public void Update()
     {
-        HealthBehaviour();
-        CheckTarget();
-
-        if (GetCanAct() && GetCanMove())
+        if (PhotonNetwork.IsMasterClient)
         {
-            //Movement + attack
-            DefaultMinionBehaviour();
-            GetNearestTarget();
-            if (Cible)
+            HealthBehaviour();
+            CheckTarget();
+
+            if (GetCanAct() && GetCanMove())
             {
-                StartCoroutine(WalkToward());
-                gameObject.transform.LookAt(new Vector3(Cible.transform.position.x, transform.position.y, Cible.transform.position.z));
-            }        
+                //Movement + attack
+                DefaultMinionBehaviour();
+                GetNearestTarget();
+                if (Cible)
+                {
+                    StartCoroutine(WalkToward());
+                    gameObject.transform.LookAt(new Vector3(Cible.transform.position.x, transform.position.y, Cible.transform.position.z));
+                }        
+            }
         }
     }
 

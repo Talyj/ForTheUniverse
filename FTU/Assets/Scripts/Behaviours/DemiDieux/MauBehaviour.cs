@@ -42,42 +42,45 @@ public class MauBehaviour : PlayerStats
     // Update is called once per frame
     public void Update()
     {
-        HealthBehaviour();
-        CheckTarget();
-
-        if (GetCanAct() && GetCanMove())
+        if (PhotonNetwork.IsMasterClient)
         {
-            //Attack
-            DefaultGodBehaviour();           
-            if(Vector3.Distance(templeTransform.position, transform.position) <= 50)
-            {
-                GetNearestTarget();
-            }
-            if (Cible)
-            {
-                StartCoroutine(WalkToward());
-                gameObject.transform.LookAt(new Vector3(Cible.transform.position.x, transform.position.y, Cible.transform.position.z));
-            }
-            if (!Cible)
-            {
-                transform.position = Vector3.MoveTowards(transform.position, new Vector3(templeTransform.position.x, transform.position.y, templeTransform.position.z), GetMoveSpeed() * Time.deltaTime);
-            }
-            //Control boss as a player for TEST
-            //MovementPlayer();
-            //if (Input.GetKeyDown(KeyCode.Alpha1) && Cible != null && Vector3.Distance(gameObject.transform.position, Cible.transform.position) < GetAttackRange() * 4)
-            //{
-            //    Roar();
-            //}
+            HealthBehaviour();
+            CheckTarget();
 
-            //if (Input.GetKeyDown(KeyCode.Alpha2))
-            //{
-            //    Stomp();
-            //}
+            if (GetCanAct() && GetCanMove())
+            {
+                //Attack
+                DefaultGodBehaviour();           
+                if(Vector3.Distance(templeTransform.position, transform.position) <= 50)
+                {
+                    GetNearestTarget();
+                }
+                if (Cible)
+                {
+                    StartCoroutine(WalkToward());
+                    gameObject.transform.LookAt(new Vector3(Cible.transform.position.x, transform.position.y, Cible.transform.position.z));
+                }
+                if (!Cible)
+                {
+                    transform.position = Vector3.MoveTowards(transform.position, new Vector3(templeTransform.position.x, transform.position.y, templeTransform.position.z), GetMoveSpeed() * Time.deltaTime);
+                }
+                //Control boss as a player for TEST
+                //MovementPlayer();
+                //if (Input.GetKeyDown(KeyCode.Alpha1) && Cible != null && Vector3.Distance(gameObject.transform.position, Cible.transform.position) < GetAttackRange() * 4)
+                //{
+                //    Roar();
+                //}
 
-            //if (Input.GetKeyDown(KeyCode.Alpha3)/* && GetCanUlt() == true*/)
-            //{
-            //    Ultime();
-            //}
+                //if (Input.GetKeyDown(KeyCode.Alpha2))
+                //{
+                //    Stomp();
+                //}
+
+                //if (Input.GetKeyDown(KeyCode.Alpha3)/* && GetCanUlt() == true*/)
+                //{
+                //    Ultime();
+                //}
+            }
         }
     }
 
