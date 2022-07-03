@@ -25,6 +25,7 @@ public class SpawnMinion : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!PhotonNetwork.IsMasterClient) return;
         cpt -= Time.deltaTime;
         if(SceneManager.GetActiveScene().name == "MainGameRoom")
         {
