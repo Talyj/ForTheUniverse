@@ -16,10 +16,13 @@ public class TempleBehaviour : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Player") && other.gameObject.GetComponent<IDamageable>().team != team)
+        if (PhotonNetwork.IsMasterClient)
         {
-            Debug.Log("Quelqu'un est entré dans la zone du temple");
-            SpawnDemiGod();
+            if (other.gameObject.CompareTag("Player") && other.gameObject.GetComponent<IDamageable>().team != team)
+            {
+                Debug.Log("Quelqu'un est entré dans la zone du temple");
+                SpawnDemiGod();
+            }
         }
     }
 
@@ -28,7 +31,7 @@ public class TempleBehaviour : MonoBehaviour
         if (!isAwake)
         {
             isAwake = true;
-            var semiGod = PhotonNetwork.Instantiate(mau.name, new Vector3(gameObject.transform.position.x, 10, gameObject.transform.position.z), Quaternion.identity);
+            var semiGod = PhotonNetwork.Instantiate(mau.name, new Vector3(gameObject.transform.position.x, 9, gameObject.transform.position.z), Quaternion.identity);
             semiGod.GetComponent<MauBehaviour>().team = team;
             semiGod.GetComponent<MauBehaviour>().templeTransform = gameObject.transform;
         }

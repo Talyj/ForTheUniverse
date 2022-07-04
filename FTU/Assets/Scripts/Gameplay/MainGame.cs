@@ -32,13 +32,25 @@ public class MainGame : MonoBehaviourPun
         //isGameStarted = false;
         if (!isPlaying && PhotonNetwork.PlayerList.Length >= 1 && SceneManager.GetActiveScene().name == "MainGameRoom")
         {
-            var players = GameObject.FindGameObjectsWithTag("Player");
+            var photonViews = FindObjectsOfType<PhotonView>();
+            var players = new List<GameObject>();
+            foreach(var view in photonViews)
+            {
+                var player = view.Owner;
+
+                if (player != null)
+                {
+                    var playerPrefabObject = view.gameObject;
+                    players.Add(playerPrefabObject);
+                }
+            }
             CreateTeams(players);
         }
         else if (isPlaying && !isGameStarted)
         {
             Game();
         }
+        CheckVictory();
     }
 
     private void Game()
@@ -60,24 +72,24 @@ public class MainGame : MonoBehaviourPun
         {
             if (monst.GetHealth() <= 0)
             {
-                if (monst.team == IDamageable.Team.Veritas)
-                {
-                    victoryDisplay[1].SetActive(true);
-                }
-                else
-                {
-                    victoryDisplay[0].SetActive(true);
-                }
-                Time.timeScale = 0;
+                //if (monst.team == IDamageable.Team.Veritas)
+                //{
+                //    victoryDisplay[1].SetActive(true);
+                //}
+                //else
+                //{
+                //    victoryDisplay[0].SetActive(true);
+                //}
+                //Time.timeScale = 0;
             }
         }                
     }
 
-    private void CreateTeams(GameObject[] players)
-    {        
-        for (var i = 0; i < players.Length; i++)
+    private void CreateTeams(List<GameObject> players)
+    {
+        for (var i = 0; i < players.Count; i++)
         {
-            if (i >= players.Length / 2)
+            if (i % 2 == 0)
             {
                 players[i].GetComponent<IDamageable>().team = IDamageable.Team.Dominion;
                 players[i].GetComponent<IDamageable>().respawnPos = new Vector3(spawnTransformDominion.position.x, 2.11f, spawnTransformDominion.position.z);
@@ -93,7 +105,7 @@ public class MainGame : MonoBehaviourPun
         Spawn(players);
     }
 
-    private void Spawn(GameObject[] players)
+    private void Spawn(List<GameObject> players)
     {
         foreach(var play in players)
         {
