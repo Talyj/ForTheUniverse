@@ -517,6 +517,9 @@ MonoBehaviour:
   Health: 0
   MaxHealth: 0
   AttackRange: 0
+  Exp: 0
+  MaxExp: 0
+  ExpRate: 0
   canUlt: 0
   projPrefab: {fileID: 3524439937703818370, guid: ca45cb44d81306e409c4149613d2cdd6, type: 3}
   SpawnPrefab: {fileID: 3853125024926037199}
