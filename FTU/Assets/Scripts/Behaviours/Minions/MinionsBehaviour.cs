@@ -5,8 +5,12 @@ using UnityEngine;
 
 public class MinionsBehaviour : PlayerStats
 {
+    public float dstForXp;
+    public float xpAmount;
+    bool gaveXp;
     public void Start()
     {
+        gaveXp = false;
         Init();
         current = 0;
         pathDone = false;
@@ -39,6 +43,38 @@ public class MinionsBehaviour : PlayerStats
                     StartCoroutine(WalkToward());
                     gameObject.transform.LookAt(new Vector3(Cible.transform.position.x, transform.position.y, Cible.transform.position.z));
                 }        
+            }
+            if (GetHealth() <= 0 && !gaveXp)
+            {
+                gaveXp = true;
+                GiveExp();
+            }
+        }
+    }
+
+    public void GiveExp()
+    {
+
+
+        Collider[] hitColliders = Physics.OverlapSphere(gameObject.transform.position, dstForXp);
+
+        if (hitColliders != null)
+        {
+            foreach (var col in hitColliders)
+            {
+                if (col.gameObject.CompareTag("Player"))
+                {
+                    if (col.gameObject.GetComponent<IDamageable>().team != team)
+                    {
+                        col.gameObject.GetComponent<IDamageable>().SetExp( xpAmount);
+                        Debug.Log(xpAmount + "<Color=green><a> Xp </a></Color>");
+                    }
+                    else
+                    {
+                        Debug.Log("<Color=red><a>Same Team</a></Color>");
+                    }
+                }
+
             }
         }
     }

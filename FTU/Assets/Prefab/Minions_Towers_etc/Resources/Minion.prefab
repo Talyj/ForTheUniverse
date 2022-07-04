@@ -177,6 +177,8 @@ MonoBehaviour:
   damageSupp: 0
   ult: {fileID: 0}
   isAI: 0
+  dstForXp: 50
+  xpAmount: 50
 --- !u!114 &-2547500044275669263
 MonoBehaviour:
   m_ObjectHideFlags: 0

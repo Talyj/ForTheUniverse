@@ -24,9 +24,9 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     private float Mana, MaxMana;
     private float ResistancePhysique; // calcul des resistance health = health - (DegatsPhysiqueRe�u -((ResistancePhysique * DegatsPhysiqueRe�u)/100)
     private float ResistanceMagique; //calcul des resistance health = health - (DegatsMagiqueRe�u - ((ResistanceMagique * DegatsMagiqueRe�u) / 100)
-    private float Exp;
-    private float MaxExp;
-    private float ExpRate;//multiplicateur de l'exp max
+    [SerializeField] private float Exp;
+    [SerializeField]private float MaxExp;
+    [SerializeField] private float ExpRate;//multiplicateur de l'exp max
     private float DegatsPhysique;
     private float DegatsMagique;
     private int lvl;
@@ -36,6 +36,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     //private bool useSkills;
     [SerializeField] private bool canUlt;
     private bool InCombat;
+    private bool IsDead;
     private bool InRegen;
     private float respawnCooldown;
 
@@ -170,6 +171,11 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         return lvl;
     }
 
+    public bool GetDeath()
+    {
+        return IsDead;
+    }
+
     public ControlType GetControl()
     {
         return cc;
@@ -243,7 +249,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     }
     public void SetExp(float value)
     {
-        Exp = value;
+        Exp += value;
     }
     public void SetMaxExp(float value)
     {
@@ -260,6 +266,10 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     public void SetLvl(int value)
     {
         lvl = value;
+    }
+    public void SetDeath(bool value)
+    {
+        IsDead = value;
     }
     #endregion
 
@@ -322,6 +332,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         SetResPhys(0);
         SetResMag(0);
         SetMaxExp(100);
+        ExpRate = 1.85f;
         SetDegPhys(100);
         SetDegMag(100);
 
