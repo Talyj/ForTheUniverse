@@ -9,9 +9,13 @@ Shader "Custom/Stencil Mask"
     }
     SubShader
     {
+        //Define the opacity of the object its applied to
         Tags { "RenderType"="Opaque" "Queue"="Geometry-100"}
+        //Sets the color channel writing mask, which prevents the GPU from writing to channels in the render target.
         ColorMask 0
+        //Allow the disable/enable the opacity
         ZWrite off
+        //This value indicates how computationally demanding it is
         LOD 200
 
             Stencil{

@@ -141,6 +141,9 @@ MonoBehaviour:
   Health: 0
   MaxHealth: 0
   AttackRange: 0
+  Exp: 0
+  MaxExp: 0
+  ExpRate: 0
   canUlt: 0
   projPrefab: {fileID: 0}
   SpawnPrefab: {fileID: 0}
