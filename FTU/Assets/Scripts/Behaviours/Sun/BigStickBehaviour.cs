@@ -8,7 +8,7 @@ public class BigStickBehaviour : Projectile
     public Vector3 direction;
     private Vector3 startPos;
     private Vector3 currentPos;
-    public IDamageable.Team team;
+    public Team team;
 
     // Start is called before the first frame update
     public new void Start()

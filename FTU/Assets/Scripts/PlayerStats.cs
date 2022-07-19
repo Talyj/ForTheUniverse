@@ -26,8 +26,7 @@ public class PlayerStats : PlayerMovement
     [Header("Competences")]
     public Passifs passif;
     public Skills[] skills;
-    //public bool canMove = true;
-    //public bool useSkills = true;//pour les cc
+    public List<ItemBehaviours> items = new List<ItemBehaviours>(4);
     
     //Damage
     public float damageSupp;
@@ -73,6 +72,14 @@ public class PlayerStats : PlayerMovement
         }
     }
 
+    public void ItemEquip()
+    {
+        foreach(var item in items)
+        {
+            SetMaxHealth(GetMaxHealth()  +item.health);
+            SetMaxMana(GetMaxMana()  +item.mana);
+        }
+    }
     public void AttackSystemAI()
     {
         WalkToward();
@@ -175,6 +182,7 @@ public class PlayerStats : PlayerMovement
             {
                 Cible = null;
             }
+            
             yield return new WaitForSeconds(GetAttackSpeed() / ((100 / +GetAttackSpeed()) * 0.01f));
         }
         
@@ -245,7 +253,7 @@ public class PlayerStats : PlayerMovement
 
     public void SpawnRangeAttack(GameObject Target, float dmgSupp = 0)
     {
-        var bullets = PhotonNetwork.Instantiate(projPrefab.name, transform.position, Quaternion.identity);
+        var bullets = Instantiate(projPrefab, transform.position, Quaternion.identity);
 
         bullets.GetComponent<Projectile>().SetDamages(GetDegMag() + dmgSupp, DamageType.magique);
         bullets.GetComponent<Projectile>().target = Target;

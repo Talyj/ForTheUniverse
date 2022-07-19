@@ -61,7 +61,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 232333a878b0f7743b7b1dac778a44f7, type: 2}
+  - {fileID: 2100000, guid: 0f07f6eccdd8116469361aa1b13dbbb4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -144,7 +144,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 232333a878b0f7743b7b1dac778a44f7, type: 2}
+  - {fileID: 2100000, guid: 0f07f6eccdd8116469361aa1b13dbbb4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -227,7 +227,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 232333a878b0f7743b7b1dac778a44f7, type: 2}
+  - {fileID: 2100000, guid: 0f07f6eccdd8116469361aa1b13dbbb4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -372,7 +372,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 232333a878b0f7743b7b1dac778a44f7, type: 2}
+  - {fileID: 2100000, guid: 0f07f6eccdd8116469361aa1b13dbbb4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -705,18 +705,24 @@ MonoBehaviour:
   attackType: 0
   cc: 0
   Cible: {fileID: 0}
+  gold: 0
   respawnPos: {x: 0, y: 0, z: 0}
   deathPos: {x: 0, y: 0, z: 0}
   userId: 
   Health: 0
   MaxHealth: 0
+  AttackSpeed: 0
   AttackRange: 0
+  Exp: 0
+  MaxExp: 0
+  ExpRate: 0
   canUlt: 0
-  projPrefab: {fileID: 3524439937703818370, guid: ca45cb44d81306e409c4149613d2cdd6, type: 3}
+  projPrefab: {fileID: 1442863784273826401, guid: 21489d385334c8a4a9c933e27f0f7f49, type: 3}
   SpawnPrefab: {fileID: 4224584778427126948}
   enemyType: 2
   team: 0
   SpawnPrefab2: {fileID: 1151145462356007709}
+  Ui: {fileID: 1796007758404197142}
   current: 0
   pathDone: 0
   Position:
@@ -730,6 +736,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 6b97363eed19fea4c9f5dff5fee9ee5d, type: 2}
   - {fileID: 11400000, guid: 9c6fc255d42801d4c851fc967e950ea7, type: 2}
   - {fileID: 11400000, guid: 46008db4c705a044a9a71c6f4ed5c601, type: 2}
+  items: []
   damageSupp: 0
   ult: {fileID: 0}
   isAI: 0
@@ -1093,6 +1100,11 @@ MonoBehaviour:
 --- !u!224 &1796007758404197138 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3376652118336200788, guid: 666597106de57dd46b51dc0376e9e81a, type: 3}
+  m_PrefabInstance: {fileID: 3904889967351495494}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1796007758404197142 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3376652118336200784, guid: 666597106de57dd46b51dc0376e9e81a, type: 3}
   m_PrefabInstance: {fileID: 3904889967351495494}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1796007758406871098 stripped

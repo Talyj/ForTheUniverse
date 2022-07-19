@@ -26,6 +26,7 @@ public class TamiBehaviour : PlayerStats
         SetMaxHealth(500000);
         SetResPhys(40);
         SetResMag(40);
+        SetAttackSpeed(1.95f);
         CameraWork();
         foreach (var elmt in skills)
         {

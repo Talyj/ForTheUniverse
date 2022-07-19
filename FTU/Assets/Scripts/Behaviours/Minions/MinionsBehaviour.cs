@@ -67,6 +67,7 @@ public class MinionsBehaviour : PlayerStats
                     if (col.gameObject.GetComponent<IDamageable>().team != team)
                     {
                         col.gameObject.GetComponent<IDamageable>().SetExp( xpAmount);
+                        col.gameObject.GetComponent<IDamageable>().gold += 100;
                         Debug.Log(xpAmount + "<Color=green><a> Xp </a></Color>");
                     }
                     else
