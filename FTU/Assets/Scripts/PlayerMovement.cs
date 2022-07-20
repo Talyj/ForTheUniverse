@@ -104,7 +104,7 @@ public class PlayerMovement : IDamageable
         if (current == moveTo.Length) pathDone = true;
     }
 
-    public IEnumerator WalkToward()
+    public void WalkToward()
     {
         try
         {
@@ -122,7 +122,7 @@ public class PlayerMovement : IDamageable
             Cible = null;
         }
 
-        yield return 0;
+        //yield return 0;
     }
 
     public void FixedUpdate()

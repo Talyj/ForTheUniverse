@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
@@ -13,6 +14,11 @@ public class Projectile : NetworkBehaviour
     public bool targetSet;
     protected bool stopProjectile = false;
     public bool touched;
+
+    //public void Awake()
+    //{
+    //    DontDestroyOnLoad(gameObject);
+    //}
 
     public void Start()
     {
@@ -53,7 +59,7 @@ public class Projectile : NetworkBehaviour
                         touched = true;
                         DealDamage(target, degats, typeDegats);
                         stopProjectile = true;
-                        Destroy(gameObject);
+                        PhotonNetwork.Destroy(gameObject);
                     }
                 }
             }

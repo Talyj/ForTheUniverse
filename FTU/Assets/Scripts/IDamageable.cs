@@ -410,7 +410,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
             }
             else
             {
-                Destroy(gameObject);
+                PhotonNetwork.Destroy(gameObject.GetComponent<PhotonView>());
             }
         }
     }

@@ -22,7 +22,8 @@ public class GolemBehaviour : IDamageable
 
     public void Update()
     {
-        if(Cible == null)
+
+        if (Cible == null)
         {
             GetNearestTarget();
         }
@@ -36,6 +37,7 @@ public class GolemBehaviour : IDamageable
             }
         }
         HealthBehaviour();
+
     }
 
     public void Attack()

@@ -221,36 +221,6 @@ public class PlayerStats : PlayerMovement
 
     }
 
-    //public void MeleeAttack()
-    //{
-    //    if(Cible != null && Vector3.Distance(gameObject.transform.position, Cible.transform.position) < GetAttackRange() || Cible != null && isAI)
-    //    {
-    //        if(IsTargetable(Cible.GetComponent<IDamageable>().GetEnemyType()))
-    //        {
-    //            Cible.GetComponent<IDamageable>().TakeDamage(GetDegPhys() + damageSupp, DamageType.physique);
-    //        }
-    //    }
-    //    else
-    //    {
-    //        //anim.SetBool("AA", false);
-    //    }
-    //}
-
-    //public void RangeAttack()
-    //{
-    //    if (Cible != null && Vector3.Distance(gameObject.transform.position, Cible.transform.position) < GetAttackRange())
-    //    {
-    //        if (IsTargetable(Cible.GetComponent<IDamageable>().GetEnemyType()))
-    //        {
-    //            SpawnRangeAttack(Cible, damageSupp);
-    //        }
-    //    }
-    //    else
-    //    {
-    //        //anim.SetBool("AA", false);
-    //    }
-    //}
-
     public void SpawnRangeAttack(GameObject Target, float dmgSupp = 0)
     {
         var bullets = PhotonNetwork.Instantiate(projPrefab.name, transform.position, Quaternion.identity);
