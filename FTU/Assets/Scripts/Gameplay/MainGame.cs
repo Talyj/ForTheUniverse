@@ -1,5 +1,6 @@
 using Photon.Pun;
 using Photon.Realtime;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -40,8 +41,18 @@ public class MainGame : MonoBehaviourPun
 
                 if (player != null)
                 {
-                    var playerPrefabObject = view.gameObject;
-                    players.Add(playerPrefabObject);
+                    try
+                    {
+                        if(view.gameObject.GetComponent<IDamageable>().GetEnemyType() == IDamageable.EnemyType.joueur)
+                        {
+                            var playerPrefabObject = view.gameObject;
+                            players.Add(playerPrefabObject);
+                        }
+                    }
+                    catch(NullReferenceException nullE)
+                    {
+                        // :)
+                    }
                 }
             }
             CreateTeams(players);
@@ -72,15 +83,15 @@ public class MainGame : MonoBehaviourPun
         {
             if (monst.GetHealth() <= 0)
             {
-                //if (monst.team == IDamageable.Team.Veritas)
-                //{
-                //    victoryDisplay[1].SetActive(true);
-                //}
-                //else
-                //{
-                //    victoryDisplay[0].SetActive(true);
-                //}
-                //Time.timeScale = 0;
+                if (monst.team == Team.Veritas)
+                {
+                    victoryDisplay[1].SetActive(true);
+                }
+                else
+                {
+                    victoryDisplay[0].SetActive(true);
+                }
+                Time.timeScale = 0;
             }
         }                
     }
