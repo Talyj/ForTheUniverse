@@ -134,11 +134,13 @@ MonoBehaviour:
   attackType: 0
   cc: 0
   Cible: {fileID: 0}
+  gold: 0
   respawnPos: {x: 0, y: 0, z: 0}
   deathPos: {x: 0, y: 0, z: 0}
   userId: 
   Health: 0
   MaxHealth: 0
+  AttackSpeed: 0
   AttackRange: 0
   Exp: 0
   MaxExp: 0
@@ -149,6 +151,7 @@ MonoBehaviour:
   enemyType: 0
   team: 0
   SpawnPrefab2: {fileID: 0}
+  Ui: {fileID: 0}
   current: 0
   pathDone: 0
   Position:
@@ -177,6 +180,7 @@ MonoBehaviour:
   isAttacking: 0
   passif: {fileID: 0}
   skills: []
+  items: []
   damageSupp: 0
   ult: {fileID: 0}
   isAI: 0

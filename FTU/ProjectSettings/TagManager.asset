@@ -8,6 +8,8 @@ TagManager:
   - minion
   - golem
   - dd
+  - Enemy
+  - consLight
   layers:
   - Default
   - TransparentFX

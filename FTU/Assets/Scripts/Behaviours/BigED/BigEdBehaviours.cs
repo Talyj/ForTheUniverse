@@ -21,6 +21,7 @@ public class BigEdBehaviours : PlayerStats
         SetMaxHealth(500000);
         SetResPhys(40);
         SetResMag(40);
+        SetAttackSpeed(2.05f);
         CameraWork();
         foreach (var elmt in skills)
         {

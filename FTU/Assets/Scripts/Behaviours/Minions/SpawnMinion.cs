@@ -35,11 +35,11 @@ public class SpawnMinion : MonoBehaviour
                     cpt = 30;
                     for (int i = 0; i <= 4; i++)
                     {
-                        SetMinions(PlayerStats.Way.up, IDamageable.Team.Veritas, i);
-                        SetMinions(PlayerStats.Way.down, IDamageable.Team.Veritas, i);
+                        SetMinions(PlayerStats.Way.up, Team.Veritas, i);
+                        SetMinions(PlayerStats.Way.down, Team.Veritas, i);
 
-                        SetMinions(PlayerStats.Way.up, IDamageable.Team.Dominion, i);
-                        SetMinions(PlayerStats.Way.down, IDamageable.Team.Dominion, i);
+                        SetMinions(PlayerStats.Way.up, Team.Dominion, i);
+                        SetMinions(PlayerStats.Way.down, Team.Dominion, i);
                     }
                 }
             }
@@ -47,13 +47,13 @@ public class SpawnMinion : MonoBehaviour
     }
 
     [PunRPC]
-    public void SetMinions(PlayerStats.Way way, IDamageable.Team team, int loopCounter)
+    public void SetMinions(PlayerStats.Way way, Team team, int loopCounter)
     {
         Vector3 spawn = new Vector3(0, 0, 0);
         var x = Random.Range(-10, 10);
         var Z = Random.Range(-10, 10);
 
-        if (team == IDamageable.Team.Veritas)
+        if (team == Team.Veritas)
         {
             spawn = spawnPoint[0].position + new Vector3(x, 0, Z);
         }

@@ -11,6 +11,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     [SerializeField]
     ControlType cc;
     public GameObject Cible;
+    public float gold;
     //[SerializeField] public GameObject deathEffect;   
     [HideInInspector] public Vector3 respawnPos;
     [HideInInspector] public Vector3 deathPos;
@@ -18,7 +19,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     [Header("Stats")]
     [SerializeField] private float Health, MaxHealth;
     private float MoveSpeed;
-    private float AttackSpeed;
+    [SerializeField] private float AttackSpeed;
     [SerializeField] private float AttackRange;
     private float ViewRange;
     private float Mana, MaxMana;
@@ -55,11 +56,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     }
 
     public Team team;
-    public enum Team
-    {
-        Veritas,
-        Dominion
-    }
+    
 
     public enum DamageType
     {
@@ -626,4 +623,8 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         }
     }
 }
-
+public enum Team
+{
+    Veritas,
+    Dominion
+}

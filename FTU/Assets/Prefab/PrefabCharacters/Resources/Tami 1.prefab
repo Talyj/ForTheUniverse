@@ -61,7 +61,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 232333a878b0f7743b7b1dac778a44f7, type: 2}
+  - {fileID: 2100000, guid: 0f07f6eccdd8116469361aa1b13dbbb4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -144,7 +144,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 232333a878b0f7743b7b1dac778a44f7, type: 2}
+  - {fileID: 2100000, guid: 0f07f6eccdd8116469361aa1b13dbbb4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -227,7 +227,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 232333a878b0f7743b7b1dac778a44f7, type: 2}
+  - {fileID: 2100000, guid: 0f07f6eccdd8116469361aa1b13dbbb4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -310,7 +310,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 232333a878b0f7743b7b1dac778a44f7, type: 2}
+  - {fileID: 2100000, guid: 0f07f6eccdd8116469361aa1b13dbbb4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -645,6 +645,9 @@ MonoBehaviour:
   Health: 0
   MaxHealth: 0
   AttackRange: 0
+  Exp: 0
+  MaxExp: 0
+  ExpRate: 0
   canUlt: 0
   projPrefab: {fileID: 3524439937703818370, guid: ca45cb44d81306e409c4149613d2cdd6, type: 3}
   SpawnPrefab: {fileID: 0}
@@ -667,5 +670,11 @@ MonoBehaviour:
   damageSupp: 0
   ult: {fileID: 0}
   isAI: 0
-  ultime: {fileID: 0}
-  skill1: {fileID: 0}
+  grabPoint: {fileID: 0}
+  surfaces:
+    serializedVersion: 2
+    m_Bits: 0
+  lr: {fileID: 0}
+  maxDst: 10
+  speedGrab: 25
+  location: {x: 0, y: 0, z: 0}

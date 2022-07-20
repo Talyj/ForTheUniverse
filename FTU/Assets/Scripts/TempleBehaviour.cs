@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class TempleBehaviour : MonoBehaviour
 {
-    public IDamageable.Team team;
+    public Team team;
     [SerializeField] private GameObject mau;
     private bool isAwake;
 

@@ -8,7 +8,7 @@ namespace Com.MyCompany.MyGame
     public class Launcher : MonoBehaviourPunCallbacks
     {
         [Tooltip("The maximum number of players per room. When a room is full, it can't be joined by new players, and so new room will be created")]
-        [SerializeField] private byte maxPlayersPerRoom = 0;
+        [SerializeField] private byte maxPlayersPerRoom = 2;
 
         // This client's version number. Users are separated from each other by gameVersion (which allows you to make breaking changes).
         string gameVersion = "1";

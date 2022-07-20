@@ -6,7 +6,7 @@ public class PuddlePoissoinBehaviour : Projectile
 {
     private int insideArea;
     private List<GameObject> targets = new List<GameObject>();
-    public IDamageable.Team team;
+    public Team team;
     private float cpt;
 
     // Start is called before the first frame update

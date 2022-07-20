@@ -6,7 +6,7 @@ using UnityEngine;
 public class PoissoinProjBehaviour : Projectile
 {
     public MermaidBehaviour source;
-    public IDamageable.Team team;
+    public Team team;
     [SerializeField] private GameObject puddle;
 
     public new void Start()
@@ -44,7 +44,7 @@ public class PoissoinProjBehaviour : Projectile
 
     private IEnumerator SpawnPuddle()
     {
-        var pud = PhotonNetwork.Instantiate(puddle.name, new Vector3(transform.position.x, 1, transform.position.z), Quaternion.identity);
+        var pud = Instantiate(puddle, new Vector3(transform.position.x, 1, transform.position.z), Quaternion.identity);
         pud.GetComponent<PuddlePoissoinBehaviour>().team = team;
         
         yield return 0;

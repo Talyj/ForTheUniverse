@@ -34,6 +34,11 @@ public class SunBehaviour : PlayerStats
         Init();
         SetMoveSpeed(60f);
         SetAttackRange(20f);
+        SetAttackSpeed(1.95f);
+        SetHealth(500000);
+        SetMaxHealth(500000);
+        SetResPhys(40);
+        SetResMag(40);
         CameraWork();
         currentStick = Sticks.AuraStick;
         step = 0;
@@ -281,7 +286,7 @@ public class SunBehaviour : PlayerStats
             Vector3 direction = SpawnPrefab2.transform.position - SpawnPrefab.transform.position;
 
             //TODO
-            var proj = Instantiate(bigStick, transform.position, rotation);
+            var proj = PhotonNetwork.Instantiate(bigStick.name, transform.position, rotation);
             proj.GetComponent<BigStickBehaviour>().SetDamages(GetDegMag(), DamageType.magique);
             proj.GetComponent<BigStickBehaviour>().direction = direction;
             proj.GetComponent<BigStickBehaviour>().team = team;
