@@ -243,21 +243,21 @@ public class ConsBehaviour : PlayerStats
     {
         switch (_passiveCounter)
         {
-            case >= 1 and <= 2:
+            case 1: case 2:
                 SetDegPhys(GetDegPhys() * 1.1f);
                 SetAttackSpeed(GetAttackSpeed() / 1.1f);
                 yield return new WaitForSeconds(skills[1].CastTime * 2);
                 SetDegPhys(GetDegPhys() / 1.1f);
                 SetAttackSpeed(GetAttackSpeed() * 1.1f);
                 break;
-            case >= 3 and <=5:
+            case 3: case 4: case 5:
                 SetDegPhys(GetDegPhys() * 1.15f);
                 SetAttackSpeed(GetAttackSpeed() / 1.15f);
                 yield return new WaitForSeconds(skills[1].CastTime * 2);
                 SetDegPhys(GetDegPhys() / 1.15f);
                 SetAttackSpeed(GetAttackSpeed() * 1.15f);
                 break;
-            case >= 6 and <= 8:
+            case 6: case 7: case 8:
                 SetDegPhys(GetDegPhys() * 1.2f);
                 SetAttackSpeed(GetAttackSpeed() / 1.2f);
                 yield return new WaitForSeconds(skills[1].CastTime * 2);

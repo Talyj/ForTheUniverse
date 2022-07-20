@@ -36,7 +36,10 @@ public class PlayerMovement : IDamageable
         }
         if (!myPV.IsMine)
         {
-            Ui.SetActive(false);
+            if (Ui)
+            {
+                Ui.SetActive(false);
+            }
             return;
         }
         // #Critical
