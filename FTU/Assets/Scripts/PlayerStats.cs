@@ -253,7 +253,7 @@ public class PlayerStats : PlayerMovement
 
     public void SpawnRangeAttack(GameObject Target, float dmgSupp = 0)
     {
-        var bullets = Instantiate(projPrefab, transform.position, Quaternion.identity);
+        var bullets = PhotonNetwork.Instantiate(projPrefab.name, transform.position, Quaternion.identity);
 
         bullets.GetComponent<Projectile>().SetDamages(GetDegMag() + dmgSupp, DamageType.magique);
         bullets.GetComponent<Projectile>().target = Target;
