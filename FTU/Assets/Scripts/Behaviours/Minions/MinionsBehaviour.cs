@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MinionsBehaviour : PlayerStats
+public class MinionsBehaviour : PlayerStats, IPunObservable
 {
     public float dstForXp;
     public float xpAmount;
@@ -20,10 +20,11 @@ public class MinionsBehaviour : PlayerStats
         }
         else SetAttackRange(10f);
         SetMoveSpeed(30f);
-        SetDegMag(10f);
-        SetDegPhys(10f);
+        SetDegMag(500f);
+        SetDegPhys(500f);
         SetViewRange(30f);
-        isAttacking = false;        
+        SetAttackSpeed(2f);
+        isAttacking = false;
     }
 
     public void Update()
@@ -35,20 +36,21 @@ public class MinionsBehaviour : PlayerStats
 
             if (GetCanAct() && GetCanMove())
             {
-                //Movement + attack
-                DefaultMinionBehaviour();
                 GetNearestTarget();
                 if (Cible)
                 {
-                    StartCoroutine(WalkToward());
+                    //StartCoroutine(WalkToward());
+                    WalkToward();
                     gameObject.transform.LookAt(new Vector3(Cible.transform.position.x, transform.position.y, Cible.transform.position.z));
                 }        
+                //Movement + attack
+                DefaultMinionBehaviour();
             }
             if (GetHealth() <= 0 && !gaveXp)
             {
                 gaveXp = true;
                 GiveExp();
-            }
+            }            
         }
     }
 
@@ -77,6 +79,18 @@ public class MinionsBehaviour : PlayerStats
                 }
 
             }
+        }
+    }
+
+    void IPunObservable.OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            stream.SendNext(GetHealth());
+        }
+        else
+        {
+            SetHealth((float)stream.ReceiveNext());
         }
     }
 

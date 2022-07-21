@@ -298,22 +298,6 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         {
             col.enabled = true;
         }
-
-        //MaxHealth = 500;
-        //Health = MaxHealth;
-        //MoveSpeed = 4.5f;
-        //AttackSpeed = 0.5f;
-        //AttackRange = 1.5f;
-        //Mana = 100;
-        //MaxMana = 100;
-        //ResistancePhysique = 0;
-        //ResistanceMagique = 0;
-        //Exp = 0;
-        //MaxExp = 100;
-        //ExpRate = 1.75f;
-        //DegatsPhysique = 100;
-        //DegatsMagique = 100;
-        //lvl = 1;
         CharacterStatsSetUp();
     }
 
@@ -368,12 +352,12 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
                 canMove = true;
                 //useSkills = true;
                 break;
-
         }
     }
 
     public void HealthBehaviour()
     {
+
         if (Health >= MaxHealth)
         {
             Health = MaxHealth;
@@ -400,7 +384,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
             }
             else
             {
-                Destroy(gameObject);
+                PhotonNetwork.Destroy(gameObject.GetComponent<PhotonView>());
             }
         }
     }
@@ -508,21 +492,39 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
 
 
 
-
     public void TakeDamage(float DegatsRecu, DamageType type)
     {
-        //application des res, a modifier pour les differents type de degats
-        if (type == DamageType.physique)
+        var TypeConvert = 0;
+        switch (type)
         {
-            Health = Health - (DegatsRecu - ((ResistancePhysique * DegatsRecu) / 100)); // physique
+            case DamageType.physique:
+                TypeConvert = 0;
+                break;
+            case DamageType.magique:
+                TypeConvert = 1;
+                break;
+            case DamageType.brut:
+                TypeConvert = 2;
+                break;
         }
-        else if (type == DamageType.magique)
+
+        photonView.RPC("Damages", RpcTarget.All, new object[] { DegatsRecu, TypeConvert });
+    }
+
+    [PunRPC]
+    public void Damages(float DegatsRecu, int type)
+    {
+        switch (type)
         {
-            Health = Health - (DegatsRecu - ((ResistanceMagique * DegatsRecu) / 100)); // magique
-        }
-        else if (type == DamageType.brut)
-        {
-            Health -= DegatsRecu;
+            case 0:
+                Health = Health - (DegatsRecu - ((ResistancePhysique * DegatsRecu) / 100)); // physique
+                break;
+            case 1:
+                Health = Health - (DegatsRecu - ((ResistanceMagique * DegatsRecu) / 100)); // magique
+                break;
+            case 2:
+                Health -= DegatsRecu;
+                break;
         }
     }
 

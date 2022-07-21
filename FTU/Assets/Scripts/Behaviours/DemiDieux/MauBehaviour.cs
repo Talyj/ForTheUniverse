@@ -57,7 +57,8 @@ public class MauBehaviour : PlayerStats
                 }
                 if (Cible)
                 {
-                    StartCoroutine(WalkToward());
+                    //StartCoroutine(WalkToward());
+                    WalkToward();
                     gameObject.transform.LookAt(new Vector3(Cible.transform.position.x, transform.position.y, Cible.transform.position.z));
                 }
                 if (!Cible)
