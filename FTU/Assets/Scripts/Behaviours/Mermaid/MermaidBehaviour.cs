@@ -23,7 +23,6 @@ public class MermaidBehaviour : PlayerStats
     private float charmSpeed;
     private List<GameObject> charmTargets;
     public GameObject charmArea;
-
     public void Start()
     {
         Init();

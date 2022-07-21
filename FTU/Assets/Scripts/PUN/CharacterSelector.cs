@@ -30,7 +30,7 @@ public class CharacterSelector : MonoBehaviourPunCallbacks
         }
         //}
         selectIndex = currentIndex;
-       Instantiate(listOfCharacter[currentIndex].gameObject, spwan.position, Quaternion.identity);
+       Instantiate(listOfCharacter[currentIndex].gameObject, spwan.position, Quaternion.Euler(0f, 180f, 0f));
     }
 
     // Update is called once per frame
@@ -50,7 +50,7 @@ public class CharacterSelector : MonoBehaviourPunCallbacks
         if(currentIndex >= listOfCharacter.Length-1)
         {
             currentIndex = 0;
-            Instantiate(listOfCharacter[currentIndex].gameObject, spwan.position, Quaternion.identity);
+            Instantiate(listOfCharacter[currentIndex].gameObject, spwan.position, Quaternion.Euler(0f, 180f, 0f));
             GameObject pref = GameObject.Find(listOfCharacter[listOfCharacter.Length - 1].name + "(Clone)").gameObject;
             //Debug.Log(pref);
             Destroy(pref);
@@ -58,7 +58,7 @@ public class CharacterSelector : MonoBehaviourPunCallbacks
         else
         {
             currentIndex += 1;
-            Instantiate(listOfCharacter[currentIndex].gameObject, spwan.position, Quaternion.identity);
+            Instantiate(listOfCharacter[currentIndex].gameObject, spwan.position, Quaternion.Euler(0f, 180f, 0f));
             GameObject pref = GameObject.Find(listOfCharacter[currentIndex - 1].name + "(Clone)").gameObject;
             //Debug.Log(pref);
             Destroy(pref);
@@ -70,7 +70,7 @@ public class CharacterSelector : MonoBehaviourPunCallbacks
         if(currentIndex <= 0)
         {
             currentIndex = listOfCharacter.Length-1;
-           Instantiate(listOfCharacter[listOfCharacter.Length - 1].gameObject, spwan.position, Quaternion.identity);
+           Instantiate(listOfCharacter[listOfCharacter.Length - 1].gameObject, spwan.position, Quaternion.Euler(0f, 180f, 0f));
             GameObject pref = GameObject.Find(listOfCharacter[0].name + "(Clone)").gameObject;
             //Debug.Log(pref);
             Destroy(pref);
@@ -78,7 +78,7 @@ public class CharacterSelector : MonoBehaviourPunCallbacks
         else
         {
             currentIndex -= 1;
-            Instantiate(listOfCharacter[currentIndex].gameObject, spwan.position, Quaternion.identity);
+            Instantiate(listOfCharacter[currentIndex].gameObject, spwan.position, Quaternion.Euler(0f,180f,0f));
             GameObject pref = GameObject.Find(listOfCharacter[currentIndex + 1].name + "(Clone)").gameObject;
             //Debug.Log(pref);
             Destroy(pref);

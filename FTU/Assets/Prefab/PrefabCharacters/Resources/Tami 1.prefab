@@ -345,15 +345,10 @@ GameObject:
   - component: {fileID: 5903933258378369114}
   - component: {fileID: 5754344056136658445}
   - component: {fileID: 3191483728000905560}
-  - component: {fileID: 2939271441370156889}
   - component: {fileID: 7928735320366042732}
   - component: {fileID: 8875769932891779777}
   - component: {fileID: 5516881372207685683}
   - component: {fileID: 5322087101639636101}
-  - component: {fileID: 5180371704581597545}
-  - component: {fileID: 5696732043382915556}
-  - component: {fileID: 461897856848549218}
-  - component: {fileID: 789158616823178235}
   m_Layer: 0
   m_Name: Tami 1
   m_TagString: Untagged
@@ -460,40 +455,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &2939271441370156889
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9173982970317064210}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 400bbc4498ed0b24ea71791c827e3a3b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  stats: {fileID: 789158616823178235}
-  spells:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  health: {fileID: 0}
-  mana: {fileID: 0}
-  healthCible: {fileID: 0}
-  manaCible: {fileID: 0}
-  costsCible:
-  - {fileID: 0}
-  - {fileID: 0}
-  costs:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  cibleHp: {fileID: 0}
-  ciblePm: {fileID: 0}
 --- !u!114 &7928735320366042732
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -547,7 +508,7 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 7928735320366042732}
   - {fileID: 8875769932891779777}
-  - {fileID: 789158616823178235}
+  - {fileID: 0}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -571,110 +532,3 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &5180371704581597545
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9173982970317064210}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ac89c403a737cb840a4dd975c579b8fa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  centerOffset: {x: 0, y: 0, z: 0}
-  followOnStart: 0
-  player: {fileID: 0}
---- !u!114 &5696732043382915556
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9173982970317064210}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c05414265093b144c96b60392aa38dd2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  entity: {fileID: 0}
---- !u!114 &461897856848549218
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9173982970317064210}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 048f2d621b07cb44fae58b01b5476f0e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  viewRadius: 12
-  viewAngle: 360
-  targetMask:
-    serializedVersion: 2
-    m_Bits: 64
-  obstacleMask:
-    serializedVersion: 2
-    m_Bits: 128
-  visibleTarget: []
-  meshResolution: 3
-  viewMeshFilter: {fileID: 3793642128545049391, guid: cec8dcfc12dd1c04391e39fefaf8894e, type: 3}
-  edgeResolveIteration: 4
-  edgeDstTreshold: 0.5
---- !u!114 &789158616823178235
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9173982970317064210}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 800e20d054f0353479375abece652e14, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attackType: 0
-  cc: 0
-  Cible: {fileID: 0}
-  respawnPos: {x: 0, y: 0, z: 0}
-  deathPos: {x: 0, y: 0, z: 0}
-  userId: 
-  Health: 0
-  MaxHealth: 0
-  AttackRange: 0
-  Exp: 0
-  MaxExp: 0
-  ExpRate: 0
-  canUlt: 0
-  projPrefab: {fileID: 3524439937703818370, guid: ca45cb44d81306e409c4149613d2cdd6, type: 3}
-  SpawnPrefab: {fileID: 0}
-  enemyType: 0
-  team: 0
-  SpawnPrefab2: {fileID: 0}
-  current: 0
-  pathDone: 0
-  Position:
-    m_InternalValue: {x: 0, y: 0, z: 0}
-  targetsUp: []
-  targetsDown: []
-  way: 0
-  isAttacking: 0
-  passif: {fileID: 11400000, guid: aeac9e0afe92f4048ad843146a63ec72, type: 2}
-  skills:
-  - {fileID: 11400000, guid: 6b97363eed19fea4c9f5dff5fee9ee5d, type: 2}
-  - {fileID: 11400000, guid: 9c6fc255d42801d4c851fc967e950ea7, type: 2}
-  - {fileID: 11400000, guid: 46008db4c705a044a9a71c6f4ed5c601, type: 2}
-  damageSupp: 0
-  ult: {fileID: 0}
-  isAI: 0
-  grabPoint: {fileID: 0}
-  surfaces:
-    serializedVersion: 2
-    m_Bits: 0
-  lr: {fileID: 0}
-  maxDst: 10
-  speedGrab: 25
-  location: {x: 0, y: 0, z: 0}

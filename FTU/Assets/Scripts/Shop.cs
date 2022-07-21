@@ -5,10 +5,10 @@ using UnityEngine;
 public class Shop : MonoBehaviour
 {
     public Team team;
-    public ItemBehaviours[] allItems;
     public GameObject shopUI;
-    public GameObject itemPrefab;
+    public PlayerStats playerPrefab;
     public bool shopIsOpen = false;
+
 
     private void OnTriggerEnter(Collider other)
     {
@@ -26,32 +26,32 @@ public class Shop : MonoBehaviour
     {
         if(other.CompareTag("Player") && other.gameObject.GetComponent<IDamageable>().team == team)
         {
+            playerPrefab = other.gameObject.GetComponent<PlayerStats>();
             if (Input.GetKeyDown(KeyCode.P))
             {
                 shopIsOpen = !shopIsOpen;
                 OpenOrCloseShop();
                 
             }
-            if (Input.GetKeyDown(KeyCode.O)&& shopIsOpen==true)
-            {
-                Debug.Log("buy");
-                other.gameObject.GetComponent<PlayerStats>().items.Add(allItems[0]);
-                other.gameObject.GetComponent<PlayerStats>().ItemEquip();
-            }
+            
         }
     }
+    private void Update()
+    {
+        
+    }
+
+    
     private void OnTriggerExit(Collider other)
     {
         shopIsOpen = false;
-    }
-    public void BuyItem()
-    {
-
+        OpenOrCloseShop();
     }
     void OpenOrCloseShop()
     {
         if (shopIsOpen == true)
         {
+            
             shopUI.SetActive(true);
         }
         else

@@ -138,6 +138,7 @@ MonoBehaviour:
   attackType: 0
   cc: 0
   Cible: {fileID: 0}
+  gold: 0
   respawnPos: {x: 0, y: 0, z: 0}
   deathPos: {x: 0, y: 0, z: 0}
   userId: 
@@ -154,6 +155,7 @@ MonoBehaviour:
   enemyType: 3
   team: 0
   SpawnPrefab2: {fileID: 0}
+  Ui: {fileID: 0}
   current: 0
   pathDone: 0
   Position:
@@ -167,6 +169,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 7568d950a39fe2a42a4e40f1b50e028b, type: 2}
   - {fileID: 11400000, guid: b326d95f02d35cf40a69e08801640967, type: 2}
   - {fileID: 11400000, guid: 1f1d218582bbce64e908cede80ad3daa, type: 2}
+  items: []
   damageSupp: 0
   ult: {fileID: 0}
   isAI: 0

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 [CreateAssetMenu(fileName ="Item",menuName ="Items/new item")]
 public class ItemBehaviours : ScriptableObject
@@ -21,4 +22,6 @@ public class ItemBehaviours : ScriptableObject
     public float dmgMag;
     [Tooltip("Augmente la vitesse d'attaque")]
     public float attackSpeed;
+    [Tooltip("Image")]
+    public Sprite img;
 }
