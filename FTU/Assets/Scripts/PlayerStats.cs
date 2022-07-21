@@ -78,6 +78,11 @@ public class PlayerStats : PlayerMovement
         {
             SetMaxHealth(GetMaxHealth()  +item.health);
             SetMaxMana(GetMaxMana()  +item.mana);
+            SetAttackSpeed(GetAttackSpeed() + item.attackSpeed);
+            SetResMag(GetResMag() + item.resMag);
+            SetResPhys(GetResPhys() + item.resPhys);
+            SetDegPhys(GetDegPhys() + item.dmgPhys);
+            SetDegMag(GetDegMag() + item.dmgMag);
         }
     }
     public void AttackSystemAI()

@@ -1460,14 +1460,11 @@ GameObject:
   - component: {fileID: 2194106055158209032}
   - component: {fileID: 5041413277038018767}
   - component: {fileID: 3567383398288020782}
-  - component: {fileID: 4037140015689334467}
   - component: {fileID: 7003188671493851091}
   - component: {fileID: 940486680738167715}
   - component: {fileID: 6496013462543003035}
   - component: {fileID: 5499096509842813545}
   - component: {fileID: 7213121623342912308}
-  - component: {fileID: 2175924336990334503}
-  - component: {fileID: 2776643353293979873}
   m_Layer: 0
   m_Name: Cons 1
   m_TagString: Untagged
@@ -1562,19 +1559,6 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
---- !u!114 &4037140015689334467
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7836138528982380508}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c05414265093b144c96b60392aa38dd2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  entity: {fileID: 0}
 --- !u!114 &7003188671493851091
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1612,7 +1596,6 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 7003188671493851091}
   - {fileID: 6496013462543003035}
-  - {fileID: 2175924336990334503}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -1668,90 +1651,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &2175924336990334503
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7836138528982380508}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 515ad940e01569342bf94e5b5c140cc0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attackType: 1
-  cc: 0
-  Cible: {fileID: 0}
-  gold: 0
-  respawnPos: {x: 0, y: 0, z: 0}
-  deathPos: {x: 0, y: 0, z: 0}
-  userId: 
-  Health: 0
-  MaxHealth: 0
-  AttackSpeed: 0
-  AttackRange: 0
-  Exp: 0
-  MaxExp: 0
-  ExpRate: 0
-  canUlt: 0
-  projPrefab: {fileID: 1442863784273826401, guid: 21489d385334c8a4a9c933e27f0f7f49, type: 3}
-  SpawnPrefab: {fileID: 0}
-  enemyType: 2
-  team: 0
-  SpawnPrefab2: {fileID: 5488236438643698054}
-  Ui: {fileID: 0}
-  current: 0
-  pathDone: 0
-  Position:
-    m_InternalValue: {x: 0, y: 0, z: 0}
-  targetsUp: []
-  targetsDown: []
-  way: 0
-  isAttacking: 0
-  passif: {fileID: 11400000, guid: d09f1655006f44744a7e9ccd708e42c5, type: 2}
-  skills:
-  - {fileID: 11400000, guid: 22c858293d8284740b45d9ce637e3f4c, type: 2}
-  - {fileID: 11400000, guid: 8bcce1201a266c84bb972c261d8be42b, type: 2}
-  - {fileID: 11400000, guid: 88586c5fab3fcef499f03b27e92d098c, type: 2}
-  items: []
-  damageSupp: 0
-  ult: {fileID: 0}
-  isAI: 0
-  _passiveCounter: 0
-  spawns:
-  - {fileID: 2266069082633215670}
-  - {fileID: 1784188198919316585}
-  - {fileID: 6482008266316211520}
-  - {fileID: 6680374596998513039}
-  - {fileID: 5189567407374292412}
-  - {fileID: 5647273258403244416}
-  - {fileID: 4424604768033865331}
-  lights:
-  - {fileID: 6449015422764497907}
-  - {fileID: 5609963513730545316}
-  - {fileID: 8912692098811434666}
-  - {fileID: 3896390337912530257}
-  - {fileID: 6338822770449674238}
-  - {fileID: 4201689000447830005}
-  - {fileID: 4847914834761626445}
-  beam: {fileID: 0}
-  ultArea: {fileID: 0}
---- !u!114 &2776643353293979873
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7836138528982380508}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ac89c403a737cb840a4dd975c579b8fa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  centerOffset: {x: 0, y: 0, z: 0}
-  followOnStart: 0
-  player: {fileID: 0}
 --- !u!1 &8619375219186545885
 GameObject:
   m_ObjectHideFlags: 0

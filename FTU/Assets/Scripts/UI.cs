@@ -66,6 +66,7 @@ public class UI : MonoBehaviour
         costs[6].text += "AP : " + stats.GetDegMag() + "\n";
         costs[6].text += "AD : " + stats.GetDegPhys() + "\n";
         costs[6].text += "MS : " + stats.GetMoveSpeed() + "\n";
+        costs[6].text += "Gold : " + stats.gold + "\n";
 
         costs[5].text = "Niveau : " + stats.GetLvl();
         float percentHP = ((stats.GetHealth() * 100) / stats.GetMaxHealth()) / 100;

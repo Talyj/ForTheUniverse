@@ -340,16 +340,6 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         SetLvl(1);
     }
 
-    //public void Setup()
-    //{
-        
-    //    wasEnableOnStart = new bool[disableOnDeath.Length];
-    //    for(int i = 0; i < disableOnDeath.Length; i++)
-    //    {
-    //        wasEnableOnStart[i] = disableOnDeath[i].enabled;
-    //    }
-    //    SetDefault();
-    //}
     
     private void CheckCC()
     {
