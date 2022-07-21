@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
-public class Projectile : NetworkBehaviour
+public class Projectile : MonoBehaviourPun
 {
 
     private IDamageable.DamageType typeDegats;
@@ -23,15 +23,19 @@ public class Projectile : NetworkBehaviour
     public void Start()
     {
         touched = false;
+        DontDestroyOnLoad(gameObject);
     }
 
     public void Update()
     {
-        if(target == null)
+        if (photonView.IsMine)
         {
-            Destroy(gameObject);
+            if(target == null)
+            {
+               PhotonNetwork.Destroy(gameObject);
+            }
+            Behaviour();
         }
-        Behaviour();
     }
 
     public void Behaviour()
@@ -51,15 +55,15 @@ public class Projectile : NetworkBehaviour
                     //if (touched)
                 {
                     if (target.GetComponent<IDamageable>().GetEnemyType() == IDamageable.EnemyType.minion ||
-                       target.GetComponent<IDamageable>().GetEnemyType() == IDamageable.EnemyType.voister ||
-                       target.GetComponent<IDamageable>().GetEnemyType() == IDamageable.EnemyType.joueur ||
-                       target.GetComponent<IDamageable>().GetEnemyType() == IDamageable.EnemyType.dieu ||
-                       target.GetComponent<IDamageable>().GetEnemyType() == IDamageable.EnemyType.golem)
+                        target.GetComponent<IDamageable>().GetEnemyType() == IDamageable.EnemyType.voister ||
+                        target.GetComponent<IDamageable>().GetEnemyType() == IDamageable.EnemyType.joueur ||
+                        target.GetComponent<IDamageable>().GetEnemyType() == IDamageable.EnemyType.dieu ||
+                        target.GetComponent<IDamageable>().GetEnemyType() == IDamageable.EnemyType.golem)
                     {
-                        touched = true;
-                        DealDamage(target, degats, typeDegats);
-                        stopProjectile = true;
-                        PhotonNetwork.Destroy(gameObject);
+                            touched = true;
+                            DealDamage(target, degats, typeDegats);
+                            stopProjectile = true;
+                            PhotonNetwork.Destroy(gameObject);
                     }
                 }
             }
