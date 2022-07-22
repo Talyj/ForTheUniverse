@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 
 using Photon.Pun;
 using Photon.Realtime;
-
+using Photon.Pun.UtilityScripts;
 
 namespace Com.MyCompany.MyGame
 {
@@ -35,9 +35,18 @@ namespace Com.MyCompany.MyGame
             {
                 if(PlayerMovement.localPlayerInstance == null)
                 {
+                    //int team = (int)PhotonNetwork.LocalPlayer.CustomProperties["Team"];
                     selector = GameObject.FindObjectOfType<CharacterSelector>();
                     Debug.LogFormat("We are Instantiating LocalPlayer from {0}", SceneManager.GetActiveScene().name);
                     // we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
+                    //if(team == 0)
+                    //{
+                    //    PhotonNetwork.Instantiate(playerPrefabs[selector.selectIndex].name, new Vector3(-313.3f, 2.14f, -37.118f), Quaternion.identity, 0);
+                    //}
+                    //else
+                    //{
+                    //    PhotonNetwork.Instantiate(playerPrefabs[selector.selectIndex].name, new Vector3(313.3f, 2.14f, -37.118f), Quaternion.identity, 0);
+                    //}
                     PhotonNetwork.Instantiate(playerPrefabs[selector.selectIndex].name, new Vector3(0f, 2.14f, 0f), Quaternion.identity, 0);
                 }
                 else
@@ -45,6 +54,23 @@ namespace Com.MyCompany.MyGame
                     Debug.LogFormat("Ignoring scene load for {0}", SceneManagerHelper.ActiveSceneName);
                 }
             }
+        }
+
+        public void JoinTeam(int team)
+        {
+            if (PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("Team"))
+            {
+                PhotonNetwork.LocalPlayer.CustomProperties["Team"] = team;
+            }
+            else
+            {
+                ExitGames.Client.Photon.Hashtable playerProps = new ExitGames.Client.Photon.Hashtable
+                {
+                    {"Team", team }
+                };
+                PhotonNetwork.SetPlayerCustomProperties(playerProps);
+            }
+            PhotonNetwork.JoinRandomRoom();
         }
 
         public override void OnLeftRoom()
@@ -102,6 +128,5 @@ namespace Com.MyCompany.MyGame
                 LoadArena();
             }
         }
-
     }
 }

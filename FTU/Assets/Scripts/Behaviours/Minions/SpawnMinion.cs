@@ -53,11 +53,18 @@ public class SpawnMinion : MonoBehaviour
         var x = Random.Range(-10, 10);
         var Z = Random.Range(-10, 10);
 
+        var color = new Color();
+
         if (team == Team.Veritas)
         {
             spawn = spawnPoint[0].position + new Vector3(x, 0, Z);
+            color = Color.yellow;
         }
-        else spawn = spawnPoint[1].position + new Vector3(x, 0, Z);
+        else
+        {
+            spawn = spawnPoint[1].position + new Vector3(x, 0, Z);
+            color = Color.red;
+        }
 
         var minionTemp = PhotonNetwork.Instantiate(minion.name, spawn, Quaternion.identity);
         minionTemp.GetComponent<MinionsBehaviour>().way = way;
@@ -65,6 +72,7 @@ public class SpawnMinion : MonoBehaviour
         minionTemp.GetComponent<MinionsBehaviour>().targetsUp = pathUp;
         minionTemp.GetComponent<MinionsBehaviour>().targetsDown = pathDown;
         minionTemp.GetComponent<MinionsBehaviour>().isAI = true;
+        minionTemp.gameObject.GetComponent<Renderer>().material.color = color;
         if(loopCounter > 2)
         {
             minionTemp.GetComponent<MinionsBehaviour>().attackType = IDamageable.AttackType.Ranged;

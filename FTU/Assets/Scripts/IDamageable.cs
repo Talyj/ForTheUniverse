@@ -382,7 +382,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
             {
 
             }
-            else
+            else if (PhotonNetwork.IsMasterClient)
             {
                 PhotonNetwork.Destroy(gameObject.GetComponent<PhotonView>());
             }
@@ -508,7 +508,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
                 break;
         }
 
-        photonView.RPC("Damages", RpcTarget.All, new object[] { DegatsRecu, TypeConvert });
+        photonView.RPC("Damages", RpcTarget.All, new object[] { DegatsRecu, TypeConvert});
     }
 
     [PunRPC]
@@ -617,6 +617,6 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
 }
 public enum Team
 {
-    Veritas,
-    Dominion
+    Veritas = 0,
+    Dominion = 1
 }

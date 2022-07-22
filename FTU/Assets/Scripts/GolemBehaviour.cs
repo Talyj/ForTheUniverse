@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,12 +11,13 @@ public class GolemBehaviour : IDamageable
     public void Start()
     {
         Init();
-        SetHealth(5000);
-        SetMaxHealth(5000);
+        SetHealth(2500f);
+        SetMaxHealth(2500f);
         SetAttackRange(30f);
         SetViewRange(GetAttackRange());
-        SetDegMag(500);
-        SetDegPhys(500);
+        SetAttackSpeed(1.0f);
+        SetDegMag(200);
+        SetDegPhys(200);
         attackCooldown = 0;
         Cible = null;
     }

@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,19 +14,27 @@ public class PuddlePoissoinBehaviour : Projectile
     public new void Start()
     {
         insideArea = 0;
-        cpt = 0.5f;
+        cpt = 5.0f;
     }
     // Update is called once per frame
     public new void Update()
     {
         //Behaviour();
-        cpt -= Time.deltaTime;
-        if (cpt < 0)
+        //cpt -= Time.deltaTime;
+        //if (cpt < 0)
+        //{
+        //    cpt = 0.5f;
+        //DealDamage(targets, GetDamages(), IDamageable.DamageType.magique);
+        //}
+        if (PhotonNetwork.IsMasterClient)
         {
-            cpt = 0.5f;
-            DealDamage(targets, GetDamages(), IDamageable.DamageType.magique);
+            cpt -= Time.deltaTime;
+            if(cpt < 0)
+            {
+                PhotonNetwork.Destroy(gameObject);
+                cpt = 5.0f;
+            }
         }
-        Destroy(gameObject, 5f);
     }
 
     public void DealDamage(List<GameObject> targets, float dmg, IDamageable.DamageType typeDmg)
@@ -48,17 +57,38 @@ public class PuddlePoissoinBehaviour : Projectile
     {
         if (other.CompareTag("Player") || other.CompareTag("minion") || other.CompareTag("golem"))
         {
-            insideArea += 1;
-            targets.Add(other.gameObject);
+            //insideArea += 1;
+            //targets.Add(other.gameObject);
+            StartCoroutine(puddleBehaviour(other.gameObject));
         }
     }
 
-    private void OnTriggerExit(Collider other)
+    //private void OnTriggerExit(Collider other)
+    //{
+    //    if (other.gameObject.CompareTag("Player") || other.CompareTag("minion") || other.CompareTag("golem"))
+    //    {
+    //        insideArea -= 1;
+    //        targets.Remove(other.gameObject);
+    //    }
+    //}
+
+    private IEnumerator puddleBehaviour(GameObject target)
     {
-        if (other.gameObject.CompareTag("Player") || other.CompareTag("minion") || other.CompareTag("golem"))
+        //foreach(var tar in targets)
+        //{
+        var cpt = 0;
+        while (cpt < 10)
         {
-            insideArea -= 1;
-            targets.Remove(other.gameObject);
+            if(target.GetComponent<IDamageable>().team != team)
+            {
+                target.GetComponent<IDamageable>().TakeDamage(GetDamages(), GetDamageType());
+            }
+            else
+            {
+                target.GetComponent<IDamageable>().SetHealth(target.GetComponent<IDamageable>().GetHealth() + GetDamages());
+            }
+            //}
+            yield return new WaitForSeconds(0.5f);
         }
     }
 }

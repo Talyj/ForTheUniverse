@@ -28,8 +28,8 @@ public class MermaidBehaviour : PlayerStats
         Init();
         SetMoveSpeed(60f);
         SetAttackRange(40f);
-        SetHealth(500000);
-        SetMaxHealth(500000);
+        SetHealth(500);
+        SetMaxHealth(500);
         SetResPhys(40);
         SetResMag(40);
         SetAttackSpeed(1.95f);
