@@ -603,6 +603,21 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         }
     }
 
+    public GameObject viewIdToGameObject(int actorNumber)
+    {
+        var views = FindObjectsOfType<PhotonView>();
+        GameObject res = null;
+
+        foreach (var view in views)
+        {
+            if (view.ViewID == actorNumber)
+            {
+                res = view.gameObject;
+            }
+        }
+        return res;
+    }
+
     void IPunObservable.OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.IsWriting)

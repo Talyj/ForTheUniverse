@@ -6,15 +6,9 @@ using UnityEngine;
 
 public class TamiBehaviour : PlayerStats
 {
-    //skill 2
-    public Transform grabPoint;
-    public RaycastHit hit;
-    public LayerMask surfaces;
-    public LineRenderer lr;
-    public int maxDst = 10;
-    public float speedGrab = 25;
-    public Vector3 location;
-    TamiBehaviour Instance;
+    //Ulti
+    public GameObject spear;
+    public Transform[] ultTransform;
 
     // Start is called before the first frame update
     void Start()
@@ -24,6 +18,8 @@ public class TamiBehaviour : PlayerStats
         SetAttackRange(10f);
         SetHealth(500000);
         SetMaxHealth(500000);
+        SetDegMag(50f);
+        SetDegPhys(50f);
         SetResPhys(40);
         SetResMag(40);
         SetAttackSpeed(1.95f);
@@ -32,8 +28,8 @@ public class TamiBehaviour : PlayerStats
         {
             elmt.isCooldown = false;
         }
-        Instance = this;
         Passif();
+        SetCanUlt(true);
     }
 
     // Update is called once per frame
@@ -83,16 +79,16 @@ public class TamiBehaviour : PlayerStats
                     Debug.Log("No target available");
                 }
 
-                if (Input.GetKeyDown(KeyCode.Alpha1) && Cible != null && Vector3.Distance(gameObject.transform.position, Cible.transform.position) < GetAttackRange())
+                if (Input.GetKeyDown(KeyCode.Alpha1) && Cible && Vector3.Distance(gameObject.transform.position, Cible.transform.position) < GetAttackRange())
                 {
                     Stonk();
                 }
-                if (Input.GetKeyDown(KeyCode.Alpha2))
+                if (Input.GetKeyDown(KeyCode.Alpha2) && Cible && Vector3.Distance(gameObject.transform.position, Cible.transform.position) < GetAttackRange() * 3)
                 {
                     VienLa();
                 }
 
-                if (Input.GetKeyDown(KeyCode.Alpha3) && GetCanUlt() == true)
+                if (Input.GetKeyDown(KeyCode.Alpha3) && GetCanUlt() == true && Cible)
                 {
                     Ultime();
                 }
@@ -117,7 +113,7 @@ public class TamiBehaviour : PlayerStats
             SetMana(GetMana() - skills[0].Cost);
             Debug.Log(skills[0].Name + " lancée");
 
-            Cible.GetComponent<IDamageable>().TakeDamage(skills[0].Damage, skills[0].degats);
+            Cible.GetComponent<IDamageable>().TakeDamage(GetDegMag() * 1.75f, skills[0].degats);
             if(Cible.GetComponent<IDamageable>().GetHealth() <= 0)
             {
                 Passif();
@@ -149,16 +145,17 @@ public class TamiBehaviour : PlayerStats
             SetMana(GetMana() - skills[1].Cost);
             Debug.Log(skills[1].Name + " lancée");
             #region base
-            var dir = SpawnPrefab2.transform.position - SpawnPrefab.transform.position;
-            lr.enabled = true;
-            lr.SetPosition(1, grabPoint.transform.position);
-            if (Physics.Raycast(grabPoint.transform.position, dir.normalized, out hit, maxDst, surfaces))
-            {
-                lr.enabled = true;
-                lr.SetPosition(1, hit.collider.gameObject.transform.position);
-                MoveToSpot();
-            }
+            //var dir = SpawnPrefab2.transform.position - SpawnPrefab.transform.position;
+            //lr.enabled = true;
+            //lr.SetPosition(1, grabPoint.transform.position);
+            //if (Physics.Raycast(grabPoint.transform.position, dir.normalized, out hit, maxDst, surfaces))
+            //{
+            //    lr.enabled = true;
+            //    lr.SetPosition(1, hit.collider.gameObject.transform.position);
+            //}
+            //MoveToSpot(Cible);
             //lr.enabled = false;
+            photonView.RPC("MoveToSpot", RpcTarget.All, new object[] { Cible.GetPhotonView().ViewID});
             #endregion
 
 
@@ -178,18 +175,16 @@ public class TamiBehaviour : PlayerStats
         }
     }
     
-
+    [PunRPC]
+    public void MoveToSpot(int viewId)
+    {
+        var target = viewIdToGameObject(viewId);
+        Vector3 direction = target.transform.position - transform.position;
+        target.GetComponent<Rigidbody>().AddForce(-direction.normalized * 200f, ForceMode.VelocityChange);
+    }
 
     #endregion
 
-    public void MoveToSpot()
-    {
-        
-        hit.collider.gameObject.GetComponent<IDamageable>().TakeCC(ControlType.stun, .75f);
-        hit.collider.gameObject.transform.position = Vector3.Lerp(transform.position, location, speedGrab * Time.deltaTime / Vector3.Distance(transform.position, location));
-        lr.SetPosition(0, grabPoint.position);
-        lr.enabled = false;
-    }
 
     #region Ultime
     public void Ultime()
@@ -198,6 +193,17 @@ public class TamiBehaviour : PlayerStats
         {
             SetMana(GetMana() - skills[2].Cost);
             Debug.Log(skills[2].Name + " lancée");
+
+            foreach(var pos in ultTransform)
+            {
+                Quaternion rotation = Quaternion.LookRotation(Cible.transform.position - pos.position);
+                var proj = PhotonNetwork.Instantiate(spear.name, pos.position, rotation);
+                var dir = Cible.transform.position - SpawnPrefab.transform.position;
+                proj.GetComponent<SpearBehaviour>().SetDamages(GetDegMag(), DamageType.magique);
+                proj.GetComponent<SpearBehaviour>().source = this;
+                proj.GetComponent<SpearBehaviour>().team = team;
+                proj.GetComponent<Rigidbody>().AddForce(dir.normalized * 30f, ForceMode.Impulse);
+            }
 
             skills[2].isCooldown = true;
             if (skills[2].isCooldown == true)

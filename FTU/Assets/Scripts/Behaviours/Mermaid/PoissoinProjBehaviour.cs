@@ -27,19 +27,21 @@ public class PoissoinProjBehaviour : Projectile
     }
 
     private void OnTriggerEnter(Collider other)
-    {      
-        if(other.GetComponent<IDamageable>())
+    {
+        if (photonView.IsMine)
         {
-            if (other.GetComponent<IDamageable>().team != team && photonView.IsMine)
+            if(other.GetComponent<IDamageable>())
             {
-                StartCoroutine(SpawnPuddle());
-                DealDamage(other.gameObject, GetDamages(), GetDamageType());
-                source.AddPassive();
-                stopProjectile = true;
-                Destroy(gameObject);
+                if (other.GetComponent<IDamageable>().team != team && photonView.IsMine)
+                {
+                    StartCoroutine(SpawnPuddle());
+                    DealDamage(other.gameObject, GetDamages(), GetDamageType());
+                    source.AddPassive();
+                    stopProjectile = true;
+                    PhotonNetwork.Destroy(gameObject);
+                }
             }
         }
-
     }
 
     private IEnumerator SpawnPuddle()
@@ -47,7 +49,6 @@ public class PoissoinProjBehaviour : Projectile
         if (PhotonNetwork.IsMasterClient)
         {
             var pud = PhotonNetwork.Instantiate(puddle.name, new Vector3(transform.position.x, 1, transform.position.z), Quaternion.identity);
-            //pud.GetComponent<PhotonView>().TransferOwnership(PhotonNetwork.MasterClient.ActorNumber);
             pud.GetComponent<PuddlePoissoinBehaviour>().team = team;
         }
         
