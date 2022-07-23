@@ -1,31 +1,22 @@
 using Photon.Pun;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PuddlePoissoinBehaviour : Projectile
 {
-    private int insideArea;
-    private List<GameObject> targets = new List<GameObject>();
     public Team team;
     private float cpt;
 
     // Start is called before the first frame update
     public new void Start()
     {
-        insideArea = 0;
         cpt = 5.0f;
     }
     // Update is called once per frame
     public new void Update()
     {
-        //Behaviour();
-        //cpt -= Time.deltaTime;
-        //if (cpt < 0)
-        //{
-        //    cpt = 0.5f;
-        //DealDamage(targets, GetDamages(), IDamageable.DamageType.magique);
-        //}
         if (PhotonNetwork.IsMasterClient)
         {
             cpt -= Time.deltaTime;
@@ -55,39 +46,38 @@ public class PuddlePoissoinBehaviour : Projectile
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") || other.CompareTag("minion") || other.CompareTag("golem"))
+        if (other.gameObject.GetComponent<IDamageable>())
         {
-            //insideArea += 1;
-            //targets.Add(other.gameObject);
             StartCoroutine(puddleBehaviour(other.gameObject));
         }
     }
 
-    //private void OnTriggerExit(Collider other)
-    //{
-    //    if (other.gameObject.CompareTag("Player") || other.CompareTag("minion") || other.CompareTag("golem"))
-    //    {
-    //        insideArea -= 1;
-    //        targets.Remove(other.gameObject);
-    //    }
-    //}
 
     private IEnumerator puddleBehaviour(GameObject target)
     {
-        //foreach(var tar in targets)
-        //{
         var cpt = 0;
-        while (cpt < 10)
+        while (cpt < 6)
         {
-            if(target.GetComponent<IDamageable>().team != team)
+            try
             {
-                target.GetComponent<IDamageable>().TakeDamage(GetDamages(), GetDamageType());
+                if(target.GetComponent<IDamageable>().team != team)
+                {
+                    target.GetComponent<IDamageable>().TakeDamage(GetDamages(), GetDamageType());
+                }
+                else
+                {
+                    target.GetComponent<IDamageable>().SetHealth(target.GetComponent<IDamageable>().GetHealth() + GetDamages());
+                }
             }
-            else
+            catch(MissingReferenceException missE)
             {
-                target.GetComponent<IDamageable>().SetHealth(target.GetComponent<IDamageable>().GetHealth() + GetDamages());
+                cpt = 10;
             }
-            //}
+            catch(NullReferenceException nullE)
+            {
+                cpt = 10;
+            }
+            cpt++;
             yield return new WaitForSeconds(0.5f);
         }
     }

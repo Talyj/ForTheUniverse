@@ -21,7 +21,7 @@ public class MermaidBehaviour : PlayerStats
     //Ulti
     private float ultiTimerDefault = 1;
     private float charmSpeed;
-    private List<GameObject> charmTargets;
+    //private List<GameObject> charmTargets;
     public GameObject charmArea;
     public void Start()
     {
@@ -35,7 +35,7 @@ public class MermaidBehaviour : PlayerStats
         SetAttackSpeed(1.95f);
         speedPush = 3;
         charmSpeed = 5;
-        charmTargets = new List<GameObject>();
+        //charmTargets = new List<GameObject>();
         foreach(var elmt in skills)
         {
             elmt.isCooldown = false;
@@ -197,32 +197,65 @@ public class MermaidBehaviour : PlayerStats
     }
     public void AddWindedTarget(GameObject target)
     {
-        charmTargets.Add(target);
+        //charmTargets.Add(target);
         target.GetComponent<IDamageable>().SetCanMove(false);
-        StartCoroutine(GoAway(target));
+        //StartCoroutine(GoAway(target));
+        photonView.RPC("GoAway", RpcTarget.All, new object[] { target.GetPhotonView().Owner.ActorNumber });
     }
 
-    public IEnumerator GoAway(GameObject target)
+    [PunRPC]
+    public void GoAway(int actorNumber)
     {
-        var timer = windTimerDefault;
-        while (timer >= 0)
+        //Doesn't work but no error so let it be for now
+        if (photonView.IsMine)
         {
-            Vector3 direction = target.transform.position - transform.position;
-            target.transform.position += direction * Time.deltaTime * speedPush;
-            timer -= Time.deltaTime;
-            yield return new WaitForEndOfFrame();
+            var photonViews = FindObjectsOfType<PhotonView>();
+            var target = new GameObject();
+            foreach (var view in photonViews)
+            {
+                var player = view.Owner;
+
+                if (player == null) continue;
+
+                try
+                {
+                    if (view.gameObject.GetComponent<IDamageable>().GetEnemyType() == IDamageable.EnemyType.golem) continue;
+                    if (view.Owner.ActorNumber == actorNumber)
+                    {
+                        target = view.gameObject;
+                        break;
+                    }
+                    //if (view.gameObject.GetComponent<IDamageable>().GetEnemyType() == IDamageable.EnemyType.joueur)
+                    //{
+                    //    var playerPrefabObject = view.gameObject;
+                    //    target = playerPrefabObject;
+                    //    break;
+                    //}
+                }
+                catch (NullReferenceException nullE)
+                {
+                    // :)
+                }
+            }
+
+            //target
+
+            var timer = windTimerDefault;
+            //while (timer >= 0)
+            //{
+                Vector3 direction = target.transform.position - transform.position;
+            //target.transform.position += direction * Time.deltaTime * speedPush;
+            target.GetComponent<Rigidbody>().AddForce(direction.normalized * 20f, ForceMode.VelocityChange);
+            //timer -= Time.deltaTime;
+            //yield return new WaitForEndOfFrame();
+            //}
+            target.GetComponent<IDamageable>().SetCanMove(true);
+            //yield return 0;
         }
-        target.GetComponent<IDamageable>().SetCanMove(true);
-        yield return 0;
     }
 
     IEnumerator Buff(Skills skill)
     {
-        //while(Time.deltaTime != skill.CastTime)
-        //{
-        //    ResistanceMagique = ResistanceMagique * 1.25f;
-        //}
-
         yield return new WaitForSeconds(skill.Cooldown);
         Debug.Log("fin des cd");
         skill.isCooldown = false;
@@ -232,6 +265,7 @@ public class MermaidBehaviour : PlayerStats
     //Copy that in a new character file
     public void Ultime()
     {
+        //doesn't work but no error too so let it be for now 
         if (skills[2].isCooldown == false && GetMana() >= skills[2].Cost)
         {
             //buff
@@ -255,7 +289,7 @@ public class MermaidBehaviour : PlayerStats
 
     public void AddTCharmedTargets(GameObject target)
     {        
-        charmTargets.Add(target);
+        //charmTargets.Add(target);
         target.GetComponent<IDamageable>().SetCanMove(false);
         StartCoroutine(GetNear(target));
     }
