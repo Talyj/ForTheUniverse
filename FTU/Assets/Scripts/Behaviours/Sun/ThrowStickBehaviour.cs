@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,19 +21,25 @@ public class ThrowStickBehaviour : Projectile
     private IEnumerator DestroyBullet()
     {
         yield return new WaitForSeconds(2f);
-        source.TP(gameObject.transform.position);
-        Destroy(gameObject);
+        if (photonView.IsMine)
+        {
+            source.TP(gameObject.transform.position);
+            PhotonNetwork.Destroy(gameObject);
+        }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        var trig = other.GetComponent<IDamageable>();
-        if (trig)
+        if (photonView.IsMine)
         {
-            if(trig.team != source.team)
+            var trig = other.GetComponent<IDamageable>();
+            if (trig)
             {
-                source.TP(gameObject.transform.position);
-                Destroy(gameObject);
+                if(trig.team != source.team)
+                {
+                    source.TP(gameObject.transform.position);
+                    Destroy(gameObject);
+                }
             }
         }
     }

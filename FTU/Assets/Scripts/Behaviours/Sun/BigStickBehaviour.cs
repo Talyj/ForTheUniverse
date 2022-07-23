@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -28,9 +29,9 @@ public class BigStickBehaviour : Projectile
     public void CheckRange()
     {
         float dist = Vector3.Distance(startPos, currentPos);
-        if(dist >= 70)
+        if(dist >= 70 && photonView.IsMine)
         {
-            Destroy(gameObject);
+            PhotonNetwork.Destroy(gameObject);
         }
     }
 
