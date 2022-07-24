@@ -78,9 +78,10 @@ public class Dps1 : PlayerStats
     {
         if (GetCanAct())
         {
+            MovementPlayer();
             if (!isAttacking)
             {
-                MovementPlayer();
+                
                 if (Cible != null)
                 {
                     if (Input.GetMouseButtonDown(1))

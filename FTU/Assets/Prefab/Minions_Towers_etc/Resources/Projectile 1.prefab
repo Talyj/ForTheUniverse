@@ -262,7 +262,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f901a6fb10d89fe4992f02e15f03d395, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  degats: 100
+  degats: 53.75
   vitesse: 15
   target: {fileID: 0}
   targetSet: 1

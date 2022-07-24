@@ -1907,7 +1907,7 @@ PrefabInstance:
     - target: {fileID: 7642911151125993750, guid: 0efed2e512b04ff4c9c246a3692977cb, type: 3}
       propertyPath: playerPrefabs.Array.data[1]
       value: 
-      objectReference: {fileID: 3853125026446671208, guid: cec8dcfc12dd1c04391e39fefaf8894e, type: 3}
+      objectReference: {fileID: 3853125026446671208, guid: b459b0227127a3e4f870515d51a6db55, type: 3}
     - target: {fileID: 7642911151125993750, guid: 0efed2e512b04ff4c9c246a3692977cb, type: 3}
       propertyPath: playerPrefabs.Array.data[2]
       value: 
