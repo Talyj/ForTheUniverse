@@ -24,6 +24,7 @@ public class Projectile : MonoBehaviourPun
     {
         touched = false;
         DontDestroyOnLoad(gameObject);
+        DestroyBullet(10f);
     }
 
     public void Update()
@@ -89,5 +90,14 @@ public class Projectile : MonoBehaviourPun
     public void DealDamage(GameObject target, float dmg, IDamageable.DamageType typeDmg)
     {
         target.GetComponent<IDamageable>().TakeDamage(dmg, typeDmg);
+    }
+
+    protected IEnumerator DestroyBullet(float time)
+    {
+        yield return new WaitForSeconds(time);
+        if (photonView.IsMine)
+        {
+            PhotonNetwork.Destroy(gameObject);
+        }
     }
 }

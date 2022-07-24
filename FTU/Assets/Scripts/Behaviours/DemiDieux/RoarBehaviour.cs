@@ -16,6 +16,7 @@ public class RoarBehaviour : Projectile
         timerDefault = 1f;
         StartCoroutine(Movement());
         StartCoroutine(SizeModification());
+        StartCoroutine(DestroyBullet(timerDefault));
     }
 
     // Update is called once per frame
@@ -46,7 +47,6 @@ public class RoarBehaviour : Projectile
             timer -= Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
-        Destroy(gameObject);
         yield return 0;
     }
 

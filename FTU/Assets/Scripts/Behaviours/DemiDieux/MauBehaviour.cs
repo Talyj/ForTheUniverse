@@ -69,22 +69,6 @@ public class MauBehaviour : PlayerStats
                 {
                     transform.position = Vector3.MoveTowards(transform.position, new Vector3(templeTransform.position.x, transform.position.y, templeTransform.position.z), GetMoveSpeed() * Time.deltaTime);
                 }
-                //Control boss as a player for TEST
-                //MovementPlayer();
-                //if (Input.GetKeyDown(KeyCode.Alpha1) && Cible != null && Vector3.Distance(gameObject.transform.position, Cible.transform.position) < GetAttackRange() * 4)
-                //{
-                //    Roar();
-                //}
-
-                //if (Input.GetKeyDown(KeyCode.Alpha2))
-                //{
-                //    Stomp();
-                //}
-
-                //if (Input.GetKeyDown(KeyCode.Alpha3)/* && GetCanUlt() == true*/)
-                //{
-                //    Ultime();
-                //}
             }
         }
     }

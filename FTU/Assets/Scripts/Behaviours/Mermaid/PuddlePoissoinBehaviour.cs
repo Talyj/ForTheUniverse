@@ -13,19 +13,12 @@ public class PuddlePoissoinBehaviour : Projectile
     public new void Start()
     {
         cpt = 5.0f;
+        StartCoroutine(DestroyBullet(cpt));
     }
     // Update is called once per frame
     public new void Update()
     {
-        if (PhotonNetwork.IsMasterClient)
-        {
-            cpt -= Time.deltaTime;
-            if(cpt < 0)
-            {
-                PhotonNetwork.Destroy(gameObject);
-                cpt = 5.0f;
-            }
-        }
+      
     }
 
     public void DealDamage(List<GameObject> targets, float dmg, IDamageable.DamageType typeDmg)
