@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: One Two
   m_EditorClassIdentifier: 
   Name: One Two
-  Cost: 1
+  Cost: 20
   CastTime: 0.2
-  Cooldown: 1
+  Cooldown: 6
   isCooldown: 0
   type: 1
   Damage: 75

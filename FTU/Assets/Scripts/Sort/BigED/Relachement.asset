@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Relachement
   m_EditorClassIdentifier: 
   Name: Relachement
-  Cost: 1
+  Cost: 100
   CastTime: 3.5
-  Cooldown: 1
+  Cooldown: 45
   isCooldown: 0
   type: 1
   Damage: 49.999996

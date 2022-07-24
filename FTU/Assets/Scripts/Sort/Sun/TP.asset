@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: TP
   m_EditorClassIdentifier: 
   Name: TP
-  Cost: 1
+  Cost: 30
   CastTime: 0.5
-  Cooldown: 1
+  Cooldown: 12
   isCooldown: 0
   type: 1
   Damage: 45

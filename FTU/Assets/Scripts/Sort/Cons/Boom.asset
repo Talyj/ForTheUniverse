@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Boom
   m_EditorClassIdentifier: 
   Name: Boom
-  Cost: 1
+  Cost: 100
   CastTime: 1
-  Cooldown: 15
+  Cooldown: 45
   isCooldown: 0
   type: 0
   Damage: 0

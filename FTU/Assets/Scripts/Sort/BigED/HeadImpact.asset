@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: HeadImpact
   m_EditorClassIdentifier: 
   Name: Head-Impact
-  Cost: 1
+  Cost: 25
   CastTime: 0.7
-  Cooldown: 1
+  Cooldown: 10
   isCooldown: 0
   type: 1
   Damage: 75

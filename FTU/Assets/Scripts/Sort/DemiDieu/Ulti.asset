@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Ulti
   m_EditorClassIdentifier: 
   Name: Hero's blessing
-  Cost: 0
+  Cost: 50
   CastTime: 5
-  Cooldown: 1
+  Cooldown: 60
   isCooldown: 0
   type: 2
   Damage: 10

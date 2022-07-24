@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Skills1
   m_EditorClassIdentifier: 
   Name: Roar
-  Cost: 0
+  Cost: 20
   CastTime: 0
-  Cooldown: 0
+  Cooldown: 30
   isCooldown: 0
   type: 1
   Damage: 500
