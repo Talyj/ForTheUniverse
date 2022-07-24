@@ -7,6 +7,7 @@ public class VoidMap : MonoBehaviour
 {
     public GameObject[] items;
     public float EventTime,baseTime;
+    public int maxItem = 12,currentItem=0;
     // Start is called before the first frame update
     void Start()
     {
@@ -21,7 +22,7 @@ public class VoidMap : MonoBehaviour
             EventTime -= 1 * Time.deltaTime;
         }
         
-        if(EventTime <= 0)
+        if(EventTime <= 0 && currentItem != maxItem)
         {
             VoidEvent();
             EventTime = baseTime;
@@ -37,6 +38,7 @@ public class VoidMap : MonoBehaviour
             Vector3 randomPos = new Vector3(Random.Range(-230, 230), 2, Random.Range(-90, 90));
             PhotonNetwork.Instantiate(items[index].name, randomPos, Quaternion.identity);
             numberObjectSpawn++;
+            currentItem++;
         }
     }
 }

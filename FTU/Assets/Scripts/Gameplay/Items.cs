@@ -9,10 +9,11 @@ public class Items : MonoBehaviour
     public Shop shop;
     public Image img;
     public Text nameItem,price;
+    public PlayerStats stats;
 
     private void Awake()
     {
-        
+        stats = shop.playerPrefab;
     }
     private void Start()
     {
@@ -22,12 +23,12 @@ public class Items : MonoBehaviour
     }
     public void BuyItem()
     {
-        if(shop.playerPrefab.gold >= item.price)
+        if(stats.gold >= item.price)
         {
-            shop.playerPrefab.gold -= item.price;
+            stats.gold -= item.price;
             Debug.Log("Equip " + item.nameItem);
-            shop.playerPrefab.items.Add(item);
-            shop.playerPrefab.ItemEquip();
+            stats.items.Add(item);
+            stats.ItemEquip();
         }
         else
         {
