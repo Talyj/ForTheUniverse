@@ -32,13 +32,16 @@ public class SunBehaviour : PlayerStats
     public void Start()
     {
         Init();
-        SetMoveSpeed(60f);
+        SetMoveSpeed(30f);
         SetAttackRange(20f);
+        SetHealth(500f);
+        SetMaxHealth(500f);
+        SetResPhys(50f);
+        SetResMag(50f);
+        SetDegMag(50f);
+        SetDegPhys(50f);
         SetAttackSpeed(1.95f);
-        SetHealth(500000);
-        SetMaxHealth(500000);
-        SetResPhys(40);
-        SetResMag(40);
+
         CameraWork();
         currentStick = Sticks.AuraStick;
         step = 0;

@@ -25,14 +25,17 @@ public class ConsBehaviour : PlayerStats
     public void Start()
     {
         Init();
-        SetMoveSpeed(60f);
-        SetAttackRange(40f);
-        SetHealth(500000);
-        SetMaxHealth(500000);
-        SetResPhys(40);
-        SetResMag(40);
-        SetAttackSpeed(1.85f);
-        SetCanUlt(true);
+        SetMoveSpeed(30f);
+        SetAttackRange(30f);
+        SetHealth(500f);
+        SetMaxHealth(500f);
+        SetResPhys(50f);
+        SetResMag(50f);
+        SetDegMag(50f);
+        SetDegPhys(50f);
+        SetAttackSpeed(1.95f);
+
+
         slow = 5;
         foreach (var elmt in skills)
         {

@@ -24,7 +24,7 @@ public class MinionsBehaviour : PlayerStats, IPunObservable
             SetAttackRange(10f);
             SetMaxHealth(350);
         } 
-        SetMoveSpeed(30f);
+        SetMoveSpeed(20f);
         SetDegMag(20f);
         SetDegPhys(20f);
         SetViewRange(30f);

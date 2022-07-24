@@ -22,15 +22,19 @@ public class MauBehaviour : PlayerStats
     public void Start()
     {
         baseMag = 1;
-        basePhys = 1;
+        basePhys = 1;       
+
         Init();
-        SetHealth(1f);
-        SetMaxHealth(5000f);
-        SetMoveSpeed(60f);
+        SetMoveSpeed(30f);
         SetAttackRange(20f);
         SetViewRange(30f);
-        SetDegMag(baseMag);
-        SetDegPhys(basePhys);
+        SetHealth(5000f);
+        SetMaxHealth(5000f);
+        SetResPhys(50f);
+        SetResMag(50f);
+        SetDegMag(200f);
+        SetDegPhys(200f);
+        SetAttackSpeed(1.95f);
         Instance = this;
         foreach (var elmt in skills)
         {

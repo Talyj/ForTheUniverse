@@ -14,16 +14,17 @@ public class TamiBehaviour : PlayerStats
     void Start()
     {
         Init();
-        SetMoveSpeed(60f);
+        SetMoveSpeed(30f);
         SetAttackRange(10f);
-        SetHealth(500000);
-        SetMaxHealth(500000);
+        SetHealth(500f);
+        SetMaxHealth(500f);
+        SetResPhys(50f);
+        SetResMag(50f);
+        SetAttackSpeed(1.95f);
         SetDegMag(50f);
         SetDegPhys(50f);
-        SetResPhys(40);
-        SetResMag(40);
-        SetAttackSpeed(1.95f);
         CameraWork();
+
         foreach (var elmt in skills)
         {
             elmt.isCooldown = false;

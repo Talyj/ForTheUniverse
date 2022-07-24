@@ -41,10 +41,15 @@ public class Dps1 : PlayerStats
     public void Start()
     {
         Init();
-        SetMoveSpeed(60f);
-        SetAttackRange(40f);
-        SetHealth(500000);
-        SetMaxHealth(500000);
+        SetMoveSpeed(30f);
+        SetAttackRange(10f);
+        SetHealth(500f);
+        SetMaxHealth(500f);
+        SetResPhys(50f);
+        SetResMag(50f);
+        SetDegMag(50f);
+        SetDegPhys(50f);
+        SetAttackSpeed(1.95f);
         CameraWork();
         Passif();
         foreach (var elmt in skills)

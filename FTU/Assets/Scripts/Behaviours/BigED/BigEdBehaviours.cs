@@ -15,13 +15,15 @@ public class BigEdBehaviours : PlayerStats
     void Start()
     {
         Init();
-        SetMoveSpeed(60f);
+        SetMoveSpeed(30f);
         SetAttackRange(10f);
-        SetHealth(500000);
-        SetMaxHealth(500000);
-        SetResPhys(40);
-        SetResMag(40);
-        SetAttackSpeed(2.05f);
+        SetHealth(500f);
+        SetMaxHealth(500f);
+        SetResPhys(50f);
+        SetResMag(50f);
+        SetAttackSpeed(1.95f);
+        SetDegMag(50f);
+        SetDegPhys(50f);
         CameraWork();
         foreach (var elmt in skills)
         {
@@ -274,7 +276,7 @@ public class HeadImpact : MonoBehaviourPun
 
             col.gameObject.GetComponent<IDamageable>().TakeCC(IDamageable.ControlType.slow, 2.55f);
             col.gameObject.GetComponent<IDamageable>().TakeDamage(bg.skills[0].Damage, bg.skills[0].degats);
-            //Destroy(gameObject);
+            PhotonNetwork.Destroy(gameObject);
         }
 
     }

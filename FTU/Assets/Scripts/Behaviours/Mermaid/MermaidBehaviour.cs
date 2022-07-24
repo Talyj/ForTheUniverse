@@ -26,13 +26,16 @@ public class MermaidBehaviour : PlayerStats
     public void Start()
     {
         Init();
-        SetMoveSpeed(60f);
-        SetAttackRange(40f);
-        SetHealth(500);
-        SetMaxHealth(500);
-        SetResPhys(40);
-        SetResMag(40);
+        SetMoveSpeed(30f);
+        SetAttackRange(30f);
+        SetHealth(500f);
+        SetMaxHealth(500f);
+        SetResPhys(50f);
+        SetResMag(50f);
+        SetDegMag(50f);
+        SetDegPhys(50f);
         SetAttackSpeed(1.95f);
+
         speedPush = 3;
         charmSpeed = 5;
         //charmTargets = new List<GameObject>();
