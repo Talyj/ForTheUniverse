@@ -148,7 +148,7 @@ public class MermaidBehaviour : PlayerStats
             Debug.Log(skills[0].Name + " lanc�e");
             skills[0].isCooldown = true;
 
-            var proj =PhotonNetwork.Instantiate(poissoin.name, transform.position, Quaternion.identity);
+            var proj = PhotonNetwork.Instantiate(poissoin.name, transform.position, Quaternion.identity);
             var dir = SpawnPrefab2.transform.position - SpawnPrefab.transform.position;
             proj.GetComponent<PoissoinProjBehaviour>().SetDamages(GetDegMag(), DamageType.magique);
             proj.GetComponent<PoissoinProjBehaviour>().source = this;

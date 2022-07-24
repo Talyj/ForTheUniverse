@@ -15,7 +15,7 @@ MonoBehaviour:
   Name: Beam
   Cost: 1
   CastTime: 1
-  Cooldown: 5
+  Cooldown: 0
   isCooldown: 0
   type: 0
   Damage: 0

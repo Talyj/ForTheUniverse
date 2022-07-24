@@ -1576,7 +1576,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c05414265093b144c96b60392aa38dd2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  entity: {fileID: 0}
+  entity: {fileID: 7836138528982380508}
 --- !u!114 &7003188671493851091
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1737,7 +1737,7 @@ MonoBehaviour:
   - {fileID: 6338822770449674238}
   - {fileID: 4201689000447830005}
   - {fileID: 4847914834761626445}
-  beam: {fileID: 1400320157133295737, guid: 7680c618dc7155b4d9b3a98bb45e422e, type: 3}
+  beam: {fileID: 3724081308419832764, guid: b737d936cc63a604cb7a69d50c428440, type: 3}
   ultArea: {fileID: 0}
 --- !u!114 &2776643353293979873
 MonoBehaviour:
