@@ -40,6 +40,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     private bool IsDead;
     private bool InRegen;
     private float respawnCooldown;
+    private float cptRegen = 0;
 
     [Header("Ranged variables")]
     public GameObject projPrefab;
@@ -387,6 +388,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
                 PhotonNetwork.Destroy(gameObject.GetComponent<PhotonView>());
             }
         }
+        Regen();
     }
 
     IEnumerator Spawn(Renderer rend)
@@ -471,26 +473,23 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
 
     public void Regen()
     {
-        StartCoroutine(RegenHealAndMana());
-    }
-
-    IEnumerator RegenHealAndMana()
-    {
-
-        if (Health < MaxHealth)
+        cptRegen -= Time.deltaTime;
+        if(cptRegen <= 0)
         {
-            float val = Mathf.FloorToInt(MaxHealth * 0.05f);
-            Health += val;
-            Debug.Log("+ " + val);
+            cptRegen = 5.0f;
+            if (Health < MaxHealth)
+            {
+                float val = Mathf.FloorToInt(MaxHealth * 0.1f);
+                Health += val;
+            }
+
+            if (Mana < MaxMana)
+            {
+                float val = Mathf.FloorToInt(MaxMana * 0.1f);
+                Mana += val;
+            }
         }
-
-
-
-        yield return new WaitForSeconds(1.5f);
-
     }
-
-
 
     public void TakeDamage(float DegatsRecu, DamageType type)
     {
