@@ -31,7 +31,7 @@ public class MainGame : MonoBehaviourPun
     {
         //isPlaying = true;
         //isGameStarted = false;
-        if (!isPlaying && PhotonNetwork.PlayerList.Length >= 1 && SceneManager.GetActiveScene().name == "MainGameRoom")
+        if (!isPlaying && PhotonNetwork.PlayerList.Length >= 2 && SceneManager.GetActiveScene().name == "MainGameRoom")
         {
             var photonViews = FindObjectsOfType<PhotonView>();
             var players = new List<GameObject>();
