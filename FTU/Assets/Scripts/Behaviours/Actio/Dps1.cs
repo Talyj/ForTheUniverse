@@ -64,7 +64,7 @@ public class Dps1 : PlayerStats
 
         HealthBehaviour();
         ExperienceBehaviour();
-        Passif();
+        //Passif();
         Behaviour();
         
     }
@@ -252,8 +252,8 @@ public class Dps1 : PlayerStats
         tir2.GetComponent<Rigidbody>().AddForce(dir2.normalized * 15f, ForceMode.Impulse);
         
         yield return new WaitForSeconds(2f);
-        Destroy(tir1);
-        Destroy(tir2);
+        Destroy(tir1,2f);
+        Destroy(tir2,2.5f);
     }
     public void Skill2()
     {

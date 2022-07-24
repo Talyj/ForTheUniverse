@@ -14,6 +14,7 @@ public class Shop : MonoBehaviour
     {
         if (other.CompareTag("Player") && other.gameObject.GetComponent<IDamageable>().team == team)
         {
+            playerPrefab = other.gameObject.GetComponent<PlayerStats>();
             if (Input.GetKeyDown(KeyCode.P))
             {
                 shopIsOpen = !shopIsOpen;

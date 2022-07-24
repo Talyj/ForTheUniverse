@@ -136,7 +136,7 @@ public class BigEdBehaviours : PlayerStats
             GameObject headImp = PhotonNetwork.Instantiate(skill1.name, SpawnPrefab2.transform.position, Quaternion.identity);
             headImp.AddComponent<HeadImpact>();
             headImp.GetComponent<HeadImpact>().bg = this;
-            Destroy(headImp);
+            Destroy(headImp,2.5f);
 
             skills[0].isCooldown = true;
             if (skills[0].isCooldown == true)
@@ -184,8 +184,8 @@ public class BigEdBehaviours : PlayerStats
         SetResMag(GetResMag() * 1.1f);
         SetResPhys(GetResPhys() * 1.1f);
         yield return new WaitForSeconds(skills[1].CastTime * 2);
-        SetResMag(GetResMag() * .8f);
-        SetResPhys(GetResPhys() * .8f);
+        SetResMag(GetResMag() / 1.1f);
+        SetResPhys(GetResPhys() / 1.1f);
     }
 
 
