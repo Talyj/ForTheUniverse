@@ -15,9 +15,9 @@ public class GolemBehaviour : IDamageable
         SetMaxHealth(2500f);
         SetAttackRange(30f);
         SetViewRange(GetAttackRange());
-        SetAttackSpeed(1.0f);
-        SetDegMag(200);
-        SetDegPhys(200);
+        SetAttackSpeed(2.0f);
+        SetDegMag(200f);
+        SetDegPhys(200f);
         attackCooldown = 0;
         Cible = null;
     }
