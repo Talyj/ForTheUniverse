@@ -55,7 +55,10 @@ public class MainGame : MonoBehaviourPun
                     }
                 }
             }
-            CreateTeams(players);
+            //if(players.Count >= 2)
+            //{
+                CreateTeams(players);
+            //}
         }
         else if (isPlaying && !isGameStarted)
         {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using System;
+using UnityEngine.VFX;
 
 public class ConsBehaviour : PlayerStats
 {
@@ -31,6 +32,7 @@ public class ConsBehaviour : PlayerStats
         SetResPhys(40);
         SetResMag(40);
         SetAttackSpeed(1.85f);
+        SetCanUlt(true);
         slow = 5;
         foreach (var elmt in skills)
         {
@@ -160,8 +162,7 @@ public class ConsBehaviour : PlayerStats
         if (_passiveCounter > 10)
         {
             isPassiveStart = true;
-            SetDegPhys(GetDegPhys() * 1.5f);
-            
+            SetDegPhys(GetDegPhys() * 1.5f);            
         }
     }
 
@@ -189,6 +190,7 @@ public class ConsBehaviour : PlayerStats
         {
             SetMana(GetMana() - skills[0].Cost);
             Debug.Log(skills[0].Name + " lanc�e");
+
             skills[0].isCooldown = true;
             var r = UnityEngine.Random.Range(0, spawns.Length);
             foreach (var l in lights)
@@ -196,8 +198,19 @@ public class ConsBehaviour : PlayerStats
                 l.SetActive(false);
             }
             lights[r].SetActive(true);
+
+            Transform targ;
+            if (Cible)
+            {
+                targ = Cible.transform;
+            }
+            else
+            {
+                targ = SpawnPrefab2;
+            }
+
             var proj = PhotonNetwork.Instantiate(beam.name, spawns[r].transform.position, Quaternion.identity);
-            var dir = SpawnPrefab2.transform.position - spawns[r].transform.position;
+            var dir = targ.transform.position - spawns[r].transform.position;
             proj.GetComponent<ProjCons>().SetDamages(GetDegPhys(), DamageType.physique);
             proj.GetComponent<ProjCons>().source = this;
             proj.GetComponent<ProjCons>().team = team;
@@ -292,8 +305,36 @@ public class ConsBehaviour : PlayerStats
             SetMana(GetMana() - skills[2].Cost);
             Debug.Log(skills[2].Name + " lanc�e");
 
-            var area = PhotonNetwork.Instantiate(ultArea.name, transform.position, Quaternion.identity);
-            
+            //var area = PhotonNetwork.Instantiate(ultArea.name, transform.position, Quaternion.identity);
+            Collider[] hitColliders = Physics.OverlapSphere(gameObject.transform.position, GetAttackRange());
+            if (hitColliders != null)
+            {
+                foreach (var col in hitColliders)
+                {
+                    if (col.gameObject.GetComponent<IDamageable>())
+                    {
+                        if(col.gameObject.GetComponent<IDamageable>().team != team)
+                        {
+                            if(col.gameObject.GetComponent<IDamageable>().enemyType == EnemyType.golem)
+                            {
+                                return;
+                            }
+                            else
+                            {
+                                var degMult = _passiveCounter;
+                                if(degMult <= 0)
+                                {
+                                    degMult = 1;
+                                }
+                                col.gameObject.GetComponent<IDamageable>().TakeDamage(GetDegPhys() * degMult, DamageType.magique);
+                            }
+                        }
+                    }
+
+                }
+            }
+
+
 
             StartCoroutine(CoolDown(skills[2]));
         }

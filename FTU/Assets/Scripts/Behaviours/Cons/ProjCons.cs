@@ -13,23 +13,34 @@ public class ProjCons : Projectile
         StartCoroutine(DestroyBullet());
     }
 
+    public new void Update()
+    {
+        //:)
+    }
+
 
     private IEnumerator DestroyBullet()
     {
-        yield return new WaitForSeconds(2f);
-        Destroy(gameObject);
+        if (photonView.IsMine)
+        {
+            yield return new WaitForSeconds(3f);
+            PhotonNetwork.Destroy(gameObject);
+        }
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnCollisionEnter(Collision other)
     {
-        if (other.GetComponent<IDamageable>())
+        if (photonView.IsMine)
         {
-            if (other.GetComponent<IDamageable>().team != team)
+            if (other.gameObject.GetComponent<IDamageable>())
             {
-                source.AddPassive();
-                DealDamage(other.gameObject, GetDamages(), GetDamageType());
-                stopProjectile = true;
-                Destroy(gameObject);
+                if (other.gameObject.GetComponent<IDamageable>().team != team)
+                {
+                    source.AddPassive();
+                    DealDamage(other.gameObject, GetDamages(), GetDamageType());
+                    stopProjectile = true;
+                    PhotonNetwork.Destroy(gameObject);
+                }
             }
         }
 

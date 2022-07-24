@@ -14,14 +14,27 @@ public class TempleBehaviour : MonoBehaviour
         isAwake = false;
     }
 
-    private void OnTriggerEnter(Collider other)
+    public void Update()
     {
         if (PhotonNetwork.IsMasterClient)
         {
-            if (other.gameObject.CompareTag("Player") && other.gameObject.GetComponent<IDamageable>().team != team)
+            GetInsideTemple();
+        }
+    }
+
+    private void GetInsideTemple()
+    {
+        Collider[] hitColliders = Physics.OverlapSphere(gameObject.transform.position, 50f);
+
+        if (hitColliders != null)
+        {
+            foreach (var col in hitColliders)
             {
-                Debug.Log("Quelqu'un est entré dans la zone du temple");
-                SpawnDemiGod();
+                if (col.gameObject.CompareTag("Player") && col.gameObject.GetComponent<IDamageable>().team != team)                    
+                {
+                    SpawnDemiGod();
+                }
+
             }
         }
     }

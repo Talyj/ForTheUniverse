@@ -264,7 +264,7 @@ public class BigEdBehaviours : PlayerStats
 }
 
 [System.Serializable]
-public class HeadImpact : MonoBehaviour
+public class HeadImpact : MonoBehaviourPun
 {
     public BigEdBehaviours bg;
     private void OnTriggerEnter(Collider col)

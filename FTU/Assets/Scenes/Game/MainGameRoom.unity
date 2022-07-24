@@ -1179,6 +1179,50 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3326840382469796714, guid: c02b52a3635f2f5458405377a5e44286, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3326840383894781387, guid: c02b52a3635f2f5458405377a5e44286, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 58
+      objectReference: {fileID: 0}
+    - target: {fileID: 3326840383894781387, guid: c02b52a3635f2f5458405377a5e44286, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -39
+      objectReference: {fileID: 0}
+    - target: {fileID: 3326840384094690826, guid: c02b52a3635f2f5458405377a5e44286, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 58
+      objectReference: {fileID: 0}
+    - target: {fileID: 3326840384094690826, guid: c02b52a3635f2f5458405377a5e44286, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -39
+      objectReference: {fileID: 0}
+    - target: {fileID: 3751434894247519328, guid: c02b52a3635f2f5458405377a5e44286, type: 3}
+      propertyPath: m_Height
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3751434894247519328, guid: c02b52a3635f2f5458405377a5e44286, type: 3}
+      propertyPath: m_Radius
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3751434894388729505, guid: c02b52a3635f2f5458405377a5e44286, type: 3}
+      propertyPath: m_Height
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3751434894388729505, guid: c02b52a3635f2f5458405377a5e44286, type: 3}
+      propertyPath: m_Radius
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3751434894388729505, guid: c02b52a3635f2f5458405377a5e44286, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3751434894388729505, guid: c02b52a3635f2f5458405377a5e44286, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6365384255381411642, guid: c02b52a3635f2f5458405377a5e44286, type: 3}
       propertyPath: mau
       value: 
@@ -1904,6 +1948,10 @@ PrefabInstance:
       propertyPath: victoryDisplay.Array.data[1]
       value: 
       objectReference: {fileID: 1564540944}
+    - target: {fileID: 8155366620173427673, guid: 0efed2e512b04ff4c9c246a3692977cb, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8155366620173427673, guid: 0efed2e512b04ff4c9c246a3692977cb, type: 3}
       propertyPath: pathUp.Array.data[0]
       value: 

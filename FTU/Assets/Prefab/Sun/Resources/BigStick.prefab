@@ -114,11 +114,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d02c6a8ee3bc1b544898def101b7ed12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  degats: 0
   vitesse: 20
   target: {fileID: 0}
   targetSet: 0
   touched: 0
   direction: {x: 0, y: 0, z: 0}
+  team: 0
 --- !u!114 &6914377445499893636
 MonoBehaviour:
   m_ObjectHideFlags: 0

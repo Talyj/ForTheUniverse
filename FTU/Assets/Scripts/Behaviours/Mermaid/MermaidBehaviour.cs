@@ -21,21 +21,21 @@ public class MermaidBehaviour : PlayerStats
     //Ulti
     private float ultiTimerDefault = 1;
     private float charmSpeed;
-    private List<GameObject> charmTargets;
+    //private List<GameObject> charmTargets;
     public GameObject charmArea;
     public void Start()
     {
         Init();
         SetMoveSpeed(60f);
         SetAttackRange(40f);
-        SetHealth(500000);
-        SetMaxHealth(500000);
+        SetHealth(500);
+        SetMaxHealth(500);
         SetResPhys(40);
         SetResMag(40);
         SetAttackSpeed(1.95f);
         speedPush = 3;
         charmSpeed = 5;
-        charmTargets = new List<GameObject>();
+        //charmTargets = new List<GameObject>();
         foreach(var elmt in skills)
         {
             elmt.isCooldown = false;
@@ -43,6 +43,8 @@ public class MermaidBehaviour : PlayerStats
         isPassiveStart = false;
         _passiveCounter = 0;
         CameraWork();
+
+        SetCanUlt(true);
     }
 
     //Copy that in a new character file
@@ -146,7 +148,7 @@ public class MermaidBehaviour : PlayerStats
             Debug.Log(skills[0].Name + " lanc�e");
             skills[0].isCooldown = true;
 
-            var proj =PhotonNetwork.Instantiate(poissoin.name, transform.position, Quaternion.identity);
+            var proj = PhotonNetwork.Instantiate(poissoin.name, transform.position, Quaternion.identity);
             var dir = SpawnPrefab2.transform.position - SpawnPrefab.transform.position;
             proj.GetComponent<PoissoinProjBehaviour>().SetDamages(GetDegMag(), DamageType.magique);
             proj.GetComponent<PoissoinProjBehaviour>().source = this;
@@ -197,39 +199,27 @@ public class MermaidBehaviour : PlayerStats
     }
     public void AddWindedTarget(GameObject target)
     {
-        charmTargets.Add(target);
         target.GetComponent<IDamageable>().SetCanMove(false);
-        StartCoroutine(GoAway(target));
+        photonView.RPC("GoAway", RpcTarget.All, new object[] { target.GetPhotonView().ViewID });
     }
 
-    public IEnumerator GoAway(GameObject target)
+    [PunRPC]
+    public void GoAway(int viewId)
     {
-        var timer = windTimerDefault;
-        while (timer >= 0)
-        {
-            Vector3 direction = target.transform.position - transform.position;
-            target.transform.position += direction * Time.deltaTime * speedPush;
-            timer -= Time.deltaTime;
-            yield return new WaitForEndOfFrame();
-        }
+        var target = viewIdToGameObject(viewId);
+        Vector3 direction = target.transform.position - transform.position;
+        target.GetComponent<Rigidbody>().AddForce(direction.normalized * 200f, ForceMode.VelocityChange);
         target.GetComponent<IDamageable>().SetCanMove(true);
-        yield return 0;
     }
 
     IEnumerator Buff(Skills skill)
     {
-        //while(Time.deltaTime != skill.CastTime)
-        //{
-        //    ResistanceMagique = ResistanceMagique * 1.25f;
-        //}
-
         yield return new WaitForSeconds(skill.Cooldown);
         Debug.Log("fin des cd");
         skill.isCooldown = false;
     }
 
 
-    //Copy that in a new character file
     public void Ultime()
     {
         if (skills[2].isCooldown == false && GetMana() >= skills[2].Cost)
@@ -255,23 +245,17 @@ public class MermaidBehaviour : PlayerStats
 
     public void AddTCharmedTargets(GameObject target)
     {        
-        charmTargets.Add(target);
         target.GetComponent<IDamageable>().SetCanMove(false);
-        StartCoroutine(GetNear(target));
+        photonView.RPC("GetNear", RpcTarget.All, new object[] { target.GetPhotonView().ViewID });
     }
 
-    public IEnumerator GetNear(GameObject target)
+    [PunRPC]
+    public void GetNear(int viewId)
     {
-        var timer = ultiTimerDefault;
-        while(timer >= 0)
-        {
-            //target.transform.position = Vector3.MoveTowards(target.transform.position, transform.position, 1.0f);
-            target.transform.position += (transform.position - target.transform.position).normalized * charmSpeed * Time.deltaTime;
-            timer -= Time.deltaTime;
-            yield return new WaitForEndOfFrame();
-        }
+        var target = viewIdToGameObject(viewId);
+        Vector3 direction = target.transform.position - transform.position;
+        target.GetComponent<Rigidbody>().AddForce(-direction.normalized * 200f, ForceMode.VelocityChange);
         target.GetComponent<IDamageable>().SetCanMove(true);
-        yield return 0;
     }
 
     //Copy that in a new character file

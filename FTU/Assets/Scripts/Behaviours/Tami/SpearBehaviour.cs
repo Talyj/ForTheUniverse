@@ -3,10 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ThrowStickBehaviour : Projectile
+public class SpearBehaviour : Projectile
 {
-    public SunBehaviour source;
-
+    public TamiBehaviour source;
+    public Team team;
+    //public Transform targetTransform;
     public new void Start()
     {
         StartCoroutine(DestroyBullet());
@@ -15,7 +16,7 @@ public class ThrowStickBehaviour : Projectile
     // Update is called once per frame
     public new void Update()
     {
-        transform.Rotate(0, 1, 0);
+        //transform.LookAt(targetTransform);
     }
 
     private IEnumerator DestroyBullet()
@@ -23,21 +24,20 @@ public class ThrowStickBehaviour : Projectile
         yield return new WaitForSeconds(2f);
         if (photonView.IsMine)
         {
-            source.TP(gameObject.transform.position);
             PhotonNetwork.Destroy(gameObject);
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnCollisionEnter(Collision other)
     {
         if (photonView.IsMine)
         {
-            var trig = other.GetComponent<IDamageable>();
+            var trig = other.gameObject.GetComponent<IDamageable>();
             if (trig)
             {
-                if(trig.team != source.team)
+                if (trig.team != source.team)
                 {
-                    source.TP(gameObject.transform.position);
+                    DealDamage(other.gameObject, GetDamages(), GetDamageType());
                     PhotonNetwork.Destroy(gameObject);
                 }
             }
