@@ -26,8 +26,7 @@ public class PlayerStats : PlayerMovement
     [Header("Competences")]
     public Passifs passif;
     public Skills[] skills;
-    //public bool canMove = true;
-    //public bool useSkills = true;//pour les cc
+    public List<ItemBehaviours> items = new List<ItemBehaviours>(4);
     
     //Damage
     public float damageSupp;
@@ -73,6 +72,19 @@ public class PlayerStats : PlayerMovement
         }
     }
 
+    public void ItemEquip()
+    {
+        foreach(var item in items)
+        {
+            SetMaxHealth(GetMaxHealth()  +item.health);
+            SetMaxMana(GetMaxMana()  +item.mana);
+            SetAttackSpeed(GetAttackSpeed() + item.attackSpeed);
+            SetResMag(GetResMag() + item.resMag);
+            SetResPhys(GetResPhys() + item.resPhys);
+            SetDegPhys(GetDegPhys() + item.dmgPhys);
+            SetDegMag(GetDegMag() + item.dmgMag);
+        }
+    }
     public void AttackSystemAI()
     {
         WalkToward();
@@ -129,19 +141,7 @@ public class PlayerStats : PlayerMovement
             }
             else MovementAI(whichTeam(targetsDown));
         }
-    }
-
-    public void WalkToTarget()
-    {
-        try
-        {
-            transform.position = Vector3.MoveTowards(transform.position, new Vector3(Cible.transform.position.x, transform.position.y, Cible.transform.position.z), GetMoveSpeed() * Time.deltaTime);
-        }
-        catch(NullReferenceException e)
-        {
-            Cible = null;
-        }
-    }    
+    }   
 
     public Transform[] whichTeam(Transform[] way)
     {
@@ -187,6 +187,7 @@ public class PlayerStats : PlayerMovement
             {
                 Cible = null;
             }
+            
             yield return new WaitForSeconds(GetAttackSpeed() / ((100 / +GetAttackSpeed()) * 0.01f));
         }
         
@@ -224,36 +225,6 @@ public class PlayerStats : PlayerMovement
         }
 
     }
-
-    //public void MeleeAttack()
-    //{
-    //    if(Cible != null && Vector3.Distance(gameObject.transform.position, Cible.transform.position) < GetAttackRange() || Cible != null && isAI)
-    //    {
-    //        if(IsTargetable(Cible.GetComponent<IDamageable>().GetEnemyType()))
-    //        {
-    //            Cible.GetComponent<IDamageable>().TakeDamage(GetDegPhys() + damageSupp, DamageType.physique);
-    //        }
-    //    }
-    //    else
-    //    {
-    //        //anim.SetBool("AA", false);
-    //    }
-    //}
-
-    //public void RangeAttack()
-    //{
-    //    if (Cible != null && Vector3.Distance(gameObject.transform.position, Cible.transform.position) < GetAttackRange())
-    //    {
-    //        if (IsTargetable(Cible.GetComponent<IDamageable>().GetEnemyType()))
-    //        {
-    //            SpawnRangeAttack(Cible, damageSupp);
-    //        }
-    //    }
-    //    else
-    //    {
-    //        //anim.SetBool("AA", false);
-    //    }
-    //}
 
     public void SpawnRangeAttack(GameObject Target, float dmgSupp = 0)
     {

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using System;
 
 public class BigEdBehaviours : PlayerStats
 {
@@ -14,14 +15,22 @@ public class BigEdBehaviours : PlayerStats
     void Start()
     {
         Init();
-        SetMoveSpeed(60f);
-        SetAttackRange(40f);
+        SetMoveSpeed(30f);
+        SetAttackRange(10f);
+        SetHealth(500f);
+        SetMaxHealth(500f);
+        SetResPhys(50f);
+        SetResMag(50f);
+        SetAttackSpeed(1.95f);
+        SetDegMag(50f);
+        SetDegPhys(50f);
         CameraWork();
         foreach (var elmt in skills)
         {
             elmt.isCooldown = false;
         }
         Instance = this;
+        Passif();
     }
 
     // Update is called once per frame
@@ -35,45 +44,47 @@ public class BigEdBehaviours : PlayerStats
         HealthBehaviour();
         ExperienceBehaviour();
         //Passif();
+        Behaviour();    
+    }
 
-        #region test
-
-        // test des touches
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            TakeDamage(100, DamageType.physique);
-
-        }
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            SetHealth(GetMaxHealth());
-            SetMana(GetMaxMana());
-        }
-        if (Input.GetKeyDown(KeyCode.J))
-        {
-            TakeDamage(100, DamageType.magique);
-        }
-        if (Input.GetKeyDown(KeyCode.L))//execute methode
-        {
-            TakeDamage(9999, DamageType.brut);
-        }
-        if (Input.GetKeyDown(KeyCode.X))
-        {
-            SetExp(GetMaxExp() + 1);
-
-        }
-        #endregion
-
+    private void Behaviour()
+    {
         if (GetCanAct())
         {
             MovementPlayer();
-            if (!isAttacking )
+            if (!isAttacking)
             {
-                if (Input.GetKeyDown(KeyCode.Alpha1))
+                try
+                {
+                    if (Input.GetMouseButtonDown(0))
+                    {
+                        if (Vector3.Distance(gameObject.transform.position, Cible.transform.position) > GetAttackRange())
+                        {
+                            print("Hors d portée");
+                        }
+                        else
+                        {
+                            if (attackType == AttackType.Melee)
+                            {
+                                StartCoroutine(AutoAttack());
+                            }
+                            if (attackType == AttackType.Ranged)
+                            {
+                                StartCoroutine(RangeAutoAttack());
+                            }
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    Debug.Log("No target available");
+                }
+
+                if (Input.GetKeyDown(KeyCode.Alpha1) && Cible != null )
                 {
                     HeadImpact();
                 }
-                if (Input.GetKeyDown(KeyCode.Alpha2) )
+                if (Input.GetKeyDown(KeyCode.Alpha2))
                 {
                     EnPlace();
                 }
@@ -94,7 +105,7 @@ public class BigEdBehaviours : PlayerStats
             case 1:
                 SetResMag(GetResMag() * passif.Bonus);//augmentation 5%
                 SetResPhys(GetResPhys() * passif.Bonus);
-                //SetMoveSpeed(GetMoveSpeed() * passif.Malus);//reduction 5%
+                SetMoveSpeed(GetMoveSpeed() * passif.Malus);//reduction 5%
                 break;
             case 6:
                 passif.Bonus = 1.075f;
@@ -127,7 +138,7 @@ public class BigEdBehaviours : PlayerStats
             GameObject headImp = PhotonNetwork.Instantiate(skill1.name, SpawnPrefab2.transform.position, Quaternion.identity);
             headImp.AddComponent<HeadImpact>();
             headImp.GetComponent<HeadImpact>().bg = this;
-            Destroy(headImp);
+            Destroy(headImp,2.5f);
 
             skills[0].isCooldown = true;
             if (skills[0].isCooldown == true)
@@ -175,8 +186,8 @@ public class BigEdBehaviours : PlayerStats
         SetResMag(GetResMag() * 1.1f);
         SetResPhys(GetResPhys() * 1.1f);
         yield return new WaitForSeconds(skills[1].CastTime * 2);
-        SetResMag(GetResMag() * .8f);
-        SetResPhys(GetResPhys() * .8f);
+        SetResMag(GetResMag() / 1.1f);
+        SetResPhys(GetResPhys() / 1.1f);
     }
 
 
@@ -255,7 +266,7 @@ public class BigEdBehaviours : PlayerStats
 }
 
 [System.Serializable]
-public class HeadImpact : MonoBehaviour
+public class HeadImpact : MonoBehaviourPun
 {
     public BigEdBehaviours bg;
     private void OnTriggerEnter(Collider col)
@@ -265,7 +276,7 @@ public class HeadImpact : MonoBehaviour
 
             col.gameObject.GetComponent<IDamageable>().TakeCC(IDamageable.ControlType.slow, 2.55f);
             col.gameObject.GetComponent<IDamageable>().TakeDamage(bg.skills[0].Damage, bg.skills[0].degats);
-            //Destroy(gameObject);
+            PhotonNetwork.Destroy(gameObject);
         }
 
     }

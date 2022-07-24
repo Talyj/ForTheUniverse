@@ -52,11 +52,16 @@ public class WindAreaBehaviour : Projectile
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") || other.CompareTag("minion"))
+        if (other.gameObject.GetComponent<IDamageable>() && photonView.IsMine)
         {
-            if(other.gameObject.GetComponent<IDamageable>().team != source.team)
+            if(other.gameObject.GetComponent<IDamageable>().enemyType == IDamageable.EnemyType.dieu ||
+                other.gameObject.GetComponent<IDamageable>().enemyType == IDamageable.EnemyType.joueur ||
+                other.gameObject.GetComponent<IDamageable>().enemyType == IDamageable.EnemyType.minion)
             {
-                source.AddWindedTarget(other.gameObject);
+                if(other.gameObject.GetComponent<IDamageable>().team != source.team)
+                {
+                    source.AddWindedTarget(other.gameObject);
+                }
             }
         }
     }

@@ -2,6 +2,7 @@ using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SpawnMinion : MonoBehaviour
 {
@@ -24,32 +25,46 @@ public class SpawnMinion : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        cpt -= Time.deltaTime;
-        if (mainGame.isPlaying && cpt <= 0)
+        if (PhotonNetwork.IsMasterClient)
         {
-            cpt = 30;
-            for (int i = 0; i <= 4; i++)
+            cpt -= Time.deltaTime;
+            if(SceneManager.GetActiveScene().name == "MainGameRoom")
             {
-                SetMinions(PlayerStats.Way.up, IDamageable.Team.Veritas, i);
-                SetMinions(PlayerStats.Way.down, IDamageable.Team.Veritas, i);
+                if (mainGame.isPlaying && cpt <= 0)
+                {
+                    cpt = 30;
+                    for (int i = 0; i <= 4; i++)
+                    {
+                        SetMinions(PlayerStats.Way.up, Team.Veritas, i);
+                        SetMinions(PlayerStats.Way.down, Team.Veritas, i);
 
-                SetMinions(PlayerStats.Way.up, IDamageable.Team.Dominion, i);
-                SetMinions(PlayerStats.Way.down, IDamageable.Team.Dominion, i);
+                        SetMinions(PlayerStats.Way.up, Team.Dominion, i);
+                        SetMinions(PlayerStats.Way.down, Team.Dominion, i);
+                    }
+                }
             }
         }
     }
 
-    public void SetMinions(PlayerStats.Way way, IDamageable.Team team, int loopCounter)
+    [PunRPC]
+    public void SetMinions(PlayerStats.Way way, Team team, int loopCounter)
     {
         Vector3 spawn = new Vector3(0, 0, 0);
         var x = Random.Range(-10, 10);
         var Z = Random.Range(-10, 10);
 
-        if (team == IDamageable.Team.Veritas)
+        var color = new Color();
+
+        if (team == Team.Veritas)
         {
             spawn = spawnPoint[0].position + new Vector3(x, 0, Z);
+            color = Color.yellow;
         }
-        else spawn = spawnPoint[1].position + new Vector3(x, 0, Z);
+        else
+        {
+            spawn = spawnPoint[1].position + new Vector3(x, 0, Z);
+            color = Color.red;
+        }
 
         var minionTemp = PhotonNetwork.Instantiate(minion.name, spawn, Quaternion.identity);
         minionTemp.GetComponent<MinionsBehaviour>().way = way;
@@ -57,6 +72,7 @@ public class SpawnMinion : MonoBehaviour
         minionTemp.GetComponent<MinionsBehaviour>().targetsUp = pathUp;
         minionTemp.GetComponent<MinionsBehaviour>().targetsDown = pathDown;
         minionTemp.GetComponent<MinionsBehaviour>().isAI = true;
+        minionTemp.gameObject.GetComponent<Renderer>().material.color = color;
         if(loopCounter > 2)
         {
             minionTemp.GetComponent<MinionsBehaviour>().attackType = IDamageable.AttackType.Ranged;

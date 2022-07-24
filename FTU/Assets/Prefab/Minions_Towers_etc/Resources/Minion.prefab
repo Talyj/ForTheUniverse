@@ -134,17 +134,24 @@ MonoBehaviour:
   attackType: 0
   cc: 0
   Cible: {fileID: 0}
+  gold: 0
   respawnPos: {x: 0, y: 0, z: 0}
   deathPos: {x: 0, y: 0, z: 0}
   userId: 
   Health: 0
   MaxHealth: 0
+  AttackSpeed: 0
   AttackRange: 0
+  Exp: 0
+  MaxExp: 0
+  ExpRate: 0
+  canUlt: 0
   projPrefab: {fileID: 3524439937703818370, guid: ca45cb44d81306e409c4149613d2cdd6, type: 3}
   SpawnPrefab: {fileID: 8118329312662599782}
   enemyType: 0
-  team: 0
+  team: 1
   SpawnPrefab2: {fileID: 0}
+  Ui: {fileID: 0}
   current: 0
   pathDone: 0
   Position:
@@ -173,9 +180,12 @@ MonoBehaviour:
   isAttacking: 0
   passif: {fileID: 0}
   skills: []
+  items: []
   damageSupp: 0
   ult: {fileID: 0}
   isAI: 0
+  dstForXp: 50
+  xpAmount: 50
 --- !u!114 &-2547500044275669263
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Swap
   m_EditorClassIdentifier: 
   Name: Swap
-  Cost: 25
+  Cost: 1
   CastTime: 0.1
-  Cooldown: 4
+  Cooldown: 1
   isCooldown: 0
   type: 0
   Damage: 25

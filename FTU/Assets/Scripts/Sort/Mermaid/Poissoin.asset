@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Poissoin
   m_EditorClassIdentifier: 
   Name: Poissoin
-  Cost: 20
+  Cost: 1
   CastTime: 20
   Cooldown: 1
   isCooldown: 0

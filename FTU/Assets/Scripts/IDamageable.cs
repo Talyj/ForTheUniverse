@@ -11,6 +11,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     [SerializeField]
     ControlType cc;
     public GameObject Cible;
+    public float gold;
     //[SerializeField] public GameObject deathEffect;   
     [HideInInspector] public Vector3 respawnPos;
     [HideInInspector] public Vector3 deathPos;
@@ -18,15 +19,15 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     [Header("Stats")]
     [SerializeField] private float Health, MaxHealth;
     private float MoveSpeed;
-    private float AttackSpeed;
+    [SerializeField] private float AttackSpeed;
     [SerializeField] private float AttackRange;
     private float ViewRange;
     private float Mana, MaxMana;
     private float ResistancePhysique; // calcul des resistance health = health - (DegatsPhysiqueRe�u -((ResistancePhysique * DegatsPhysiqueRe�u)/100)
     private float ResistanceMagique; //calcul des resistance health = health - (DegatsMagiqueRe�u - ((ResistanceMagique * DegatsMagiqueRe�u) / 100)
-    private float Exp;
-    private float MaxExp;
-    private float ExpRate;//multiplicateur de l'exp max
+    [SerializeField] private float Exp;
+    [SerializeField]private float MaxExp;
+    [SerializeField] private float ExpRate;//multiplicateur de l'exp max
     private float DegatsPhysique;
     private float DegatsMagique;
     private int lvl;
@@ -34,10 +35,12 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     private bool canAct;
     private bool isMoving;
     //private bool useSkills;
-    private bool canUlt;
+    [SerializeField] private bool canUlt;
     private bool InCombat;
+    private bool IsDead;
     private bool InRegen;
     private float respawnCooldown;
+    private float cptRegen = 0;
 
     [Header("Ranged variables")]
     public GameObject projPrefab;
@@ -54,11 +57,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     }
 
     public Team team;
-    public enum Team
-    {
-        Veritas,
-        Dominion
-    }
+    
 
     public enum DamageType
     {
@@ -170,6 +169,11 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         return lvl;
     }
 
+    public bool GetDeath()
+    {
+        return IsDead;
+    }
+
     public ControlType GetControl()
     {
         return cc;
@@ -243,7 +247,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     }
     public void SetExp(float value)
     {
-        Exp = value;
+        Exp += value;
     }
     public void SetMaxExp(float value)
     {
@@ -260,6 +264,10 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     public void SetLvl(int value)
     {
         lvl = value;
+    }
+    public void SetDeath(bool value)
+    {
+        IsDead = value;
     }
     #endregion
 
@@ -291,22 +299,6 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         {
             col.enabled = true;
         }
-
-        //MaxHealth = 500;
-        //Health = MaxHealth;
-        //MoveSpeed = 4.5f;
-        //AttackSpeed = 0.5f;
-        //AttackRange = 1.5f;
-        //Mana = 100;
-        //MaxMana = 100;
-        //ResistancePhysique = 0;
-        //ResistanceMagique = 0;
-        //Exp = 0;
-        //MaxExp = 100;
-        //ExpRate = 1.75f;
-        //DegatsPhysique = 100;
-        //DegatsMagique = 100;
-        //lvl = 1;
         CharacterStatsSetUp();
     }
 
@@ -322,6 +314,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         SetResPhys(0);
         SetResMag(0);
         SetMaxExp(100);
+        ExpRate = 1.85f;
         SetDegPhys(100);
         SetDegMag(100);
 
@@ -332,16 +325,6 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         SetLvl(1);
     }
 
-    //public void Setup()
-    //{
-        
-    //    wasEnableOnStart = new bool[disableOnDeath.Length];
-    //    for(int i = 0; i < disableOnDeath.Length; i++)
-    //    {
-    //        wasEnableOnStart[i] = disableOnDeath[i].enabled;
-    //    }
-    //    SetDefault();
-    //}
     
     private void CheckCC()
     {
@@ -370,12 +353,12 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
                 canMove = true;
                 //useSkills = true;
                 break;
-
         }
     }
 
     public void HealthBehaviour()
     {
+
         if (Health >= MaxHealth)
         {
             Health = MaxHealth;
@@ -396,11 +379,16 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
                 }
                 StartCoroutine(Spawn(rend));
             }
-            else
+            else if (gameObject.CompareTag("dd"))
             {
-                Destroy(gameObject);
+
+            }
+            else if (PhotonNetwork.IsMasterClient)
+            {
+                PhotonNetwork.Destroy(gameObject.GetComponent<PhotonView>());
             }
         }
+        Regen();
     }
 
     IEnumerator Spawn(Renderer rend)
@@ -432,6 +420,17 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         if(Cible == null)
         {
             Cible = null;
+        }
+
+        if(Cible != null)
+        {
+            if (Cible.CompareTag("Player"))
+            {
+                if(Cible.GetComponent<IDamageable>().GetHealth() <= 0)
+                {
+                    Cible = null;
+                }
+            }
         }
     }
 
@@ -474,42 +473,57 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
 
     public void Regen()
     {
-        StartCoroutine(RegenHealAndMana());
-    }
-
-    IEnumerator RegenHealAndMana()
-    {
-
-        if (Health < MaxHealth)
+        cptRegen -= Time.deltaTime;
+        if(cptRegen <= 0)
         {
-            float val = Mathf.FloorToInt(MaxHealth * 0.05f);
-            Health += val;
-            Debug.Log("+ " + val);
+            cptRegen = 5.0f;
+            if (Health < MaxHealth)
+            {
+                float val = Mathf.FloorToInt(MaxHealth * 0.1f);
+                Health += val;
+            }
+
+            if (Mana < MaxMana)
+            {
+                float val = Mathf.FloorToInt(MaxMana * 0.1f);
+                Mana += val;
+            }
         }
-
-
-
-        yield return new WaitForSeconds(1.5f);
-
     }
-
-
-
 
     public void TakeDamage(float DegatsRecu, DamageType type)
     {
-        //application des res, a modifier pour les differents type de degats
-        if (type == DamageType.physique)
+        var TypeConvert = 0;
+        switch (type)
         {
-            Health = Health - (DegatsRecu - ((ResistancePhysique * DegatsRecu) / 100)); // physique
+            case DamageType.physique:
+                TypeConvert = 0;
+                break;
+            case DamageType.magique:
+                TypeConvert = 1;
+                break;
+            case DamageType.brut:
+                TypeConvert = 2;
+                break;
         }
-        else if (type == DamageType.magique)
+
+        photonView.RPC("Damages", RpcTarget.All, new object[] { DegatsRecu, TypeConvert});
+    }
+
+    [PunRPC]
+    public void Damages(float DegatsRecu, int type)
+    {
+        switch (type)
         {
-            Health = Health - (DegatsRecu - ((ResistanceMagique * DegatsRecu) / 100)); // magique
-        }
-        else if (type == DamageType.brut)
-        {
-            Health -= DegatsRecu;
+            case 0:
+                Health = Health - (DegatsRecu - ((ResistancePhysique * DegatsRecu) / 100)); // physique
+                break;
+            case 1:
+                Health = Health - (DegatsRecu - ((ResistanceMagique * DegatsRecu) / 100)); // magique
+                break;
+            case 2:
+                Health -= DegatsRecu;
+                break;
         }
     }
 
@@ -569,27 +583,38 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     {
         if (Cible == null)
         {
+            var test = GetViewRange();
             Collider[] hitColliders = Physics.OverlapSphere(gameObject.transform.position, GetViewRange());
             if (hitColliders != null)
             {
                 foreach (var col in hitColliders)
-                {
-                    if (col.gameObject.CompareTag("Player") ||
-                        col.gameObject.CompareTag("minion") ||
-                        col.gameObject.CompareTag("golem") ||
-                        col.gameObject.CompareTag("dd"))
-
+                {                    
+                    if(col.GetComponent<IDamageable>())
                     {
-                        if (col.gameObject.GetComponent<IDamageable>().team != team)
+                        if (col.GetComponent<IDamageable>().team != team)
                         {
                             Cible = col.gameObject;
                             break;
                         }
                     }
-
                 }
             }
         }
+    }
+
+    public GameObject viewIdToGameObject(int actorNumber)
+    {
+        var views = FindObjectsOfType<PhotonView>();
+        GameObject res = null;
+
+        foreach (var view in views)
+        {
+            if (view.ViewID == actorNumber)
+            {
+                res = view.gameObject;
+            }
+        }
+        return res;
     }
 
     void IPunObservable.OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
@@ -604,4 +629,8 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         }
     }
 }
-
+public enum Team
+{
+    Veritas = 0,
+    Dominion = 1
+}

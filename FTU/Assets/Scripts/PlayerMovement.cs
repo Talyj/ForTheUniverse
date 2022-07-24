@@ -11,7 +11,8 @@ public class PlayerMovement : IDamageable
     //Photon
     [Tooltip("The local player instance. Use this to know if the local player is represented in the Scene")]
     public static GameObject localPlayerInstance;
-
+    PhotonView myPV;
+    public GameObject Ui;
     //Movement Controlled by players
     Vector3 velocity;
     Rigidbody myRigidbody;
@@ -28,10 +29,18 @@ public class PlayerMovement : IDamageable
         myRigidbody = GetComponent<Rigidbody>();
         viewCamera = Camera.main;
         //anim = GetComponent<Animator>();
-
-        if (photonView.IsMine)
+        myPV = GetComponent<PhotonView>();
+        if (myPV.IsMine)
         {
             localPlayerInstance = gameObject;
+        }
+        if (!myPV.IsMine)
+        {
+            if (Ui)
+            {
+                Ui.SetActive(false);
+            }
+            return;
         }
         // #Critical
         // we flag as don't destroy on load so that instance survives level synchronization, thus giving a seamless experience when levels load.
@@ -45,7 +54,7 @@ public class PlayerMovement : IDamageable
 
         if (_cameraWork != null)
         {
-            if (photonView.IsMine)
+            if (myPV.IsMine)
             {
                 _cameraWork.player = gameObject.transform;
                 _cameraWork.OnStartFollowing();
@@ -95,7 +104,7 @@ public class PlayerMovement : IDamageable
         if (current == moveTo.Length) pathDone = true;
     }
 
-    public IEnumerator WalkToward()
+    public void WalkToward()
     {
         try
         {
@@ -113,7 +122,7 @@ public class PlayerMovement : IDamageable
             Cible = null;
         }
 
-        yield return 0;
+        //yield return 0;
     }
 
     public void FixedUpdate()

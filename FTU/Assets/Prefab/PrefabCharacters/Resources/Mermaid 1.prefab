@@ -12,15 +12,11 @@ GameObject:
   - component: {fileID: 1675429051430411218}
   - component: {fileID: 1675429051430411219}
   - component: {fileID: 1675429051430411216}
-  - component: {fileID: 1675429051430411220}
-  - component: {fileID: 1675429051430411223}
   - component: {fileID: 1675429051430411222}
-  - component: {fileID: 5611877050779356465}
   - component: {fileID: 6061641912205637797}
   - component: {fileID: 2796026698092709166}
   - component: {fileID: 7951468202328301734}
   - component: {fileID: 3806698042274399858}
-  - component: {fileID: 7595199824306934682}
   m_Layer: 0
   m_Name: Mermaid 1
   m_TagString: Player
@@ -71,7 +67,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: b4d55a65dd9cb6747b3c26939bd81d13, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -107,84 +103,6 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
---- !u!114 &1675429051430411220
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1675429051430411217}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00297168101b6d5499a2b16141e4044b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attackType: 1
-  cc: 0
-  Cible: {fileID: 0}
-  respawnPos: {x: 0, y: 0, z: 0}
-  deathPos: {x: 0, y: 0, z: 0}
-  userId: 
-  Health: 0
-  MaxHealth: 0
-  AttackRange: 0
-  projPrefab: {fileID: 3524439937703818370, guid: ca45cb44d81306e409c4149613d2cdd6, type: 3}
-  SpawnPrefab: {fileID: 1675429051430411221}
-  enemyType: 2
-  team: 0
-  SpawnPrefab2: {fileID: 0}
-  current: 0
-  pathDone: 0
-  Position:
-    m_InternalValue: {x: 0, y: 0, z: 0}
-  targetsUp:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  targetsDown:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  way: 0
-  isAttacking: 0
-  passif: {fileID: 11400000, guid: 60a1a5ac534768a49a5c3b5156cba29a, type: 2}
-  skills:
-  - {fileID: 11400000, guid: e811cba326dd4964aabbdf4888a69aa6, type: 2}
-  - {fileID: 11400000, guid: 980822730d734194080dcc878f530d2b, type: 2}
-  - {fileID: 11400000, guid: 26a3a98a9c020354491222f45a76044a, type: 2}
-  damageSupp: 0
-  ult: {fileID: 0}
-  isAI: 0
-  poissoin: {fileID: 7659772833644222945, guid: a4fb129dc3fd0c54fab8b5a4ddf46bed, type: 3}
-  speedPush: 4
-  windArea: {fileID: 2508449633787207300, guid: 7b6fdc55468d56e498faae2bd5737b29, type: 3}
-  Instance: {fileID: 1675429051430411220}
-  charmArea: {fileID: 1991124717125365115, guid: b9be727e9d299204e9fc027ae70790a7, type: 3}
---- !u!114 &1675429051430411223
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1675429051430411217}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c05414265093b144c96b60392aa38dd2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  entity: {fileID: 1675429051430411217}
 --- !u!54 &1675429051430411222
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -201,40 +119,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 84
   m_CollisionDetection: 0
---- !u!114 &5611877050779356465
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1675429051430411217}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 400bbc4498ed0b24ea71791c827e3a3b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  stats: {fileID: 1675429051430411220}
-  spells:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  health: {fileID: 0}
-  mana: {fileID: 0}
-  healthCible: {fileID: 0}
-  manaCible: {fileID: 0}
-  costsCible:
-  - {fileID: 0}
-  - {fileID: 0}
-  costs:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  cibleHp: {fileID: 0}
-  ciblePm: {fileID: 0}
 --- !u!114 &6061641912205637797
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -254,7 +138,6 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:
-  - {fileID: 1675429051430411220}
   - {fileID: 2796026698092709166}
   - {fileID: 3806698042274399858}
   sceneViewId: 0
@@ -312,18 +195,3 @@ MonoBehaviour:
   ShowParameterInspector: 1
   m_SynchronizeParameters: []
   m_SynchronizeLayers: []
---- !u!114 &7595199824306934682
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1675429051430411217}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ac89c403a737cb840a4dd975c579b8fa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  centerOffset: {x: 0, y: 0, z: 0}
-  followOnStart: 0
-  player: {fileID: 0}

@@ -1,8 +1,10 @@
 using Photon.Pun;
 using Photon.Realtime;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MainGame : MonoBehaviourPun
 {
@@ -29,15 +31,40 @@ public class MainGame : MonoBehaviourPun
     {
         //isPlaying = true;
         //isGameStarted = false;
-        if (!isPlaying && PhotonNetwork.PlayerList.Length >= 1)
+        if (!isPlaying && PhotonNetwork.PlayerList.Length >= 1 && SceneManager.GetActiveScene().name == "MainGameRoom")
         {
-            var players = GameObject.FindGameObjectsWithTag("Player");
-            CreateTeams(players);
+            var photonViews = FindObjectsOfType<PhotonView>();
+            var players = new List<GameObject>();
+            foreach(var view in photonViews)
+            {
+                var player = view.Owner;
+
+                if (player != null)
+                {
+                    try
+                    {
+                        if(view.gameObject.GetComponent<IDamageable>().GetEnemyType() == IDamageable.EnemyType.joueur)
+                        {
+                            var playerPrefabObject = view.gameObject;
+                            players.Add(playerPrefabObject);
+                        }
+                    }
+                    catch(NullReferenceException nullE)
+                    {
+                        // :)
+                    }
+                }
+            }
+            //if(players.Count >= 2)
+            //{
+                CreateTeams(players);
+            //}
         }
         else if (isPlaying && !isGameStarted)
         {
             Game();
         }
+        CheckVictory();
     }
 
     private void Game()
@@ -59,7 +86,7 @@ public class MainGame : MonoBehaviourPun
         {
             if (monst.GetHealth() <= 0)
             {
-                if (monst.team == IDamageable.Team.Veritas)
+                if (monst.team == Team.Veritas)
                 {
                     victoryDisplay[1].SetActive(true);
                 }
@@ -72,18 +99,18 @@ public class MainGame : MonoBehaviourPun
         }                
     }
 
-    private void CreateTeams(GameObject[] players)
-    {        
-        for (var i = 0; i < players.Length; i++)
+    private void CreateTeams(List<GameObject> players)
+    {
+        for (var i = 0; i < players.Count; i++)
         {
-            if (i >= players.Length / 2)
+            if (i % 2 == 0)
             {
-                players[i].GetComponent<IDamageable>().team = IDamageable.Team.Dominion;
+                players[i].GetComponent<IDamageable>().team = Team.Dominion;
                 players[i].GetComponent<IDamageable>().respawnPos = new Vector3(spawnTransformDominion.position.x, 2.11f, spawnTransformDominion.position.z);
             }
             else
             {
-                players[i].GetComponent<IDamageable>().team = IDamageable.Team.Veritas;
+                players[i].GetComponent<IDamageable>().team = Team.Veritas;
                 players[i].GetComponent<IDamageable>().respawnPos = new Vector3(spawnTransformVeritas.position.x, 2.11f, spawnTransformVeritas.position.z);
             }
             players[i].GetComponent<IDamageable>().deathPos = deathPos.position;
@@ -92,11 +119,11 @@ public class MainGame : MonoBehaviourPun
         Spawn(players);
     }
 
-    private void Spawn(GameObject[] players)
+    private void Spawn(List<GameObject> players)
     {
         foreach(var play in players)
         {
-            if(play.GetComponent<IDamageable>().team == IDamageable.Team.Veritas)
+            if(play.GetComponent<IDamageable>().team == Team.Veritas)
             {
                 play.transform.position = new Vector3(spawnTransformVeritas.position.x, 2.11f, spawnTransformVeritas.position.z);
             }
