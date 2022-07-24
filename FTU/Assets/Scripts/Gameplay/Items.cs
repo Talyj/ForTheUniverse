@@ -1,9 +1,10 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Items : MonoBehaviour
+public class Items : MonoBehaviourPun
 {
     public ItemBehaviours item;
     public Shop shop;
