@@ -61,11 +61,12 @@ public class UI : MonoBehaviour
             costsCible[1].enabled = false;
         }
         //stats a modfier
-        costs[6].text = "RM : " + stats.GetRM() + "\n";
-        costs[6].text += "Armor : " + stats.GetArmor() + "\n";
-        costs[6].text += "AP : " + stats.GetAP() + "\n";
-        costs[6].text += "AD : " + stats.GetAD() + "\n";
+        costs[6].text = "RM : " + stats.GetResMag() + "\n";
+        costs[6].text += "Armor : " + stats.GetResPhys() + "\n";
+        costs[6].text += "AP : " + stats.GetDegMag() + "\n";
+        costs[6].text += "AD : " + stats.GetDegPhys() + "\n";
         costs[6].text += "MS : " + stats.GetMoveSpeed() + "\n";
+        costs[6].text += "Gold : " + stats.gold + "\n";
 
         costs[5].text = "Niveau : " + stats.GetLvl();
         float percentHP = ((stats.GetHealth() * 100) / stats.GetMaxHealth()) / 100;
@@ -80,7 +81,7 @@ public class UI : MonoBehaviour
             spells[0].fillAmount -= 1 / stats.GetSkill1().Cooldown * Time.deltaTime;//cd
             if(spells[0].fillAmount <= 0)
             {
-                spells[0].fillAmount = 1f;
+                spells[0].fillAmount = 10f;
             }
         }
         if (stats.GetSkill2().isCooldown)

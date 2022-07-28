@@ -7,7 +7,6 @@ public class WindAreaBehaviour : Projectile
     public MermaidBehaviour source;
     public Vector3 direction;
     private float timerDefault;
-    public float speed;
     //Speed bigger
     public Vector3 scaleChange;
 
@@ -31,7 +30,7 @@ public class WindAreaBehaviour : Projectile
         while(timer >= 0)
         {
             //transform.Translate(direction * speed * Time.deltaTime);
-            transform.position += direction.normalized * Time.deltaTime * speed;
+            transform.position += direction.normalized * Time.deltaTime * vitesse;
             timer -= Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
@@ -53,10 +52,17 @@ public class WindAreaBehaviour : Projectile
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("cube"))
+        if (other.gameObject.GetComponent<IDamageable>() && photonView.IsMine)
         {
-            Debug.Log("yes");
-            source.AddWindedTarget(other.gameObject);
+            if(other.gameObject.GetComponent<IDamageable>().enemyType == IDamageable.EnemyType.dieu ||
+                other.gameObject.GetComponent<IDamageable>().enemyType == IDamageable.EnemyType.joueur ||
+                other.gameObject.GetComponent<IDamageable>().enemyType == IDamageable.EnemyType.minion)
+            {
+                if(other.gameObject.GetComponent<IDamageable>().team != source.team)
+                {
+                    source.AddWindedTarget(other.gameObject);
+                }
+            }
         }
     }
 }

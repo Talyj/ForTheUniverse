@@ -17,4 +17,4 @@ MonoBehaviour:
   Bonus: 0
   Malus: 0
   isCooldown: 0
-  image: {fileID: 0}
+  image: {fileID: 21300000, guid: 1b99ed56be0f93044886d17b7d3f3739, type: 3}

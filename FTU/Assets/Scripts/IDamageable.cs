@@ -1,44 +1,52 @@
+using Photon.Pun;
+using System;
 using System.Collections;
 using Unity.Netcode;
 using UnityEngine;
 
-public abstract class IDamageable : NetworkBehaviour
+public abstract class IDamageable : MonoBehaviourPun, IPunObservable
 {
-
-    
     public enum AttackType { Melee, Ranged }
     public AttackType attackType;
     [SerializeField]
     ControlType cc;
-    [SerializeField]
-    EnemyType enemyType;
     public GameObject Cible;
+    public float gold;
+    //[SerializeField] public GameObject deathEffect;   
+    [HideInInspector] public Vector3 respawnPos;
+    [HideInInspector] public Vector3 deathPos;
+    public string userId;
     [Header("Stats")]
-    public float Health = 500, MaxHealth = 500;
-    public float MoveSpeed = 4.5f;
-    public float AttackSpeed = 0.5f;
-    public float AttackRange = 1.5f;
-    public float Mana = 100, MaxMana = 100;
-    public float ResistancePhysique = 0; // calcul des resistance health = health - (DegatsPhysiqueRe�u -((ResistancePhysique * DegatsPhysiqueRe�u)/100)
-    public float ResistanceMagique = 0; //calcul des resistance health = health - (DegatsMagiqueRe�u - ((ResistanceMagique * DegatsMagiqueRe�u) / 100)
-    public float Exp = 0;
-    public float MaxExp = 100;
-    public float ExpRate = 1.75f;//multiplicateur de l'exp max
-    public float DegatsPhysique = 100;
-    public float DegatsMagique = 100;
-    public int lvl = 1;
-    public bool canMove;
-    public bool canAct;
-    public bool useSkills;
-    public bool canUlt;
-    public bool InCombat;
-    public bool InRegen;
+    [SerializeField] private float Health, MaxHealth;
+    private float MoveSpeed;
+    [SerializeField] private float AttackSpeed;
+    [SerializeField] private float AttackRange;
+    private float ViewRange;
+    private float Mana, MaxMana;
+    private float ResistancePhysique; // calcul des resistance health = health - (DegatsPhysiqueRe�u -((ResistancePhysique * DegatsPhysiqueRe�u)/100)
+    private float ResistanceMagique; //calcul des resistance health = health - (DegatsMagiqueRe�u - ((ResistanceMagique * DegatsMagiqueRe�u) / 100)
+    [SerializeField] private float Exp;
+    [SerializeField]private float MaxExp;
+    [SerializeField] private float ExpRate;//multiplicateur de l'exp max
+    private float DegatsPhysique;
+    private float DegatsMagique;
+    private int lvl;
+    private bool canMove;
+    private bool canAct;
+    private bool isMoving;
+    //private bool useSkills;
+    [SerializeField] private bool canUlt;
+    private bool InCombat;
+    private bool IsDead;
+    private bool InRegen;
+    private float respawnCooldown;
+    private float cptRegen = 0;
 
     [Header("Ranged variables")]
     public GameObject projPrefab;
     public Transform SpawnPrefab;
 
-    public EnemyType enemytype;
+    public EnemyType enemyType;
     public enum EnemyType
     {
         minion,
@@ -47,11 +55,61 @@ public abstract class IDamageable : NetworkBehaviour
         dieu,
         voister
     }
+
+    public Team team;
+    
+
+    public enum DamageType
+    {
+        physique,
+        magique,
+        brut
+    }
+
+    public enum ControlType
+    {
+        none,//aucun cc
+        stun,//etourdit
+        bump,//en l'air
+        root,//immobiliser mais pas stun
+        slow,//move speed ralenti
+        charme
+    }
+
+
     public Transform SpawnPrefab2;
 
     #region Getter and Setter
 
     #region Getter
+
+    //public bool GetUseSkills()
+    //{
+    //    return useSkills;
+    //}
+    public bool IsMoving()
+    {
+        return isMoving;
+    }
+    public float GetViewRange()
+    {
+        return ViewRange;
+    }
+    public bool GetCanMove()
+    {
+        return canMove;
+    }
+
+    public bool GetCanAct()
+    {
+        return canAct;
+    }
+
+    public bool GetCanUlt()
+    {
+        return canUlt;
+    }
+
     public float GetHealth()
     {
         return Health;
@@ -80,11 +138,11 @@ public abstract class IDamageable : NetworkBehaviour
     {
         return AttackRange;
     }
-    public float GetArmor()
+    public float GetResPhys()
     {
         return ResistancePhysique;
     }
-    public float GetRM()
+    public float GetResMag()
     {
         return ResistanceMagique;
     }
@@ -92,17 +150,28 @@ public abstract class IDamageable : NetworkBehaviour
     {
         return Exp;
     }
-    public float GetAD()
+
+    public float GetMaxExp()
+    {
+        return MaxExp;
+    }
+
+    public float GetDegPhys()
     {
         return DegatsPhysique;
     }
-    public float GetAP()
+    public float GetDegMag()
     {
         return DegatsMagique;
     }
     public int GetLvl()
     {
         return lvl;
+    }
+
+    public bool GetDeath()
+    {
+        return IsDead;
     }
 
     public ControlType GetControl()
@@ -117,102 +186,179 @@ public abstract class IDamageable : NetworkBehaviour
 
     #endregion
     #region Setter
+
+    public void SetIsMoving(bool value)
+    {
+        isMoving = value;
+    }
+    public void SetViewRange(float value)
+    {
+        ViewRange = value;
+    }
+    public void SetCanMove(bool value)
+    {
+        canMove = value;
+    }
+    public void SetCanAct(bool value)
+    {
+        canAct = value;
+    }
+    public void SetCanUlt(bool value)
+    {
+        canUlt = value;
+    }
     public void SetHealth(float value)
     {
-        Health += value;
+        Health = value;
     }
     public void SetMaxHealth(float value)
     {
-        MaxHealth += value;
+        MaxHealth = value;
     }
     public void SetMana(float value)
     {
-        Mana += value;
+        Mana = value;
     }
+
+    public void SetMaxMana(float value)
+    {
+        MaxMana = value;
+    }
+
     public void SetMoveSpeed(float value)
     {
-        MoveSpeed += value;
+        MoveSpeed = value;
     }
     public void SetAttackSpeed(float value)
     {
-        AttackSpeed += value;
+        AttackSpeed = value;
     }
     public void SetAttackRange(float value)
     {
-        AttackRange += value;
+        AttackRange = value;
     }
-    public void SetArmor(float value)
+    public void SetResPhys(float value)
     {
-        ResistancePhysique += value;
+        ResistancePhysique = value;
     }
-    public void SetRM(float value)
+    public void SetResMag(float value)
     {
-        ResistanceMagique += value;
+        ResistanceMagique = value;
     }
     public void SetExp(float value)
     {
         Exp += value;
     }
-    public void SetAD(int value)
+    public void SetMaxExp(float value)
     {
-        DegatsPhysique += value;
+        MaxExp = value;
     }
-    public void SetAP(int value)
+    public void SetDegPhys(float value)
     {
-        DegatsMagique += value;
+        DegatsPhysique = value;
+    }
+    public void SetDegMag(float value)
+    {
+        DegatsMagique = value;
     }
     public void SetLvl(int value)
     {
-        lvl += value;
+        lvl = value;
+    }
+    public void SetDeath(bool value)
+    {
+        IsDead = value;
     }
     #endregion
 
     #endregion
 
 
-    // Start is called before the first frame update
-    void Start()
+    public void Init()
     {
         canMove = true;
-        useSkills = true;
+        canAct = true;
+        //useSkills = true;
         canUlt = false;
         InCombat = false;
         InRegen = false;
+
+        Health = MaxHealth;
+        //deathEffect.SetActive(false);
+        //for (int i = 0; i < disableOnDeath.Length; i++)
+        //{
+        //    disableOnDeath[i].enabled = true;
+        //}
+        Rigidbody rb = GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            rb.useGravity = true;
+        }
+        Collider col = GetComponent<Collider>();
+        if(col != null)
+        {
+            col.enabled = true;
+        }
+        CharacterStatsSetUp();
     }
 
+    public void CharacterStatsSetUp()
+    {
+        SetMaxHealth(500);
+        SetHealth(GetMaxHealth());
+        SetMoveSpeed(4.5f);
+        SetAttackSpeed(0.5f);
+        SetAttackRange(1.5f);
+        SetMaxMana(100);
+        SetMana(GetMaxMana());
+        SetResPhys(0);
+        SetResMag(0);
+        SetMaxExp(100);
+        ExpRate = 1.85f;
+        SetDegPhys(100);
+        SetDegMag(100);
+
+
+        respawnCooldown = 10.0f;
+
+        SetExp(0);
+        SetLvl(1);
+    }
+
+    
     private void CheckCC()
     {
         switch (cc)
         {
             case ControlType.none:
                 canMove = true;
-                useSkills = true;
+                //useSkills = true;
                 break;
             case ControlType.stun:
                 canMove = false;
-                useSkills = false;
+                //useSkills = false;
                 break;
             case ControlType.bump:
                 canMove = false;
-                useSkills = false;
+                //useSkills = false;
                 break;
             case ControlType.charme:
                 canMove = false;
-                useSkills = false;
+                //useSkills = false;
                 break;
             case ControlType.root:
                 canMove = false;
                 break;
             case ControlType.slow:
                 canMove = true;
-                useSkills = true;
+                //useSkills = true;
                 break;
-
         }
     }
-    //Has to be present in the final update
+
     public void HealthBehaviour()
     {
+
         if (Health >= MaxHealth)
         {
             Health = MaxHealth;
@@ -220,6 +366,71 @@ public abstract class IDamageable : NetworkBehaviour
         if (Mana >= MaxMana)
         {
             Mana = MaxMana;
+        }
+
+        if(Health <= 0)
+        {
+            if (gameObject.CompareTag("Player"))
+            {
+                var rend = GetComponent<Renderer>();
+                if (rend != null)
+                {
+                    rend.enabled = false;
+                }
+                StartCoroutine(Spawn(rend));
+            }
+            else if (gameObject.CompareTag("dd"))
+            {
+
+            }
+            else if (PhotonNetwork.IsMasterClient)
+            {
+                PhotonNetwork.Destroy(gameObject.GetComponent<PhotonView>());
+            }
+        }
+        Regen();
+    }
+
+    IEnumerator Spawn(Renderer rend)
+    {
+        if(transform.position != deathPos)
+        {
+            transform.position = deathPos;
+            yield return new WaitForSeconds(respawnCooldown);
+
+            SetDefault(rend);
+            transform.position = respawnPos;
+        }
+    }
+
+    public void SetDefault(Renderer rend)
+    {
+        Health = MaxHealth;
+        Mana = MaxMana;
+        //deathEffect.SetActive(false);
+        //for (int i = 0; i < disableOnDeath.Length; i++)
+        //{
+        //    disableOnDeath[i].enabled = true;
+        //}
+        rend.enabled = true;
+    }
+
+    public void CheckTarget()
+    {   
+        if(Cible == null)
+        {
+            Cible = null;
+        }
+
+        if(Cible != null)
+        {
+            if (Cible.CompareTag("Player"))
+            {
+                if(Cible.GetComponent<IDamageable>().GetHealth() <= 0)
+                {
+                    Cible = null;
+                }
+            }
         }
     }
 
@@ -262,42 +473,57 @@ public abstract class IDamageable : NetworkBehaviour
 
     public void Regen()
     {
-        StartCoroutine(RegenHealAndMana());
+        cptRegen -= Time.deltaTime;
+        if(cptRegen <= 0)
+        {
+            cptRegen = 5.0f;
+            if (Health < MaxHealth)
+            {
+                float val = Mathf.FloorToInt(MaxHealth * 0.1f);
+                Health += val;
+            }
+
+            if (Mana < MaxMana)
+            {
+                float val = Mathf.FloorToInt(MaxMana * 0.1f);
+                Mana += val;
+            }
+        }
     }
 
-    IEnumerator RegenHealAndMana()
+    public void TakeDamage(float DegatsRecu, DamageType type)
     {
-
-        if (Health < MaxHealth)
+        var TypeConvert = 0;
+        switch (type)
         {
-            float val = Mathf.FloorToInt(MaxHealth * 0.05f);
-            Health += val;
-            Debug.Log("+ " + val);
+            case DamageType.physique:
+                TypeConvert = 0;
+                break;
+            case DamageType.magique:
+                TypeConvert = 1;
+                break;
+            case DamageType.brut:
+                TypeConvert = 2;
+                break;
         }
 
-
-
-        yield return new WaitForSeconds(1.5f);
-
+        photonView.RPC("Damages", RpcTarget.All, new object[] { DegatsRecu, TypeConvert});
     }
 
-
-
-
-    public void TakeDamage(float DegatsRecu, string type)
+    [PunRPC]
+    public void Damages(float DegatsRecu, int type)
     {
-        //application des res, a modifier pour les differents type de degats
-        if (type == "Physique")
+        switch (type)
         {
-            Health = Health - (DegatsRecu - ((ResistancePhysique * DegatsRecu) / 100)); // physique
-        }
-        else if (type == "Magique")
-        {
-            Health = Health - (DegatsRecu - ((ResistanceMagique * DegatsRecu) / 100)); // magique
-        }
-        else if (type == "Brut")
-        {
-            Health -= DegatsRecu;
+            case 0:
+                Health = Health - (DegatsRecu - ((ResistancePhysique * DegatsRecu) / 100)); // physique
+                break;
+            case 1:
+                Health = Health - (DegatsRecu - ((ResistanceMagique * DegatsRecu) / 100)); // magique
+                break;
+            case 2:
+                Health -= DegatsRecu;
+                break;
         }
     }
 
@@ -320,18 +546,10 @@ public abstract class IDamageable : NetworkBehaviour
         cc = ControlType.none;
         CheckCC();
     }
-    public bool IsDead()
-    {
-        if (Health <= 0)
-        {
-            return true;
-        }
-        return false;
-    }
-
+    
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.green;
+        Gizmos.color = Color.cyan;
         Gizmos.DrawWireSphere(transform.position, AttackRange);
     }
 
@@ -360,24 +578,59 @@ public abstract class IDamageable : NetworkBehaviour
         }
         return false;
     }
-}
 
-public enum EnemyType
+    public void GetNearestTarget()
+    {
+        if (Cible == null)
+        {
+            var test = GetViewRange();
+            Collider[] hitColliders = Physics.OverlapSphere(gameObject.transform.position, GetViewRange());
+            if (hitColliders != null)
+            {
+                foreach (var col in hitColliders)
+                {                    
+                    if(col.GetComponent<IDamageable>())
+                    {
+                        if (col.GetComponent<IDamageable>().team != team)
+                        {
+                            Cible = col.gameObject;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public GameObject viewIdToGameObject(int actorNumber)
+    {
+        var views = FindObjectsOfType<PhotonView>();
+        GameObject res = null;
+
+        foreach (var view in views)
+        {
+            if (view.ViewID == actorNumber)
+            {
+                res = view.gameObject;
+            }
+        }
+        return res;
+    }
+
+    void IPunObservable.OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            stream.SendNext(GetHealth());
+        }
+        else
+        {
+            SetHealth((float)stream.ReceiveNext());
+        }
+    }
+}
+public enum Team
 {
-    minion,
-    golem,
-    joueur,
-    dieu,
-    voister
+    Veritas = 0,
+    Dominion = 1
 }
-
-public enum ControlType
-{
-    none,//aucun cc
-    stun,//etourdit
-    bump,//en l'air
-    root,//immobiliser mais pas stun
-    slow,//move speed ralenti
-    charme
-}
-

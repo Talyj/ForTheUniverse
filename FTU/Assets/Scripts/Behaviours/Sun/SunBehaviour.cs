@@ -1,3 +1,5 @@
+using Photon.Pun;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,6 +12,7 @@ public class SunBehaviour : PlayerStats
     //Skill2
     public GameObject stickTP;
     public int step;
+    [HideInInspector] public Vector3 tpPos;
     public float defaultTimer = 10;
     public bool isTouched;
 
@@ -26,11 +29,21 @@ public class SunBehaviour : PlayerStats
     }
     private Sticks currentStick;
 
-    public new void Start()
+    public void Start()
     {
+        Init();
+        SetMoveSpeed(30f);
+        SetAttackRange(20f);
+        SetHealth(500f);
+        SetMaxHealth(500f);
+        SetResPhys(50f);
+        SetResMag(50f);
+        SetDegMag(50f);
+        SetDegPhys(50f);
+        SetAttackSpeed(1.95f);
+
+        CameraWork();
         currentStick = Sticks.AuraStick;
-        canMove = true;
-        canAct = true;
         step = 0;
         Instance = this;
         foreach (var elmt in skills)
@@ -42,31 +55,70 @@ public class SunBehaviour : PlayerStats
     // Update is called once per frame
     public void Update()
     {
+        if (!photonView.IsMine && PhotonNetwork.IsConnected)
+        {
+            return;
+        }
+
         HealthBehaviour();
         ExperienceBehaviour();
-        if(Cible != null)
+        if (Cible != null)
         {
             Passif();
         }
-        if (canAct)
+        Behaviour();
+
+        
+    }
+
+    private void Behaviour()
+    {
+        if (GetCanAct())
         {
-            Movement();
-            AttackSystem();
-            if (Input.GetKeyDown(KeyCode.A) && Cible != null)
+            MovementPlayer();
+            if (!isAttacking)
             {
-                if(Vector3.Distance(Cible.transform.position, transform.position) <= AttackRange)
+                try
+                {
+                    if (Input.GetMouseButtonDown(0))
+                    {
+                        if (Vector3.Distance(gameObject.transform.position, Cible.transform.position) > GetAttackRange())
+                        {
+                            print("Hors d portÃ©e");
+                        }
+                        else
+                        {
+                            if (attackType == AttackType.Melee)
+                            {
+                                StartCoroutine(AutoAttack());
+                            }
+                            if (attackType == AttackType.Ranged)
+                            {
+                                StartCoroutine(RangeAutoAttack());
+                            }
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    Debug.Log("No target available");
+                }
+
+
+                if (Input.GetKeyDown(KeyCode.Alpha1))
                 {
                     Swap(Cible);
                 }
-            }
-            if (Input.GetKeyDown(KeyCode.E) && Cible != null && Vector3.Distance(Cible.transform.position, transform.position) <= AttackRange * 3)
-            {
-                StickTeleportation(Cible);
-            }
+                if (Input.GetKeyDown(KeyCode.Alpha2))
+                {
+                    StickTeleportation();
+                }
 
-            if (Input.GetKeyDown(KeyCode.Space) && canUlt == true)
-            {
-                Ultime();
+                if (Input.GetKeyDown(KeyCode.Alpha3) && GetCanUlt() == true)
+                {
+                    Ultime();
+                }
+                
             }
         }
     }
@@ -76,15 +128,15 @@ public class SunBehaviour : PlayerStats
         switch (currentStick)
         {
             case Sticks.AuraStick:
-                if(Cible.GetComponent<IDamageable>().enemytype == EnemyType.voister)
+                if(Cible.GetComponent<IDamageable>().enemyType == EnemyType.voister)
                 {
-                    damageSupp = DamageMultiplier(DegatsPhysique, 0.5f);
+                    damageSupp = DamageMultiplier(GetDegPhys(), 0.5f);
                 }
                 break;
             case Sticks.SpiritSitck:
-                if (Cible.GetComponent<IDamageable>().enemytype == EnemyType.joueur)
+                if (Cible.GetComponent<IDamageable>().enemyType == EnemyType.joueur)
                 {
-                    damageSupp = DamageMultiplier(DegatsMagique, 0.5f);
+                    damageSupp = DamageMultiplier(GetDegMag(), 0.5f);
                 }
                 break;
         }
@@ -104,23 +156,26 @@ public class SunBehaviour : PlayerStats
 
     public void Swap(GameObject target)
     {
-        if (skills[0].isCooldown == false && Mana >= skills[0].Cost)
+        if (skills[0].isCooldown == false && GetMana() >= skills[0].Cost)
         {
-            Mana -= skills[0].Cost;
-            Debug.Log(skills[0].Name + " lancée");
+            SetMana(GetMana() - skills[0].Cost);
+            Debug.Log(skills[0].Name + " lancï¿½e");
             skills[0].isCooldown = true;
 
             SwitchStick();
-            if(currentStick == Sticks.AuraStick && target.GetComponent<IDamageable>().enemytype == EnemyType.voister)
+            if(target != null)
             {
-                target.GetComponent<IDamageable>().canAct = false;
-                StartCoroutine(SwapCooldown(target));
-            }
-            else if(currentStick == Sticks.SpiritSitck && target.GetComponent<IDamageable>().enemytype == EnemyType.joueur)
-            {
-                var speedTemp = target.GetComponent<IDamageable>().MoveSpeed;
-                target.GetComponent<IDamageable>().MoveSpeed /= 2;
-                StartCoroutine(SwapCooldown(target, speedTemp));
+                if(currentStick == Sticks.AuraStick && target.GetComponent<IDamageable>().enemyType == EnemyType.voister)
+                {
+                    target.GetComponent<IDamageable>().SetCanAct(false);
+                    StartCoroutine(SwapCooldown(target));
+                }
+                else if(currentStick == Sticks.SpiritSitck && target.GetComponent<IDamageable>().enemyType == EnemyType.joueur)
+                {
+                    var speedTemp = target.GetComponent<IDamageable>().GetMoveSpeed();
+                    target.GetComponent<IDamageable>().SetMoveSpeed(GetMoveSpeed()/2);
+                    StartCoroutine(SwapCooldown(target, speedTemp));
+                }
             }
 
             StartCoroutine(CoolDown(skills[0]));
@@ -129,7 +184,7 @@ public class SunBehaviour : PlayerStats
         {
             Debug.Log("en cd");
         }
-        else if (Mana < skills[0].Cost)
+        else if (GetMana() < skills[0].Cost)
         {
             Debug.Log("pas assez de mana");
         }
@@ -140,72 +195,73 @@ public class SunBehaviour : PlayerStats
         yield return new WaitForSeconds(3);
         if(defaultSpeed != 0)
         {
-            target.GetComponent<IDamageable>().MoveSpeed = defaultSpeed;
+            target.GetComponent<IDamageable>().SetMoveSpeed(defaultSpeed);
         }
         else
         {
-            target.GetComponent<IDamageable>().canAct = true;
+            target.GetComponent<IDamageable>().SetCanAct(true);
         }
         
     }
 
-    public void StickTeleportation(GameObject target)
+    public void StickTeleportation()
     {
-        if (skills[1].isCooldown == false && Mana >= skills[1].Cost)
+        if (skills[1].isCooldown == false && GetMana() >= skills[1].Cost)
         {
             if(step == 0)
             {
                 //buff
-                Mana -= skills[1].Cost;
-                Debug.Log(skills[1].Name + " lancée");
+                SetMana(GetMana() - skills[1].Cost);
+                Debug.Log(skills[1].Name + " lancï¿½e");
 
-                Quaternion rotation = Quaternion.LookRotation(target.transform.position - transform.position);
-                Vector3 direction = target.transform.position - transform.position;
+                Vector3 direction = SpawnPrefab2.transform.position - SpawnPrefab.transform.position;
 
-                float dmg = DegatsPhysique;
-
-                var proj = Instantiate(stickTP, SpawnPrefab.transform.position, Quaternion.identity);
-                proj.GetComponent<ThrowStickBehaviour>().degats = 0;
-                proj.GetComponent<ThrowStickBehaviour>().target = target;
+                var proj = PhotonNetwork.Instantiate(stickTP.name, transform.position, Quaternion.identity);
+                proj.GetComponent<ThrowStickBehaviour>().SetDamages(GetDegMag(), DamageType.magique);
                 proj.GetComponent<ThrowStickBehaviour>().targetSet = true;
                 proj.GetComponent<ThrowStickBehaviour>().source = Instance;
+                proj.GetComponent<Rigidbody>().AddForce(direction.normalized * 30f, ForceMode.Impulse);
 
-                StartCoroutine(StickTeleportationSecondPart(proj, target));
-                step = 1;
+
+                StartCoroutine(StickTeleportationSecondPart());
             }
         }
-        else if (skills[0].isCooldown == true)
+        else if (skills[1].isCooldown == true)
         {
             Debug.Log("en cd");
         }
-        else if (Mana < skills[0].Cost)
+        else if (GetMana() < skills[1].Cost)
         {
             Debug.Log("pas assez de mana");
         }
     }
 
-    public IEnumerator StickTeleportationSecondPart(GameObject proj, GameObject target)
+    public IEnumerator StickTeleportationSecondPart()
     {
-        var timer = defaultTimer;
-        while(timer >= 0)
-        {
-            timer -= Time.deltaTime;
-            //if (Input.GetKeyDown(KeyCode.E) && isTouched && step == 1)
-            if (isTouched && step == 1)
-            {                
-                //if(Input.GetKeyDown(KeyCode.E))
-                //{
-                transform.position = target.transform.position;
-                target.GetComponent<IDamageable>().TakeDamage(DegatsPhysique, "Physique");
-                break;
-                //}
-            }
-            yield return new WaitForEndOfFrame();
-        }
-        skills[0].isCooldown = true;
+        step = 1;
+        yield return new WaitForSeconds(5f);
         step = 0;
-        isTouched = false;
+        skills[1].isCooldown = true;
         StartCoroutine(CoolDown(skills[1]));
+    }
+
+    public void TP(Vector3 pos)
+    {
+        transform.position = pos;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (step == 1)
+        {
+            if (other.GetComponent<IDamageable>())
+            {
+                if (other.GetComponent<IDamageable>().team != team)
+                {
+                    other.GetComponent<IDamageable>().TakeDamage(GetDegMag(), DamageType.physique);
+                }
+            }
+        }
     }
 
     IEnumerator Buff(Skills skill)
@@ -222,20 +278,21 @@ public class SunBehaviour : PlayerStats
 
     public void Ultime()
     {
-        if (skills[2].isCooldown == false && Mana >= skills[2].Cost)
+        if (skills[2].isCooldown == false && GetMana() >= skills[2].Cost)
         {
             //buff
-            Mana -= skills[2].Cost;
-            Debug.Log(skills[2].Name + " lancée");
+            SetMana(GetMana() - skills[2].Cost);
+            Debug.Log(skills[2].Name + " lancï¿½e");
             //TODO
 
-            Quaternion rotation = Quaternion.LookRotation(Cible.transform.position - transform.position);
-            Vector3 direction = Cible.transform.position - transform.position;
+            Quaternion rotation = Quaternion.LookRotation(SpawnPrefab2.transform.position - SpawnPrefab.transform.position);
+            Vector3 direction = SpawnPrefab2.transform.position - SpawnPrefab.transform.position;
 
             //TODO
-            var proj = Instantiate(bigStick, SpawnPrefab.transform.position, rotation);
-            proj.GetComponent<BigStickBehaviour>().degats = DegatsMagique;
+            var proj = PhotonNetwork.Instantiate(bigStick.name, transform.position, rotation);
+            proj.GetComponent<BigStickBehaviour>().SetDamages(GetDegMag(), DamageType.magique);
             proj.GetComponent<BigStickBehaviour>().direction = direction;
+            proj.GetComponent<BigStickBehaviour>().team = team;
 
             StartCoroutine(CoolDown(skills[2]));
         }
@@ -243,7 +300,7 @@ public class SunBehaviour : PlayerStats
         {
             Debug.Log("en cd");
         }
-        else if (Mana < skills[2].Cost)
+        else if (GetMana() < skills[2].Cost)
         {
             Debug.Log("pas assez de mana");
         }
@@ -252,12 +309,5 @@ public class SunBehaviour : PlayerStats
     public void Eveil()
     {
         throw new System.NotImplementedException();
-    }
-
-    IEnumerator CoolDown(Skills skill)
-    {
-        yield return new WaitForSeconds(skill.Cooldown);
-        Debug.Log("fin des cd");
-        skill.isCooldown = false;
     }
 }

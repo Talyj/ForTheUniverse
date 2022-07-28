@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,12 +6,11 @@ using UnityEngine;
 public class Targeting : MonoBehaviour
 {
     [SerializeField]
-    private GameObject player;
+    private GameObject entity;
     RaycastHit hit;
     // Start is called before the first frame update
     public void Start()
-    {
-        //player = gameObject;
+    {        
         //Debug.Log(player);
     }
 
@@ -20,24 +20,32 @@ public class Targeting : MonoBehaviour
         
         if (Input.GetMouseButtonDown(0))
         {
-            
-            if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, Mathf.Infinity))
+
+            try
             {
-                if (hit.collider.GetComponent<IDamageable>() != null)
+                if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, Mathf.Infinity))
                 {
-                    if (hit.collider.GetComponent<IDamageable>().GetEnemyType()== IDamageable.EnemyType.minion || 
-                        hit.collider.GetComponent<IDamageable>().GetEnemyType()== IDamageable.EnemyType.voister || 
-                        hit.collider.GetComponent<IDamageable>().GetEnemyType()== IDamageable.EnemyType.joueur || 
-                        hit.collider.GetComponent<IDamageable>().GetEnemyType()== IDamageable.EnemyType.dieu ||
-                        hit.collider.GetComponent<IDamageable>().GetEnemyType()== IDamageable.EnemyType.golem)
+                    if (hit.collider.TryGetComponent(typeof(IDamageable), out Component component))
                     {
-                        player.GetComponent<Dps1>().Cible = hit.collider.gameObject;
+                        if (component.GetComponent<IDamageable>().GetEnemyType()== IDamageable.EnemyType.minion ||
+                            component.GetComponent<IDamageable>().GetEnemyType()== IDamageable.EnemyType.voister ||
+                            component.GetComponent<IDamageable>().GetEnemyType()== IDamageable.EnemyType.joueur ||
+                            component.GetComponent<IDamageable>().GetEnemyType()== IDamageable.EnemyType.dieu ||
+                            component.GetComponent<IDamageable>().GetEnemyType()== IDamageable.EnemyType.golem)
+                        {
+                            if(hit.collider.GetComponent<IDamageable>().team != gameObject.GetComponent<IDamageable>().team)
+                            entity.GetComponent<IDamageable>().Cible = hit.collider.gameObject;
+                        }
+                    }
+                    else if (hit.collider.GetComponent<IDamageable>() == null)
+                    {
+                        entity.GetComponent<IDamageable>().Cible = null;
                     }
                 }
-                else if (hit.collider.GetComponent<IDamageable>() == null)
-                {
-                    player.GetComponent<Dps1>().Cible = null;
-                }
+            }
+            catch(Exception ue)
+            {
+                //:)
             }
         }
     }

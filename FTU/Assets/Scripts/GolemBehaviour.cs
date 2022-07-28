@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -5,71 +6,49 @@ using UnityEngine;
 
 public class GolemBehaviour : IDamageable
 {
-    private float damages;
-    private bool isInside;
-    //Modify that to the player's class
-    private PlayerStats target;
     private float attackCooldown;
 
     public void Start()
     {
+        Init();
+        SetHealth(2500f);
+        SetMaxHealth(2500f);
+        SetAttackRange(30f);
+        SetViewRange(GetAttackRange());
+        SetAttackSpeed(2.0f);
+        SetDegMag(200f);
+        SetDegPhys(200f);
         attackCooldown = 0;
-        isInside = false;
-        target = null;
-        SetHealth(200);
-        damages = 10;
+        Cible = null;
     }
 
     public void Update()
     {
-        Attack();
-        CheckDestroy();
-        Debug.Log(GetHealth());
+
+        if (Cible == null)
+        {
+            GetNearestTarget();
+        }
+        else
+        {
+            Attack();
+            var test = Vector3.Distance(transform.position, Cible.transform.position);
+            if (test > GetAttackRange() + 5)
+            {
+                Cible = null;
+            }
+        }
+        HealthBehaviour();
+
     }
 
     public void Attack()
     {
         if(attackCooldown <= 0)
         {
-            if (isInside)
-            {
-                //Replace function by the player's one that deals damages
-                target.TakeDamage(damages, "Brut");
-                attackCooldown = 5;
-            }
+            Cible.GetComponent<IDamageable>().TakeDamage(GetDegMag(), DamageType.brut);
+            attackCooldown = 5;
         }
         attackCooldown -= Time.deltaTime;
-    }
-
-    public void CheckDestroy()
-    {
-        if (IsDead())
-        {
-            GameObject.Destroy(gameObject, 0);
-        }
-    }
-
-    public void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.CompareTag("cube"))
-        {
-            //Modify GameObject with the player's class
-            if(target == null)
-            {
-                target = other.GetComponent<PlayerStats>();
-            }
-            isInside = true;
-            Debug.Log("Inside");
-        }
-    }
-
-    public void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject.CompareTag("cube"))
-        {
-            target = null;
-            isInside = false;
-            Debug.Log("Outside");
-        }
     }
 }

@@ -1,65 +1,84 @@
+using Photon.Pun;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PuddlePoissoinBehaviour : Projectile
 {
-    private int insideArea;
-    private List<GameObject> targets = new List<GameObject>();
-    private bool isActive;
+    public Team team;
+    private float cpt;
 
     // Start is called before the first frame update
     public new void Start()
     {
-        insideArea = 0;
-        isActive = false;
+        cpt = 5.0f;
     }
     // Update is called once per frame
     public new void Update()
     {
-        //Behaviour();
-        if (insideArea > 0 && !isActive)
+        if (PhotonNetwork.IsMasterClient)
         {
-            StartCoroutine(DealDamage(targets, degats, "Magique"));
-        }
-        Destroy(gameObject, 10);
-    }
-
-    public IEnumerator DealDamage(List<GameObject> targets, float dmg, string typeDmg)
-    {
-        while(insideArea > 0)
-        {
-            if(targets.Count > 0)
+            cpt -= Time.deltaTime;
+            if(cpt < 0)
             {
-                isActive = true;
-                foreach(var targ in targets)
-                {
-                    targ.GetComponent<IDamageable>().TakeDamage(dmg, typeDmg);
-                    yield return new WaitForSeconds(0.5f);
-                }
+                PhotonNetwork.Destroy(gameObject);
+                cpt = 5.0f;
             }
         }
-        isActive = false;
-        yield return 0;
+    }
+
+    public void DealDamage(List<GameObject> targets, float dmg, IDamageable.DamageType typeDmg)
+    {        
+        foreach(var targ in targets.ToArray())
+        {
+            if (targ.GetComponent<IDamageable>().team != team)
+            {
+                targ.GetComponent<IDamageable>().TakeDamage(dmg, typeDmg);
+            }
+            else
+            {
+                targ.GetComponent<IDamageable>().SetHealth(targ.GetComponent<IDamageable>().GetHealth() + dmg);
+            }
+        }
+
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("minion"))
+        if (other.gameObject.GetComponent<IDamageable>())
         {
-            insideArea += 1;
-            targets.Add(other.gameObject);
-            Debug.Log("ekip");
+            StartCoroutine(puddleBehaviour(other.gameObject));
         }
     }
 
-    private void OnTriggerExit(Collider other)
+
+    private IEnumerator puddleBehaviour(GameObject target)
     {
-        if (other.gameObject.CompareTag("Player"))
+        var cpt = 0;
+        while (cpt < 6)
         {
-            insideArea -= 1;
-            targets.Remove(other.gameObject);
-            Debug.Log("stop");
+            try
+            {
+                if(target.GetComponent<IDamageable>().team != team)
+                {
+                    target.GetComponent<IDamageable>().TakeDamage(GetDamages(), GetDamageType());
+                }
+                else
+                {
+                    target.GetComponent<IDamageable>().SetHealth(target.GetComponent<IDamageable>().GetHealth() + GetDamages());
+                }
+            }
+            catch(MissingReferenceException missE)
+            {
+                cpt = 10;
+            }
+            catch(NullReferenceException nullE)
+            {
+                cpt = 10;
+            }
+            cpt++;
+            yield return new WaitForSeconds(0.5f);
         }
     }
 }

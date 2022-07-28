@@ -6,6 +6,10 @@ TagManager:
   tags:
   - cube
   - minion
+  - golem
+  - dd
+  - Enemy
+  - consLight
   layers:
   - Default
   - TransparentFX
