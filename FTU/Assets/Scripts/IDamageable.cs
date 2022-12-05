@@ -372,10 +372,14 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         {
             if (gameObject.CompareTag("Player"))
             {
-                var rend = GetComponent<Renderer>();
+                var rend = GetComponents<Renderer>();
                 if (rend != null)
                 {
-                    rend.enabled = false;
+                    for(int i = 0; i < rend.Length; i++)
+                    {
+                        rend[i].enabled = false;
+                    }
+                    
                 }
                 StartCoroutine(Spawn(rend));
             }
@@ -391,7 +395,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         Regen();
     }
 
-    IEnumerator Spawn(Renderer rend)
+    IEnumerator Spawn(Renderer[] rend)
     {
         if(transform.position != deathPos)
         {
@@ -403,7 +407,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         }
     }
 
-    public void SetDefault(Renderer rend)
+    public void SetDefault(Renderer[] rend)
     {
         Health = MaxHealth;
         Mana = MaxMana;
@@ -412,7 +416,10 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         //{
         //    disableOnDeath[i].enabled = true;
         //}
-        rend.enabled = true;
+        for (int i = 0; i < rend.Length; i++)
+        {
+            rend[i].enabled = true;
+        }
     }
 
     public void CheckTarget()
