@@ -47,7 +47,7 @@ namespace Com.MyCompany.MyGame
                     //{
                     //    PhotonNetwork.Instantiate(playerPrefabs[selector.selectIndex].name, new Vector3(313.3f, 2.14f, -37.118f), Quaternion.identity, 0);
                     //}
-                    PhotonNetwork.Instantiate(playerPrefabs[selector.GetIndex()].name, new Vector3(0f, 2.14f, 0f), Quaternion.identity, 0);
+                    //PhotonNetwork.Instantiate(playerPrefabs[selector.GetIndex()].name, new Vector3(0f, 2.14f, 0f), Quaternion.identity, 0);
                 }
                 else
                 {

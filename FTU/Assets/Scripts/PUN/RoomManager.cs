@@ -13,13 +13,13 @@ public class RoomManager : MonoBehaviourPunCallbacks
 
     private void Awake()
     {
-        if (Instance)//detruit les autres room manager
+        Instance = this;
+        if (Instance && PhotonNetwork.IsMasterClient)//detruit les autres room manager
         {
             Destroy(gameObject);
             return;
         }
         DontDestroyOnLoad(gameObject);
-        Instance = this;
     }
 
     public override void OnEnable()
