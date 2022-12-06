@@ -43,7 +43,7 @@ public class MainGame : MonoBehaviourPun
                 {
                     try
                     {
-                        if(view.gameObject.GetComponent<IDamageable>().GetEnemyType() == IDamageable.EnemyType.joueur)
+                        if(view.gameObject.GetComponent<IDamageable>().GetEnemyType() == IDamageable.EnemyType.player)
                         {
                             var playerPrefabObject = view.gameObject;
                             players.Add(playerPrefabObject);

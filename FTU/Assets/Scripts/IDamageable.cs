@@ -51,7 +51,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     {
         minion,
         golem,
-        joueur,
+        player,
         dieu,
         voister
     }
@@ -370,6 +370,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
 
         if(Health <= 0)
         {
+            photonView.RPC("GiveExperience", RpcTarget.All, new object[] { });
             if (gameObject.CompareTag("Player"))
             {
                 var rend = GetComponents<Renderer>();
@@ -393,6 +394,48 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
             }
         }
         Regen();
+    }
+
+    [PunRPC]
+    public void GiveExperience()
+    {
+        var expToGive = 0;
+        //TODO Change the amount of xp
+        switch (enemyType)
+        {
+            case EnemyType.minion:
+                expToGive = 100;
+                break;
+            case EnemyType.player:
+                expToGive = 100 * lvl;
+                break;
+            case EnemyType.dieu:
+                expToGive = 1000;
+                break;
+            case EnemyType.golem:
+                expToGive = 500;
+                break;
+            case EnemyType.voister:
+                //TODO ADD EXP VOISTER WHICH SHOULD BE COMPLEX
+                break;
+        }
+
+        Collider[] hitColliders = Physics.OverlapSphere(gameObject.transform.position, 30f);
+        if (hitColliders != null)
+        {
+            foreach (var col in hitColliders)
+            {
+                var collider = col.GetComponent<IDamageable>();
+                if (collider)
+                {
+                    if (collider.team != team && collider.enemyType == EnemyType.player ||
+                        collider.team != team && collider.enemyType == EnemyType.voister)
+                    {
+                        collider.SetExp(expToGive);
+                    }
+                }
+            }
+        }
     }
 
     IEnumerator Spawn(Renderer[] rend)
@@ -448,7 +491,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         {
             float reste = Exp - MaxExp;
             lvl += 1;
-            Exp = 0 + reste;
+            Exp = reste;
             MaxExp = MaxExp * ExpRate;
             print("lvl up");
             if (lvl == 6)
@@ -457,17 +500,16 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
             }
             // augmentation des stats a faire
             //test en dur a rendre plus automatique par scriptableobject surement
-            MaxHealth += 106;
-            MaxMana += 65;
-            AttackSpeed += .12f;
-            DegatsPhysique += 3.75f;
-            DegatsMagique += 2.75f;
-            ResistanceMagique += 2.25f;
-            ResistancePhysique += 2.25f;
-            MoveSpeed += 0.55f;
+            MaxHealth *= 1.06f;
+            MaxMana *= 1.05f;
+            AttackSpeed *= .12f;
+            DegatsPhysique *= 1.75f;
+            DegatsMagique *= 1.75f;
+            ResistanceMagique *= 1.25f;
+            ResistancePhysique *= 1.25f;
+            MoveSpeed *= 1.15f;
         }
     }
-   
 
     public IEnumerator CoolDown(Skills skill)
     {
@@ -564,7 +606,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     {
         if(enemyToCompare == EnemyType.minion ||
         enemyToCompare == EnemyType.voister ||
-        enemyToCompare == EnemyType.joueur ||
+        enemyToCompare == EnemyType.player ||
         enemyToCompare == EnemyType.dieu ||
         enemyToCompare == EnemyType.golem)
         {
@@ -577,7 +619,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     {
         if (enemyToCompare == EnemyType.minion ||
         enemyToCompare == EnemyType.voister ||
-        enemyToCompare == EnemyType.joueur ||
+        enemyToCompare == EnemyType.player ||
         enemyToCompare == EnemyType.dieu ||
         enemyToCompare == EnemyType.golem && cc != ControlType.none)
         {
@@ -590,7 +632,6 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     {
         if (Cible == null)
         {
-            var test = GetViewRange();
             Collider[] hitColliders = Physics.OverlapSphere(gameObject.transform.position, GetViewRange());
             if (hitColliders != null)
             {

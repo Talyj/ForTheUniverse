@@ -30,7 +30,7 @@ public class SpawnMinion : MonoBehaviour
             cpt -= Time.deltaTime;
             if(SceneManager.GetActiveScene().name == "MainGameRoom")
             {
-                if (mainGame.isPlaying && cpt <= 0)
+                if (mainGame.isPlaying && cpt <= 2)
                 {
                     cpt = 30;
                     for (int i = 0; i <= 4; i++)

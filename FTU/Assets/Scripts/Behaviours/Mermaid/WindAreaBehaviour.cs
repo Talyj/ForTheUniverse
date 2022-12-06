@@ -55,7 +55,7 @@ public class WindAreaBehaviour : Projectile
         if (other.gameObject.GetComponent<IDamageable>() && photonView.IsMine)
         {
             if(other.gameObject.GetComponent<IDamageable>().enemyType == IDamageable.EnemyType.dieu ||
-                other.gameObject.GetComponent<IDamageable>().enemyType == IDamageable.EnemyType.joueur ||
+                other.gameObject.GetComponent<IDamageable>().enemyType == IDamageable.EnemyType.player ||
                 other.gameObject.GetComponent<IDamageable>().enemyType == IDamageable.EnemyType.minion)
             {
                 if(other.gameObject.GetComponent<IDamageable>().team != source.team)

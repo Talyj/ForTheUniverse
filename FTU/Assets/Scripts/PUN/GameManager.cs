@@ -24,7 +24,7 @@ namespace Com.MyCompany.MyGame
         {
             if (SceneManager.GetActiveScene().name == "WaitingRoom")
             {
-                //LoadArena(); 
+                LoadArena(); 
                 return;
             }
             if (playerPrefabs[0] == null)
@@ -90,14 +90,15 @@ namespace Com.MyCompany.MyGame
                 Debug.LogError("PhotonNetwork : Trying to Load a level but we are not the master Client");
             }
             Debug.LogFormat("PhotonNetwork : Loading Level : {0}", PhotonNetwork.CurrentRoom.PlayerCount);
-            if (PhotonNetwork.CurrentRoom.PlayerCount >= numberPlayer)
-            {
-                PhotonNetwork.LoadLevel("MainGameRoom");
-            }
-            else
-            {
-                PhotonNetwork.LoadLevel("WaitingRoom");
-            }
+            //if (PhotonNetwork.CurrentRoom.PlayerCount >= numberPlayer)
+            //{
+            //    PhotonNetwork.LoadLevel("MainGameRoom");
+            //}
+            //else
+            //{
+            //    PhotonNetwork.LoadLevel("WaitingRoom");
+            //}
+            PhotonNetwork.LoadLevel("TestIA");
         }
 
         public override void OnPlayerEnteredRoom(Player other)

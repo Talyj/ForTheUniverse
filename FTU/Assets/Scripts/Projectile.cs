@@ -57,7 +57,7 @@ public class Projectile : MonoBehaviourPun
                 {
                     if (target.GetComponent<IDamageable>().GetEnemyType() == IDamageable.EnemyType.minion ||
                         target.GetComponent<IDamageable>().GetEnemyType() == IDamageable.EnemyType.voister ||
-                        target.GetComponent<IDamageable>().GetEnemyType() == IDamageable.EnemyType.joueur ||
+                        target.GetComponent<IDamageable>().GetEnemyType() == IDamageable.EnemyType.player ||
                         target.GetComponent<IDamageable>().GetEnemyType() == IDamageable.EnemyType.dieu ||
                         target.GetComponent<IDamageable>().GetEnemyType() == IDamageable.EnemyType.golem)
                     {

@@ -15,7 +15,7 @@ MonoBehaviour:
   Name: Poissoin
   Cost: 25
   CastTime: 1
-  Cooldown: 12
+  Cooldown: 0
   isCooldown: 0
   type: 1
   Damage: 30
