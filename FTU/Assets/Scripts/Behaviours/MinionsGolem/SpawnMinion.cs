@@ -35,11 +35,11 @@ public class SpawnMinion : MonoBehaviour
                     cpt = 30;
                     for (int i = 0; i <= 4; i++)
                     {
-                        SetMinions(PlayerStats.Way.up, Team.Veritas, i);
-                        SetMinions(PlayerStats.Way.down, Team.Veritas, i);
+                        SetMinions(BasicAIStats.Way.up, Team.Veritas, i);
+                        SetMinions(BasicAIStats.Way.down, Team.Veritas, i);
 
-                        SetMinions(PlayerStats.Way.up, Team.Dominion, i);
-                        SetMinions(PlayerStats.Way.down, Team.Dominion, i);
+                        SetMinions(BasicAIStats.Way.up, Team.Dominion, i);
+                        SetMinions(BasicAIStats.Way.down, Team.Dominion, i);
                     }
                 }
             }
@@ -47,7 +47,7 @@ public class SpawnMinion : MonoBehaviour
     }
 
     [PunRPC]
-    public void SetMinions(PlayerStats.Way way, Team team, int loopCounter)
+    public void SetMinions(BasicAIStats.Way way, Team team, int loopCounter)
     {
         Vector3 spawn = new Vector3(0, 0, 0);
         var x = Random.Range(-10, 10);
@@ -71,7 +71,6 @@ public class SpawnMinion : MonoBehaviour
         minionTemp.GetComponent<MinionsBehaviour>().team = team;
         minionTemp.GetComponent<MinionsBehaviour>().targetsUp = pathUp;
         minionTemp.GetComponent<MinionsBehaviour>().targetsDown = pathDown;
-        minionTemp.GetComponent<MinionsBehaviour>().isAI = true;
         minionTemp.gameObject.GetComponent<Renderer>().material.color = color;
         if(loopCounter > 2)
         {

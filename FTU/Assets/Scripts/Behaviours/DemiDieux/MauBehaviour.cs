@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MauBehaviour : PlayerStats
+public class MauBehaviour : BasicAIMovement
 {
     //Skill1
     public GameObject roarArea;
@@ -24,7 +24,7 @@ public class MauBehaviour : PlayerStats
         baseMag = 1;
         basePhys = 1;       
 
-        Init();
+        BaseInit();
         SetMoveSpeed(30f);
         SetAttackRange(20f);
         SetViewRange(30f);
@@ -35,6 +35,7 @@ public class MauBehaviour : PlayerStats
         SetDegMag(200f);
         SetDegPhys(200f);
         SetAttackSpeed(1.95f);
+        SetEnemyType(EnemyType.dieu);
         Instance = this;
         foreach (var elmt in skills)
         {
@@ -122,7 +123,7 @@ public class MauBehaviour : PlayerStats
         if (!isAttacking && Cible != null)
         {
             isAttacking = true;
-            AttackSystemAI();
+            BasicAttackIA();
         }
     }
 

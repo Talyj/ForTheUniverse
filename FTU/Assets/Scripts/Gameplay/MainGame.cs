@@ -105,15 +105,15 @@ public class MainGame : MonoBehaviourPun
         {
             if (i % 2 == 0)
             {
-                players[i].GetComponent<IDamageable>().team = Team.Dominion;
-                players[i].GetComponent<IDamageable>().respawnPos = new Vector3(spawnTransformDominion.position.x, 2.11f, spawnTransformDominion.position.z);
+                players[i].GetComponent<PlayerStats>().team = Team.Dominion;
+                players[i].GetComponent<PlayerStats>().respawnPos = new Vector3(spawnTransformDominion.position.x, 2.11f, spawnTransformDominion.position.z);
             }
             else
             {
-                players[i].GetComponent<IDamageable>().team = Team.Veritas;
-                players[i].GetComponent<IDamageable>().respawnPos = new Vector3(spawnTransformVeritas.position.x, 2.11f, spawnTransformVeritas.position.z);
+                players[i].GetComponent<PlayerStats>().team = Team.Veritas;
+                players[i].GetComponent<PlayerStats>().respawnPos = new Vector3(spawnTransformVeritas.position.x, 2.11f, spawnTransformVeritas.position.z);
             }
-            players[i].GetComponent<IDamageable>().deathPos = deathPos.position;
+            players[i].GetComponent<PlayerStats>().deathPos = deathPos.position;
         }
         isPlaying = true;
         Spawn(players);

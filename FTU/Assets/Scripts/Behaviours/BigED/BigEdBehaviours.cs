@@ -14,7 +14,8 @@ public class BigEdBehaviours : PlayerStats
     // Start is called before the first frame update
     void Start()
     {
-        Init();
+        BaseInit();
+        PlayerStatsSetUp();
         SetMoveSpeed(30f);
         SetAttackRange(10f);
         SetHealth(500f);

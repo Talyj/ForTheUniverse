@@ -18,10 +18,6 @@ public class PlayerMovement : IDamageable
     Rigidbody myRigidbody;
     Camera viewCamera;
 
-    //Movement AI
-    public int current;
-    public bool pathDone;
-
     //Animator anim;
     public NetworkVariable<Vector3> Position = new NetworkVariable<Vector3>();
     public void Awake()
@@ -89,40 +85,6 @@ public class PlayerMovement : IDamageable
 
             }
         }
-    }
-
-    public void MovementAI(Transform[] moveTo)
-    {
-        if (GetCanMove() && GetCanAct())
-        {
-            if (Vector3.Distance(transform.position, moveTo[current].position) > 10)
-            {
-                transform.position = Vector3.MoveTowards(transform.position, new Vector3(moveTo[current].position.x, transform.position.y, moveTo[current].position.z), GetMoveSpeed() * Time.deltaTime);
-            }
-            else current = (current + 1)/* % targets.Length*/;
-        }
-        if (current == moveTo.Length) pathDone = true;
-    }
-
-    public void WalkToward()
-    {
-        try
-        {
-            var dist = Vector3.Distance(transform.position, Cible.transform.position);
-            //while (transform.position != Cible.transform.position)
-            if (dist > gameObject.GetComponent<IDamageable>().GetAttackRange())
-            {
-                SetIsMoving(true);
-                transform.position = Vector3.MoveTowards(transform.position, new Vector3(Cible.transform.position.x, transform.position.y, Cible.transform.position.z), GetMoveSpeed() * Time.deltaTime);
-            }
-            SetIsMoving(false);
-        }
-        catch(NullReferenceException e)
-        {
-            Cible = null;
-        }
-
-        //yield return 0;
     }
 
     public void FixedUpdate()

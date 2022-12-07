@@ -3,15 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MinionsBehaviour : PlayerStats, IPunObservable
+public class MinionsBehaviour : BasicAIMovement, IPunObservable
 {
-    public float dstForXp;
-    public float xpAmount;
-    bool gaveXp;
     public void Start()
     {
-        gaveXp = false;
-        Init();
+        BaseInit();
+        AISetup();
         current = 0;
         pathDone = false;
         if (attackType == AttackType.Ranged)
@@ -29,6 +26,7 @@ public class MinionsBehaviour : PlayerStats, IPunObservable
         SetDegPhys(20f);
         SetViewRange(30f);
         SetAttackSpeed(2f);
+        SetEnemyType(EnemyType.minion);
         isAttacking = false;
     }
 
@@ -37,8 +35,8 @@ public class MinionsBehaviour : PlayerStats, IPunObservable
         if (PhotonNetwork.IsMasterClient)
         {
             HealthBehaviour();
-            if(GetHealth() > 20)
-            {
+            //if(GetHealth() > 20)
+            //{
                 CheckTarget();
 
                 if (GetCanAct() && GetCanMove())
@@ -46,14 +44,13 @@ public class MinionsBehaviour : PlayerStats, IPunObservable
                     GetNearestTarget();
                     if (Cible)
                     {
-                        //StartCoroutine(WalkToward());
                         WalkToward();
                         gameObject.transform.LookAt(new Vector3(Cible.transform.position.x, transform.position.y, Cible.transform.position.z));
                     }        
                     //Movement + attack
                     DefaultMinionBehaviour();
                 }
-            }        
+            //}        
         }
     }
 

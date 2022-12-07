@@ -25,7 +25,8 @@ public class MermaidBehaviour : PlayerStats
     public GameObject charmArea;
     public void Start()
     {
-        Init();
+        BaseInit();
+        PlayerStatsSetUp();
         SetMoveSpeed(30f);
         SetAttackRange(30f);
         SetHealth(500f);
@@ -34,7 +35,7 @@ public class MermaidBehaviour : PlayerStats
         SetResMag(50f);
         SetDegMag(50f);
         SetDegPhys(50f);
-        SetAttackSpeed(1.95f);
+        SetAttackSpeed(20f);
 
         speedPush = 3;
         charmSpeed = 5;

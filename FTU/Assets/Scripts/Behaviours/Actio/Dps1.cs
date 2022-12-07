@@ -40,7 +40,7 @@ public class Dps1 : PlayerStats
     // Start is called before the first frame update
     public void Start()
     {
-        Init();
+        BaseInit();
         SetMoveSpeed(30f);
         SetAttackRange(10f);
         SetHealth(500f);

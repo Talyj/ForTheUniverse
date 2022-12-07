@@ -31,7 +31,8 @@ public class SunBehaviour : PlayerStats
 
     public void Start()
     {
-        Init();
+        BaseInit();
+        PlayerStatsSetUp();
         SetMoveSpeed(30f);
         SetAttackRange(20f);
         SetHealth(500f);
