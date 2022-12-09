@@ -9,28 +9,27 @@ public class PlayerManager : MonoBehaviour
     PhotonView PV;
     Player player;
     [SerializeField] int index;
+    [Tooltip("The list of prefab that represent the differente characters")]
+    public GameObject[] playerPrefabs;
 
     private void Awake()
     {
         PV = GetComponent<PhotonView>();
+        index = PlayerPrefs.GetInt("persoID");
         
     }
 
-    public int GetIndex()
-    {
-        return index;
-    }
+    
     private void Start()
     {
         if (PV.IsMine)
         {
-            //CreateController();
-            Debug.Log(index);
+            CreateController();
         }
     }
 
     void CreateController()
     {
-        index = (int)player.CustomProperties["persoID"];
+        PhotonNetwork.Instantiate(playerPrefabs[index].name, new Vector3(0f, 2.14f, 0f), Quaternion.identity, 0);
     }
 }

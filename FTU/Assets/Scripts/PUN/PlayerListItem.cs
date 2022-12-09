@@ -9,14 +9,13 @@ public class PlayerListItem : MonoBehaviourPunCallbacks
 {
     Player player;
     [SerializeField] TMP_Text text;
+    [SerializeField] TMP_Text textTeam;
     public TMP_Dropdown perso;
-    ExitGames.Client.Photon.Hashtable customProps = new ExitGames.Client.Photon.Hashtable();
     public void SetUp(Player _player)
     {
         player = _player;
         text.text = _player.NickName;
-        //customProps["persoID"] = perso.value;
-        //Debug.Log(customProps["persoID"]+ "setup");
+        PlayerPrefs.SetInt("persoID", perso.value);
     }
 
     public override void OnPlayerLeftRoom(Player otherPlayer)
@@ -29,10 +28,8 @@ public class PlayerListItem : MonoBehaviourPunCallbacks
 
     public void PersoSelected()
     {
-        Debug.Log(customProps["persoID"]  + "customprop");
-        Debug.Log(perso.value + "ddlval");
-        customProps["persoID"] = perso.value;
-        PhotonNetwork.LocalPlayer.CustomProperties = customProps;
+
+        PlayerPrefs.SetInt("persoID", perso.value);
     }
     public override void OnLeftRoom()
     {
