@@ -301,11 +301,8 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         InRegen = false;
 
         Health = MaxHealth;
-        //deathEffect.SetActive(false);
-        //for (int i = 0; i < disableOnDeath.Length; i++)
-        //{
-        //    disableOnDeath[i].enabled = true;
-        //}
+        Mana = MaxMana;
+
         Rigidbody rb = GetComponent<Rigidbody>();
         if (rb != null)
         {
@@ -316,10 +313,9 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         {
             col.enabled = true;
         }
-        CharacterStatsSetUp();
     }
 
-    public void CharacterStatsSetUp()
+    public void SetupForAI()
     {
         SetMaxHealth(500);
         SetHealth(GetMaxHealth());

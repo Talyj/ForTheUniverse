@@ -40,16 +40,10 @@ public class Dps1 : PlayerStats
     // Start is called before the first frame update
     public void Start()
     {
+        PlayerStatsSetUp();
         BaseInit();
-        SetMoveSpeed(30f);
-        SetAttackRange(10f);
-        SetHealth(500f);
-        SetMaxHealth(500f);
-        SetResPhys(50f);
-        SetResMag(50f);
-        SetDegMag(50f);
-        SetDegPhys(50f);
-        SetAttackSpeed(1.95f);
+        SetUpCharacters(role, true, false);
+
         CameraWork();
         Passif();
         foreach (var elmt in skills)

@@ -14,10 +14,9 @@ public class PlayerStats : PlayerMovement
     private float respawnCooldown;
 
     public List<ItemBehaviours> items = new List<ItemBehaviours>(4);
+    public Role role;
     //[SerializeField]
-   
 
-    //public EnemyType enemyType;
 
 
     #region Getter and Setter
@@ -146,4 +145,109 @@ public class PlayerStats : PlayerMovement
             rend[i].enabled = true;
         }
     }
+
+    //SPE = true => Magique
+    protected void SetUpCharacters(Role role, bool range, bool spe)
+    {
+        SetMaxMana(500f);
+        switch (role)
+        {
+            case Role.dps:
+                SetMaxHealth(500f);
+                SetAttackSpeed(2f);
+
+                SetupAttackRangeAndSpeed(range);
+
+                if (spe)
+                {
+                    SetResMag(50f);
+                    SetResPhys(50f);
+
+                    SetDegMag(100f);
+                    SetDegPhys(50f);
+                }
+                else
+                {
+                    SetResMag(50f);
+                    SetResPhys(50f);
+
+                    SetDegMag(50f);
+                    SetDegPhys(100f);
+                }
+                break;
+            case Role.tank:
+                SetMaxHealth(750f);
+                SetAttackSpeed(1f);
+
+                SetupAttackRangeAndSpeed(range);
+
+                if (spe)
+                {
+                    SetResMag(100f);
+                    SetResPhys(60f);
+
+                    SetDegMag(50f);
+                    SetDegPhys(50f);
+                }
+                else
+                {
+                    SetResMag(50f);
+                    SetResPhys(60f);
+
+                    SetDegMag(50f);
+                    SetDegPhys(60f);
+                }
+                break;
+            case Role.support:
+                SetMaxHealth(450f);
+                SetAttackSpeed(1f);
+
+                SetupAttackRangeAndSpeed(range);
+
+                if (spe)
+                {
+                    SetResMag(60f);
+                    SetResPhys(50f);
+
+                    SetDegMag(60f);
+                    SetDegPhys(50f);
+                }
+                else
+                {
+                    SetResMag(50f);
+                    SetResPhys(60f);
+
+                    SetDegMag(50f);
+                    SetDegPhys(60f);
+                }
+                break;
+        }        
+    }
+
+    private void SetupAttackRangeAndSpeed(bool range)
+    {
+        if (range)
+        {
+            SetAttackRange(30f);
+            SetMoveSpeed(15f);
+        }
+        else
+        {
+            SetAttackRange(10f);
+            SetMoveSpeed(20f);
+        }
+    }
+
+    public void SetupDegResMagPhys(bool spe)
+    {
+
+    }
+}
+
+//Enum To setup characters
+public enum Role
+{
+    dps = 0,
+    support = 1,
+    tank = 2
 }

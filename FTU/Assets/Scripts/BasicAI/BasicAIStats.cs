@@ -20,6 +20,7 @@ public class BasicAIStats : IDamageable, IPunObservable
     protected void AISetup()
     {
         isAI = true;
+        SetupForAI();
     }
 
     public void GetNearestTarget()

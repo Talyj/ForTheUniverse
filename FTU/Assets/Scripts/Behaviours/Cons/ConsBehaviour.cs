@@ -24,16 +24,9 @@ public class ConsBehaviour : PlayerStats
 
     public void Start()
     {
+        PlayerStatsSetUp();
         BaseInit();
-        SetMoveSpeed(30f);
-        SetAttackRange(30f);
-        SetHealth(500f);
-        SetMaxHealth(500f);
-        SetResPhys(50f);
-        SetResMag(50f);
-        SetDegMag(50f);
-        SetDegPhys(50f);
-        SetAttackSpeed(1.95f);
+        SetUpCharacters(role, true, true);
 
 
         slow = 5;
