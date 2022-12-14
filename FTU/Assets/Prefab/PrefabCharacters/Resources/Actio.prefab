@@ -421,7 +421,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8597483264112776019}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.249, z: 0.795}
+  m_LocalPosition: {x: -313.3, y: 1.1400001, z: -33.488}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -605,7 +605,7 @@ MonoBehaviour:
   cc: 0
   Cible: {fileID: 0}
   gold: 0
-  respawnPos: {x: 0, y: 0, z: 0}
+  respawnPos: {x: -313.3, y: 2.14, z: -37.118}
   deathPos: {x: 0, y: 0, z: 0}
   userId: 
   Health: 0

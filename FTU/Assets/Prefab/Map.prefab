@@ -370,6 +370,8 @@ MonoBehaviour:
   - {fileID: 7927655766880391335, guid: 09cf0e3d350e91d4faa58a51403a9504, type: 3}
   EventTime: 15
   baseTime: 15
+  maxItem: 12
+  currentItem: 0
 --- !u!1 &2391999580832112578
 GameObject:
   m_ObjectHideFlags: 0
@@ -3088,7 +3090,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5209164488851722735}
-  m_Mesh: {fileID: 6171518281179500795, guid: 0ed1f22ed5d95ea40999057fe13d1368, type: 3}
+  m_Mesh: {fileID: 0}
 --- !u!23 &2936890914636538717
 MeshRenderer:
   m_ObjectHideFlags: 0
