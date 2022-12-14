@@ -103,7 +103,8 @@ public class Launch : MonoBehaviourPunCallbacks, IPunObservable
             //gameObject.GetComponent<Renderer>().material.color = new Color((float)stream.ReceiveNext(), (float)stream.ReceiveNext(), (float)stream.ReceiveNext());
         }
     }
-    //[PunRPC]
+
+    [PunRPC]
     void CreateTeams(Player[] players)
     {
         for (int i = 0; i < players.Count(); i++)

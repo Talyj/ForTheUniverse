@@ -40,12 +40,11 @@ MonoBehaviour:
   - Fire
   - RespawnSpaceship
   - SetMinions
-  - Damages
   - GoAway
   - MoveToSpot
   - GetNear
-  - CreateTeams
   - GiveExperience
+  - DealDamages
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

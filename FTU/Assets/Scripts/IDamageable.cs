@@ -487,7 +487,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     public float TakeDamage(float DegatsRecu, DamageType type)
     {
         //Degat brut
-        var degRes = DegatsRecu;
+        float degRes = DegatsRecu;
         switch (type)
         {
             case DamageType.physique:
@@ -498,13 +498,12 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
                 break;
         }
         
-
-        photonView.RPC("Damages", RpcTarget.All, new object[] { DegatsRecu });
+        photonView.RPC("DealDamages", RpcTarget.All, new object[] { degRes });
         return degRes;
     }
 
     [PunRPC]
-    public void Damages(float DegatsRecu)
+    public void DealDamages(float DegatsRecu)
     {
         Health = Health - DegatsRecu;
     }

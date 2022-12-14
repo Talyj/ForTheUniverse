@@ -31,14 +31,14 @@ public class PlayerManager : MonoBehaviour
     void CreateController()
     {
         PhotonNetwork.Instantiate(playerPrefabs[index].name, new Vector3(0f, 2.14f, 0f), Quaternion.identity, 0);
-        playerPrefabs[index].GetComponent<IDamageable>().team = (Team)PlayerPrefs.GetInt("Teams");
-        if(playerPrefabs[index].GetComponent<IDamageable>().team == Team.Dominion)
+        playerPrefabs[index].GetComponent<PlayerStats>().team = (Team)PlayerPrefs.GetInt("Teams");
+        if(playerPrefabs[index].GetComponent<PlayerStats>().team == Team.Dominion)
         {
-            playerPrefabs[index].GetComponent<IDamageable>().respawnPos = new Vector3(313.3f, 2.14f, -37.118f);
+            playerPrefabs[index].GetComponent<PlayerStats>().respawnPos = new Vector3(313.3f, 2.14f, -37.118f);
         }
         else
         {
-            playerPrefabs[index].GetComponent<IDamageable>().respawnPos = new Vector3(-313.3f, 2.14f, -37.118f);
+            playerPrefabs[index].GetComponent<PlayerStats>().respawnPos = new Vector3(-313.3f, 2.14f, -37.118f);
         }
 
     }

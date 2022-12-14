@@ -1,6 +1,4 @@
 ﻿using Photon.Pun;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class MinionsBehaviour : BasicAIMovement, IPunObservable
@@ -35,22 +33,19 @@ public class MinionsBehaviour : BasicAIMovement, IPunObservable
         if (PhotonNetwork.IsMasterClient)
         {
             HealthBehaviour();
-            //if(GetHealth() > 20)
-            //{
-                CheckTarget();
+            CheckTarget();
 
-                if (GetCanAct() && GetCanMove())
+            if (GetCanAct() && GetCanMove())
+            {
+                GetNearestTarget();
+                if (Cible)
                 {
-                    GetNearestTarget();
-                    if (Cible)
-                    {
-                        WalkToward();
-                        gameObject.transform.LookAt(new Vector3(Cible.transform.position.x, transform.position.y, Cible.transform.position.z));
-                    }        
-                    //Movement + attack
-                    DefaultMinionBehaviour();
-                }
-            //}        
+                    WalkToward();
+                    gameObject.transform.LookAt(new Vector3(Cible.transform.position.x, transform.position.y, Cible.transform.position.z));
+                }        
+                //Movement + attack
+                DefaultMinionBehaviour();
+            }
         }
     }
 

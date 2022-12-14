@@ -861,7 +861,7 @@ MonoBehaviour:
   Position:
     m_InternalValue: {x: 0, y: 0, z: 0}
   gold: 0
-  respawnPos: {x: 0, y: 0, z: 0}
+  respawnPos: {x: -313.3, y: 2.14, z: -37.118}
   deathPos: {x: 0, y: 0, z: 0}
   items: []
   role: 2

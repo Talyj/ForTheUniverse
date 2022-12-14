@@ -46,7 +46,6 @@ public class SpawnMinion : MonoBehaviour
         }
     }
 
-    [PunRPC]
     public void SetMinions(BasicAIStats.Way way, Team team, int loopCounter)
     {
         Vector3 spawn = new Vector3(0, 0, 0);
