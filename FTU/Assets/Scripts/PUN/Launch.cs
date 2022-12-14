@@ -6,7 +6,7 @@ using TMPro;
 using Photon.Realtime;
 using System.Linq;
 
-public class Launch : MonoBehaviourPunCallbacks
+public class Launch : MonoBehaviourPunCallbacks, IPunObservable
 {
 
     public static Launch Instance;
@@ -77,12 +77,56 @@ public class Launch : MonoBehaviourPunCallbacks
 
         for (int i = 0; i < players.Count(); i++)
         {
+            
             Instantiate(playerListPrefab, playerListContent).GetComponent<PlayerListItem>().SetUp(players[i]);
+            
         }
 
-        startGameButton.SetActive(PhotonNetwork.IsMasterClient);
+            startGameButton.SetActive(PhotonNetwork.IsMasterClient);
+        if (PhotonNetwork.IsMasterClient)
+        {
+            CreateTeams(players);
+
+        }
+        //PhotonView photonView = PhotonView.Get(this);
+        //photonView.RPC(nameof(CreateTeams), RpcTarget.All, players );
+    }
+    void IPunObservable.OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            stream.SendNext(playerListPrefab.GetComponent<PlayerListItem>().textTeam.ToString());
+        }
+        else
+        {
+            playerListPrefab.GetComponent<PlayerListItem>().textTeam= (TMP_Text)stream.ReceiveNext();
+            //gameObject.GetComponent<Renderer>().material.color = new Color((float)stream.ReceiveNext(), (float)stream.ReceiveNext(), (float)stream.ReceiveNext());
+        }
+    }
+    //[PunRPC]
+    void CreateTeams(Player[] players)
+    {
+        for (int i = 0; i < players.Count(); i++)
+        {
+            if (i % 2 == 0)
+            {
+                //players[i].CustomProperties["teams"] = Team.Dominion;
+                PlayerPrefs.SetInt("Teams", 0);
+            }
+            else
+            {
+                //players[i].CustomProperties["teams"] = Team.Veritas;
+                PlayerPrefs.SetInt("Teams", 1);
+            }
+        }
+
     }
 
+    public override void OnPlayerLeftRoom(Player otherPlayer)
+    {
+        Player[] players = PhotonNetwork.PlayerList;
+        //photonView.RPC(nameof(CreateTeams), RpcTarget.All, players);
+    }
     public override void OnMasterClientSwitched(Player newMasterClient)
     {
         startGameButton.SetActive(PhotonNetwork.IsMasterClient);
