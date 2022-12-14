@@ -29,26 +29,31 @@ public class SlimeBehaviour : VoisterBehaviour, IPunObservable
     // Update is called once per frame
     public void Update()
     {
-        if (PhotonNetwork.IsMasterClient)
-        {
-            HealthBehaviour();
-            ExperienceBehaviour();
-            VoisterBaseAction();
-            CheckTarget();
+        //if (PhotonNetwork.IsMasterClient)
+        //{
+        //    HealthBehaviour();
+        //    ExperienceBehaviour();
+        //    VoisterBaseAction();
+        //    CheckTarget();
 
-            if (GetCanAct() && GetCanMove())
-            {
-                GetNearestTarget();
-                if (Cible)
-                {
-                    WalkToward();
-                    gameObject.transform.LookAt(new Vector3(Cible.transform.position.x, transform.position.y, Cible.transform.position.z));
-                    VoisterBasicAttack();
-                }
-                //Movement + attack
-                VoisterMovement();
-            }
-        }
+        //    if (GetCanAct() && GetCanMove())
+        //    {
+        //        GetNearestTarget();
+        //        if (Cible)
+        //        {
+        //            WalkToward();
+        //            gameObject.transform.LookAt(new Vector3(Cible.transform.position.x, transform.position.y, Cible.transform.position.z));
+        //            VoisterBasicAttack();
+        //        }
+        //        //Movement + attack
+        //        VoisterMovement();
+        //    }
+        //}
+    }
+
+    public void FixedUpdate()
+    {
+        MovementTraining();
     }
 
     public void BouleBoom()
