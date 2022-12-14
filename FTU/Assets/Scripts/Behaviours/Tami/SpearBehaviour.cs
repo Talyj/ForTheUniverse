@@ -10,22 +10,13 @@ public class SpearBehaviour : Projectile
     //public Transform targetTransform;
     public new void Start()
     {
-        StartCoroutine(DestroyBullet());
+        StartCoroutine(DestroyBullet(2f));
     }
 
     // Update is called once per frame
     public new void Update()
     {
         //transform.LookAt(targetTransform);
-    }
-
-    private IEnumerator DestroyBullet()
-    {
-        yield return new WaitForSeconds(2f);
-        if (photonView.IsMine)
-        {
-            PhotonNetwork.Destroy(gameObject);
-        }
     }
 
     private void OnCollisionEnter(Collision other)

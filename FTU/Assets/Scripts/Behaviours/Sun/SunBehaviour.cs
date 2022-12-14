@@ -31,16 +31,9 @@ public class SunBehaviour : PlayerStats
 
     public void Start()
     {
-        Init();
-        SetMoveSpeed(30f);
-        SetAttackRange(20f);
-        SetHealth(500f);
-        SetMaxHealth(500f);
-        SetResPhys(50f);
-        SetResMag(50f);
-        SetDegMag(50f);
-        SetDegPhys(50f);
-        SetAttackSpeed(1.95f);
+        PlayerStatsSetUp();
+        BaseInit();
+        SetUpCharacters(role, false, false);
 
         CameraWork();
         currentStick = Sticks.AuraStick;
@@ -134,7 +127,7 @@ public class SunBehaviour : PlayerStats
                 }
                 break;
             case Sticks.SpiritSitck:
-                if (Cible.GetComponent<IDamageable>().enemyType == EnemyType.joueur)
+                if (Cible.GetComponent<IDamageable>().enemyType == EnemyType.player)
                 {
                     damageSupp = DamageMultiplier(GetDegMag(), 0.5f);
                 }
@@ -170,7 +163,7 @@ public class SunBehaviour : PlayerStats
                     target.GetComponent<IDamageable>().SetCanAct(false);
                     StartCoroutine(SwapCooldown(target));
                 }
-                else if(currentStick == Sticks.SpiritSitck && target.GetComponent<IDamageable>().enemyType == EnemyType.joueur)
+                else if(currentStick == Sticks.SpiritSitck && target.GetComponent<IDamageable>().enemyType == EnemyType.player)
                 {
                     var speedTemp = target.GetComponent<IDamageable>().GetMoveSpeed();
                     target.GetComponent<IDamageable>().SetMoveSpeed(GetMoveSpeed()/2);

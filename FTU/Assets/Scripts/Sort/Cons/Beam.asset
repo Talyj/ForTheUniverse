@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Beam
   m_EditorClassIdentifier: 
   Name: Beam
-  Cost: 1
+  Cost: 10
   CastTime: 1
-  Cooldown: 0
+  Cooldown: 10
   isCooldown: 0
   type: 0
   Damage: 0

@@ -29,7 +29,7 @@ public class Targeting : MonoBehaviour
                     {
                         if (component.GetComponent<IDamageable>().GetEnemyType()== IDamageable.EnemyType.minion ||
                             component.GetComponent<IDamageable>().GetEnemyType()== IDamageable.EnemyType.voister ||
-                            component.GetComponent<IDamageable>().GetEnemyType()== IDamageable.EnemyType.joueur ||
+                            component.GetComponent<IDamageable>().GetEnemyType()== IDamageable.EnemyType.player ||
                             component.GetComponent<IDamageable>().GetEnemyType()== IDamageable.EnemyType.dieu ||
                             component.GetComponent<IDamageable>().GetEnemyType()== IDamageable.EnemyType.golem)
                         {

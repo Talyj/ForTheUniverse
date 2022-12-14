@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MauBehaviour : PlayerStats
+public class MauBehaviour : BasicAIMovement
 {
     //Skill1
     public GameObject roarArea;
@@ -24,7 +24,7 @@ public class MauBehaviour : PlayerStats
         baseMag = 1;
         basePhys = 1;       
 
-        Init();
+        BaseInit();
         SetMoveSpeed(30f);
         SetAttackRange(20f);
         SetViewRange(30f);
@@ -35,6 +35,7 @@ public class MauBehaviour : PlayerStats
         SetDegMag(200f);
         SetDegPhys(200f);
         SetAttackSpeed(1.95f);
+        SetEnemyType(EnemyType.dieu);
         Instance = this;
         foreach (var elmt in skills)
         {
@@ -69,22 +70,6 @@ public class MauBehaviour : PlayerStats
                 {
                     transform.position = Vector3.MoveTowards(transform.position, new Vector3(templeTransform.position.x, transform.position.y, templeTransform.position.z), GetMoveSpeed() * Time.deltaTime);
                 }
-                //Control boss as a player for TEST
-                //MovementPlayer();
-                //if (Input.GetKeyDown(KeyCode.Alpha1) && Cible != null && Vector3.Distance(gameObject.transform.position, Cible.transform.position) < GetAttackRange() * 4)
-                //{
-                //    Roar();
-                //}
-
-                //if (Input.GetKeyDown(KeyCode.Alpha2))
-                //{
-                //    Stomp();
-                //}
-
-                //if (Input.GetKeyDown(KeyCode.Alpha3)/* && GetCanUlt() == true*/)
-                //{
-                //    Ultime();
-                //}
             }
         }
     }
@@ -138,7 +123,7 @@ public class MauBehaviour : PlayerStats
         if (!isAttacking && Cible != null)
         {
             isAttacking = true;
-            AttackSystemAI();
+            BasicAttackIA();
         }
     }
 

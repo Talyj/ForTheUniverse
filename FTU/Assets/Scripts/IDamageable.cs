@@ -11,10 +11,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     [SerializeField]
     ControlType cc;
     public GameObject Cible;
-    public float gold;
     //[SerializeField] public GameObject deathEffect;   
-    [HideInInspector] public Vector3 respawnPos;
-    [HideInInspector] public Vector3 deathPos;
     public string userId;
     [Header("Stats")]
     [SerializeField] private float Health, MaxHealth;
@@ -25,12 +22,9 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     private float Mana, MaxMana;
     private float ResistancePhysique; // calcul des resistance health = health - (DegatsPhysiqueRe�u -((ResistancePhysique * DegatsPhysiqueRe�u)/100)
     private float ResistanceMagique; //calcul des resistance health = health - (DegatsMagiqueRe�u - ((ResistanceMagique * DegatsMagiqueRe�u) / 100)
-    [SerializeField] private float Exp;
-    [SerializeField]private float MaxExp;
-    [SerializeField] private float ExpRate;//multiplicateur de l'exp max
+
     private float DegatsPhysique;
     private float DegatsMagique;
-    private int lvl;
     private bool canMove;
     private bool canAct;
     private bool isMoving;
@@ -39,24 +33,35 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     private bool InCombat;
     private bool IsDead;
     private bool InRegen;
-    private float respawnCooldown;
     private float cptRegen = 0;
+    public bool isAttacking;
+
+    //exp
+    [SerializeField] protected float Exp;
+    [SerializeField] protected float MaxExp;
+    [SerializeField] protected float ExpRate;//multiplicateur de l'exp max
+    [SerializeField] protected int lvl;
 
     [Header("Ranged variables")]
     public GameObject projPrefab;
     public Transform SpawnPrefab;
+
+    public Team team;
+    public float damageSupp;
+    public bool isAI;
+
+
+
 
     public EnemyType enemyType;
     public enum EnemyType
     {
         minion,
         golem,
-        joueur,
+        player,
         dieu,
         voister
     }
-
-    public Team team;
     
 
     public enum DamageType
@@ -75,6 +80,13 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         slow,//move speed ralenti
         charme
     }
+    //ControlType cc;
+    [Header("Competences")]
+    public Passifs passif;
+    public Skills[] skills;
+
+    //Damage
+    public GameObject ult;
 
 
     public Transform SpawnPrefab2;
@@ -87,6 +99,19 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     //{
     //    return useSkills;
     //}
+    public float GetExp()
+    {
+        return Exp;
+    }
+
+    public float GetMaxExp()
+    {
+        return MaxExp;
+    }
+    public int GetLvl()
+    {
+        return lvl;
+    }
     public bool IsMoving()
     {
         return isMoving;
@@ -146,15 +171,6 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     {
         return ResistanceMagique;
     }
-    public float GetExp()
-    {
-        return Exp;
-    }
-
-    public float GetMaxExp()
-    {
-        return MaxExp;
-    }
 
     public float GetDegPhys()
     {
@@ -163,10 +179,6 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     public float GetDegMag()
     {
         return DegatsMagique;
-    }
-    public int GetLvl()
-    {
-        return lvl;
     }
 
     public bool GetDeath()
@@ -187,6 +199,18 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     #endregion
     #region Setter
 
+    public void SetExp(float value)
+    {
+        Exp += value;
+    }
+    public void SetMaxExp(float value)
+    {
+        MaxExp = value;
+    }
+    public void SetLvl(int value)
+    {
+        lvl = value;
+    }
     public void SetIsMoving(bool value)
     {
         isMoving = value;
@@ -245,14 +269,6 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     {
         ResistanceMagique = value;
     }
-    public void SetExp(float value)
-    {
-        Exp += value;
-    }
-    public void SetMaxExp(float value)
-    {
-        MaxExp = value;
-    }
     public void SetDegPhys(float value)
     {
         DegatsPhysique = value;
@@ -261,20 +277,21 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     {
         DegatsMagique = value;
     }
-    public void SetLvl(int value)
-    {
-        lvl = value;
-    }
     public void SetDeath(bool value)
     {
         IsDead = value;
     }
+
+    public void SetEnemyType(EnemyType value)
+    {
+        enemyType = value;
+    }
     #endregion
 
     #endregion
 
 
-    public void Init()
+    public void BaseInit()
     {
         canMove = true;
         canAct = true;
@@ -284,11 +301,8 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         InRegen = false;
 
         Health = MaxHealth;
-        //deathEffect.SetActive(false);
-        //for (int i = 0; i < disableOnDeath.Length; i++)
-        //{
-        //    disableOnDeath[i].enabled = true;
-        //}
+        Mana = MaxMana;
+
         Rigidbody rb = GetComponent<Rigidbody>();
         if (rb != null)
         {
@@ -299,10 +313,9 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         {
             col.enabled = true;
         }
-        CharacterStatsSetUp();
     }
 
-    public void CharacterStatsSetUp()
+    public void SetupForAI()
     {
         SetMaxHealth(500);
         SetHealth(GetMaxHealth());
@@ -313,16 +326,8 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         SetMana(GetMaxMana());
         SetResPhys(0);
         SetResMag(0);
-        SetMaxExp(100);
-        ExpRate = 1.85f;
         SetDegPhys(100);
         SetDegMag(100);
-
-
-        respawnCooldown = 10.0f;
-
-        SetExp(0);
-        SetLvl(1);
     }
 
     
@@ -356,7 +361,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         }
     }
 
-    public void HealthBehaviour()
+    protected void HealthBehaviour()
     {
 
         if (Health >= MaxHealth)
@@ -368,106 +373,87 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
             Mana = MaxMana;
         }
 
-        if(Health <= 0)
+        if (Health <= 0)
         {
-            if (gameObject.CompareTag("Player"))
+            photonView.RPC("GiveExperience", RpcTarget.All, new object[] { });
+            if (gameObject.CompareTag("dd"))
             {
-                var rend = GetComponents<Renderer>();
-                if (rend != null)
-                {
-                    for(int i = 0; i < rend.Length; i++)
-                    {
-                        rend[i].enabled = false;
-                    }
-                    
-                }
-                StartCoroutine(Spawn(rend));
-            }
-            else if (gameObject.CompareTag("dd"))
-            {
-
+                //Victory
             }
             else if (PhotonNetwork.IsMasterClient)
             {
                 PhotonNetwork.Destroy(gameObject.GetComponent<PhotonView>());
             }
-        }
-        Regen();
+        }        
     }
 
-    IEnumerator Spawn(Renderer[] rend)
-    {
-        if(transform.position != deathPos)
-        {
-            transform.position = deathPos;
-            yield return new WaitForSeconds(respawnCooldown);
-
-            SetDefault(rend);
-            transform.position = respawnPos;
-        }
-    }
-
-    public void SetDefault(Renderer[] rend)
-    {
-        Health = MaxHealth;
-        Mana = MaxMana;
-        //deathEffect.SetActive(false);
-        //for (int i = 0; i < disableOnDeath.Length; i++)
-        //{
-        //    disableOnDeath[i].enabled = true;
-        //}
-        for (int i = 0; i < rend.Length; i++)
-        {
-            rend[i].enabled = true;
-        }
-    }
-
-    public void CheckTarget()
-    {   
-        if(Cible == null)
-        {
-            Cible = null;
-        }
-
-        if(Cible != null)
-        {
-            if (Cible.CompareTag("Player"))
-            {
-                if(Cible.GetComponent<IDamageable>().GetHealth() <= 0)
-                {
-                    Cible = null;
-                }
-            }
-        }
-    }
-
-    //Has to be present in the final update
     public void ExperienceBehaviour()
     {
         if (Exp >= MaxExp)
         {
             float reste = Exp - MaxExp;
             lvl += 1;
-            Exp = 0 + reste;
+            Exp = reste;
             MaxExp = MaxExp * ExpRate;
             print("lvl up");
             if (lvl == 6)
             {
-                canUlt = true;
+                SetCanUlt(true);
             }
             // augmentation des stats a faire
             //test en dur a rendre plus automatique par scriptableobject surement
-            MaxHealth += 106;
-            MaxMana += 65;
-            AttackSpeed += .12f;
-            DegatsPhysique += 3.75f;
-            DegatsMagique += 2.75f;
-            ResistanceMagique += 2.25f;
-            ResistancePhysique += 2.25f;
-            MoveSpeed += 0.55f;
+            SetMaxHealth(GetMaxHealth() * 1.06f);
+            SetMaxMana(GetMaxMana() * 1.05f);
+            SetAttackSpeed(GetAttackSpeed() * 1.12f);
+            SetDegPhys(GetDegPhys() * 1.75f);
+            SetDegMag(GetDegMag() * 1.75f);
+            SetResMag(GetResMag() * 1.25f);
+            SetResPhys(GetResPhys() * 1.25f);
+            SetMoveSpeed(GetMoveSpeed() * 1.15f);
         }
     }
-   
+
+    [PunRPC]
+    public void GiveExperience()
+    {
+        var expToGive = 0;
+        //TODO Change the amount of xp
+        switch (enemyType)
+        {
+            case EnemyType.minion:
+                expToGive = 100;
+                break;
+            case EnemyType.player:
+                expToGive = 1000 * gameObject.GetComponent<PlayerStats>().GetLvl();
+                break;
+            case EnemyType.dieu:
+                expToGive = 10000;
+                break;
+            case EnemyType.golem:
+                expToGive = 500;
+                break;
+            case EnemyType.voister:
+                expToGive = 200 * gameObject.GetComponent<VoisterBehaviour>().GetLvl();
+                break;
+        }
+
+        Collider[] hitColliders = Physics.OverlapSphere(gameObject.transform.position, 30f);
+        if (hitColliders != null)
+        {
+            foreach (var col in hitColliders)
+            {
+                var collider = col.GetComponent<PlayerStats>();
+                if (collider)
+                {
+                    if (collider.team != team && collider.enemyType == EnemyType.player ||
+                        collider.team != team && collider.enemyType == EnemyType.voister)
+                    {
+                        collider.SetExp(expToGive);
+                    }
+                }
+            }
+        }
+    }
 
     public IEnumerator CoolDown(Skills skill)
     {
@@ -498,39 +484,46 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         }
     }
 
-    public void TakeDamage(float DegatsRecu, DamageType type)
+    public float TakeDamage(float DegatsRecu, DamageType type)
     {
-        var TypeConvert = 0;
+        //Degat brut
+        var degRes = DegatsRecu;
         switch (type)
         {
             case DamageType.physique:
-                TypeConvert = 0;
+                degRes = (DegatsRecu - ((ResistancePhysique * DegatsRecu) / 100)); // physique
                 break;
             case DamageType.magique:
-                TypeConvert = 1;
-                break;
-            case DamageType.brut:
-                TypeConvert = 2;
+                degRes = (DegatsRecu - ((ResistanceMagique * DegatsRecu) / 100)); // magique
                 break;
         }
+        
 
-        photonView.RPC("Damages", RpcTarget.All, new object[] { DegatsRecu, TypeConvert});
+        photonView.RPC("Damages", RpcTarget.All, new object[] { DegatsRecu });
+        return degRes;
     }
 
     [PunRPC]
-    public void Damages(float DegatsRecu, int type)
+    public void Damages(float DegatsRecu)
     {
-        switch (type)
+        Health = Health - DegatsRecu;
+    }
+
+    public void WalkToward()
+    {
+        try
         {
-            case 0:
-                Health = Health - (DegatsRecu - ((ResistancePhysique * DegatsRecu) / 100)); // physique
-                break;
-            case 1:
-                Health = Health - (DegatsRecu - ((ResistanceMagique * DegatsRecu) / 100)); // magique
-                break;
-            case 2:
-                Health -= DegatsRecu;
-                break;
+            var dist = Vector3.Distance(transform.position, Cible.transform.position);
+            if (dist > gameObject.GetComponent<IDamageable>().GetAttackRange())
+            {
+                SetIsMoving(true);
+                transform.position = Vector3.MoveTowards(transform.position, new Vector3(Cible.transform.position.x, transform.position.y, Cible.transform.position.z), GetMoveSpeed() * Time.deltaTime);
+            }
+            SetIsMoving(false);
+        }
+        catch (NullReferenceException e)
+        {
+            Cible = null;
         }
     }
 
@@ -564,7 +557,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     {
         if(enemyToCompare == EnemyType.minion ||
         enemyToCompare == EnemyType.voister ||
-        enemyToCompare == EnemyType.joueur ||
+        enemyToCompare == EnemyType.player ||
         enemyToCompare == EnemyType.dieu ||
         enemyToCompare == EnemyType.golem)
         {
@@ -577,36 +570,13 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     {
         if (enemyToCompare == EnemyType.minion ||
         enemyToCompare == EnemyType.voister ||
-        enemyToCompare == EnemyType.joueur ||
+        enemyToCompare == EnemyType.player ||
         enemyToCompare == EnemyType.dieu ||
         enemyToCompare == EnemyType.golem && cc != ControlType.none)
         {
             return true;
         }
         return false;
-    }
-
-    public void GetNearestTarget()
-    {
-        if (Cible == null)
-        {
-            var test = GetViewRange();
-            Collider[] hitColliders = Physics.OverlapSphere(gameObject.transform.position, GetViewRange());
-            if (hitColliders != null)
-            {
-                foreach (var col in hitColliders)
-                {                    
-                    if(col.GetComponent<IDamageable>())
-                    {
-                        if (col.GetComponent<IDamageable>().team != team)
-                        {
-                            Cible = col.gameObject;
-                            break;
-                        }
-                    }
-                }
-            }
-        }
     }
 
     public GameObject viewIdToGameObject(int actorNumber)
@@ -622,6 +592,83 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
             }
         }
         return res;
+    }
+
+    public IEnumerator AutoAttack()
+    {
+        while (Cible != null)
+        {
+            //anim.SetBool("AA", true);
+            try
+            {
+                if (Vector3.Distance(gameObject.transform.position, Cible.transform.position) < GetAttackRange() ||
+                    Vector3.Distance(gameObject.transform.position, Cible.transform.position) < GetAttackRange() * 5 && isAI)
+                {
+                    if (IsTargetable(Cible.GetComponent<IDamageable>().GetEnemyType()))
+                    {
+                        Cible.GetComponent<IDamageable>().TakeDamage(GetDegPhys() + damageSupp, DamageType.physique);
+                    }
+                }
+                else
+                {
+                    //anim.SetBool("AA", false);
+                }
+
+                if (Vector3.Distance(gameObject.transform.position, Cible.transform.position) > GetAttackRange())
+                {
+                    //anim.SetBool("AA", false);
+                }
+            }
+            catch (NullReferenceException e)
+            {
+                Cible = null;
+            }
+
+            yield return new WaitForSeconds(GetAttackSpeed() / ((100 / +GetAttackSpeed()) * 0.01f));
+        }
+
+    }
+
+    public IEnumerator RangeAutoAttack()
+    {
+        while (Cible != null)
+        {
+            //anim.SetBool("AA", true);
+            try
+            {
+                if (Vector3.Distance(gameObject.transform.position, Cible.transform.position) < GetAttackRange() ||
+                    Vector3.Distance(gameObject.transform.position, Cible.transform.position) < GetAttackRange() * 5 && isAI)
+                {
+                    if (IsTargetable(Cible.GetComponent<IDamageable>().GetEnemyType()))
+                    {
+                        SpawnRangeAttack(Cible, damageSupp);
+                    }
+                }
+                else
+                {
+                    //anim.SetBool("AA", false);
+                }
+                if (Vector3.Distance(gameObject.transform.position, Cible.transform.position) > GetAttackRange())
+                {
+                    //anim.SetBool("AA", false);
+                }
+            }
+            catch (NullReferenceException e)
+            {
+                Cible = null;
+            }
+            yield return new WaitForSeconds(GetAttackSpeed() / ((100 / GetAttackSpeed()) * 0.01f));
+        }
+
+    }
+
+    public void SpawnRangeAttack(GameObject Target, float dmgSupp = 0)
+    {
+        var bullets = PhotonNetwork.Instantiate(projPrefab.name, transform.position, Quaternion.identity);
+
+        bullets.GetComponent<Projectile>().SetDamages(GetDegMag() + dmgSupp, DamageType.magique);
+        bullets.GetComponent<Projectile>().target = Target;
+        bullets.GetComponent<Projectile>().targetSet = true;
     }
 
     void IPunObservable.OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)

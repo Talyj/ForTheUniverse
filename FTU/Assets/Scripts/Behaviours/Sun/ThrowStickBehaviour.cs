@@ -20,9 +20,9 @@ public class ThrowStickBehaviour : Projectile
 
     private IEnumerator DestroyBullet()
     {
-        yield return new WaitForSeconds(2f);
         if (photonView.IsMine)
         {
+            yield return new WaitForSeconds(2f);
             source.TP(gameObject.transform.position);
             PhotonNetwork.Destroy(gameObject);
         }

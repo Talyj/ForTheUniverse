@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Skills2
   m_EditorClassIdentifier: 
   Name: Stomp
-  Cost: 0
+  Cost: 20
   CastTime: 0
-  Cooldown: 0
+  Cooldown: 30
   isCooldown: 0
   type: 0
   Damage: 500

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Hero's call
   Cooldown: 0
-  Bonus: 0
-  Malus: 0
+  Bonus: 2
+  Malus: 2
   isCooldown: 0
   image: {fileID: 0}

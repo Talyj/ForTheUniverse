@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Vvs
   m_EditorClassIdentifier: 
   Name: Vvs
-  Cost: 1
+  Cost: 20
   CastTime: 5
-  Cooldown: 35
+  Cooldown: 30
   isCooldown: 0
   type: 2
   Damage: 0
