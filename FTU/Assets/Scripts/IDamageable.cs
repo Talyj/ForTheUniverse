@@ -487,13 +487,13 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
             if (Health < MaxHealth)
             {
                 float val = Mathf.FloorToInt(MaxHealth * 0.1f);
-                Health += val;
+                Health += val/2;
             }
 
             if (Mana < MaxMana)
             {
                 float val = Mathf.FloorToInt(MaxMana * 0.1f);
-                Mana += val;
+                Mana += val/2;
             }
         }
     }

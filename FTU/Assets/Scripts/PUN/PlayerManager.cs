@@ -35,10 +35,12 @@ public class PlayerManager : MonoBehaviour
         if(playerPrefabs[index].GetComponent<IDamageable>().team == Team.Dominion)
         {
             playerPrefabs[index].GetComponent<IDamageable>().respawnPos = new Vector3(313.3f, 2.14f, -37.118f);
+            //playerPrefabs[index].GetComponent<IDamageable>().respawnPos = new Vector3(325.3f, 2.14f, -37.118f);
         }
         else
         {
             playerPrefabs[index].GetComponent<IDamageable>().respawnPos = new Vector3(-313.3f, 2.14f, -37.118f);
+            //playerPrefabs[index].GetComponent<IDamageable>().respawnPos = new Vector3(310.3f, 2.14f, -37.118f);
         }
 
     }

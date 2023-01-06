@@ -6,7 +6,7 @@ using TMPro;
 using Photon.Realtime;
 using System.Linq;
 
-public class Launch : MonoBehaviourPunCallbacks, IPunObservable
+public class Launch : MonoBehaviourPunCallbacks
 {
 
     public static Launch Instance;
@@ -77,45 +77,42 @@ public class Launch : MonoBehaviourPunCallbacks, IPunObservable
 
         for (int i = 0; i < players.Count(); i++)
         {
-            
-            Instantiate(playerListPrefab, playerListContent).GetComponent<PlayerListItem>().SetUp(players[i]);
-            
+
+            GameObject pPref = Instantiate(playerListPrefab, playerListContent);
+            pPref.GetComponent<PlayerListItem>().SetUp(players[i]);
+            if (players.Count() >= 2)
+            {
+                Debug.Log("creation teams");
+                CreateTeams(players);
+                pPref.GetComponent<PlayerListItem>().GetTeam();
+            }
+            else
+            {
+                Debug.Log("wait a player");
+            }
         }
 
-            startGameButton.SetActive(PhotonNetwork.IsMasterClient);
-        if (PhotonNetwork.IsMasterClient)
-        {
-            CreateTeams(players);
+        startGameButton.SetActive(PhotonNetwork.IsMasterClient);
 
-        }
-        //PhotonView photonView = PhotonView.Get(this);
-        //photonView.RPC(nameof(CreateTeams), RpcTarget.All, players );
+        //CreateTeams(players);
+        //photonView.RPC(nameof(CreateTeams), RpcTarget.All, players);
     }
-    void IPunObservable.OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    {
-        if (stream.IsWriting)
-        {
-            stream.SendNext(playerListPrefab.GetComponent<PlayerListItem>().textTeam.ToString());
-        }
-        else
-        {
-            playerListPrefab.GetComponent<PlayerListItem>().textTeam= (TMP_Text)stream.ReceiveNext();
-            //gameObject.GetComponent<Renderer>().material.color = new Color((float)stream.ReceiveNext(), (float)stream.ReceiveNext(), (float)stream.ReceiveNext());
-        }
-    }
-    //[PunRPC]
+    
+
+    
     void CreateTeams(Player[] players)
     {
         for (int i = 0; i < players.Count(); i++)
         {
             if (i % 2 == 0)
             {
-                //players[i].CustomProperties["teams"] = Team.Dominion;
+                players[i].CustomProperties["teams"] = Team.Dominion;
                 PlayerPrefs.SetInt("Teams", 0);
+                
             }
             else
             {
-                //players[i].CustomProperties["teams"] = Team.Veritas;
+                players[i].CustomProperties["teams"] = Team.Veritas;
                 PlayerPrefs.SetInt("Teams", 1);
             }
         }
@@ -125,7 +122,7 @@ public class Launch : MonoBehaviourPunCallbacks, IPunObservable
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
         Player[] players = PhotonNetwork.PlayerList;
-        //photonView.RPC(nameof(CreateTeams), RpcTarget.All, players);
+        
     }
     public override void OnMasterClientSwitched(Player newMasterClient)
     {
@@ -154,6 +151,7 @@ public class Launch : MonoBehaviourPunCallbacks, IPunObservable
         for (int i = 0; i < players.Count(); i++)
         {
             Instantiate(playerListPrefab, playerListContent).GetComponent<PlayerListItem>().SetUp(players[i]);
+            
         }
 
     }
@@ -182,7 +180,11 @@ public class Launch : MonoBehaviourPunCallbacks, IPunObservable
 
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
-        Instantiate(playerListPrefab, playerListContent).GetComponent<PlayerListItem>().SetUp(newPlayer);
+        GameObject npPef = Instantiate(playerListPrefab, playerListContent);
+        npPef.GetComponent<PlayerListItem>().SetUp(newPlayer);
+        npPef.GetComponent<PlayerListItem>().GetTeam();
+        Player[] players = PhotonNetwork.PlayerList;
+        
     }
 
 
