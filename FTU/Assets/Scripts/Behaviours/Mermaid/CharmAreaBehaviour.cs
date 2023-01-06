@@ -4,26 +4,23 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
-public class CharmAreaBehaviour : MonoBehaviourPun
+public class CharmAreaBehaviour : Projectile
 {
     public MermaidBehaviour source;
 
-    private void Start()
+    private new void Start()
     {
         if (PhotonNetwork.IsMasterClient)
         {
-            StartCoroutine(DestroyBullet());
+            StartCoroutine(DestroyBullet(1f));
         }
     }
 
-    private IEnumerator DestroyBullet()
+    public new void Update()
     {
-        yield return new WaitForSeconds(1f);
-        if (photonView.IsMine)
-        {            
-            PhotonNetwork.Destroy(gameObject);
-        }
+        
     }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player") && other.gameObject.GetComponent<IDamageable>() && photonView.IsMine || other.CompareTag("minion") && other.gameObject.GetComponent<IDamageable>() && photonView.IsMine)

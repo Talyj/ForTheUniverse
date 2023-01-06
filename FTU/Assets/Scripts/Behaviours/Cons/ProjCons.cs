@@ -10,7 +10,7 @@ public class ProjCons : Projectile
 
     public new void Start()
     {
-        StartCoroutine(DestroyBullet());
+        StartCoroutine(DestroyBullet(3f));
     }
 
     public new void Update()
@@ -18,15 +18,6 @@ public class ProjCons : Projectile
         //:)
     }
 
-
-    private IEnumerator DestroyBullet()
-    {
-        if (photonView.IsMine)
-        {
-            yield return new WaitForSeconds(3f);
-            PhotonNetwork.Destroy(gameObject);
-        }
-    }
 
     private void OnCollisionEnter(Collision other)
     {
@@ -43,7 +34,6 @@ public class ProjCons : Projectile
                 }
             }
         }
-
     }
 
 }

@@ -1,8 +1,9 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Shop : MonoBehaviour
+public class Shop : MonoBehaviourPun
 {
     public Team team;
     public GameObject shopUI;

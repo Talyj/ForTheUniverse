@@ -17,14 +17,14 @@ namespace Com.MyCompany.MyGame
         [Tooltip("The list of prefab that represent the differente characters")]
         public GameObject[] playerPrefabs;
         
-        private int numberPlayer = 0;
+        private int numberPlayer = 2;
 
         public PlayerManager selector;
         public void Start()
         {
             if (SceneManager.GetActiveScene().name == "WaitingRoom")
             {
-                //LoadArena(); 
+                LoadArena(); 
                 return;
             }
             if (playerPrefabs[0] == null)
@@ -79,14 +79,15 @@ namespace Com.MyCompany.MyGame
                 Debug.LogError("PhotonNetwork : Trying to Load a level but we are not the master Client");
             }
             Debug.LogFormat("PhotonNetwork : Loading Level : {0}", PhotonNetwork.CurrentRoom.PlayerCount);
-            if (PhotonNetwork.CurrentRoom.PlayerCount > numberPlayer)
-            {
-                PhotonNetwork.LoadLevel("MainGameRoom");
-            }
-            else
-            {
-                PhotonNetwork.LoadLevel("WaitingRoom");
-            }
+            //if (PhotonNetwork.CurrentRoom.PlayerCount >= numberPlayer)
+            //{
+            //    PhotonNetwork.LoadLevel("MainGameRoom");
+            //}
+            //else
+            //{
+            //    PhotonNetwork.LoadLevel("WaitingRoom");
+            //}
+            PhotonNetwork.LoadLevel("TestIA");
         }
 
         public override void OnPlayerEnteredRoom(Player other)

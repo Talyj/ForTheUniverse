@@ -297,7 +297,7 @@ GameObject:
   - component: {fileID: -5763390360863358521}
   - component: {fileID: -4455573630272066652}
   m_Layer: 9
-  m_Name: BigEd
+  m_Name: BigEd1
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -511,41 +511,38 @@ MonoBehaviour:
   attackType: 0
   cc: 0
   Cible: {fileID: 0}
-  gold: 0
-  respawnPos: {x: 0, y: 0, z: 0}
-  deathPos: {x: 0, y: 0, z: 0}
   userId: 
   Health: 0
   MaxHealth: 0
   AttackSpeed: 0
   AttackRange: 0
+  canUlt: 0
+  isAttacking: 0
   Exp: 0
   MaxExp: 0
   ExpRate: 0
-  canUlt: 0
+  lvl: 0
   projPrefab: {fileID: 1442863784273826401, guid: 21489d385334c8a4a9c933e27f0f7f49, type: 3}
   SpawnPrefab: {fileID: 3853125024926037199}
-  enemyType: 2
   team: 0
-  SpawnPrefab2: {fileID: 3853125026226610735}
-  Ui: {fileID: 8817058474025466976}
-  current: 0
-  pathDone: 0
-  Position:
-    m_InternalValue: {x: 0, y: 0, z: 0}
-  targetsUp: []
-  targetsDown: []
-  way: 0
-  isAttacking: 0
+  damageSupp: 0
+  isAI: 0
+  enemyType: 2
   passif: {fileID: 11400000, guid: 1ccf4fbedf3245f4790812ff7d16efe3, type: 2}
   skills:
   - {fileID: 11400000, guid: 56b04604e98bd404e908c187e82e491b, type: 2}
   - {fileID: 11400000, guid: 02960afd793a02448be2f0f7b5c11a8c, type: 2}
   - {fileID: 11400000, guid: 687c88e1b62b39a4d9bc0e550c723efa, type: 2}
-  items: []
-  damageSupp: 0
   ult: {fileID: 0}
-  isAI: 0
+  SpawnPrefab2: {fileID: 3853125026226610735}
+  Ui: {fileID: 8817058474025466976}
+  Position:
+    m_InternalValue: {x: 0, y: 0, z: 0}
+  gold: 0
+  respawnPos: {x: 0, y: 0, z: 0}
+  deathPos: {x: 0, y: 0, z: 0}
+  items: []
+  role: 2
   ultime: {fileID: 7061508128071392999, guid: 76cc9656b8f14d44f8524cdb961fcb30, type: 3}
   skill1: {fileID: 5967569795757692627, guid: 067b691c229236143938026a94fa7310, type: 3}
 --- !u!114 &3773303874095343556
@@ -602,7 +599,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3853125026446671208}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 048f2d621b07cb44fae58b01b5476f0e, type: 3}
   m_Name: 

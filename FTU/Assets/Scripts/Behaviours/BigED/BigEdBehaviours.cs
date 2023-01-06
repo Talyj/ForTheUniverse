@@ -14,16 +14,10 @@ public class BigEdBehaviours : PlayerStats
     // Start is called before the first frame update
     void Start()
     {
-        Init();
-        SetMoveSpeed(30f);
-        SetAttackRange(10f);
-        SetHealth(500f);
-        SetMaxHealth(500f);
-        SetResPhys(50f);
-        SetResMag(50f);
-        SetAttackSpeed(1.95f);
-        SetDegMag(50f);
-        SetDegPhys(50f);
+        PlayerStatsSetUp();
+        BaseInit();
+        SetUpCharacters(role, false, false);
+
         CameraWork();
         foreach (var elmt in skills)
         {

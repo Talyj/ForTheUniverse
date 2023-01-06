@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: MermaidSong
   m_EditorClassIdentifier: 
   Name: MermaidSong
-  Cost: 1
+  Cost: 100
   CastTime: 5
-  Cooldown: 1
+  Cooldown: 45
   isCooldown: 0
   type: 1
   Damage: 0

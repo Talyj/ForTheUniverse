@@ -4,20 +4,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GolemBehaviour : IDamageable
+public class GolemBehaviour : BasicAIStats
 {
     private float attackCooldown;
 
     public void Start()
     {
-        Init();
+        BaseInit();
+        AISetup();
         SetHealth(2500f);
         SetMaxHealth(2500f);
         SetAttackRange(30f);
         SetViewRange(GetAttackRange());
-        SetAttackSpeed(1.0f);
-        SetDegMag(200);
-        SetDegPhys(200);
+        SetAttackSpeed(2.0f);
+        SetDegMag(200f);
+        SetDegPhys(200f);
+        SetEnemyType(EnemyType.golem);
         attackCooldown = 0;
         Cible = null;
     }
