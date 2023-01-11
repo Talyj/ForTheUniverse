@@ -11,6 +11,7 @@ public class NeuralNetwork : IComparable<NeuralNetwork>
     private float[][] biases;//biasses    
     private float[][][] weights;//weights    
     private int[] activations;//layers
+    //Could change that to health ?
     public float fitness = 0;//fitness
 
     public NeuralNetwork(int[] layers)
@@ -37,6 +38,8 @@ public class NeuralNetwork : IComparable<NeuralNetwork>
     }
 
     //initializes and populates array for the biases being held within the network
+    //Change bias into a json ?
+    //Define different possible actions
     private void InitBiases()
     {
         List<float[]> biasList = new List<float[]>();
@@ -77,6 +80,7 @@ public class NeuralNetwork : IComparable<NeuralNetwork>
     //feed forward, inputs >==> outputs
     public float[] FeedForward(float[] inputs)
     {
+
         for (int i = 0; i < inputs.Length; i++)
         {
             neurons[0][i] = inputs[i];

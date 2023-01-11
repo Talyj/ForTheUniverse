@@ -199,6 +199,10 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     #endregion
     #region Setter
 
+    public void SetTeam(Team value)
+    {
+        team = value;
+    }
     public void SetExp(float value)
     {
         Exp += value;
@@ -402,9 +406,11 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
             }
             // augmentation des stats a faire
             //test en dur a rendre plus automatique par scriptableobject surement
+            SetHealth(GetHealth() * 1.06f);
             SetMaxHealth(GetMaxHealth() * 1.06f);
+            SetMana(GetMana() * 1.05f);
             SetMaxMana(GetMaxMana() * 1.05f);
-            SetAttackSpeed(GetAttackSpeed() * 1.12f);
+            SetAttackSpeed(GetAttackSpeed() * 0.97f);
             SetDegPhys(GetDegPhys() * 1.75f);
             SetDegMag(GetDegMag() * 1.75f);
             SetResMag(GetResMag() * 1.25f);
@@ -442,7 +448,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         {
             foreach (var col in hitColliders)
             {
-                var collider = col.GetComponent<PlayerStats>();
+                var collider = col.GetComponent<IDamageable>();
                 if (collider)
                 {
                     if (collider.team != team && collider.enemyType == EnemyType.player ||
@@ -656,7 +662,8 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
             {
                 Cible = null;
             }
-            yield return new WaitForSeconds(GetAttackSpeed() / ((100 / GetAttackSpeed()) * 0.01f));
+            var test = GetAttackSpeed() / ((100 / GetAttackSpeed()) * 0.01f);
+            yield return new WaitForSeconds(test);
         }
 
     }
@@ -685,5 +692,6 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
 public enum Team
 {
     Veritas = 0,
-    Dominion = 1
+    Dominion = 1,
+    Voister = 2
 }

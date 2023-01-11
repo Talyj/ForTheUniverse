@@ -245,3 +245,4 @@ MonoBehaviour:
     m_Bits: 55
   position: 0
   collided: 0
+  currentLvl: 1

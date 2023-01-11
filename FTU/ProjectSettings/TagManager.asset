@@ -11,6 +11,7 @@ TagManager:
   - Enemy
   - consLight
   - CheckPoint
+  - walls
   layers:
   - Default
   - TransparentFX

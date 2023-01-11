@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class SlimeBehaviour : VoisterBehaviour, IPunObservable
 {
-    // Start is called before the first frame update
     public void Start()
     {
         current = 0;
@@ -17,43 +16,43 @@ public class SlimeBehaviour : VoisterBehaviour, IPunObservable
         SetDegPhys(50f);
         SetResMag(20f);
         SetResPhys(20f);
-        SetAttackSpeed(10f);
+        SetAttackSpeed(1f);
         SetAttackRange(20f);
-        SetMaxHealth(200f);
 
         SetMoveSpeed(20f);
         SetViewRange(30f);
         isAttacking = false;
+        
     }
 
     // Update is called once per frame
     public void Update()
     {
-        //if (PhotonNetwork.IsMasterClient)
-        //{
-        //    HealthBehaviour();
-        //    ExperienceBehaviour();
-        //    VoisterBaseAction();
-        //    CheckTarget();
+        if (PhotonNetwork.IsMasterClient)
+        {
+            HealthBehaviour();
+            ExperienceBehaviour();
+            //VoisterBaseAction();
+            CheckTarget();
 
-        //    if (GetCanAct() && GetCanMove())
-        //    {
-        //        GetNearestTarget();
-        //        if (Cible)
-        //        {
-        //            WalkToward();
-        //            gameObject.transform.LookAt(new Vector3(Cible.transform.position.x, transform.position.y, Cible.transform.position.z));
-        //            VoisterBasicAttack();
-        //        }
-        //        //Movement + attack
-        //        VoisterMovement();
-        //    }
-        //}
+            if (GetCanAct() && GetCanMove())
+            {
+                GetNearestTarget();
+                if (Cible)
+                {
+                    //WalkToward();
+                    //gameObject.transform.LookAt(new Vector3(Cible.transform.position.x, transform.position.y, Cible.transform.position.z));
+                    VoisterBasicAttack();
+                }
+                //Movement + attack
+                //VoisterMovement();
+            }
+        }
     }
 
     public void FixedUpdate()
     {
-        MovementTraining();
+        if (PhotonNetwork.IsMasterClient) SurviveTraining();
     }
 
     public void BouleBoom()
@@ -114,4 +113,6 @@ public class SlimeBehaviour : VoisterBehaviour, IPunObservable
             StartCoroutine(CoolDown(skills[0]));
         }
     }
+
+    
 }

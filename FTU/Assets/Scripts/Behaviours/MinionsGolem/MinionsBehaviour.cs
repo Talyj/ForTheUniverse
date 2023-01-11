@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class MinionsBehaviour : BasicAIMovement, IPunObservable
 {
+    private float cpt = 0;
+
     public void Start()
     {
         BaseInit();
@@ -44,9 +46,20 @@ public class MinionsBehaviour : BasicAIMovement, IPunObservable
                     gameObject.transform.LookAt(new Vector3(Cible.transform.position.x, transform.position.y, Cible.transform.position.z));
                 }        
                 //Movement + attack
-                DefaultMinionBehaviour();
+                if(GetHealth() > 0)
+                {
+                    DefaultMinionBehaviour();
+                }
+            }
+            //TODO this is made for test have to get rid of the lines later
+            cpt += Time.deltaTime;
+            if (cpt >= 30)
+             {
+                cpt = 0;
+                PhotonNetwork.Destroy(gameObject);
             }
         }
+
     }
 
     void IPunObservable.OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
