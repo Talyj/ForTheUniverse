@@ -306,7 +306,6 @@ GameObject:
   - component: {fileID: 655764352}
   - component: {fileID: 655764351}
   - component: {fileID: 655764350}
-  - component: {fileID: 9122848305222528617}
   - component: {fileID: 7351668917223945717}
   m_Layer: 5
   m_Name: ddlCharacter
@@ -454,22 +453,6 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   m_AlphaFadeSpeed: 0.15
---- !u!114 &9122848305222528617
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 655764348}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ShowLayerWeightsInspector: 0
-  ShowParameterInspector: 1
-  m_SynchronizeParameters: []
-  m_SynchronizeLayers: []
 --- !u!95 &7351668917223945717
 Animator:
   serializedVersion: 4
@@ -1541,7 +1524,6 @@ GameObject:
   - component: {fileID: 3745250429198384679}
   - component: {fileID: 8564769031362089425}
   - component: {fileID: 3203647183435196684}
-  - component: {fileID: 7565413077623983458}
   m_Layer: 5
   m_Name: PlayerListItem
   m_TagString: Untagged
@@ -1687,26 +1669,3 @@ MonoBehaviour:
   perso: {fileID: 655764350}
   persoGO: {fileID: 655764348}
   textPersoGO: {fileID: 5875607715946047630}
---- !u!114 &7565413077623983458
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7254583326571215671}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ObservedComponentsFoldoutOpen: 1
-  Group: 0
-  prefixField: -1
-  Synchronization: 3
-  OwnershipTransfer: 0
-  observableSearch: 2
-  ObservedComponents:
-  - {fileID: 9122848305222528617}
-  sceneViewId: 0
-  InstantiationId: 0
-  isRuntimeInstantiated: 0

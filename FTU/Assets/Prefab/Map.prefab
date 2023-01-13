@@ -507,23 +507,30 @@ MonoBehaviour:
   attackType: 0
   cc: 0
   Cible: {fileID: 0}
-  gold: 0
-  respawnPos: {x: 0, y: 0, z: 0}
-  deathPos: {x: 0, y: 0, z: 0}
   userId: 
   Health: 0
   MaxHealth: 0
   AttackSpeed: 0
   AttackRange: 0
+  canUlt: 0
+  isAttacking: 0
   Exp: 0
   MaxExp: 0
   ExpRate: 0
-  canUlt: 0
+  lvl: 0
   projPrefab: {fileID: 0}
   SpawnPrefab: {fileID: 0}
-  enemyType: 1
   team: 1
+  damageSupp: 0
+  isAI: 0
+  enemyType: 1
+  passif: {fileID: 0}
+  skills: []
+  ult: {fileID: 0}
   SpawnPrefab2: {fileID: 0}
+  targetsUp: []
+  targetsDown: []
+  way: 0
 --- !u!114 &6550846103377602990
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -736,23 +743,30 @@ MonoBehaviour:
   attackType: 0
   cc: 0
   Cible: {fileID: 0}
-  gold: 0
-  respawnPos: {x: 0, y: 0, z: 0}
-  deathPos: {x: 0, y: 0, z: 0}
   userId: 
   Health: 0
   MaxHealth: 0
   AttackSpeed: 0
   AttackRange: 0
+  canUlt: 0
+  isAttacking: 0
   Exp: 0
   MaxExp: 0
   ExpRate: 0
-  canUlt: 0
+  lvl: 0
   projPrefab: {fileID: 0}
   SpawnPrefab: {fileID: 0}
-  enemyType: 1
   team: 0
+  damageSupp: 0
+  isAI: 0
+  enemyType: 1
+  passif: {fileID: 0}
+  skills: []
+  ult: {fileID: 0}
   SpawnPrefab2: {fileID: 0}
+  targetsUp: []
+  targetsDown: []
+  way: 0
 --- !u!114 &6550846103093183865
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -965,23 +979,30 @@ MonoBehaviour:
   attackType: 0
   cc: 0
   Cible: {fileID: 0}
-  gold: 0
-  respawnPos: {x: 0, y: 0, z: 0}
-  deathPos: {x: 0, y: 0, z: 0}
   userId: 
   Health: 0
   MaxHealth: 0
   AttackSpeed: 0
   AttackRange: 0
+  canUlt: 0
+  isAttacking: 0
   Exp: 0
   MaxExp: 0
   ExpRate: 0
-  canUlt: 0
+  lvl: 0
   projPrefab: {fileID: 0}
   SpawnPrefab: {fileID: 0}
-  enemyType: 1
   team: 1
+  damageSupp: 0
+  isAI: 0
+  enemyType: 1
+  passif: {fileID: 0}
+  skills: []
+  ult: {fileID: 0}
   SpawnPrefab2: {fileID: 0}
+  targetsUp: []
+  targetsDown: []
+  way: 0
 --- !u!114 &6550846102494523580
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1194,23 +1215,30 @@ MonoBehaviour:
   attackType: 0
   cc: 0
   Cible: {fileID: 0}
-  gold: 0
-  respawnPos: {x: 0, y: 0, z: 0}
-  deathPos: {x: 0, y: 0, z: 0}
   userId: 
   Health: 0
   MaxHealth: 0
   AttackSpeed: 0
   AttackRange: 0
+  canUlt: 0
+  isAttacking: 0
   Exp: 0
   MaxExp: 0
   ExpRate: 0
-  canUlt: 0
+  lvl: 0
   projPrefab: {fileID: 0}
   SpawnPrefab: {fileID: 0}
-  enemyType: 1
   team: 0
+  damageSupp: 0
+  isAI: 0
+  enemyType: 1
+  passif: {fileID: 0}
+  skills: []
+  ult: {fileID: 0}
   SpawnPrefab2: {fileID: 0}
+  targetsUp: []
+  targetsDown: []
+  way: 0
 --- !u!114 &6550846104470749397
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1423,23 +1451,30 @@ MonoBehaviour:
   attackType: 0
   cc: 0
   Cible: {fileID: 0}
-  gold: 0
-  respawnPos: {x: 0, y: 0, z: 0}
-  deathPos: {x: 0, y: 0, z: 0}
   userId: 
   Health: 0
   MaxHealth: 0
   AttackSpeed: 0
   AttackRange: 0
+  canUlt: 0
+  isAttacking: 0
   Exp: 0
   MaxExp: 0
   ExpRate: 0
-  canUlt: 0
+  lvl: 0
   projPrefab: {fileID: 0}
   SpawnPrefab: {fileID: 0}
-  enemyType: 1
   team: 0
+  damageSupp: 0
+  isAI: 0
+  enemyType: 1
+  passif: {fileID: 0}
+  skills: []
+  ult: {fileID: 0}
   SpawnPrefab2: {fileID: 0}
+  targetsUp: []
+  targetsDown: []
+  way: 0
 --- !u!114 &6550846104416509663
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1652,23 +1687,30 @@ MonoBehaviour:
   attackType: 0
   cc: 0
   Cible: {fileID: 0}
-  gold: 0
-  respawnPos: {x: 0, y: 0, z: 0}
-  deathPos: {x: 0, y: 0, z: 0}
   userId: 
   Health: 0
   MaxHealth: 0
   AttackSpeed: 0
   AttackRange: 0
+  canUlt: 0
+  isAttacking: 0
   Exp: 0
   MaxExp: 0
   ExpRate: 0
-  canUlt: 0
+  lvl: 0
   projPrefab: {fileID: 0}
   SpawnPrefab: {fileID: 0}
-  enemyType: 1
   team: 1
+  damageSupp: 0
+  isAI: 0
+  enemyType: 1
+  passif: {fileID: 0}
+  skills: []
+  ult: {fileID: 0}
   SpawnPrefab2: {fileID: 0}
+  targetsUp: []
+  targetsDown: []
+  way: 0
 --- !u!114 &6550846103915970985
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1881,23 +1923,30 @@ MonoBehaviour:
   attackType: 0
   cc: 0
   Cible: {fileID: 0}
-  gold: 0
-  respawnPos: {x: 0, y: 0, z: 0}
-  deathPos: {x: 0, y: 0, z: 0}
   userId: 
   Health: 0
   MaxHealth: 0
   AttackSpeed: 0
   AttackRange: 0
+  canUlt: 0
+  isAttacking: 0
   Exp: 0
   MaxExp: 0
   ExpRate: 0
-  canUlt: 0
+  lvl: 0
   projPrefab: {fileID: 0}
   SpawnPrefab: {fileID: 0}
-  enemyType: 1
   team: 0
+  damageSupp: 0
+  isAI: 0
+  enemyType: 1
+  passif: {fileID: 0}
+  skills: []
+  ult: {fileID: 0}
   SpawnPrefab2: {fileID: 0}
+  targetsUp: []
+  targetsDown: []
+  way: 0
 --- !u!114 &6550846103795207790
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2110,23 +2159,30 @@ MonoBehaviour:
   attackType: 0
   cc: 0
   Cible: {fileID: 0}
-  gold: 0
-  respawnPos: {x: 0, y: 0, z: 0}
-  deathPos: {x: 0, y: 0, z: 0}
   userId: 
   Health: 0
   MaxHealth: 0
   AttackSpeed: 0
   AttackRange: 0
+  canUlt: 0
+  isAttacking: 0
   Exp: 0
   MaxExp: 0
   ExpRate: 0
-  canUlt: 0
+  lvl: 0
   projPrefab: {fileID: 0}
   SpawnPrefab: {fileID: 0}
-  enemyType: 1
   team: 1
+  damageSupp: 0
+  isAI: 0
+  enemyType: 1
+  passif: {fileID: 0}
+  skills: []
+  ult: {fileID: 0}
   SpawnPrefab2: {fileID: 0}
+  targetsUp: []
+  targetsDown: []
+  way: 0
 --- !u!114 &6550846103653485613
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3111,7 +3167,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: b4d55a65dd9cb6747b3c26939bd81d13, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

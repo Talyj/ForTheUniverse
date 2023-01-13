@@ -85,8 +85,12 @@ public class ConsBehaviour : PlayerStats
                 {
                     Debug.Log("No target available");
                 }
-
-                if (Input.GetKeyDown(KeyCode.Alpha1))
+                if (Input.GetKeyDown(KeyCode.K))
+                {
+                    //photonView.RPC("DealDamages",RpcTarget.All, new object[] { 9999 });
+                    TakeDamage(9999, DamageType.physique);
+                }
+                    if (Input.GetKeyDown(KeyCode.Alpha1))
                 {
                     BeamUltra();
                 }

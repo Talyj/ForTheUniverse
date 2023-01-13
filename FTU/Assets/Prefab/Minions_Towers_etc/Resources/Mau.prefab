@@ -152,6 +152,9 @@ MonoBehaviour:
   projPrefab: {fileID: 0}
   SpawnPrefab: {fileID: 0}
   team: 0
+  teams:
+    Name: 
+    Code: 0
   damageSupp: 0
   isAI: 0
   enemyType: 3
