@@ -526,7 +526,7 @@ MonoBehaviour:
   SpawnPrefab: {fileID: 3853125024926037199}
   team: 0
   teams:
-    Name: 
+    Name: Dominion
     Code: 0
   damageSupp: 0
   isAI: 0

@@ -34,8 +34,10 @@ public class PlayerManager : MonoBehaviour
     {
         //playerPrefabs[index].GetComponent<IDamageable>().team = (Team)PlayerPrefs.GetInt("Teams");
         var team = player.GetPhotonTeam();
-        playerPrefabs[index].GetComponent<IDamageable>().teams = team;
+        playerPrefabs[index].GetComponent<IDamageable>().teams.Code = team.Code;
+        playerPrefabs[index].GetComponent<IDamageable>().teams.Name = team.Name;
         
+        PhotonNetwork.Instantiate(playerPrefabs[index].name, new Vector3(0f, 2.14f, 0f), Quaternion.identity, 0);
         if (team.Code == 0)
         {
             playerPrefabs[index].GetComponent<PlayerStats>().respawnPos = new Vector3(313.3f, 2.14f, -37.118f);
@@ -44,7 +46,6 @@ public class PlayerManager : MonoBehaviour
         {
             playerPrefabs[index].GetComponent<PlayerStats>().respawnPos = new Vector3(-313.3f, 2.14f, -37.118f);
         }
-        PhotonNetwork.Instantiate(playerPrefabs[index].name, new Vector3(0f, 2.14f, 0f), Quaternion.identity, 0);
         //if(playerPrefabs[index].GetComponent<IDamageable>().team == Team.Dominion)
         //{
         //    playerPrefabs[index].GetComponent<PlayerStats>().respawnPos = new Vector3(313.3f, 2.14f, -37.118f);

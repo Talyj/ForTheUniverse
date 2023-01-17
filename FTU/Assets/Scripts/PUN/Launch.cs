@@ -213,6 +213,20 @@ public class Launch : MonoBehaviourPunCallbacks
 
     public void StartGame()
     {
+        Player[] players = PhotonNetwork.PlayerList;
+        switch (players.Count())
+        {
+            case 2:
+                //load scene 1v1
+                break;
+            case > 2:
+                //load scene base
+                break;
+            case 1:
+                //load scene traning
+                break;
+        }
+
         PhotonNetwork.LoadLevel(1);
     }
 }
