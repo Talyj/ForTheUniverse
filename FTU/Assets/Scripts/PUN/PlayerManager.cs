@@ -26,6 +26,9 @@ public class PlayerManager : MonoBehaviour
         if (PV.IsMine)
         {
             CreateController();
+            var team = player.GetPhotonTeam();
+            playerPrefabs[index].GetComponent<IDamageable>().teams.Code = team.Code;
+            playerPrefabs[index].GetComponent<IDamageable>().teams.Name = team.Name;
             Debug.LogFormat("My team is {0} I am {1} and a play : {2}", player.GetPhotonTeam(), player.NickName, playerPrefabs[index].name);
         }
     }
@@ -33,9 +36,7 @@ public class PlayerManager : MonoBehaviour
     void CreateController()
     {
         //playerPrefabs[index].GetComponent<IDamageable>().team = (Team)PlayerPrefs.GetInt("Teams");
-        var team = player.GetPhotonTeam();
-        playerPrefabs[index].GetComponent<IDamageable>().teams.Code = team.Code;
-        playerPrefabs[index].GetComponent<IDamageable>().teams.Name = team.Name;
+        
         
         PhotonNetwork.Instantiate(playerPrefabs[index].name, new Vector3(0f, 2.14f, 0f), Quaternion.identity, 0);
         if (team.Code == 0)
