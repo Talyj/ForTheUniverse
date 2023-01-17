@@ -9,7 +9,7 @@ public class TrainingManager : MonoBehaviour
     public int populationSize;//creates population size
     public GameObject prefab;//holds bot prefab
 
-    public int[] layers = new int[3] { 7, 3, 3 };//initializing network to the right size
+    public int[] layers = new int[3] { 6, 3, 2 };//initializing network to the right size
 
     [Range(0.0001f, 1f)] public float MutationChance = 0.01f;
 
@@ -20,7 +20,7 @@ public class TrainingManager : MonoBehaviour
     //public List<Bot> Bots;
     public List<NeuralNetwork> networks;
     private List<VoisterBehaviour> voisters;
-    public GameObject spawnPos;
+    public GameObject[] spawnPos;
 
     //public string pathToSave = "Assets/AITraining/ModelSaveMove.txt";
     public string pathToSave = "Assets/AITraining/ModelSaveSurvive.txt";
@@ -53,7 +53,7 @@ public class TrainingManager : MonoBehaviour
         {
             for (int i = 0; i < voisters.Count; i++)
             {
-                if (voisters[i].GetHealth() <= 0) continue;
+                if (voisters[i] == null) continue;
                 PhotonNetwork.Destroy(voisters[i].gameObject);//if there are Prefabs in the scene this will get rid of them
             }
 
@@ -63,8 +63,8 @@ public class TrainingManager : MonoBehaviour
         voisters = new List<VoisterBehaviour>();
         for (int i = 0; i < populationSize; i++)
         {
-            Vector3 randomPos = new Vector3(spawnPos.transform.position.x + Random.Range(-20, 20), spawnPos.transform.position.y + 3, spawnPos.transform.position.z + Random.Range(-75, 75));
-            //Vector3 randomPos = spawnPos.transform.position;
+            //Vector3 randomPos = new Vector3(spawnPos[i].transform.position.x + Random.Range(-20, 20), spawnPos[i].transform.position.y + 3, spawnPos[i].transform.position.z + Random.Range(-75, 75));
+            Vector3 randomPos = spawnPos[i].transform.position;
 
             VoisterBehaviour voister = (PhotonNetwork.Instantiate(prefab.name, randomPos, new Quaternion(0, 0, 1, 0))).GetComponent<VoisterBehaviour>();//create botes
             voister.network = networks[i];//deploys network to each learner

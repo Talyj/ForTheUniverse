@@ -32,7 +32,7 @@ public class SlimeBehaviour : VoisterBehaviour, IPunObservable
         {
             HealthBehaviour();
             ExperienceBehaviour();
-            //VoisterBaseAction();
+            VoisterBaseAction();
             CheckTarget();
 
             if (GetCanAct() && GetCanMove())

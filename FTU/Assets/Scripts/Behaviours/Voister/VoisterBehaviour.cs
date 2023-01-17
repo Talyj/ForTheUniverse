@@ -58,6 +58,7 @@ public class VoisterBehaviour : BasicAIMovement, IPunObservable
     public bool collided;//To tell if the car has crashed
 
     public int currentLvl = 1;
+    public float lastHealth;
 
     private float reward = 0;
 
@@ -111,6 +112,10 @@ public class VoisterBehaviour : BasicAIMovement, IPunObservable
                     {
                         enemyDist = (raycastLenght - hit.distance) / raycastLenght;
                     }
+                    else if(hit.collider.gameObject.CompareTag("walls"))
+                    {
+                        enemyDist = (raycastLenght - hit.distance) / raycastLenght;
+                    }
 
                     input[i] = enemyDist;
                 }
@@ -120,39 +125,52 @@ public class VoisterBehaviour : BasicAIMovement, IPunObservable
                 }
             }
 
-            input[5] = -((GetHealth() - GetMaxHealth()) / GetHealth());
-            input[6] = -((GetLvl() - 20) / GetLvl());
+            //input[5] = ((GetHealth() - GetMaxHealth()) / GetHealth());
+            //input[6] = ((GetLvl() - 20) / GetLvl());
+            //input[5] = GetHealth() * 100 / GetMaxHealth() / 100;
+            input[5] = GetLvl() * 100 / 20 / 100;
             float[] output = network.FeedForward(input);//Call to network to feedforward
 
-            switch (Mathf.FloorToInt(output[2]))
+            //switch (Mathf.FloorToInt(output[2]))
+            //{
+            //    case -1:
+            //        GetNearestTarget();
+            //        if (Cible) VoisterBasicAttack();
+            //        break;
+            //    case 0:
+            //        GetNearestTarget();
+            //        break;
+            //}
+            GetNearestTarget();
+            if (Cible)
             {
-                case -1:
-                    GetNearestTarget();
-                    if (Cible) VoisterBasicAttack();
-                    break;
-                case 0:
-                    GetNearestTarget();
-                    break;
+                VoisterBasicAttack();
+                AddReward(2);
             }
             
 
 
-            transform.Rotate(0, output[0] * rotation, 0, Space.World);//controls the cars movement
-            transform.position += transform.right * output[1] * speed;//controls the cars turning
+            transform.Rotate(0, output[0] * rotation, 0, Space.World);//controls the cars turning
+            transform.position += transform.right * output[1] * speed;//controls the cars movement
         }
     }
 
     public void AddReward(int rewardType)
-    {
+    {        
         switch (rewardType)
         {
             case 0: // Not dead & Not bonked
-                reward += 0.00000001f;
+                if (lastHealth != GetHealth())
+                {
+                    lastHealth = GetHealth();
+                }
+                else reward += 0.000001f;
                 break;
             case 1: // Lvl up
-                reward += 20;
+                reward += 1;
                 break;
-            case 2: // 
+            case 2: // Dmg done
+                reward += 0.7f;
                 break;
         }
     }

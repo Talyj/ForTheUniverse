@@ -21,7 +21,7 @@ public class MinionsBehaviour : BasicAIMovement, IPunObservable
             SetAttackRange(10f);
             SetMaxHealth(350);
         } 
-        SetMoveSpeed(20f);
+        SetMoveSpeed(15f);
         SetDegMag(20f);
         SetDegPhys(20f);
         SetViewRange(30f);
