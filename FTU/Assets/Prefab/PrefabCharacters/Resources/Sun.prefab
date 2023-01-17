@@ -241,6 +241,9 @@ MonoBehaviour:
   projPrefab: {fileID: 1442863784273826401, guid: 21489d385334c8a4a9c933e27f0f7f49, type: 3}
   SpawnPrefab: {fileID: 8289175722087070779}
   team: 0
+  teams:
+    Name: Dominion
+    Code: 0
   damageSupp: 0
   isAI: 0
   enemyType: 2
@@ -255,7 +258,7 @@ MonoBehaviour:
   Position:
     m_InternalValue: {x: 0, y: 0, z: 0}
   gold: 0
-  respawnPos: {x: -313.3, y: 2.14, z: -37.118}
+  respawnPos: {x: 313.3, y: 2.14, z: -37.118}
   deathPos: {x: 0, y: 0, z: 0}
   items: []
   role: 0

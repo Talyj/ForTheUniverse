@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
+using Photon.Pun.UtilityScripts;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -16,7 +17,7 @@ public class PlayerManager : MonoBehaviour
     {
         PV = GetComponent<PhotonView>();
         index = PlayerPrefs.GetInt("persoID");
-        
+        player = PV.Controller;
     }
 
     
@@ -25,14 +26,19 @@ public class PlayerManager : MonoBehaviour
         if (PV.IsMine)
         {
             CreateController();
+            Debug.LogFormat("My team is {0} I am {1} and a play : {2}", player.GetPhotonTeam(), player.NickName, playerPrefabs[index].name);
         }
     }
 
     void CreateController()
     {
+        //playerPrefabs[index].GetComponent<IDamageable>().team = (Team)PlayerPrefs.GetInt("Teams");
+        var team = player.GetPhotonTeam();
+        playerPrefabs[index].GetComponent<IDamageable>().teams.Code = team.Code;
+        playerPrefabs[index].GetComponent<IDamageable>().teams.Name = team.Name;
+        
         PhotonNetwork.Instantiate(playerPrefabs[index].name, new Vector3(0f, 2.14f, 0f), Quaternion.identity, 0);
-        playerPrefabs[index].GetComponent<PlayerStats>().team = (Team)PlayerPrefs.GetInt("Teams");
-        if(playerPrefabs[index].GetComponent<PlayerStats>().team == Team.Dominion)
+        if (team.Code == 0)
         {
             playerPrefabs[index].GetComponent<PlayerStats>().respawnPos = new Vector3(313.3f, 2.14f, -37.118f);
         }
@@ -40,6 +46,16 @@ public class PlayerManager : MonoBehaviour
         {
             playerPrefabs[index].GetComponent<PlayerStats>().respawnPos = new Vector3(-313.3f, 2.14f, -37.118f);
         }
+        //if(playerPrefabs[index].GetComponent<IDamageable>().team == Team.Dominion)
+        //{
+        //    playerPrefabs[index].GetComponent<PlayerStats>().respawnPos = new Vector3(313.3f, 2.14f, -37.118f);
+        //    //playerPrefabs[index].GetComponent<IDamageable>().respawnPos = new Vector3(325.3f, 2.14f, -37.118f);
+        //}
+        //else
+        //{
+        //    playerPrefabs[index].GetComponent<PlayerStats>().respawnPos = new Vector3(-313.3f, 2.14f, -37.118f);
+        //    //playerPrefabs[index].GetComponent<IDamageable>().respawnPos = new Vector3(310.3f, 2.14f, -37.118f);
+        //}
 
     }
 }

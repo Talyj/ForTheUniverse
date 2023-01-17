@@ -1,4 +1,5 @@
 using Photon.Pun;
+using Photon.Pun.UtilityScripts;
 using System;
 using System.Collections;
 using Unity.Netcode;
@@ -46,7 +47,9 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     public GameObject projPrefab;
     public Transform SpawnPrefab;
 
+    [HideInInspector]
     public Team team;
+    public PhotonTeam teams;
     public float damageSupp;
     public bool isAI;
 
@@ -386,6 +389,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
             }
             else if (PhotonNetwork.IsMasterClient)
             {
+                Debug.Log("dead");
                 PhotonNetwork.Destroy(gameObject.GetComponent<PhotonView>());
             }
         }        
@@ -430,7 +434,8 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
                 expToGive = 100;
                 break;
             case EnemyType.player:
-                expToGive = 1000 * gameObject.GetComponent<PlayerStats>().GetLvl();
+                //expToGive = 1000 * gameObject.GetComponent<PlayerStats>().GetLvl();
+                expToGive = 10;
                 break;
             case EnemyType.dieu:
                 expToGive = 10000;
@@ -451,8 +456,8 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
                 var collider = col.GetComponent<IDamageable>();
                 if (collider)
                 {
-                    if (collider.team != team && collider.enemyType == EnemyType.player ||
-                        collider.team != team && collider.enemyType == EnemyType.voister)
+                    if (collider.teams != teams && collider.enemyType == EnemyType.player ||
+                        collider.teams != teams && collider.enemyType == EnemyType.voister)
                     {
                         collider.SetExp(expToGive);
                     }
@@ -479,13 +484,13 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
             if (Health < MaxHealth)
             {
                 float val = Mathf.FloorToInt(MaxHealth * 0.1f);
-                Health += val;
+                Health += val/2;
             }
 
             if (Mana < MaxMana)
             {
                 float val = Mathf.FloorToInt(MaxMana * 0.1f);
-                Mana += val;
+                Mana += val/2;
             }
         }
     }
@@ -646,7 +651,8 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
                 {
                     if (IsTargetable(Cible.GetComponent<IDamageable>().GetEnemyType()))
                     {
-                        SpawnRangeAttack(Cible, damageSupp);
+                        //SpawnRangeAttack(Cible, damageSupp);
+                        photonView.RPC("SpawnRangeAttack",RpcTarget.All, new object[] { Cible, damageSupp } );
                     }
                 }
                 else
@@ -668,6 +674,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
 
     }
 
+    [PunRPC]
     public void SpawnRangeAttack(GameObject Target, float dmgSupp = 0)
     {
         var bullets = PhotonNetwork.Instantiate(projPrefab.name, transform.position, Quaternion.identity);

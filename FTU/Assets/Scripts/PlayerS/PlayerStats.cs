@@ -84,6 +84,7 @@ public class PlayerStats : PlayerMovement
 
         if (GetHealth() <= 0)
         {
+            
             photonView.RPC("GiveExperience", RpcTarget.All, new object[] { });
             var rend = GetComponents<Renderer>();
             if (rend != null)
@@ -96,7 +97,11 @@ public class PlayerStats : PlayerMovement
             }
             StartCoroutine(Spawn(rend));
         }
-        Regen();
+        else
+        {
+            Regen();
+
+        }
     }
 
     IEnumerator Spawn(Renderer[] rend)
