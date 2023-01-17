@@ -56,14 +56,13 @@ public class MauBehaviour : BasicAIMovement
             {
                 //Attack
                 DefaultGodBehaviour();
-                //if(Vector3.Distance(templeTransform.position, transform.position) <= 50)
-                //{
-                //    GetNearestTarget();
-                //}
+                if (Vector3.Distance(templeTransform.position, transform.position) <= 50)
+                {
+                    GetNearestTarget();
+                }
                 GetNearestTarget();
                 if (Cible)
                 {
-                    //StartCoroutine(WalkToward());
                     WalkToward();
                     gameObject.transform.LookAt(new Vector3(Cible.transform.position.x, transform.position.y, Cible.transform.position.z));
                 }

@@ -643,6 +643,10 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     {
         while (Cible != null)
         {
+            if(gameObject == null)
+            {
+                break;
+            }
             //anim.SetBool("AA", true);
             try
             {
