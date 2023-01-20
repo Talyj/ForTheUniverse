@@ -7,6 +7,11 @@ public class Ball1 : Projectile
 {
     public Dps1 dps;
 
+    private new void Start()
+    {
+        StartCoroutine(DestroyBullet(3f));
+    }
+
     private void OnCollisionEnter(Collision col)
     {
         if (photonView.IsMine)

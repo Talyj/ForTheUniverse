@@ -5,6 +5,12 @@ using UnityEngine;
 
 public class Ball2 : Projectile
 {
+
+    private new void Start()
+    {
+        StartCoroutine(DestroyBullet(3f));
+    }
+
     public Dps1 dps;
     private void OnCollisionEnter(Collision col)
     {

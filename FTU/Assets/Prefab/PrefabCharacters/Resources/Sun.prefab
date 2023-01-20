@@ -227,41 +227,41 @@ MonoBehaviour:
   attackType: 0
   cc: 0
   Cible: {fileID: 0}
-  gold: 0
-  respawnPos: {x: 0, y: 0, z: 0}
-  deathPos: {x: 0, y: 0, z: 0}
   userId: 
   Health: 0
   MaxHealth: 0
   AttackSpeed: 0
   AttackRange: 0
+  canUlt: 0
+  isAttacking: 0
   Exp: 0
   MaxExp: 0
   ExpRate: 0
-  canUlt: 0
+  lvl: 0
   projPrefab: {fileID: 1442863784273826401, guid: 21489d385334c8a4a9c933e27f0f7f49, type: 3}
   SpawnPrefab: {fileID: 8289175722087070779}
-  enemyType: 2
   team: 0
-  SpawnPrefab2: {fileID: 6125879649475377898}
-  Ui: {fileID: 6068081761787423096}
-  current: 0
-  pathDone: 0
-  Position:
-    m_InternalValue: {x: 0, y: 0, z: 0}
-  targetsUp: []
-  targetsDown: []
-  way: 0
-  isAttacking: 0
+  teams:
+    Name: Dominion
+    Code: 0
+  damageSupp: 0
+  isAI: 0
+  enemyType: 2
   passif: {fileID: 11400000, guid: d2c9dc6b1ca2bc94ebe53101f1a9a950, type: 2}
   skills:
   - {fileID: 11400000, guid: b3ddb4caa02019446aef21fb9f053f80, type: 2}
   - {fileID: 11400000, guid: 1a23975b049b9a24999dd77bcf858d41, type: 2}
   - {fileID: 11400000, guid: 1a09e620cb887864fb6fd1d958b30dd9, type: 2}
-  items: []
-  damageSupp: 0
   ult: {fileID: 0}
-  isAI: 0
+  SpawnPrefab2: {fileID: 6125879649475377898}
+  Ui: {fileID: 6068081761787423096}
+  Position:
+    m_InternalValue: {x: 0, y: 0, z: 0}
+  gold: 0
+  respawnPos: {x: 313.3, y: 2.14, z: -37.118}
+  deathPos: {x: 0, y: 0, z: 0}
+  items: []
+  role: 0
   stickTP: {fileID: 3431704481046487142, guid: a09069b3be2d08648a222b5efb919207, type: 3}
   step: 0
   tpPos: {x: 0, y: 0, z: 0}

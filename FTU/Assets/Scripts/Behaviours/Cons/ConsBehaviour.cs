@@ -24,16 +24,9 @@ public class ConsBehaviour : PlayerStats
 
     public void Start()
     {
-        Init();
-        SetMoveSpeed(30f);
-        SetAttackRange(30f);
-        SetHealth(500f);
-        SetMaxHealth(500f);
-        SetResPhys(50f);
-        SetResMag(50f);
-        SetDegMag(50f);
-        SetDegPhys(50f);
-        SetAttackSpeed(1.95f);
+        PlayerStatsSetUp();
+        BaseInit();
+        SetUpCharacters(role, true, true);
 
 
         slow = 5;
@@ -92,8 +85,12 @@ public class ConsBehaviour : PlayerStats
                 {
                     Debug.Log("No target available");
                 }
-
-                if (Input.GetKeyDown(KeyCode.Alpha1))
+                if (Input.GetKeyDown(KeyCode.K))
+                {
+                    //photonView.RPC("DealDamages",RpcTarget.All, new object[] { 9999 });
+                    TakeDamage(9999, DamageType.physique);
+                }
+                    if (Input.GetKeyDown(KeyCode.Alpha1))
                 {
                     BeamUltra();
                 }

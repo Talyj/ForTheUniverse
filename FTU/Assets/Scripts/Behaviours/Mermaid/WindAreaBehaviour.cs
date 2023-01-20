@@ -17,11 +17,12 @@ public class WindAreaBehaviour : Projectile
         timerDefault = 0.5f;
         StartCoroutine(Movement());
         StartCoroutine(SizeModification());
+        StartCoroutine(DestroyBullet(timerDefault));
     }
 
     public new void Update()
     {
-        //Destroy(gameObject, 1);
+        
     }
 
     public IEnumerator Movement()
@@ -46,7 +47,6 @@ public class WindAreaBehaviour : Projectile
             timer -= Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
-        Destroy(gameObject);
         yield return 0;
     }
 
@@ -55,7 +55,7 @@ public class WindAreaBehaviour : Projectile
         if (other.gameObject.GetComponent<IDamageable>() && photonView.IsMine)
         {
             if(other.gameObject.GetComponent<IDamageable>().enemyType == IDamageable.EnemyType.dieu ||
-                other.gameObject.GetComponent<IDamageable>().enemyType == IDamageable.EnemyType.joueur ||
+                other.gameObject.GetComponent<IDamageable>().enemyType == IDamageable.EnemyType.player ||
                 other.gameObject.GetComponent<IDamageable>().enemyType == IDamageable.EnemyType.minion)
             {
                 if(other.gameObject.GetComponent<IDamageable>().team != source.team)

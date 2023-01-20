@@ -21,9 +21,12 @@ public class PoissoinProjBehaviour : Projectile
 
     private IEnumerator DestroyBullet()
     {
-        yield return new WaitForSeconds(2f);
-        StartCoroutine(SpawnPuddle());
-        Destroy(gameObject);
+        if (photonView.IsMine)
+        {
+            yield return new WaitForSeconds(2f);
+            StartCoroutine(SpawnPuddle());
+            PhotonNetwork.Destroy(gameObject);
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -46,7 +49,7 @@ public class PoissoinProjBehaviour : Projectile
 
     private IEnumerator SpawnPuddle()
     {
-        if (PhotonNetwork.IsMasterClient)
+        if (photonView.IsMine)
         {
             var pud = PhotonNetwork.Instantiate(puddle.name, new Vector3(transform.position.x, 1, transform.position.z), Quaternion.identity);
             pud.GetComponent<PuddlePoissoinBehaviour>().team = team;

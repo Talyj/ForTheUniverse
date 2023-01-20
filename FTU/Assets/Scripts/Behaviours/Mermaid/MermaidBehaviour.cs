@@ -25,20 +25,12 @@ public class MermaidBehaviour : PlayerStats
     public GameObject charmArea;
     public void Start()
     {
-        Init();
-        SetMoveSpeed(30f);
-        SetAttackRange(30f);
-        SetHealth(500f);
-        SetMaxHealth(500f);
-        SetResPhys(50f);
-        SetResMag(50f);
-        SetDegMag(50f);
-        SetDegPhys(50f);
-        SetAttackSpeed(1.95f);
+        PlayerStatsSetUp();
+        BaseInit();
+        SetUpCharacters(role, true, true);
 
         speedPush = 3;
         charmSpeed = 5;
-        //charmTargets = new List<GameObject>();
         foreach(var elmt in skills)
         {
             elmt.isCooldown = false;
