@@ -110,7 +110,7 @@ public class VoisterBehaviour : BasicAIMovement, IPunObservable
                     //input[i] = (test - hit.distance) / test;//return distance, 1 being close
                     if (hit.collider.GetComponent<IDamageable>())
                     {
-                        enemyDist = (raycastLenght - hit.distance) / raycastLenght;
+                        enemyDist = -(raycastLenght - hit.distance) / raycastLenght;
                     }
                     else if(hit.collider.gameObject.CompareTag("walls"))
                     {

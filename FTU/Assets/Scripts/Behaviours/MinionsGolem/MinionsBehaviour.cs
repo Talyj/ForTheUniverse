@@ -9,7 +9,7 @@ public class MinionsBehaviour : BasicAIMovement, IPunObservable
     {
         BaseInit();
         AISetup();
-        current = 0;
+        //current = 0;
         pathDone = false;
         if (attackType == AttackType.Ranged)
         {
@@ -39,7 +39,7 @@ public class MinionsBehaviour : BasicAIMovement, IPunObservable
 
             if (GetCanAct() && GetCanMove())
             {
-                GetNearestTarget();
+                //GetNearestTarget();
                 if (Cible)
                 {
                     WalkToward();
@@ -67,14 +67,14 @@ public class MinionsBehaviour : BasicAIMovement, IPunObservable
         if (stream.IsWriting)
         {
             stream.SendNext(GetHealth());
-            stream.SendNext(gameObject.GetComponent<Renderer>().material.color.r);
-            stream.SendNext(gameObject.GetComponent<Renderer>().material.color.g);
-            stream.SendNext(gameObject.GetComponent<Renderer>().material.color.b);
+            //stream.SendNext(gameObject.GetComponent<Renderer>().material.color.r);
+            //stream.SendNext(gameObject.GetComponent<Renderer>().material.color.g);
+            //stream.SendNext(gameObject.GetComponent<Renderer>().material.color.b);
         }
         else
         {
             SetHealth((float)stream.ReceiveNext());
-            gameObject.GetComponent<Renderer>().material.color = new Color((float)stream.ReceiveNext(), (float)stream.ReceiveNext(), (float)stream.ReceiveNext());
+            //gameObject.GetComponent<Renderer>().material.color = new Color((float)stream.ReceiveNext(), (float)stream.ReceiveNext(), (float)stream.ReceiveNext());
         }
     }
 }

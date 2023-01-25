@@ -63,8 +63,8 @@ public class TrainingManager : MonoBehaviour
         voisters = new List<VoisterBehaviour>();
         for (int i = 0; i < populationSize; i++)
         {
-            //Vector3 randomPos = new Vector3(spawnPos[i].transform.position.x + Random.Range(-20, 20), spawnPos[i].transform.position.y + 3, spawnPos[i].transform.position.z + Random.Range(-75, 75));
-            Vector3 randomPos = spawnPos[i].transform.position;
+            Vector3 randomPos = new Vector3(spawnPos[i].transform.position.x + Random.Range(-5, 5), spawnPos[i].transform.position.y + 3, spawnPos[i].transform.position.z + Random.Range(-5, 5));
+            //Vector3 randomPos = spawnPos[i].transform.position;
 
             VoisterBehaviour voister = (PhotonNetwork.Instantiate(prefab.name, randomPos, new Quaternion(0, 0, 1, 0))).GetComponent<VoisterBehaviour>();//create botes
             voister.network = networks[i];//deploys network to each learner

@@ -423,7 +423,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         }
     }
 
-    [PunRPC]
+    [PunRPC] // NE PEUT TRANSMETTRE QUE DES TYPE CLASSIQUE (int, float, bool)
     public void GiveExperience()
     {
         var expToGive = 0;
@@ -513,7 +513,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         return degRes;
     }
 
-    [PunRPC]
+    [PunRPC] // NE PEUT TRANSMETTRE QUE DES TYPE CLASSIQUE (int, float, bool)
     public void DealDamages(float DegatsRecu)
     {
         Health = Health - DegatsRecu;
@@ -655,8 +655,8 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
                 {
                     if (IsTargetable(Cible.GetComponent<IDamageable>().GetEnemyType()))
                     {
-                        //SpawnRangeAttack(Cible, damageSupp);
-                        photonView.RPC("SpawnRangeAttack",RpcTarget.All, new object[] { Cible, damageSupp } );
+                        SpawnRangeAttack(Cible, damageSupp);
+                        //photonView.RPC("SpawnRangeAttack",RpcTarget.All, new object[] { Cible, damageSupp } );
                     }
                 }
                 else
@@ -678,7 +678,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
 
     }
 
-    [PunRPC]
+    //[PunRPC] // NE PEUT TRANSMETTRE QUE DES TYPE CLASSIQUE (int, float, bool)
     public void SpawnRangeAttack(GameObject Target, float dmgSupp = 0)
     {
         var bullets = PhotonNetwork.Instantiate(projPrefab.name, transform.position, Quaternion.identity);
