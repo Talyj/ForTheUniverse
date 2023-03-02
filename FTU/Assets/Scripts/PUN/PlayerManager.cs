@@ -16,8 +16,9 @@ public class PlayerManager : MonoBehaviour
     private void Awake()
     {
         PV = GetComponent<PhotonView>();
-        index = PlayerPrefs.GetInt("persoID");
         player = PV.Controller;
+        //index = PlayerPrefs.GetInt("persoID");
+        index =(int) PhotonNetwork.LocalPlayer.CustomProperties["_pp"];
     }
 
     
@@ -25,40 +26,27 @@ public class PlayerManager : MonoBehaviour
     {
         if (PV.IsMine)
         {
-            CreateController();
-            var team = player.GetPhotonTeam();
-            playerPrefabs[index].GetComponent<IDamageable>().teams.Code = team.Code;
-            playerPrefabs[index].GetComponent<IDamageable>().teams.Name = team.Name;
             Debug.LogFormat("My team is {0} I am {1} and a play : {2}", player.GetPhotonTeam(), player.NickName, playerPrefabs[index].name);
+            CreateController();
         }
     }
 
     void CreateController()
     {
-        //playerPrefabs[index].GetComponent<IDamageable>().team = (Team)PlayerPrefs.GetInt("Teams");
+        GameObject _playerPrefab = PhotonNetwork.Instantiate(playerPrefabs[index].name, new Vector3(0f, 2.14f, 0f), Quaternion.identity, 0);
 
-        var team = player.GetPhotonTeam();
-        playerPrefabs[index].GetComponent<IDamageable>().teams.Code = team.Code;
-        playerPrefabs[index].GetComponent<IDamageable>().teams.Name = team.Name;
-        PhotonNetwork.Instantiate(playerPrefabs[index].name, new Vector3(0f, 2.14f, 0f), Quaternion.identity, 0);
-        if (team.Code == 0)
+        var team = player.GetPhotonTeam().Name;
+
+        if(_playerPrefab.GetComponent<IDamageable>().teams.Name == team)
         {
-            playerPrefabs[index].GetComponent<PlayerStats>().respawnPos = new Vector3(313.3f, 2.14f, -37.118f);
+            _playerPrefab.GetComponent<PlayerStats>().deathPos = new Vector3(313.3f, 2.14f, -37.118f);
+            _playerPrefab.GetComponent<PlayerStats>().respawnPos = new Vector3(313.3f, 2.14f, -37.118f);
         }
         else
         {
-            playerPrefabs[index].GetComponent<PlayerStats>().respawnPos = new Vector3(-313.3f, 2.14f, -37.118f);
+            _playerPrefab.GetComponent<PlayerStats>().deathPos = new Vector3(-313.3f, 2.14f, -37.118f);
+            _playerPrefab.GetComponent<PlayerStats>().respawnPos = new Vector3(-313.3f, 2.14f, -37.118f);
         }
-        //if(playerPrefabs[index].GetComponent<IDamageable>().team == Team.Dominion)
-        //{
-        //    playerPrefabs[index].GetComponent<PlayerStats>().respawnPos = new Vector3(313.3f, 2.14f, -37.118f);
-        //    //playerPrefabs[index].GetComponent<IDamageable>().respawnPos = new Vector3(325.3f, 2.14f, -37.118f);
-        //}
-        //else
-        //{
-        //    playerPrefabs[index].GetComponent<PlayerStats>().respawnPos = new Vector3(-313.3f, 2.14f, -37.118f);
-        //    //playerPrefabs[index].GetComponent<IDamageable>().respawnPos = new Vector3(310.3f, 2.14f, -37.118f);
-        //}
 
     }
 }

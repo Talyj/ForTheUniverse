@@ -15,7 +15,6 @@ public class PlayerStats : PlayerMovement
 
     public List<ItemBehaviours> items = new List<ItemBehaviours>(4);
     public Role role;
-    //[SerializeField]
 
 
 
@@ -52,6 +51,7 @@ public class PlayerStats : PlayerMovement
     void Start()
     {
         //anim = GetComponent<Animator>();
+        
 
     }
 

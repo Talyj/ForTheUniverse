@@ -19,8 +19,12 @@ public class Launch : MonoBehaviourPunCallbacks
     [SerializeField] TMP_Text roomNameText;
     [SerializeField] Transform roomListContent;
     [SerializeField] GameObject roomListPrefab;
-    [SerializeField] Transform playerListContent;
+    [SerializeField] Transform playerListContentDom;
+    [SerializeField] Transform playerListContentVer;
+    [SerializeField] Transform playerListContentInRoom;
     [SerializeField] GameObject playerListPrefab;
+    [SerializeField] PlayerListItem _playerListPrefab;
+    [SerializeField] List<PlayerListItem> playerList =new List<PlayerListItem>();
     [SerializeField] GameObject startGameButton;
     
 
@@ -34,6 +38,7 @@ public class Launch : MonoBehaviourPunCallbacks
         PhotonNetwork.ConnectUsingSettings();
     }
 
+
     public override void OnConnectedToMaster()
     {
         Debug.Log("connected to master");
@@ -45,15 +50,15 @@ public class Launch : MonoBehaviourPunCallbacks
     {
         MenuManager.Instance.OpenMenu("base");
         Debug.Log("Joined lobby");
-        PhotonNetwork.NickName = "Player " + Random.Range(0, 1000).ToString("0000");
-        Debug.Log(PhotonNetwork.NickName);
+        //PhotonNetwork.NickName = "Player " + Random.Range(0, 1000).ToString("0000");
+        //Debug.Log(PhotonNetwork.NickName);
     }
 
-    public void SetName()
-    {
-        //PhotonNetwork.NickName = playerName.text;
-        Debug.Log(PhotonNetwork.NickName +" name set");
-    }
+    //public void SetName()
+    //{
+    //    PhotonNetwork.NickName = playerName.text;
+    //    Debug.Log(PhotonNetwork.NickName +" name set");
+    //}
     
     public void CreateRoom()
     {
@@ -73,12 +78,20 @@ public class Launch : MonoBehaviourPunCallbacks
         //{
         //    PhotonNetwork.NickName = playerName.text;
         //}
-        //Debug.Log(PhotonNetwork.NickName);
-        Player[] players = PhotonNetwork.PlayerList;
+            PhotonNetwork.NickName = "Player " + Random.Range(0, 1000).ToString("0000");
+        Debug.Log(PhotonNetwork.NickName);
         MenuManager.Instance.OpenMenu("loading");
 
     }
-
+    private void OnPlayerJoinedTeam(Player player, PhotonTeam team)
+    {
+        Debug.LogFormat("Player {0} joined team {1}", player, team);
+        Debug.Log(player.GetPhotonTeam().Name);
+    }
+    private void OnPlayerLeftTeam(Player player, PhotonTeam team)
+    {
+        Debug.LogFormat("Player {0} left team {1}", player, team);
+    }
     public override void OnJoinedRoom()
     {
         MenuManager.Instance.OpenMenu("room");
@@ -87,62 +100,21 @@ public class Launch : MonoBehaviourPunCallbacks
         Player[] players = PhotonNetwork.PlayerList;
         PhotonTeamsManager.PlayerJoinedTeam += OnPlayerJoinedTeam;
         PhotonTeamsManager.PlayerLeftTeam += OnPlayerLeftTeam;
-        foreach(Transform child in playerListContent)
-        {
-            Destroy(child.gameObject);
-        }
-        
-        for (int i = 0; i < players.Count(); i++)
-        {
-            players[i].JoinTeam((byte)((i % 2 == 0) ? 0 : 1));
-
-            Instantiate(playerListPrefab, playerListContent).GetComponent<PlayerListItem>().SetUp(players[i]);
-        }
+       
+            
         startGameButton.SetActive(PhotonNetwork.IsMasterClient);
-
-        //photonView.RPC(nameof(CreateTeams), RpcTarget.All, players);
+        UpdatePlayerList();
+        //SetTeams();
+        //photonView.RPC(nameof(UpdatePlayerList), RpcTarget.All, players);
     }
     
-    private void OnPlayerJoinedTeam(Player player, PhotonTeam team)
-    {
-        Debug.LogFormat("Player {0} joined team {1}", player, team);
-        Debug.Log(player.GetPhotonTeam());
-        //GameObject p = Instantiate(playerListPrefab, playerListContent);
-        //p.GetComponent<PlayerListItem>().SetUp(player);
-        //p.GetComponent<PlayerListItem>().MyTeam(player);
-    }
-    private void OnPlayerLeftTeam(Player player, PhotonTeam team)
-    {
-        Debug.LogFormat("Player {0} left team {1}", player, team);
-    }
-
-    void CreateTeams(Player[] players)
-    {
-        for (int i = 0; i < players.Count(); i++)
-        {
-            if (i % 2 == 0)
-            {
-                //players[i].CustomProperties["teams"] = Team.Dominion;
-                //PlayerPrefs.SetInt("Teams", 0);
-                players[i].JoinTeam(0);
-
-
-            }
-            else
-            {
-                //players[i].CustomProperties["teams"] = Team.Veritas;
-                //PlayerPrefs.SetInt("Teams", 1);
-                players[i].JoinTeam(1);
-            }
-        }
-        
-    }
+   
 
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
-        Player[] players = PhotonNetwork.PlayerList;
         Debug.Log(otherPlayer.NickName + " left team");
         otherPlayer.LeaveCurrentTeam();
+        UpdatePlayerList();
         
     }
     public override void OnMasterClientSwitched(Player newMasterClient)
@@ -167,14 +139,6 @@ public class Launch : MonoBehaviourPunCallbacks
         PhotonNetwork.JoinRoom(info.Name);
         MenuManager.Instance.OpenMenu("loading");
 
-        Player[] players = PhotonNetwork.PlayerList;
-
-        for (int i = 0; i < players.Count(); i++)
-        {
-             Instantiate(playerListPrefab, playerListContent).GetComponent<PlayerListItem>().SetUp(players[i]);
-            
-
-        }
 
     }
 
@@ -185,16 +149,10 @@ public class Launch : MonoBehaviourPunCallbacks
 
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
-        foreach(Transform trans in roomListContent)
-        {
-            Destroy(trans.gameObject);
-        }
+        
         for (int i = 0; i < roomList.Count; i++)
         {
-            if (roomList[i].RemovedFromList)
-            {
-                continue;
-            }
+            
             Instantiate(roomListPrefab, roomListContent).GetComponent<RoomListItem>().SetUp(roomList[i]);
         }
     }
@@ -204,29 +162,80 @@ public class Launch : MonoBehaviourPunCallbacks
     {
         
         Debug.Log("join room+ " + newPlayer.NickName);
-        Instantiate(playerListPrefab, playerListContent).GetComponent<PlayerListItem>().SetUp(newPlayer);
-        Player[] players = PhotonNetwork.PlayerList;
-        //CreateTeams(players);
-        
+        UpdatePlayerList();
+        //SetTeams();
     }
 
+    void UpdatePlayerList()
+    {
+        Player[] players = PhotonNetwork.PlayerList;
+        foreach (var player in playerList)
+        {
+            Destroy(player.gameObject);
+        }
+        playerList.Clear();
+
+        if(PhotonNetwork.CurrentRoom == null)
+        {
+            return;
+        }
+
+        foreach(var player in PhotonNetwork.CurrentRoom.Players)
+        {
+            var newPlayerItem = Instantiate(_playerListPrefab, playerListContentInRoom);
+            newPlayerItem.SetUp(player.Value);
+
+            if(player.Value == PhotonNetwork.LocalPlayer)
+            {
+                newPlayerItem.JoinTeam(players);
+            }
+            playerList.Add(newPlayerItem);
+        }
+        Invoke("SetTeams", 0.1f);
+    }
+
+    public void SetTeams()
+    {
+        foreach (Transform player in playerListContentInRoom)
+        {
+            Destroy(player.gameObject);
+        }
+        Player[] players = PhotonNetwork.PlayerList;
+        for(int i =0;i< players.Count(); i++)
+        {
+            
+            if (players[i].GetPhotonTeam().Code == 0)
+            {
+                Instantiate(playerListPrefab, playerListContentDom).GetComponent<PlayerListItem>().SetUp(players[i]);
+            }
+            else if(players[i].GetPhotonTeam().Code == 1)
+            {
+
+                Instantiate(playerListPrefab, playerListContentVer).GetComponent<PlayerListItem>().SetUp(players[i]);
+            }
+        }
+        
+
+    }
 
     public void StartGame()
     {
-        Player[] players = PhotonNetwork.PlayerList;
-        switch (players.Count())
-        {
-            case 2:
-                //load scene 1v1
-                break;
-            case > 2:
-                //load scene base
-                break;
-            case 1:
-                //load scene traning
-                break;
-        }
-
+        //Player[] players = PhotonNetwork.PlayerList;
+        //switch (players.Count())
+        //{
+        //    case 2:
+        //        //load scene 1v1
+        //        PhotonNetwork.LoadLevel(2);
+        //        break;
+        //    case > 2:
+        //        //load scene base
+        //        PhotonNetwork.LoadLevel(1);
+        //        break;
+        //    case 1:
+        //        //load scene traning
+        //        break;
+        //}
         PhotonNetwork.LoadLevel(1);
+
     }
 }
