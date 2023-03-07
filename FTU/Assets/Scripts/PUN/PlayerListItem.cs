@@ -49,7 +49,13 @@ public class PlayerListItem : MonoBehaviourPunCallbacks
         //    //textPerso.text = player.CustomProperties["perso"].ToString();
         //}
     }
-
+    [PunRPC]
+    public void RPC_PersoSelected(Character charac)
+    {
+        player.SetCustomProperties(new Hashtable { { PersoPlayerProp, charac.characterIndex } });
+        background.sprite = charac.characterSprite;
+        background.color = new Color(255f, 255f, 255f, 0.25f);
+    }
     public void PersoSelected(Character charac)
     {
         player.SetCustomProperties(new Hashtable { { PersoPlayerProp, charac.characterIndex } });

@@ -51,8 +51,9 @@ public class LobbyUi : MonoBehaviourPunCallbacks
             {
                 var plI = GameObject.FindObjectOfType<PlayerListItem>();
                 Debug.Log($" perso : {character.characterName} index: {character.characterIndex} <color=blue>  {player.Value.NickName}</color> <color=green>  {player.Value}</color>");
-                
-                    plI.PersoSelected(character);
+
+                photonView.RPC("PersoSelected", RpcTarget.All, character);
+                    //plI.PersoSelected(character);
             }
         }
     }

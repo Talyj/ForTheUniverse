@@ -50,7 +50,7 @@ public class Launch : MonoBehaviourPunCallbacks
     {
         MenuManager.Instance.OpenMenu("base");
         Debug.Log("Joined lobby");
-        //PhotonNetwork.NickName = "Player " + Random.Range(0, 1000).ToString("0000");
+        PhotonNetwork.NickName = "Player " + Random.Range(0, 1000).ToString("0000");
         //Debug.Log(PhotonNetwork.NickName);
     }
 
@@ -78,7 +78,7 @@ public class Launch : MonoBehaviourPunCallbacks
         //{
         //    PhotonNetwork.NickName = playerName.text;
         //}
-            PhotonNetwork.NickName = "Player " + Random.Range(0, 1000).ToString("0000");
+            //PhotonNetwork.NickName = "Player " + Random.Range(0, 1000).ToString("0000");
         Debug.Log(PhotonNetwork.NickName);
         MenuManager.Instance.OpenMenu("loading");
 
@@ -162,7 +162,7 @@ public class Launch : MonoBehaviourPunCallbacks
     {
         
         Debug.Log("join room+ " + newPlayer.NickName);
-        UpdatePlayerList();
+        //UpdatePlayerList();
         //SetTeams();
     }
 
