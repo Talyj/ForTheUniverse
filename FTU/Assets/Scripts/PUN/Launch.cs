@@ -26,11 +26,18 @@ public class Launch : MonoBehaviourPunCallbacks
     [SerializeField] PlayerListItem _playerListPrefab;
     [SerializeField] List<PlayerListItem> playerList =new List<PlayerListItem>();
     [SerializeField] GameObject startGameButton;
+
+    public float timeBeetweenUpdate = 1.5f;
+    float nextUpdateTime;
     
 
     private void Awake()
     {
         Instance = this;
+
+
+        PhotonTeamsManager.PlayerJoinedTeam += OnPlayerJoinedTeam;
+        PhotonTeamsManager.PlayerLeftTeam += OnPlayerLeftTeam;
     }
     void Start()
     {
@@ -96,19 +103,19 @@ public class Launch : MonoBehaviourPunCallbacks
     {
         MenuManager.Instance.OpenMenu("room");
         roomNameText.text = PhotonNetwork.CurrentRoom.Name;
-
-        Player[] players = PhotonNetwork.PlayerList;
-        PhotonTeamsManager.PlayerJoinedTeam += OnPlayerJoinedTeam;
-        PhotonTeamsManager.PlayerLeftTeam += OnPlayerLeftTeam;
        
             
         startGameButton.SetActive(PhotonNetwork.IsMasterClient);
         UpdatePlayerList();
-        //SetTeams();
-        //photonView.RPC(nameof(UpdatePlayerList), RpcTarget.All, players);
     }
-    
-   
+
+    public override void OnPlayerEnteredRoom(Player newPlayer)
+    {
+
+        Debug.Log("join room+ " + newPlayer.NickName);
+        UpdatePlayerList();
+        //SetTeams();
+    }
 
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
@@ -158,18 +165,12 @@ public class Launch : MonoBehaviourPunCallbacks
     }
 
 
-    public override void OnPlayerEnteredRoom(Player newPlayer)
-    {
-        
-        Debug.Log("join room+ " + newPlayer.NickName);
-        //UpdatePlayerList();
-        //SetTeams();
-    }
+   
 
     void UpdatePlayerList()
     {
         Player[] players = PhotonNetwork.PlayerList;
-        foreach (var player in playerList)
+        foreach (PlayerListItem player in playerList)
         {
             Destroy(player.gameObject);
         }
@@ -184,12 +185,12 @@ public class Launch : MonoBehaviourPunCallbacks
         {
             var newPlayerItem = Instantiate(_playerListPrefab, playerListContentInRoom);
             newPlayerItem.SetUp(player.Value);
+            playerList.Add(newPlayerItem);
 
             if(player.Value == PhotonNetwork.LocalPlayer)
             {
                 newPlayerItem.JoinTeam(players);
             }
-            playerList.Add(newPlayerItem);
         }
         Invoke("SetTeams", 0.1f);
     }

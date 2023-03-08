@@ -16,6 +16,7 @@ public class PlayerListItem : MonoBehaviourPunCallbacks
     public const string PersoPlayerProp = "_pp";
     [SerializeField] TMP_Text text;
     [SerializeField] Image background;
+    [SerializeField] Sprite[] sp;
     //[SerializeField] TMP_Text textPerso;
     //public TMP_Text textTeam;
     //[SerializeField] TMP_Dropdown perso;
@@ -49,19 +50,21 @@ public class PlayerListItem : MonoBehaviourPunCallbacks
         //    //textPerso.text = player.CustomProperties["perso"].ToString();
         //}
     }
-    [PunRPC]
-    public void RPC_PersoSelected(Character charac)
-    {
-        player.SetCustomProperties(new Hashtable { { PersoPlayerProp, charac.characterIndex } });
-        background.sprite = charac.characterSprite;
-        background.color = new Color(255f, 255f, 255f, 0.25f);
-    }
+    //[PunRPC]
+    //public void RPC_PersoSelected(Character charac)
+    //{
+    //    player.SetCustomProperties(new Hashtable { { PersoPlayerProp, charac.characterIndex } });
+    //    background.sprite = charac.characterSprite;
+    //    background.color = new Color(255f, 255f, 255f, 0.25f);
+    //}
     public void PersoSelected(Character charac)
     {
         player.SetCustomProperties(new Hashtable { { PersoPlayerProp, charac.characterIndex } });
         background.sprite = charac.characterSprite;
         background.color = new Color(255f, 255f, 255f, 0.25f);
     }
+
+    
     public void JoinTeam(Player[] players)
     {
         for (int i = 0; i < players.Count(); i++)
@@ -86,4 +89,22 @@ public class PlayerListItem : MonoBehaviourPunCallbacks
     {
         Destroy(gameObject);
     }
+
+    public override void OnPlayerPropertiesUpdate(Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps)
+    {
+        if (player == targetPlayer)
+        {
+            UpdatePlayerItem(targetPlayer);
+        }
+    }
+
+    public void UpdatePlayerItem(Player player)
+    {
+        if (player.CustomProperties.ContainsKey("_pp"))
+        {
+            background.sprite = sp[(int)player.CustomProperties["_pp"]];
+        }
+    }
+
+
 }
