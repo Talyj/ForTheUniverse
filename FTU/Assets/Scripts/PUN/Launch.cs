@@ -77,16 +77,7 @@ public class Launch : MonoBehaviourPunCallbacks
         {
             PhotonNetwork.CreateRoom(roomName.text);
         }
-        //if (string.IsNullOrEmpty(playerName.text))
-        //{
-        //    PhotonNetwork.NickName = "Player " + Random.Range(0, 1000).ToString("0000");
-        //}
-        //else
-        //{
-        //    PhotonNetwork.NickName = playerName.text;
-        //}
-            //PhotonNetwork.NickName = "Player " + Random.Range(0, 1000).ToString("0000");
-        Debug.Log(PhotonNetwork.NickName);
+        //Debug.Log(PhotonNetwork.NickName);
         MenuManager.Instance.OpenMenu("loading");
 
     }
@@ -111,10 +102,8 @@ public class Launch : MonoBehaviourPunCallbacks
 
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
-
         Debug.Log("join room+ " + newPlayer.NickName);
         UpdatePlayerList();
-        //SetTeams();
     }
 
     public override void OnPlayerLeftRoom(Player otherPlayer)
@@ -139,13 +128,14 @@ public class Launch : MonoBehaviourPunCallbacks
     {
         PhotonNetwork.LeaveRoom();
         MenuManager.Instance.OpenMenu("loading");
+        UpdatePlayerList();
     }
 
     public void JoinRoom(RoomInfo info)
     {
         PhotonNetwork.JoinRoom(info.Name);
         MenuManager.Instance.OpenMenu("loading");
-
+        UpdatePlayerList();
 
     }
 
@@ -165,32 +155,34 @@ public class Launch : MonoBehaviourPunCallbacks
     }
 
 
+
    
 
     void UpdatePlayerList()
     {
         Player[] players = PhotonNetwork.PlayerList;
-        foreach (PlayerListItem player in playerList)
+
+        foreach (var player in playerList)
         {
             Destroy(player.gameObject);
         }
         playerList.Clear();
 
-        if(PhotonNetwork.CurrentRoom == null)
+        if (PhotonNetwork.CurrentRoom == null)
         {
             return;
         }
-
         foreach(var player in PhotonNetwork.CurrentRoom.Players)
         {
             var newPlayerItem = Instantiate(_playerListPrefab, playerListContentInRoom);
+            
             newPlayerItem.SetUp(player.Value);
-            playerList.Add(newPlayerItem);
 
             if(player.Value == PhotonNetwork.LocalPlayer)
             {
                 newPlayerItem.JoinTeam(players);
             }
+            playerList.Add(newPlayerItem);
         }
         Invoke("SetTeams", 0.1f);
     }

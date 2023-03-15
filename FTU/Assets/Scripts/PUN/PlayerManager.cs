@@ -40,12 +40,12 @@ public class PlayerManager : MonoBehaviour
         if(_playerPrefab.GetComponent<IDamageable>().teams.Name == team)
         {
             _playerPrefab.GetComponent<PlayerStats>().deathPos = new Vector3(313.3f, 2.14f, -37.118f);
-            _playerPrefab.GetComponent<PlayerStats>().respawnPos = new Vector3(313.3f, 2.14f, -37.118f);
+            _playerPrefab.GetComponent<PlayerStats>().respawnPos = new Vector3(323.3f, 2.14f, -37.118f);
         }
         else
         {
             _playerPrefab.GetComponent<PlayerStats>().deathPos = new Vector3(-313.3f, 2.14f, -37.118f);
-            _playerPrefab.GetComponent<PlayerStats>().respawnPos = new Vector3(-313.3f, 2.14f, -37.118f);
+            _playerPrefab.GetComponent<PlayerStats>().respawnPos = new Vector3(-323.3f, 2.14f, -37.118f);
         }
 
     }

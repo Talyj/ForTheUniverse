@@ -36,19 +36,7 @@ public class PlayerListItem : MonoBehaviourPunCallbacks
 
         player = _player;
         text.text = _player.NickName;
-        //if (player.IsLocal)
-        //{
-        //    PlayerPrefs.SetInt("persoID", perso.value);
-        //    player.SetCustomProperties(new Hashtable { { PersoPlayerProp, perso.value } });
-        //    persoGO.SetActive(true);
-        //    textPersoGO.SetActive(false);
-        //}
-        //else
-        //{
-        //    persoGO.SetActive(false);
-        //    textPersoGO.SetActive(true);
-        //    //textPerso.text = player.CustomProperties["perso"].ToString();
-        //}
+       
     }
     //[PunRPC]
     //public void RPC_PersoSelected(Character charac)

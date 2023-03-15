@@ -1,11 +1,14 @@
 using Photon.Pun;
+using Photon.Pun.UtilityScripts;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class TempleBehaviour : MonoBehaviour
 {
-    public Team team;
+    //public Team teams;
+    [SerializeField] PhotonTeamsManager manag;
+    PhotonTeam team;
     [SerializeField] private GameObject mau;
     private bool isAwake;
 
@@ -30,7 +33,7 @@ public class TempleBehaviour : MonoBehaviour
         {
             foreach (var col in hitColliders)
             {
-                if (col.gameObject.CompareTag("Player") && col.gameObject.GetComponent<IDamageable>().team != team)                    
+                if (col.gameObject.CompareTag("Player") && col.gameObject.GetComponent<IDamageable>().teams != team)                    
                 {
                     SpawnDemiGod();
                 }
@@ -45,7 +48,7 @@ public class TempleBehaviour : MonoBehaviour
         {
             isAwake = true;
             var semiGod = PhotonNetwork.Instantiate(mau.name, new Vector3(gameObject.transform.position.x, 9, gameObject.transform.position.z), Quaternion.identity);
-            semiGod.GetComponent<MauBehaviour>().team = team;
+            semiGod.GetComponent<MauBehaviour>().teams = team;
             semiGod.GetComponent<MauBehaviour>().templeTransform = gameObject.transform;
         }
     }

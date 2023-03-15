@@ -666,7 +666,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 333347726716069743, guid: 4aeebbfcb592eb041885d9f273d6630f, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3944797841363290702, guid: 4aeebbfcb592eb041885d9f273d6630f, type: 3}
       propertyPath: m_RootOrder
@@ -734,7 +734,7 @@ GameObject:
   m_Layer: 0
   m_Name: DeathPos
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -746,7 +746,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 739692498}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 220, z: -339}
+  m_LocalPosition: {x: -343, y: 13, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1278,7 +1278,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3326840382469796714, guid: c02b52a3635f2f5458405377a5e44286, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3326840383894781387, guid: c02b52a3635f2f5458405377a5e44286, type: 3}
       propertyPath: m_LocalPosition.y

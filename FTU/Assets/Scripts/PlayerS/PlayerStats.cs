@@ -10,7 +10,7 @@ public class PlayerStats : PlayerMovement
 
     public float gold;
     [HideInInspector] public Vector3 respawnPos;
-    [HideInInspector] public Vector3 deathPos;
+    public Vector3 deathPos;
     private float respawnCooldown;
 
     public List<ItemBehaviours> items = new List<ItemBehaviours>(4);
