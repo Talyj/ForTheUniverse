@@ -161,10 +161,9 @@ public class Launch : MonoBehaviourPunCallbacks
     void UpdatePlayerList()
     {
         Player[] players = PhotonNetwork.PlayerList;
-
-        foreach (var player in playerList)
+        foreach (PlayerListItem item in playerList)
         {
-            Destroy(player.gameObject);
+            Destroy(item.gameObject);
         }
         playerList.Clear();
 
@@ -174,7 +173,7 @@ public class Launch : MonoBehaviourPunCallbacks
         }
         foreach(var player in PhotonNetwork.CurrentRoom.Players)
         {
-            var newPlayerItem = Instantiate(_playerListPrefab, playerListContentInRoom);
+            PlayerListItem newPlayerItem = Instantiate(_playerListPrefab, playerListContentInRoom);
             
             newPlayerItem.SetUp(player.Value);
 

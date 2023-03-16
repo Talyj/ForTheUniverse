@@ -8,13 +8,14 @@ public class TempleBehaviour : MonoBehaviour
 {
     //public Team teams;
     [SerializeField] PhotonTeamsManager manag;
-    PhotonTeam team;
+    [SerializeField] PhotonTeam team;
     [SerializeField] private GameObject mau;
     private bool isAwake;
 
     public void Start()
     {
         isAwake = false;
+        manag = GameObject.Find("RoomManager").GetComponentInChildren<PhotonTeamsManager>();
     }
 
     public void Update()

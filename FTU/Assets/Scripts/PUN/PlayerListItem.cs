@@ -48,7 +48,11 @@ public class PlayerListItem : MonoBehaviourPunCallbacks
     public void PersoSelected(Character charac)
     {
         player.SetCustomProperties(new Hashtable { { PersoPlayerProp, charac.characterIndex } });
-        background.sprite = charac.characterSprite;
+        //background.sprite = charac.characterSprite;
+        if (player.CustomProperties.ContainsKey("_pp"))
+        {
+            background.sprite = sp[(int)player.CustomProperties["_pp"]];
+        }
         background.color = new Color(255f, 255f, 255f, 0.25f);
     }
 
@@ -93,6 +97,12 @@ public class PlayerListItem : MonoBehaviourPunCallbacks
             background.sprite = sp[(int)player.CustomProperties["_pp"]];
         }
     }
-
+    public void ApplyLocalChange()
+    {
+        if (player.CustomProperties.ContainsKey("_pp"))
+        {
+            background.sprite = sp[(int)player.CustomProperties["_pp"]];
+        }
+    }
 
 }
