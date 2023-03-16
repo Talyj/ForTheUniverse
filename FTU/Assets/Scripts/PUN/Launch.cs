@@ -71,7 +71,7 @@ public class Launch : MonoBehaviourPunCallbacks
     {
         if (string.IsNullOrEmpty(roomName.text))
         {
-            PhotonNetwork.CreateRoom(PhotonNetwork.NickName + " room");
+            PhotonNetwork.CreateRoom(PhotonNetwork.NickName + " room",new RoomOptions() { MaxPlayers=4,BroadcastPropsChangeToAll=true});
         }
         else
         {
@@ -103,7 +103,7 @@ public class Launch : MonoBehaviourPunCallbacks
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
         Debug.Log("join room+ " + newPlayer.NickName);
-        UpdatePlayerList();
+        //UpdatePlayerList();
     }
 
     public override void OnPlayerLeftRoom(Player otherPlayer)
@@ -128,14 +128,14 @@ public class Launch : MonoBehaviourPunCallbacks
     {
         PhotonNetwork.LeaveRoom();
         MenuManager.Instance.OpenMenu("loading");
-        UpdatePlayerList();
+        //UpdatePlayerList();
     }
 
     public void JoinRoom(RoomInfo info)
     {
         PhotonNetwork.JoinRoom(info.Name);
         MenuManager.Instance.OpenMenu("loading");
-        UpdatePlayerList();
+        //UpdatePlayerList();
 
     }
 
@@ -161,11 +161,13 @@ public class Launch : MonoBehaviourPunCallbacks
     void UpdatePlayerList()
     {
         Player[] players = PhotonNetwork.PlayerList;
+        Debug.Log($"<color=green> before clear :  {playerList.Count}</color>");
         foreach (PlayerListItem item in playerList)
         {
             Destroy(item.gameObject);
         }
         playerList.Clear();
+        Debug.Log($"<color=yellow> after clear :  {playerList.Count}</color>");
 
         if (PhotonNetwork.CurrentRoom == null)
         {
@@ -192,18 +194,23 @@ public class Launch : MonoBehaviourPunCallbacks
         {
             Destroy(player.gameObject);
         }
+        playerList.Clear();
         Player[] players = PhotonNetwork.PlayerList;
         for(int i =0;i< players.Count(); i++)
         {
             
             if (players[i].GetPhotonTeam().Code == 0)
             {
-                Instantiate(playerListPrefab, playerListContentDom).GetComponent<PlayerListItem>().SetUp(players[i]);
+                PlayerListItem newPlayerItem= Instantiate(_playerListPrefab, playerListContentDom);
+                newPlayerItem.SetUp(players[i]);
+            playerList.Add(newPlayerItem);
             }
             else if(players[i].GetPhotonTeam().Code == 1)
             {
 
-                Instantiate(playerListPrefab, playerListContentVer).GetComponent<PlayerListItem>().SetUp(players[i]);
+                PlayerListItem newPlayerItem=Instantiate(_playerListPrefab, playerListContentVer);
+                newPlayerItem.SetUp(players[i]);
+            playerList.Add(newPlayerItem);
             }
         }
         

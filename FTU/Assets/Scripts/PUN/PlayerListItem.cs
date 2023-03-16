@@ -36,7 +36,15 @@ public class PlayerListItem : MonoBehaviourPunCallbacks
 
         player = _player;
         text.text = _player.NickName;
-       
+        if (player.GetPhotonTeam() == null)
+        {
+            Debug.Log($"<color=red> Setup NO TEAM</color>");
+        }
+        else
+        {
+            Debug.Log($"<color=green> Setup {player.GetPhotonTeam().Name}</color>");
+
+        }
     }
     //[PunRPC]
     //public void RPC_PersoSelected(Character charac)
@@ -64,7 +72,10 @@ public class PlayerListItem : MonoBehaviourPunCallbacks
             if (players[i].IsLocal)
             {
                 players[i].JoinTeam((byte)((i % 2 == 0) ? 0 : 1));
-
+                if (players[i].GetPhotonTeam() == null)
+                {
+                    Debug.Log($"<color=red> NO TEAM</color>");
+                }
             }
         }
 
