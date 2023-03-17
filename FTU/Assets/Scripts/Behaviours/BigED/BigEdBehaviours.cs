@@ -235,7 +235,7 @@ public class BigEdBehaviours : PlayerStats
 
                 if (hitCollider.TryGetComponent(typeof(IDamageable), out Component component))
                 {
-                    if (IsTargetable(hitCollider.GetComponent<IDamageable>().GetEnemyType()))
+                    if (hitCollider.GetComponent<IDamageable>().IsTargetable(team))
                     {
                         hitCollider.GetComponent<IDamageable>().TakeDamage(skills[2].Damage, skills[2].degats);
                     }

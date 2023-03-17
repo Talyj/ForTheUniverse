@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: 7297893142613042272}
   - component: {fileID: 7297893142613042273}
   - component: {fileID: 7297893142613042274}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Fox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -68,7 +68,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c0bc9fff36e6eee4d8214326f430988c, type: 2}
+  - {fileID: 2100000, guid: 09adc4af150569a4cb996354c367b8c8, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -117,7 +117,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 126
   m_CollisionDetection: 0
 --- !u!114 &7297893142613042278
 MonoBehaviour:
@@ -238,3 +238,10 @@ MonoBehaviour:
   way: 0
   current: 0
   pathDone: 0
+  speed: 0
+  rotation: 0
+  raycastMask:
+    serializedVersion: 2
+    m_Bits: 0
+  position: 0
+  collided: 0

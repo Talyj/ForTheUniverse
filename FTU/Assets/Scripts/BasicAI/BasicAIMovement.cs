@@ -19,7 +19,7 @@ public class BasicAIMovement : BasicAIStats, IPunObservable
             }
             else current = (current + 1)/* % targets.Length*/;
         }
-        if (current == moveTo.Length) pathDone = true;
+        if (current == moveTo.Length) current = 0;
     }
 
     public void DefaultMinionBehaviour()

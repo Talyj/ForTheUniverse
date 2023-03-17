@@ -3,11 +3,13 @@ using UnityEngine;
 
 public class MinionsBehaviour : BasicAIMovement, IPunObservable
 {
+    private float cpt = 0;
+
     public void Start()
     {
         BaseInit();
         AISetup();
-        current = 0;
+        //current = 0;
         pathDone = false;
         if (attackType == AttackType.Ranged)
         {
@@ -19,7 +21,7 @@ public class MinionsBehaviour : BasicAIMovement, IPunObservable
             SetAttackRange(10f);
             SetMaxHealth(350);
         } 
-        SetMoveSpeed(20f);
+        SetMoveSpeed(15f);
         SetDegMag(20f);
         SetDegPhys(20f);
         SetViewRange(30f);
@@ -44,9 +46,20 @@ public class MinionsBehaviour : BasicAIMovement, IPunObservable
                     gameObject.transform.LookAt(new Vector3(Cible.transform.position.x, transform.position.y, Cible.transform.position.z));
                 }        
                 //Movement + attack
-                DefaultMinionBehaviour();
+                if(GetHealth() > 0)
+                {
+                    DefaultMinionBehaviour();
+                }
             }
+            //TODO this is made for test have to get rid of the lines later
+            //cpt += Time.deltaTime;
+            //if (cpt >= 30)
+            // {
+            //    cpt = 0;
+            //    PhotonNetwork.Destroy(gameObject);
+            //}
         }
+
     }
 
     void IPunObservable.OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
@@ -54,14 +67,14 @@ public class MinionsBehaviour : BasicAIMovement, IPunObservable
         if (stream.IsWriting)
         {
             stream.SendNext(GetHealth());
-            stream.SendNext(gameObject.GetComponent<Renderer>().material.color.r);
-            stream.SendNext(gameObject.GetComponent<Renderer>().material.color.g);
-            stream.SendNext(gameObject.GetComponent<Renderer>().material.color.b);
+            //stream.SendNext(gameObject.GetComponent<Renderer>().material.color.r);
+            //stream.SendNext(gameObject.GetComponent<Renderer>().material.color.g);
+            //stream.SendNext(gameObject.GetComponent<Renderer>().material.color.b);
         }
         else
         {
             SetHealth((float)stream.ReceiveNext());
-            gameObject.GetComponent<Renderer>().material.color = new Color((float)stream.ReceiveNext(), (float)stream.ReceiveNext(), (float)stream.ReceiveNext());
+            //gameObject.GetComponent<Renderer>().material.color = new Color((float)stream.ReceiveNext(), (float)stream.ReceiveNext(), (float)stream.ReceiveNext());
         }
     }
 }

@@ -153,7 +153,7 @@ public class Dps1 : PlayerStats
     {
         if (Cible != null && Vector3.Distance(gameObject.transform.position, Cible.transform.position) < GetAttackRange())
         {
-            if (IsTargetable(Cible.GetComponent<IDamageable>().GetEnemyType()))
+            if (Cible.GetComponent<IDamageable>().IsTargetable(team)) 
             {
                 Cible.GetComponent<IDamageable>().TakeDamage(GetDegPhys() + damageSupp, DamageType.physique);
             }
@@ -167,7 +167,7 @@ public class Dps1 : PlayerStats
     {
         if (Cible != null && Vector3.Distance(gameObject.transform.position, Cible.transform.position) < GetAttackRange())
         {
-            if (IsTargetable(Cible.GetComponent<IDamageable>().GetEnemyType()))
+            if (Cible.GetComponent<IDamageable>().IsTargetable(team))
             {
                 SpawnRangeAttack(EnemyType.minion, Cible, damageSupp);
             }

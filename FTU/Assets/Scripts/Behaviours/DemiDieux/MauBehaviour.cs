@@ -34,7 +34,7 @@ public class MauBehaviour : BasicAIMovement
         SetResMag(50f);
         SetDegMag(200f);
         SetDegPhys(200f);
-        SetAttackSpeed(1.95f);
+        SetAttackSpeed(1f);
         SetEnemyType(EnemyType.dieu);
         Instance = this;
         foreach (var elmt in skills)
@@ -55,14 +55,14 @@ public class MauBehaviour : BasicAIMovement
             if (GetCanAct() && GetCanMove())
             {
                 //Attack
-                DefaultGodBehaviour();           
-                if(Vector3.Distance(templeTransform.position, transform.position) <= 50)
+                DefaultGodBehaviour();
+                if (Vector3.Distance(templeTransform.position, transform.position) <= 50)
                 {
                     GetNearestTarget();
                 }
+                GetNearestTarget();
                 if (Cible)
                 {
-                    //StartCoroutine(WalkToward());
                     WalkToward();
                     gameObject.transform.LookAt(new Vector3(Cible.transform.position.x, transform.position.y, Cible.transform.position.z));
                 }
@@ -83,11 +83,11 @@ public class MauBehaviour : BasicAIMovement
         }
         else
         {
-            var dist = Vector3.Distance(Cible.transform.position, templeTransform.position);
-            if (dist >= 50)
-            {
-                Cible = null;
-            }
+            //var dist = Vector3.Distance(Cible.transform.position, templeTransform.position);
+            //if (dist >= 50)
+            //{
+            //    Cible = null;
+            //}
         }
     }
 
@@ -138,9 +138,7 @@ public class MauBehaviour : BasicAIMovement
         {
             foreach (var col in hitColliders)
             {
-                if (col.gameObject.CompareTag("Player") ||
-                    col.gameObject.CompareTag("minion") ||
-                    col.gameObject.CompareTag("golem"))
+                if (col.gameObject.GetComponent<IDamageable>())
                 {
                     if (col.gameObject.GetComponent<IDamageable>().team != team)
                     {

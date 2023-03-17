@@ -118,7 +118,7 @@ public class ConsBehaviour : PlayerStats
                 if (Vector3.Distance(gameObject.transform.position, Cible.transform.position) < GetAttackRange() ||
                     Vector3.Distance(gameObject.transform.position, Cible.transform.position) < GetAttackRange() * 5 && isAI)
                 {
-                    if (IsTargetable(Cible.GetComponent<IDamageable>().GetEnemyType()))
+                    if (Cible.GetComponent<IDamageable>().IsTargetable(team))
                     {
                         SpawnRangeAttackCons(Cible, damageSupp);
                     }

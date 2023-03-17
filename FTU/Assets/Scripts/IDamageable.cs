@@ -47,7 +47,6 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     public GameObject projPrefab;
     public Transform SpawnPrefab;
 
-    [HideInInspector]
     public Team team;
     public PhotonTeam teams;
     public float damageSupp;
@@ -202,6 +201,10 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     #endregion
     #region Setter
 
+    public void SetTeam(Team value)
+    {
+        team = value;
+    }
     public void SetExp(float value)
     {
         Exp += value;
@@ -406,9 +409,11 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
             }
             // augmentation des stats a faire
             //test en dur a rendre plus automatique par scriptableobject surement
+            SetHealth(GetHealth() * 1.06f);
             SetMaxHealth(GetMaxHealth() * 1.06f);
+            SetMana(GetMana() * 1.05f);
             SetMaxMana(GetMaxMana() * 1.05f);
-            SetAttackSpeed(GetAttackSpeed() * 1.12f);
+            SetAttackSpeed(GetAttackSpeed() * 0.97f);
             SetDegPhys(GetDegPhys() * 1.75f);
             SetDegMag(GetDegMag() * 1.75f);
             SetResMag(GetResMag() * 1.25f);
@@ -417,7 +422,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         }
     }
 
-    [PunRPC]
+    [PunRPC] // NE PEUT TRANSMETTRE QUE DES TYPE CLASSIQUE (int, float, bool)
     public void GiveExperience()
     {
         var expToGive = 0;
@@ -447,7 +452,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         {
             foreach (var col in hitColliders)
             {
-                var collider = col.GetComponent<PlayerStats>();
+                var collider = col.GetComponent<IDamageable>();
                 if (collider)
                 {
                     if (collider.teams != teams && collider.enemyType == EnemyType.player ||
@@ -507,7 +512,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         return degRes;
     }
 
-    [PunRPC]
+    [PunRPC] // NE PEUT TRANSMETTRE QUE DES TYPE CLASSIQUE (int, float, bool)
     public void DealDamages(float DegatsRecu)
     {
         Health = Health - DegatsRecu;
@@ -557,13 +562,14 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         Gizmos.DrawWireSphere(transform.position, AttackRange);
     }
 
-    public bool IsTargetable(EnemyType enemyToCompare)
+    public bool IsTargetable(Team team)
     {
-        if(enemyToCompare == EnemyType.minion ||
-        enemyToCompare == EnemyType.voister ||
-        enemyToCompare == EnemyType.player ||
-        enemyToCompare == EnemyType.dieu ||
-        enemyToCompare == EnemyType.golem)
+        if (this.team == team) return false;
+        if(enemyType == EnemyType.minion ||
+        enemyType == EnemyType.voister ||
+        enemyType == EnemyType.player ||
+        enemyType == EnemyType.dieu ||
+        enemyType == EnemyType.golem)
         {
             return true;
         }
@@ -598,6 +604,35 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         return res;
     }
 
+    public void CheckRangeAttack()
+    {
+        try
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                if (Vector3.Distance(gameObject.transform.position, Cible.transform.position) > GetAttackRange())
+                {
+                    print("Hors d portée");
+                }
+                else
+                {
+                    if (attackType == AttackType.Melee)
+                    {
+                        StartCoroutine(AutoAttack());
+                    }
+                    if (attackType == AttackType.Ranged)
+                    {
+                        StartCoroutine(RangeAutoAttack());
+                    }
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.Log("No target available");
+        }
+    }
+
     public IEnumerator AutoAttack()
     {
         while (Cible != null)
@@ -608,7 +643,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
                 if (Vector3.Distance(gameObject.transform.position, Cible.transform.position) < GetAttackRange() ||
                     Vector3.Distance(gameObject.transform.position, Cible.transform.position) < GetAttackRange() * 5 && isAI)
                 {
-                    if (IsTargetable(Cible.GetComponent<IDamageable>().GetEnemyType()))
+                    if (Cible.GetComponent<IDamageable>().IsTargetable(team))
                     {
                         Cible.GetComponent<IDamageable>().TakeDamage(GetDegPhys() + damageSupp, DamageType.physique);
                     }
@@ -637,16 +672,20 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     {
         while (Cible != null)
         {
+            if(gameObject == null)
+            {
+                break;
+            }
             //anim.SetBool("AA", true);
             try
             {
                 if (Vector3.Distance(gameObject.transform.position, Cible.transform.position) < GetAttackRange() ||
                     Vector3.Distance(gameObject.transform.position, Cible.transform.position) < GetAttackRange() * 5 && isAI)
                 {
-                    if (IsTargetable(Cible.GetComponent<IDamageable>().GetEnemyType()))
+                    if (Cible.GetComponent<IDamageable>().IsTargetable(team))
                     {
-                        //SpawnRangeAttack(Cible, damageSupp);
-                        photonView.RPC("SpawnRangeAttack",RpcTarget.All, new object[] { Cible, damageSupp } );
+                        SpawnRangeAttack(Cible, damageSupp);
+                        //photonView.RPC("SpawnRangeAttack",RpcTarget.All, new object[] { Cible, damageSupp } );
                     }
                 }
                 else
@@ -662,12 +701,13 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
             {
                 Cible = null;
             }
-            yield return new WaitForSeconds(GetAttackSpeed() / ((100 / GetAttackSpeed()) * 0.01f));
+            var test = GetAttackSpeed() / ((100 / GetAttackSpeed()) * 0.01f);
+            yield return new WaitForSeconds(test);
         }
 
     }
 
-    [PunRPC]
+    //[PunRPC] // NE PEUT TRANSMETTRE QUE DES TYPE CLASSIQUE (int, float, bool)
     public void SpawnRangeAttack(GameObject Target, float dmgSupp = 0)
     {
         var bullets = PhotonNetwork.Instantiate(projPrefab.name, transform.position, Quaternion.identity);
@@ -692,5 +732,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
 public enum Team
 {
     Veritas = 0,
-    Dominion = 1
+    Dominion = 1,
+    Voister = 2,
+    nothing = 3
 }
