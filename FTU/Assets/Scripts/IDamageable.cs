@@ -47,7 +47,6 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     public GameObject projPrefab;
     public Transform SpawnPrefab;
 
-    [HideInInspector]
     public Team team;
     public PhotonTeam teams;
     public float damageSupp;
@@ -563,13 +562,14 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         Gizmos.DrawWireSphere(transform.position, AttackRange);
     }
 
-    public bool IsTargetable(EnemyType enemyToCompare)
+    public bool IsTargetable(Team team)
     {
-        if(enemyToCompare == EnemyType.minion ||
-        enemyToCompare == EnemyType.voister ||
-        enemyToCompare == EnemyType.player ||
-        enemyToCompare == EnemyType.dieu ||
-        enemyToCompare == EnemyType.golem)
+        if (this.team == team) return false;
+        if(enemyType == EnemyType.minion ||
+        enemyType == EnemyType.voister ||
+        enemyType == EnemyType.player ||
+        enemyType == EnemyType.dieu ||
+        enemyType == EnemyType.golem)
         {
             return true;
         }
@@ -604,6 +604,35 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         return res;
     }
 
+    public void CheckRangeAttack()
+    {
+        try
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                if (Vector3.Distance(gameObject.transform.position, Cible.transform.position) > GetAttackRange())
+                {
+                    print("Hors d portée");
+                }
+                else
+                {
+                    if (attackType == AttackType.Melee)
+                    {
+                        StartCoroutine(AutoAttack());
+                    }
+                    if (attackType == AttackType.Ranged)
+                    {
+                        StartCoroutine(RangeAutoAttack());
+                    }
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.Log("No target available");
+        }
+    }
+
     public IEnumerator AutoAttack()
     {
         while (Cible != null)
@@ -614,7 +643,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
                 if (Vector3.Distance(gameObject.transform.position, Cible.transform.position) < GetAttackRange() ||
                     Vector3.Distance(gameObject.transform.position, Cible.transform.position) < GetAttackRange() * 5 && isAI)
                 {
-                    if (IsTargetable(Cible.GetComponent<IDamageable>().GetEnemyType()))
+                    if (Cible.GetComponent<IDamageable>().IsTargetable(team))
                     {
                         Cible.GetComponent<IDamageable>().TakeDamage(GetDegPhys() + damageSupp, DamageType.physique);
                     }
@@ -653,7 +682,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
                 if (Vector3.Distance(gameObject.transform.position, Cible.transform.position) < GetAttackRange() ||
                     Vector3.Distance(gameObject.transform.position, Cible.transform.position) < GetAttackRange() * 5 && isAI)
                 {
-                    if (IsTargetable(Cible.GetComponent<IDamageable>().GetEnemyType()))
+                    if (Cible.GetComponent<IDamageable>().IsTargetable(team))
                     {
                         SpawnRangeAttack(Cible, damageSupp);
                         //photonView.RPC("SpawnRangeAttack",RpcTarget.All, new object[] { Cible, damageSupp } );
@@ -704,5 +733,6 @@ public enum Team
 {
     Veritas = 0,
     Dominion = 1,
-    Voister = 2
+    Voister = 2,
+    nothing = 3
 }

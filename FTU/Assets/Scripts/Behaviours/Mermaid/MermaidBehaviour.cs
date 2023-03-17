@@ -26,8 +26,8 @@ public class MermaidBehaviour : PlayerStats
     public void Start()
     {
         PlayerStatsSetUp();
-        BaseInit();
         SetUpCharacters(role, true, true);
+        BaseInit();
 
         speedPush = 3;
         charmSpeed = 5;
@@ -63,32 +63,33 @@ public class MermaidBehaviour : PlayerStats
             MovementPlayer();
             if (!isAttacking)
             {
-                try
-                {
-                    if (Input.GetMouseButtonDown(0))
-                    {
-                        if (Vector3.Distance(gameObject.transform.position, Cible.transform.position) > GetAttackRange())
-                        {
-                            print("Hors d portée");
-                        }
-                        else
-                        {
-                            if (attackType == AttackType.Melee)
-                            {
-                                StartCoroutine(AutoAttack());
-                            }
-                            if (attackType == AttackType.Ranged)
-                            {
-                                StartCoroutine(RangeAutoAttack());
-                            }
-                        }
-                    }
-                }
-                catch (Exception e)
-                {
-                    Debug.Log("No target available");
-                }
+                //try
+                //{
+                //    if (Input.GetMouseButtonDown(0))
+                //    {
+                //        if (Vector3.Distance(gameObject.transform.position, Cible.transform.position) > GetAttackRange())
+                //        {
+                //            print("Hors d portée");
+                //        }
+                //        else
+                //        {
+                //            if (attackType == AttackType.Melee)
+                //            {
+                //                StartCoroutine(AutoAttack());
+                //            }
+                //            if (attackType == AttackType.Ranged)
+                //            {
+                //                StartCoroutine(RangeAutoAttack());
+                //            }
+                //        }
+                //    }
+                //}
+                //catch (Exception e)
+                //{
+                //    Debug.Log("No target available");
+                //}
 
+                CheckRangeAttack();
                 if (Input.GetKeyDown(KeyCode.Alpha1))
                 {
                     Poissoin();

@@ -39,7 +39,7 @@ public class MinionsBehaviour : BasicAIMovement, IPunObservable
 
             if (GetCanAct() && GetCanMove())
             {
-                //GetNearestTarget();
+                GetNearestTarget();
                 if (Cible)
                 {
                     WalkToward();
@@ -52,12 +52,12 @@ public class MinionsBehaviour : BasicAIMovement, IPunObservable
                 }
             }
             //TODO this is made for test have to get rid of the lines later
-            cpt += Time.deltaTime;
-            if (cpt >= 30)
-             {
-                cpt = 0;
-                PhotonNetwork.Destroy(gameObject);
-            }
+            //cpt += Time.deltaTime;
+            //if (cpt >= 30)
+            // {
+            //    cpt = 0;
+            //    PhotonNetwork.Destroy(gameObject);
+            //}
         }
 
     }

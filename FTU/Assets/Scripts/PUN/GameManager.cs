@@ -87,7 +87,7 @@ namespace Com.MyCompany.MyGame
             //{
             //    PhotonNetwork.LoadLevel("WaitingRoom");
             //}
-            PhotonNetwork.LoadLevel("TestIA");
+            PhotonNetwork.LoadLevel("DevNewChar");
         }
 
         public override void OnPlayerEnteredRoom(Player other)
