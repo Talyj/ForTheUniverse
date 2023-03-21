@@ -29,14 +29,16 @@ public class MermaidBehaviour : PlayerStats
         SetUpCharacters(role, true, true);
         BaseInit();
 
-        speedPush = 3;
-        charmSpeed = 5;
         foreach(var elmt in skills)
         {
             elmt.isCooldown = false;
         }
+
+        speedPush = 3;
+        charmSpeed = 5;
         isPassiveStart = false;
         _passiveCounter = 0;
+
         CameraWork();
 
         SetCanUlt(true);
@@ -144,6 +146,7 @@ public class MermaidBehaviour : PlayerStats
             Debug.Log(skills[0].Name + " lanc�e");
             skills[0].isCooldown = true;
 
+            //Modifier le skill ici
             var proj = PhotonNetwork.Instantiate(poissoin.name, transform.position, Quaternion.identity);
             var dir = SpawnPrefab2.transform.position - SpawnPrefab.transform.position;
             proj.GetComponent<PoissoinProjBehaviour>().SetDamages(GetDegMag(), DamageType.magique);
@@ -152,6 +155,8 @@ public class MermaidBehaviour : PlayerStats
             proj.GetComponent<Rigidbody>().AddForce(dir.normalized * 30f, ForceMode.Impulse);
 
             CheckPassive();   
+
+            //jusqu'à là
             StartCoroutine(CoolDown(skills[0]));
         }
         else if (skills[0].isCooldown == true)
@@ -172,6 +177,7 @@ public class MermaidBehaviour : PlayerStats
             //buff
             SetMana(GetMana() - skills[1].Cost);
             Debug.Log(skills[1].Name + " lanc�e");
+            skills[1].isCooldown = true;
 
             Quaternion rotation = Quaternion.LookRotation(SpawnPrefab2.position - SpawnPrefab.position);
             Vector3 direction = SpawnPrefab2.position - SpawnPrefab.position;
@@ -184,11 +190,11 @@ public class MermaidBehaviour : PlayerStats
             CheckPassive();
             StartCoroutine(CoolDown(skills[1]));
         }
-        else if (skills[0].isCooldown == true)
+        else if (skills[1].isCooldown == true)
         {
             Debug.Log("en cd");
         }
-        else if (GetMana() < skills[0].Cost)
+        else if (GetMana() < skills[1].Cost)
         {
             Debug.Log("pas assez de mana");
         }
