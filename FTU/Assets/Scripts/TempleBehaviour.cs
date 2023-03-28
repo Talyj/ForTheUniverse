@@ -37,6 +37,7 @@ public class TempleBehaviour : MonoBehaviour
                 if (col.gameObject.CompareTag("Player") && col.gameObject.GetComponent<IDamageable>().teams != team)                    
                 {
                     SpawnDemiGod();
+                    Debug.Log($"<color=blue> GOD!!!!</color>");
                 }
 
             }

@@ -56,7 +56,7 @@ public class LobbyUi : MonoBehaviourPunCallbacks
 
                 //pv.RPC("RPC_PersoSelected", RpcTarget.All, character);
                 plI.PersoSelected(character);
-                plI.ApplyLocalChange();
+                //plI.ApplyLocalChange();
             }
         }
     }

@@ -42,6 +42,7 @@ public class PlayerListItem : MonoBehaviourPunCallbacks
         }
         else
         {
+            team = _player.GetPhotonTeam();
             Debug.Log($"<color=green> Setup {player.GetPhotonTeam().Name}</color>");
 
         }
@@ -93,27 +94,27 @@ public class PlayerListItem : MonoBehaviourPunCallbacks
         Destroy(gameObject);
     }
 
-    public override void OnPlayerPropertiesUpdate(Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps)
-    {
-        if (player == targetPlayer)
-        {
-            UpdatePlayerItem(targetPlayer);
-        }
-    }
+    //public override void OnPlayerPropertiesUpdate(Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps)
+    //{
+    //    if (player == targetPlayer)
+    //    {
+    //        UpdatePlayerItem(targetPlayer);
+    //    }
+    //}
 
-    public void UpdatePlayerItem(Player player)
-    {
-        if (player.CustomProperties.ContainsKey("_pp"))
-        {
-            background.sprite = sp[(int)player.CustomProperties["_pp"]];
-        }
-    }
-    public void ApplyLocalChange()
-    {
-        if (player.CustomProperties.ContainsKey("_pp"))
-        {
-            background.sprite = sp[(int)player.CustomProperties["_pp"]];
-        }
-    }
+    //public void UpdatePlayerItem(Player player)
+    //{
+    //    if (player.CustomProperties.ContainsKey("_pp"))
+    //    {
+    //        background.sprite = sp[(int)player.CustomProperties["_pp"]];
+    //    }
+    //}
+    //public void ApplyLocalChange()
+    //{
+    //    if (player.CustomProperties.ContainsKey("_pp"))
+    //    {
+    //        background.sprite = sp[(int)player.CustomProperties["_pp"]];
+    //    }
+    //}
 
 }
