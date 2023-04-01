@@ -49,14 +49,18 @@ public class LobbyUi : MonoBehaviourPunCallbacks
         {
             if (player.Value == PhotonNetwork.LocalPlayer)
             {
-                var plI = GameObject.FindObjectOfType<PlayerListItem>();
-                Debug.Log($" perso : {character.characterName} index: {character.characterIndex} <color=blue>  {player.Value.NickName}</color> <color=green>  {player.Value}</color>");
+                //var plI = GameObject.FindObjectOfType<PlayerListItem>().CheckIsMine;
+                
+                foreach(var pi in GameObject.FindObjectsOfType<PlayerListItem>())
+                {
+                    if(player.Value == pi.player)
+                    {
+                        Debug.Log($" perso : {character.characterName} index: {character.characterIndex} <color=blue>  {player.Value.NickName}</color> <color=green>  {player.Value}</color>");
+                        pi.PersoSelected(character);
+                    }
+                }
 
-                //PhotonView pv = plI.GetComponent<PhotonView>();
-
-                //pv.RPC("RPC_PersoSelected", RpcTarget.All, character);
-                plI.PersoSelected(character);
-                //plI.ApplyLocalChange();
+                //plI.PersoSelected(character);
             }
         }
     }

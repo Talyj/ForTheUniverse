@@ -12,7 +12,7 @@ using UnityEngine.UI;
 
 public class PlayerListItem : MonoBehaviourPunCallbacks
 {
-    Player player;
+    public Player player;
     public const string PersoPlayerProp = "_pp";
     [SerializeField] TMP_Text text;
     [SerializeField] Image background;
@@ -47,22 +47,24 @@ public class PlayerListItem : MonoBehaviourPunCallbacks
 
         }
     }
-    //[PunRPC]
-    //public void RPC_PersoSelected(Character charac)
-    //{
-    //    player.SetCustomProperties(new Hashtable { { PersoPlayerProp, charac.characterIndex } });
-    //    background.sprite = charac.characterSprite;
-    //    background.color = new Color(255f, 255f, 255f, 0.25f);
-    //}
+    
+    public bool CheckIsMine(Player _player)
+    {
+        return player.Equals(_player) ;
+    }
     public void PersoSelected(Character charac)
     {
-        player.SetCustomProperties(new Hashtable { { PersoPlayerProp, charac.characterIndex } });
-        //background.sprite = charac.characterSprite;
-        if (player.CustomProperties.ContainsKey("_pp"))
+        if (player.IsLocal)
         {
-            background.sprite = sp[(int)player.CustomProperties["_pp"]];
+            player.SetCustomProperties(new Hashtable { { PersoPlayerProp, charac.characterIndex } });
+            //background.sprite = charac.characterSprite;
+            //if (player.CustomProperties.ContainsKey("_pp"))
+            //{
+            //    background.sprite = sp[(int)player.CustomProperties["_pp"]];
+            //}
+            background.color = new Color(255f, 255f, 255f, 0.25f);
         }
-        background.color = new Color(255f, 255f, 255f, 0.25f);
+        
     }
 
     
