@@ -219,6 +219,14 @@ PrefabInstance:
       propertyPath: shopUI
       value: 
       objectReference: {fileID: 2065186157}
+    - target: {fileID: 455739002969214961, guid: 5769a5262731d6b4b92e3ea464c51ea0, type: 3}
+      propertyPath: teams.Code
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 455739002969214961, guid: 5769a5262731d6b4b92e3ea464c51ea0, type: 3}
+      propertyPath: teams.Name
+      value: Veritas
+      objectReference: {fileID: 0}
     - target: {fileID: 455739002969214965, guid: 5769a5262731d6b4b92e3ea464c51ea0, type: 3}
       propertyPath: m_RootOrder
       value: 11
@@ -416,7 +424,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!114 &431229268
 MonoBehaviour:
@@ -457,6 +465,10 @@ PrefabInstance:
       propertyPath: shopUI
       value: 
       objectReference: {fileID: 2065186157}
+    - target: {fileID: 455739002969214961, guid: 5769a5262731d6b4b92e3ea464c51ea0, type: 3}
+      propertyPath: teams.Name
+      value: Dominion
+      objectReference: {fileID: 0}
     - target: {fileID: 455739002969214965, guid: 5769a5262731d6b4b92e3ea464c51ea0, type: 3}
       propertyPath: m_RootOrder
       value: 10
@@ -618,7 +630,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 40, y: 0, z: 0}
 --- !u!114 &659379360
 MonoBehaviour:
@@ -751,7 +763,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1000310795
 GameObject:
@@ -833,6 +845,75 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1000310795}
   m_CullTransparentMesh: 1
+--- !u!1001 &1078562980
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -2547500044275669263, guid: b5c3ea629b695194cb7c4f38efe2a513, type: 3}
+      propertyPath: sceneViewId
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 8118329312662599778, guid: b5c3ea629b695194cb7c4f38efe2a513, type: 3}
+      propertyPath: m_Name
+      value: Minion
+      objectReference: {fileID: 0}
+    - target: {fileID: 8118329312662599780, guid: b5c3ea629b695194cb7c4f38efe2a513, type: 3}
+      propertyPath: teams.Code
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8118329312662599780, guid: b5c3ea629b695194cb7c4f38efe2a513, type: 3}
+      propertyPath: teams.Name
+      value: Veritas
+      objectReference: {fileID: 0}
+    - target: {fileID: 8118329312662599782, guid: b5c3ea629b695194cb7c4f38efe2a513, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8118329312662599782, guid: b5c3ea629b695194cb7c4f38efe2a513, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -7.606819
+      objectReference: {fileID: 0}
+    - target: {fileID: 8118329312662599782, guid: b5c3ea629b695194cb7c4f38efe2a513, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 8.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8118329312662599782, guid: b5c3ea629b695194cb7c4f38efe2a513, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -46.96981
+      objectReference: {fileID: 0}
+    - target: {fileID: 8118329312662599782, guid: b5c3ea629b695194cb7c4f38efe2a513, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8118329312662599782, guid: b5c3ea629b695194cb7c4f38efe2a513, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8118329312662599782, guid: b5c3ea629b695194cb7c4f38efe2a513, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8118329312662599782, guid: b5c3ea629b695194cb7c4f38efe2a513, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8118329312662599782, guid: b5c3ea629b695194cb7c4f38efe2a513, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8118329312662599782, guid: b5c3ea629b695194cb7c4f38efe2a513, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8118329312662599782, guid: b5c3ea629b695194cb7c4f38efe2a513, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: b5c3ea629b695194cb7c4f38efe2a513, type: 3}
 --- !u!1 &1132050260
 GameObject:
   m_ObjectHideFlags: 0
@@ -929,7 +1010,7 @@ RectTransform:
   - {fileID: 281114247}
   - {fileID: 1564540945}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -1099,7 +1180,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1235582955
 MonoBehaviour:
@@ -1396,12 +1477,28 @@ PrefabInstance:
       propertyPath: team.Name
       value: Dominion
       objectReference: {fileID: 0}
+    - target: {fileID: 8538029890301832766, guid: c02b52a3635f2f5458405377a5e44286, type: 3}
+      propertyPath: teams.Code
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8538029890301832766, guid: c02b52a3635f2f5458405377a5e44286, type: 3}
+      propertyPath: teams.Name
+      value: Dominion
+      objectReference: {fileID: 0}
     - target: {fileID: 8538029890731039999, guid: c02b52a3635f2f5458405377a5e44286, type: 3}
       propertyPath: team.Code
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8538029890731039999, guid: c02b52a3635f2f5458405377a5e44286, type: 3}
       propertyPath: team.Name
+      value: Veritas
+      objectReference: {fileID: 0}
+    - target: {fileID: 8538029890731039999, guid: c02b52a3635f2f5458405377a5e44286, type: 3}
+      propertyPath: teams.Code
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8538029890731039999, guid: c02b52a3635f2f5458405377a5e44286, type: 3}
+      propertyPath: teams.Name
       value: Veritas
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -1712,7 +1809,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2065186156
 PrefabInstance:

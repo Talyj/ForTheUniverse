@@ -36,15 +36,20 @@ public class PlayerManager : MonoBehaviour
         GameObject _playerPrefab = PhotonNetwork.Instantiate(playerPrefabs[index].name, new Vector3(0f, 2.14f, 0f), Quaternion.identity, 0);
 
         _playerPrefab.GetComponent<IDamageable>().teams.Code =(byte) player.CustomProperties["_pt"];
+        _playerPrefab.GetComponent<IDamageable>().userId = player.NickName;
+        Debug.Log(_playerPrefab.GetComponent<IDamageable>().userId);
 
+        _playerPrefab.GetComponent<PlayerStats>().playerManage = this;
         if (_playerPrefab.GetComponent<IDamageable>().teams.Code == 0)
         {
-            _playerPrefab.GetComponent<PlayerStats>().deathPos = new Vector3(313.3f, 2.14f, -37.118f);
-            _playerPrefab.GetComponent<PlayerStats>().respawnPos = new Vector3(323.3f, 2.14f, -37.118f);
+            //_playerPrefab.GetComponent<PlayerStats>().deathPos = new Vector3(413.3f, 2.14f, -37.118f);
+            _playerPrefab.GetComponent<PlayerStats>().deathPos = new Vector3(15f, 2.14f, -37.118f);
+            _playerPrefab.GetComponent<PlayerStats>().respawnPos = new Vector3(15f, 2.14f, -37.118f);
+            //_playerPrefab.GetComponent<PlayerStats>().respawnPos = new Vector3(323.3f, 2.14f, -37.118f);
         }
         else
         {
-            _playerPrefab.GetComponent<PlayerStats>().deathPos = new Vector3(-313.3f, 2.14f, -37.118f);
+            _playerPrefab.GetComponent<PlayerStats>().deathPos = new Vector3(-413.3f, 2.14f, -37.118f);
             _playerPrefab.GetComponent<PlayerStats>().respawnPos = new Vector3(-323.3f, 2.14f, -37.118f);
         }
 

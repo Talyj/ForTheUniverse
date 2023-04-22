@@ -267,6 +267,7 @@ MonoBehaviour:
   target: {fileID: 0}
   targetSet: 1
   touched: 0
+  playerId: 
 --- !u!1 &5957241294032835023
 GameObject:
   m_ObjectHideFlags: 0

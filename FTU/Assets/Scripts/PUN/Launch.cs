@@ -187,8 +187,10 @@ public class Launch : MonoBehaviourPunCallbacks
         }
         //Debug.Log($"<color=blue> after potential ADD clear :  {playerList.Count}</color>");
         Invoke("SetTeams", 0.1f);
+        photonView.RPC("SetTeams", RpcTarget.AllBuffered);
     }
 
+    [PunRPC]
     public void SetTeams()
     {
         foreach (Transform player in playerListContentInRoom)

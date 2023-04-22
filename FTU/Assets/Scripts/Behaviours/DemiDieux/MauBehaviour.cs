@@ -12,7 +12,8 @@ public class MauBehaviour : BasicAIMovement
 
     private float baseMag;
     private float basePhys;
-
+    public List<GameObject> enemyTargets = new List<GameObject>();
+    public List<GameObject> AllyTargets = new List<GameObject>();
     [HideInInspector] public Transform templeTransform;
 
     
@@ -129,8 +130,7 @@ public class MauBehaviour : BasicAIMovement
 
     public List<GameObject> GetTargetsAround(bool isAlly, float rangeMult = 1)
     {
-        var enemyTargets = new List<GameObject>();
-        var AllyTargets = new List<GameObject>();
+        
 
         Collider[] hitColliders = Physics.OverlapSphere(gameObject.transform.position, GetAttackRange() * rangeMult);
 
@@ -142,12 +142,14 @@ public class MauBehaviour : BasicAIMovement
                     col.gameObject.CompareTag("minion") ||
                     col.gameObject.CompareTag("golem"))
                 {
-                    if (col.gameObject.GetComponent<IDamageable>().team != team)
+                    if (col.gameObject.GetComponent<IDamageable>().teams != teams)
                     {
                         enemyTargets.Add(col.gameObject);
+                        Debug.Log("if " + col.gameObject.GetComponent<PhotonView>().ViewID);
                     }
                     else
                     {
+                        Debug.Log("else " + col.gameObject.GetComponent<PhotonView>().ViewID);
                         AllyTargets.Add(col.gameObject);
                     }
                 }

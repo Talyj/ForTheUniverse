@@ -5003,19 +5003,39 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8118329312662599778, guid: b5c3ea629b695194cb7c4f38efe2a513, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8118329312662599780, guid: b5c3ea629b695194cb7c4f38efe2a513, type: 3}
       propertyPath: team
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8118329312662599780, guid: b5c3ea629b695194cb7c4f38efe2a513, type: 3}
+      propertyPath: Health
+      value: 99999
+      objectReference: {fileID: 0}
+    - target: {fileID: 8118329312662599780, guid: b5c3ea629b695194cb7c4f38efe2a513, type: 3}
+      propertyPath: MaxHealth
+      value: 99999
+      objectReference: {fileID: 0}
+    - target: {fileID: 8118329312662599780, guid: b5c3ea629b695194cb7c4f38efe2a513, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8118329312662599780, guid: b5c3ea629b695194cb7c4f38efe2a513, type: 3}
+      propertyPath: teams.Code
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8118329312662599780, guid: b5c3ea629b695194cb7c4f38efe2a513, type: 3}
+      propertyPath: teams.Name
+      value: Veritas
+      objectReference: {fileID: 0}
     - target: {fileID: 8118329312662599782, guid: b5c3ea629b695194cb7c4f38efe2a513, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8118329312662599782, guid: b5c3ea629b695194cb7c4f38efe2a513, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -181.27695
+      value: -27.2
       objectReference: {fileID: 0}
     - target: {fileID: 8118329312662599782, guid: b5c3ea629b695194cb7c4f38efe2a513, type: 3}
       propertyPath: m_LocalPosition.y
@@ -5023,7 +5043,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8118329312662599782, guid: b5c3ea629b695194cb7c4f38efe2a513, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -119.151024
+      value: -37
       objectReference: {fileID: 0}
     - target: {fileID: 8118329312662599782, guid: b5c3ea629b695194cb7c4f38efe2a513, type: 3}
       propertyPath: m_LocalRotation.w
@@ -5055,6 +5075,55 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b5c3ea629b695194cb7c4f38efe2a513, type: 3}
+--- !u!1 &292243341 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8118329312662599778, guid: b5c3ea629b695194cb7c4f38efe2a513, type: 3}
+  m_PrefabInstance: {fileID: 292243340}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &292243342
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 292243341}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3565d4ff04323f348ae0925e9fb26b1c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackType: 0
+  cc: 0
+  Cible: {fileID: 0}
+  userId: 
+  Health: 0
+  MaxHealth: 0
+  AttackSpeed: 0
+  AttackRange: 0
+  canUlt: 0
+  isAttacking: 0
+  Exp: 0
+  MaxExp: 0
+  ExpRate: 0
+  lvl: 0
+  projPrefab: {fileID: 0}
+  SpawnPrefab: {fileID: 0}
+  team: 0
+  teams:
+    Name: Veritas
+    Code: 1
+  damageSupp: 0
+  isAI: 0
+  enemyType: 0
+  passif: {fileID: 0}
+  skills: []
+  ult: {fileID: 0}
+  SpawnPrefab2: {fileID: 0}
+  targetsUp: []
+  targetsDown: []
+  way: 0
+  current: 0
+  pathDone: 0
 --- !u!1 &305136619 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1050170632197013732, guid: 559a6a5138f2ed941b705a6eee53c783, type: 3}
@@ -10308,7 +10377,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8597483264512879833, guid: 58fa13ea9462c6a41bfedaf78e7c4658, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8597483264512879833, guid: 58fa13ea9462c6a41bfedaf78e7c4658, type: 3}
       propertyPath: m_LocalPosition.x
@@ -11183,7 +11252,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &1592660505
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -11619,6 +11688,10 @@ PrefabInstance:
     - target: {fileID: 455739002969214960, guid: 5769a5262731d6b4b92e3ea464c51ea0, type: 3}
       propertyPath: m_Name
       value: shop
+      objectReference: {fileID: 0}
+    - target: {fileID: 455739002969214960, guid: 5769a5262731d6b4b92e3ea464c51ea0, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 455739002969214961, guid: 5769a5262731d6b4b92e3ea464c51ea0, type: 3}
       propertyPath: shopUI

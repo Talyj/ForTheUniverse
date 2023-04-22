@@ -172,6 +172,8 @@ MonoBehaviour:
   pathDone: 0
   roarArea: {fileID: 315106767154584745, guid: 3f33656f6f5aaf44fb14b5942e3a9a0f, type: 3}
   Instance: {fileID: 0}
+  enemyTargets: []
+  AllyTargets: []
   templeTransform: {fileID: 0}
 --- !u!114 &-7631457125285483181
 MonoBehaviour:

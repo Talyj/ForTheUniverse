@@ -1,5 +1,6 @@
 using Photon.Pun;
 using Photon.Pun.UtilityScripts;
+using Photon.Realtime;
 using System;
 using System.Collections;
 using Unity.Netcode;
@@ -383,12 +384,32 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
             {
                 //Victory
             }
+            else if (gameObject.CompareTag("minion"))
+            {
+
+                PhotonView.Get(this).RPC("SendKillfeed", RpcTarget.All, PhotonNetwork.LocalPlayer.NickName, Cible.name);
+            }
             else if (PhotonNetwork.IsMasterClient)
             {
                 Debug.Log("dead");
                 PhotonNetwork.Destroy(gameObject.GetComponent<PhotonView>());
             }
         }        
+    }
+
+    [PunRPC]
+    public void SendKillfeed(string killerName, string victimName)
+    {
+        // Envoyer les informations d'élimination aux autres clients
+        // Vous pouvez également mettre à jour votre UI pour afficher les informations dans le killfeed
+        Debug.Log(killerName + " a kill " + victimName);
+    }
+
+    [PunRPC]
+    public void ReceiveKillfeed(string killerName, string victimName)
+    {
+        Debug.Log(killerName + " a kill " + victimName);
+        // Mettre à jour votre UI pour afficher les informations dans le killfeed
     }
 
     public void ExperienceBehaviour()
@@ -503,7 +524,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
                 break;
         }
         
-        photonView.RPC("DealDamages", RpcTarget.All, new object[] { degRes });
+        photonView.RPC("DealDamages", RpcTarget.All,degRes);
         return degRes;
     }
 
@@ -671,10 +692,28 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     public void SpawnRangeAttack(GameObject Target, float dmgSupp = 0)
     {
         var bullets = PhotonNetwork.Instantiate(projPrefab.name, transform.position, Quaternion.identity);
+        bullets.GetPhotonView().TransferOwnership(PhotonNetwork.LocalPlayer);
+        //Debug.Log(bullets.GetComponent<Projectile>().playerId);
+        //Debug.Log(userId);
+        //bullets.GetComponent<Projectile>().SetDamages(GetDegMag() + dmgSupp, DamageType.magique);
+        //bullets.GetComponent<Projectile>().target = Target;
+        //bullets.GetComponent<Projectile>().targetSet = true;
+        photonView.RPC("OnProjectileCreated", RpcTarget.OthersBuffered, bullets.GetPhotonView().ViewID, PhotonNetwork.LocalPlayer.ActorNumber);
+    }
 
-        bullets.GetComponent<Projectile>().SetDamages(GetDegMag() + dmgSupp, DamageType.magique);
-        bullets.GetComponent<Projectile>().target = Target;
-        bullets.GetComponent<Projectile>().targetSet = true;
+
+    [PunRPC]
+    void OnProjectileCreated(int projectileViewID, int ownerActorNumber)
+    {
+        // Récupération du projectile créé sur les autres clients
+        PhotonView projectileView = PhotonView.Find(projectileViewID);
+        if (projectileView != null)
+        {
+            // Récupération du propriétaire du projectile
+            Player owner = PhotonNetwork.CurrentRoom.GetPlayer(ownerActorNumber);
+
+            // Traitement du projectile créé sur les autres clients en utilisant le propriétaire
+        }
     }
 
     void IPunObservable.OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)

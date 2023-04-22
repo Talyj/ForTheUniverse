@@ -48,6 +48,10 @@ MonoBehaviour:
   - MyTeam
   - SpawnRangeAttack
   - RPC_PersoSelected
+  - SetTeams
+  - OnProjectileCreated
+  - ReceiveKillfeed
+  - SendKillfeed
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

@@ -35,7 +35,7 @@ public class BasicAIStats : IDamageable, IPunObservable
                     //If the target is a player
                     if (col.GetComponent<PlayerStats>())
                     {
-                        if (col.GetComponent<PlayerStats>().team != team)
+                        if (col.GetComponent<PlayerStats>().teams != teams)
                         {
                             Cible = col.gameObject;
                             break;
@@ -43,7 +43,7 @@ public class BasicAIStats : IDamageable, IPunObservable
                     }//If the target is a minion, a golem or a dd
                     else if (col.GetComponent<BasicAIStats>())
                     {
-                        if(col.GetComponent<BasicAIStats>().team != team)
+                        if(col.GetComponent<BasicAIStats>().teams != teams)
                         {
                             Cible = col.gameObject;
                         }
