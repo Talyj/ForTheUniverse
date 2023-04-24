@@ -16,8 +16,8 @@ public class TrainingBehaviours : BasicAIMovement, IPunObservable
         else
         {
             SetAttackRange(10f);
-            SetMaxHealth(300);
-            SetHealth(300);
+            SetMaxHealth(300f);
+            SetHealth(300f);
         }
         SetMoveSpeed(20f);
         SetDegMag(20f);

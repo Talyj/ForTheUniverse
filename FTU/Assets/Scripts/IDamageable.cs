@@ -25,8 +25,8 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     private float ResistancePhysique; // calcul des resistance health = health - (DegatsPhysiqueRe�u -((ResistancePhysique * DegatsPhysiqueRe�u)/100)
     private float ResistanceMagique; //calcul des resistance health = health - (DegatsMagiqueRe�u - ((ResistanceMagique * DegatsMagiqueRe�u) / 100)
 
-    private float DegatsPhysique;
-    private float DegatsMagique;
+    [SerializeField] private float DegatsPhysique;
+    [SerializeField] private float DegatsMagique;
     private bool canMove;
     private bool canAct;
     private bool isMoving;
@@ -394,6 +394,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
                 Debug.Log("dead");
                 PhotonNetwork.Destroy(gameObject.GetComponent<PhotonView>());
             }
+                photonView.RPC("SendKillfeed", RpcTarget.All, PhotonNetwork.LocalPlayer.NickName, Cible.name);
         }        
     }
 
@@ -693,12 +694,12 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     {
         var bullets = PhotonNetwork.Instantiate(projPrefab.name, transform.position, Quaternion.identity);
         bullets.GetPhotonView().TransferOwnership(PhotonNetwork.LocalPlayer);
-        //Debug.Log(bullets.GetComponent<Projectile>().playerId);
-        //Debug.Log(userId);
-        //bullets.GetComponent<Projectile>().SetDamages(GetDegMag() + dmgSupp, DamageType.magique);
-        //bullets.GetComponent<Projectile>().target = Target;
-        //bullets.GetComponent<Projectile>().targetSet = true;
-        photonView.RPC("OnProjectileCreated", RpcTarget.OthersBuffered, bullets.GetPhotonView().ViewID, PhotonNetwork.LocalPlayer.ActorNumber);
+        Debug.Log(bullets.GetComponent<Projectile>().playerId);
+        Debug.Log(userId);
+        bullets.GetComponent<Projectile>().SetDamages(GetDegPhys() + dmgSupp, DamageType.physique);
+        bullets.GetComponent<Projectile>().target = Target;
+        bullets.GetComponent<Projectile>().targetSet = true;
+        //photonView.RPC("OnProjectileCreated", RpcTarget.OthersBuffered, bullets.GetPhotonView().ViewID, PhotonNetwork.LocalPlayer.ActorNumber);
     }
 
 
