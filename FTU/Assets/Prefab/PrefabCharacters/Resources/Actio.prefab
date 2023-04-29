@@ -637,6 +637,7 @@ MonoBehaviour:
   gold: 0
   respawnPos: {x: 313.3, y: 2.14, z: -37.118}
   deathPos: {x: 0, y: 0, z: 0}
+  playerManage: {fileID: 0}
   items: []
   role: 0
   sp2: {fileID: 112043609046724237, guid: 0e48eec9c9299ab4eb6bc2579e040541, type: 3}

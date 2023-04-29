@@ -33,7 +33,7 @@ public class Targeting : MonoBehaviour
                             component.GetComponent<IDamageable>().GetEnemyType()== IDamageable.EnemyType.dieu ||
                             component.GetComponent<IDamageable>().GetEnemyType()== IDamageable.EnemyType.golem)
                         {
-                            if(hit.collider.GetComponent<IDamageable>().team != gameObject.GetComponent<IDamageable>().team)
+                            if(hit.collider.GetComponent<IDamageable>().teams.Code != gameObject.GetComponent<IDamageable>().teams.Code)
                             entity.GetComponent<IDamageable>().Cible = hit.collider.gameObject;
                         }
                     }

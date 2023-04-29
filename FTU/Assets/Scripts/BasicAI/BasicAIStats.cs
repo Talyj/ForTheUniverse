@@ -1,5 +1,4 @@
 using Photon.Pun;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -34,9 +33,9 @@ public class BasicAIStats : IDamageable, IPunObservable
                 foreach (var col in hitColliders)
                 {
                     //If the target is a player
-                    if (col.GetComponent<PlayerStats>() || col.GetComponent<VoisterBehaviour>())
+                    if (col.GetComponent<PlayerStats>())
                     {
-                        if (col.GetComponent<IDamageable>().team != team)
+                        if (col.GetComponent<PlayerStats>().teams != teams)
                         {
                             Cible = col.gameObject;
                             break;
@@ -44,7 +43,7 @@ public class BasicAIStats : IDamageable, IPunObservable
                     }//If the target is a minion, a golem or a dd
                     else if (col.GetComponent<BasicAIStats>())
                     {
-                        if(col.GetComponent<BasicAIStats>().team != team)
+                        if(col.GetComponent<BasicAIStats>().teams != teams)
                         {
                             Cible = col.gameObject;
                         }

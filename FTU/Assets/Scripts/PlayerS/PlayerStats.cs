@@ -9,13 +9,13 @@ public class PlayerStats : PlayerMovement
     //Animator anim;
 
     public float gold;
-    [HideInInspector] public Vector3 respawnPos;
-    [HideInInspector] public Vector3 deathPos;
+    public Vector3 respawnPos;
+    public Vector3 deathPos;
+    public PlayerManager playerManage;
     private float respawnCooldown;
 
     public List<ItemBehaviours> items = new List<ItemBehaviours>(4);
     public Role role;
-    //[SerializeField]
 
 
 
@@ -52,6 +52,7 @@ public class PlayerStats : PlayerMovement
     void Start()
     {
         //anim = GetComponent<Animator>();
+        
 
     }
 
