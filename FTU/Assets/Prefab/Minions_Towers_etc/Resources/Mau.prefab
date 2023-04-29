@@ -143,6 +143,8 @@ MonoBehaviour:
   MaxHealth: 0
   AttackSpeed: 0
   AttackRange: 0
+  DegatsPhysique: 0
+  DegatsMagique: 0
   canUlt: 0
   isAttacking: 0
   Exp: 0

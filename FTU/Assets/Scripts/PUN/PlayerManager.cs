@@ -42,12 +42,12 @@ public class PlayerManager : MonoBehaviour
         _playerPrefab.GetComponent<PlayerStats>().playerManage = this;
         if (_playerPrefab.GetComponent<IDamageable>().teams.Code == 0)
         {
-            //_playerPrefab.GetComponent<PlayerStats>().deathPos = new Vector3(413.3f, 2.14f, -37.118f);
-            _playerPrefab.GetComponent<PlayerStats>().deathPos = new Vector3(15f, 2.14f, -37.118f);
-            _playerPrefab.GetComponent<PlayerStats>().respawnPos = new Vector3(15f, 2.14f, -37.118f);
-            //_playerPrefab.GetComponent<PlayerStats>().respawnPos = new Vector3(323.3f, 2.14f, -37.118f);
+            _playerPrefab.GetComponent<PlayerStats>().deathPos = new Vector3(413.3f, 2.14f, -37.118f);
+            //_playerPrefab.GetComponent<PlayerStats>().deathPos = new Vector3(15f, 2.14f, -37.118f);
+            //_playerPrefab.GetComponent<PlayerStats>().respawnPos = new Vector3(15f, 2.14f, -37.118f);
+            _playerPrefab.GetComponent<PlayerStats>().respawnPos = new Vector3(323.3f, 2.14f, -37.118f);
         }
-        else
+        else if(_playerPrefab.GetComponent<IDamageable>().teams.Code == 1)
         {
             _playerPrefab.GetComponent<PlayerStats>().deathPos = new Vector3(-413.3f, 2.14f, -37.118f);
             _playerPrefab.GetComponent<PlayerStats>().respawnPos = new Vector3(-323.3f, 2.14f, -37.118f);
