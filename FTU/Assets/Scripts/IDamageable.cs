@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using Unity.Netcode;
 using UnityEngine;
+//TODO change class name
 
 public abstract class IDamageable : MonoBehaviourPun, IPunObservable
 {
@@ -296,7 +297,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
 
     #endregion
 
-
+    //TODO Awake ?
     public void BaseInit()
     {
         canMove = true;
@@ -576,6 +577,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         return false;
     }
 
+    //TODO bouger la fonction dans le code concerné
     public bool IsControl(EnemyType enemyToCompare, ControlType cc)
     {
         if (enemyToCompare == EnemyType.minion ||

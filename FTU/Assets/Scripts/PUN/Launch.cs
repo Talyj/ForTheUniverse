@@ -213,7 +213,7 @@ public class Launch : MonoBehaviourPunCallbacks
 
     public void StartGame()
     {
-        //Player[] players = PhotonNetwork.PlayerList;
+        Player[] players = PhotonNetwork.PlayerList;
         //switch (players.Count())
         //{
         //    case 2:
@@ -227,6 +227,6 @@ public class Launch : MonoBehaviourPunCallbacks
         //        break;
         //}
 
-        //PhotonNetwork.LoadLevel(1);
+        PhotonNetwork.LoadLevel(1);
     }
 }
