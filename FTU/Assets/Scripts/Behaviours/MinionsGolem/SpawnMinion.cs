@@ -28,12 +28,12 @@ public class SpawnMinion : MonoBehaviour
         if (PhotonNetwork.IsMasterClient)
         {
             cpt -= Time.deltaTime;
-            if(SceneManager.GetActiveScene().name == "MainGameRoom")
+            if(/*SceneManager.GetActiveScene().name == "MainGameRoom"*/ true)
             {
-                if (mainGame.isPlaying && cpt <= 2)
+                if (/*mainGame.isPlaying && */cpt <= 2)
                 {
                     cpt = 30;
-                    for (int i = 0; i <= 4; i++)
+                    for (int i = 0; i <= 1; i++)
                     {
                         SetMinions(BasicAIStats.Way.up, Team.Veritas, i);
                         SetMinions(BasicAIStats.Way.down, Team.Veritas, i);

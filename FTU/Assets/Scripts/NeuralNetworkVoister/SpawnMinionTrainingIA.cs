@@ -42,16 +42,17 @@ public class SpawnMinionTrainingIA : MonoBehaviour
                 cpt = 30;
                 for(int j = 0; j < spawnPoint.Length; j++)
                 {
+                    var randPos = Random.Range(0, 3);                    
                     for (int i = 0; i <= 10; i++)
                     {
-                        SetMinions(BasicAIStats.Way.up, Team.Veritas, i, spawnPoint[j], paths[j]);
+                        SetMinions(BasicAIStats.Way.up, Team.Veritas, i, paths[j][randPos], paths[j], randPos);
                     }
                 }
             }
         }
     }
 
-    public void SetMinions(BasicAIStats.Way way, Team team, int loopCounter, Transform spawnPos, Transform[] path)
+    public void SetMinions(BasicAIStats.Way way, Team team, int loopCounter, Transform spawnPos, Transform[] path, int currentPos)
     {
         //Vector3 spawn = spawnPos.position;
         var x = Random.Range(-3, 3);
@@ -75,6 +76,7 @@ public class SpawnMinionTrainingIA : MonoBehaviour
         minionTemp.GetComponent<MinionsBehaviour>().team = team;
         minionTemp.GetComponent<MinionsBehaviour>().targetsUp = path;
         minionTemp.gameObject.GetComponent<Renderer>().material.color = color;
+        minionTemp.GetComponent<MinionsBehaviour>().current = currentPos;
         if (loopCounter > 6)
         {
             minionTemp.GetComponent<MinionsBehaviour>().attackType = IDamageable.AttackType.Ranged;

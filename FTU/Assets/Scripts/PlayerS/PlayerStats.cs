@@ -100,7 +100,6 @@ public class PlayerStats : PlayerMovement
         else
         {
             Regen();
-
         }
     }
 
@@ -158,7 +157,7 @@ public class PlayerStats : PlayerMovement
         switch (role)
         {
             case Role.dps:
-                SetMaxHealth(500f);
+                SetMaxHealth(5000000f);
                 SetAttackSpeed(2f);
 
                 SetupAttackRangeAndSpeed(range);
