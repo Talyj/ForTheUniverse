@@ -14,7 +14,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/AITest/WaitingRoom.unity
     guid: 971731134caaf264292e7918d61d3189
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/AITest/DevNewChar.unity
     guid: fbc3bc0570190b848902827e50145161
+  - enabled: 1
+    path: Assets/Scenes/Kyllian Test/DevNewCharKyyx.unity
+    guid: 6fbc3c3bd998f4644b70c83fd8b464d3
   m_configObjects: {}
