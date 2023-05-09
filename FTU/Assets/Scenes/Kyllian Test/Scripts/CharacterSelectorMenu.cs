@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
 
-public class CharacterSelectorMenu : MonoBehaviour
+public class CharacterSelectorMenu : MonoBehaviourPunCallbacks
 {
     public GameObject menu;
     public GameObject championsMenu;
@@ -20,9 +20,13 @@ public class CharacterSelectorMenu : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        
         if (PlayerPrefs.HasKey("championsSelected"))
         {
             championsSelected = PlayerPrefs.GetInt("championsSelected");
+            ExitGames.Client.Photon.Hashtable customProp = new ExitGames.Client.Photon.Hashtable();
+            customProp.Add("championsSelected",championsSelected);
+            MainMenuManager.Instance().GetLocalPlayer().SetCustomProperties(customProp);
         }
 
         DisplaySelectedChampion();
@@ -45,6 +49,9 @@ public class CharacterSelectorMenu : MonoBehaviour
         championsSelected = index;
         PlayerPrefs.SetInt("championsSelected", index);
         DisplaySelectedChampion();
+        ExitGames.Client.Photon.Hashtable customProp = new ExitGames.Client.Photon.Hashtable();
+        customProp.Add("championsSelected",index);
+        MainMenuManager.Instance().GetLocalPlayer().SetCustomProperties(customProp);
     }
 
     public void DisplaySelectedChampion()
@@ -63,4 +70,6 @@ public class CharacterSelectorMenu : MonoBehaviour
         championPrefab.GetComponent<Targeting>().enabled = false;
         championPrefab.GetComponent<Animator>().enabled = false;
     }
+    
+    
 }
