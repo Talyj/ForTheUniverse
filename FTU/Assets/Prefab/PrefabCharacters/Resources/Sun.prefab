@@ -232,6 +232,8 @@ MonoBehaviour:
   MaxHealth: 0
   AttackSpeed: 0
   AttackRange: 0
+  DegatsPhysique: 0
+  DegatsMagique: 0
   canUlt: 0
   isAttacking: 0
   Exp: 0
@@ -260,6 +262,7 @@ MonoBehaviour:
   gold: 0
   respawnPos: {x: 313.3, y: 2.14, z: -37.118}
   deathPos: {x: 0, y: 0, z: 0}
+  playerManage: {fileID: 0}
   items: []
   role: 0
   stickTP: {fileID: 3431704481046487142, guid: a09069b3be2d08648a222b5efb919207, type: 3}

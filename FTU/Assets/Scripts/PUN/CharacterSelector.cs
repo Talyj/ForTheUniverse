@@ -24,10 +24,10 @@ public class CharacterSelector : MonoBehaviourPunCallbacks
         //if (SceneManager.GetActiveScene().name == "Launcher")
         //{
         GameObject other = GameObject.Find("Manage");
-        if (other.GetComponent<CharacterSelector>().instance != this)
-        {
-            Destroy(other);
-        }
+        //if (other.GetComponent<CharacterSelector>().instance != this)
+        //{
+        //    Destroy(other);
+        //}
         //}
         selectIndex = currentIndex;
        //Instantiate(listOfCharacter[currentIndex].gameObject, spwan.position, Quaternion.Euler(0f, 180f, 0f));

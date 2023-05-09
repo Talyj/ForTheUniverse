@@ -1,4 +1,5 @@
 using Photon.Pun;
+using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
@@ -14,11 +15,12 @@ public class Projectile : MonoBehaviourPun
     public bool targetSet;
     protected bool stopProjectile = false;
     public bool touched;
+    public string playerId;
 
-    //public void Awake()
-    //{
-    //    DontDestroyOnLoad(gameObject);
-    //}
+    public void Awake()
+    {
+        playerId = PhotonNetwork.NickName;
+    }
 
     public void Start()
     {
@@ -31,6 +33,7 @@ public class Projectile : MonoBehaviourPun
     {
         if (photonView.IsMine)
         {
+
             if(target == null)
             {
                PhotonNetwork.Destroy(gameObject);
@@ -71,6 +74,7 @@ public class Projectile : MonoBehaviourPun
         }
     }
 
+    
     public void SetDamages(float dmg, IDamageable.DamageType typeDmg)
     {
         degats = dmg;
@@ -90,6 +94,7 @@ public class Projectile : MonoBehaviourPun
     public void DealDamage(GameObject target, float dmg, IDamageable.DamageType typeDmg)
     {
         target.GetComponent<IDamageable>().TakeDamage(dmg, typeDmg);
+        Debug.Log(playerId + " a fait " + dmg + " de degats " + typeDmg + " à :" + target.name);
     }
 
     protected IEnumerator DestroyBullet(float time)

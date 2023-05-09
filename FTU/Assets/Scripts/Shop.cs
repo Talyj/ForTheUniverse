@@ -1,11 +1,13 @@
 using Photon.Pun;
+using Photon.Pun.UtilityScripts;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Shop : MonoBehaviourPun
 {
-    public Team team;
+    [SerializeField] PhotonTeamsManager manag;
+    public PhotonTeam teams;
     public GameObject shopUI;
     public PlayerStats playerPrefab;
     public bool shopIsOpen = false;
@@ -13,7 +15,7 @@ public class Shop : MonoBehaviourPun
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") && other.gameObject.GetComponent<IDamageable>().team == team)
+        if (other.CompareTag("Player") && other.gameObject.GetComponent<IDamageable>().teams.Code== teams.Code)
         {
             playerPrefab = other.gameObject.GetComponent<PlayerStats>();
             if (Input.GetKeyDown(KeyCode.P))
@@ -26,7 +28,7 @@ public class Shop : MonoBehaviourPun
     }
     private void OnTriggerStay(Collider other)
     {
-        if(other.CompareTag("Player") && other.gameObject.GetComponent<IDamageable>().team == team)
+        if(other.CompareTag("Player") && other.gameObject.GetComponent<IDamageable>().teams.Code == teams.Code)
         {
             playerPrefab = other.gameObject.GetComponent<PlayerStats>();
             if (Input.GetKeyDown(KeyCode.P))
