@@ -30,7 +30,6 @@ public class MainMenuManager : MonoBehaviourPunCallbacks
     // Start is called before the first frame update
     void Start()
     {
-        
     }
 
     // Update is called once per frame
@@ -41,18 +40,8 @@ public class MainMenuManager : MonoBehaviourPunCallbacks
     
     public void Connect()
     {
-        // we check if we are connected or not, we join if we are , else we initiate the connection to the server.
-        if (PhotonNetwork.IsConnected)
-        {
-            // #Critical we need at this point to attempt joining a Random Room. If it fails, we'll get notified in OnJoinRandomFailed() and we'll create one.
-            PhotonNetwork.JoinRandomRoom();
-        }
-        else
-        {
-            // #Critical, we must first and foremost connect to Photon Online Server.
-            PhotonNetwork.ConnectUsingSettings();
-            PhotonNetwork.GameVersion = "1";
-        }
+        PhotonNetwork.ConnectUsingSettings();
+        PhotonNetwork.GameVersion = "1";
     }
     
     public override void OnConnectedToMaster()
