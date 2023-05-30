@@ -38,12 +38,12 @@ public class SlimeBehaviour : VoisterBehaviour, IPunObservable
             if (GetCanAct() && GetCanMove())
             {
                 GetNearestTarget();
-                if (Cible)
-                {
-                    //WalkToward();
-                    //gameObject.transform.LookAt(new Vector3(Cible.transform.position.x, transform.position.y, Cible.transform.position.z));
-                    VoisterBasicAttack();
-                }
+                //if (Cible)
+                //{
+                //    //WalkToward();
+                //    //gameObject.transform.LookAt(new Vector3(Cible.transform.position.x, transform.position.y, Cible.transform.position.z));
+                //    VoisterBasicAttack();
+                //}
                 //Movement + attack
                 //VoisterMovement();
             }

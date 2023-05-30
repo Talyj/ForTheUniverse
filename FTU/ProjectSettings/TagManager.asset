@@ -12,6 +12,7 @@ TagManager:
   - consLight
   - CheckPoint
   - walls
+  - kingCrab
   layers:
   - Default
   - TransparentFX

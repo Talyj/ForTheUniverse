@@ -40,19 +40,19 @@ public class FoxBehaviour : VoisterBehaviour, IPunObservable
             if (GetCanAct() && GetCanMove())
             {
                 GetNearestTarget();
-                if (Cible)
-                {
-                    WalkToward();
-                    gameObject.transform.LookAt(new Vector3(Cible.transform.position.x, transform.position.y, Cible.transform.position.z));
-                    VoisterBasicAttack();
-                }
-                //Movement + attack
-                VoisterMovement();
+                //if (Cible)
+                //{
+                //    WalkToward();
+                //    gameObject.transform.LookAt(new Vector3(Cible.transform.position.x, transform.position.y, Cible.transform.position.z));
+                //    VoisterBasicAttack();
+                //}
+                ////Movement + attack
+                //VoisterMovement();
             }
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                Stab();
-            }
+            //if (Input.GetKeyDown(KeyCode.Space))
+            //{
+            //    Stab();
+            //}
         }
     }
 

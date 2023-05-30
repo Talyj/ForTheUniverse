@@ -1,10 +1,40 @@
 using Photon.Pun;
+using System.Collections;
+using System.Linq;
 using UnityEngine;
 
 public class VoisterBehaviour : BasicAIMovement, IPunObservable
 {
+
+    protected KingsBehaviour kingVoisters;
+    protected int numberOfCharges;
+    protected Vector3 spawnPoint;
+    protected Vector3 kingSpawnPoint;
+    protected bool isNearKing;
+    protected bool isTurned;
+    protected Vector3 posToGo;
+
+    protected enum actionState
+    {
+        feed,
+        protect,
+        patrol,
+        awoken
+    }
+    protected actionState curentState;
     protected void VoisterStatsSetup()
     {
+        //TODO put that in the start method of a specific voister
+        //kingVoisters = FindObjectsOfType<KingsBehaviour>().Where(x => x.CompareTag(""))
+
+        numberOfCharges = 0;
+        curentState = actionState.feed;
+        spawnPoint = transform.position;
+        kingSpawnPoint = kingVoisters.transform.position;
+        isNearKing = true;
+        isTurned = false;
+        posToGo = new Vector3();
+
         SetEnemyType(EnemyType.voister);
         SetTeam(Team.Voister);
         SetMaxMana(500);
@@ -20,16 +50,79 @@ public class VoisterBehaviour : BasicAIMovement, IPunObservable
         Regen();
     }
 
-    protected void VoisterMovement()
+    protected void VoisterBaseBehaviour()
     {
-        if (!pathDone && !isAttacking && Cible == null)
+        switch (curentState)
         {
-            if (way == Way.up)
-            {
-                MovementAI(whichTeam(targetsUp));
-            }
-            else MovementAI(whichTeam(targetsDown));
+            case actionState.feed:
+                //TODO dynamic pathfinding (dodge player at first when feeding the king)
+                VoisterFeed();
+                break;
+
+            case actionState.protect:
+                transform.RotateAround(kingVoisters.transform.position, Vector3.up, GetMoveSpeed() * Time.deltaTime * 10);
+                break;
+
+            case actionState.patrol:
+                VoisterPatrol();
+                break;
+
+            case actionState.awoken:
+                Debug.Log("Awoken");
+                break;
+
         }
+
+        //TODO check the attack code
+        VoisterBasicAttack();
+
+        //if (!pathDone && !isAttacking && Cible == null)
+        //{
+        //    if (way == Way.up)
+        //    {
+        //        MovementAI(whichTeam(targetsUp));
+        //    }
+        //    else MovementAI(whichTeam(targetsDown));
+        //}
+    }
+
+    protected void VoisterFeed()
+    {
+        if (numberOfCharges >= 3)
+        {
+            curentState = kingVoisters.numberOfFollower >= 0 ? actionState.patrol : actionState.protect;
+        }
+        if (!isNearKing && Vector3.Distance(gameObject.transform.position, kingSpawnPoint) <= 10)
+        {
+            isNearKing = true;
+            numberOfCharges++;
+            posToGo = spawnPoint;
+        }
+        else if (isNearKing && Vector3.Distance(gameObject.transform.position, spawnPoint) <= 10)
+        {
+            isNearKing = false;
+            posToGo = kingVoisters.gameObject.transform.position;
+        }
+
+        //TODO dynamic pathfinding (dodge player at first when feeding the king)
+        transform.position = Vector3.MoveTowards(transform.position, posToGo, GetMoveSpeed() * Time.deltaTime);
+
+    }
+
+    protected void VoisterPatrol()
+    {
+        if (!isTurned)
+        {
+            isTurned = true;
+            transform.Rotate(0, 180, 0, Space.Self);
+        }
+        if (Vector3.Distance(transform.position, posToGo) <= 5)
+        {
+            var z = Random.Range(-45, 45);
+            var x = Random.Range(-45, 45);
+            posToGo = transform.position + transform.forward + new Vector3(x, 0, z);
+        }
+        transform.position = Vector3.MoveTowards(transform.position, posToGo, GetMoveSpeed() * Time.deltaTime);
     }
 
     protected void VoisterBasicAttack()
@@ -42,7 +135,19 @@ public class VoisterBehaviour : BasicAIMovement, IPunObservable
         if (!isAttacking && Cible != null)
         {
             isAttacking = true;
-            BasicAttackIA();
+            if(curentState != actionState.feed)
+            {
+                WalkToward();
+            }
+
+            if (attackType == AttackType.Melee)
+            {
+                StartCoroutine(AutoAttack());
+            }
+            if (attackType == AttackType.Ranged)
+            {
+                StartCoroutine(RangeAutoAttack());
+            }
         }
     }
 
@@ -144,7 +249,7 @@ public class VoisterBehaviour : BasicAIMovement, IPunObservable
             GetNearestTarget();
             if (Cible)
             {
-                VoisterBasicAttack();
+                //VoisterBasicAttack();
                 AddReward(2);
             }
             

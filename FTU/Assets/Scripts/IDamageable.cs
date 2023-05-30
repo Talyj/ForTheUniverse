@@ -687,7 +687,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
                 Cible = null;
             }
 
-            yield return new WaitForSeconds(GetAttackSpeed() / ((100 / +GetAttackSpeed()) * 0.01f));
+            yield return new WaitForSeconds(GetAttackSpeed() / ((100 / GetAttackSpeed()) * 0.01f));
         }
 
     }

@@ -119,6 +119,7 @@ MonoBehaviour:
   target: {fileID: 0}
   targetSet: 0
   touched: 0
+  playerId: 
   source: {fileID: 0}
 --- !u!114 &-4270504885017622491
 MonoBehaviour:

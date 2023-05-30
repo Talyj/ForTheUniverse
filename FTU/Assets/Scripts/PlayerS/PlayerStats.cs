@@ -158,7 +158,7 @@ public class PlayerStats : PlayerMovement
         switch (role)
         {
             case Role.dps:
-                SetMaxHealth(5000000f);
+                SetMaxHealth(5000f);
                 SetAttackSpeed(2f);
 
                 SetupAttackRangeAndSpeed(range);
