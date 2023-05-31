@@ -6,6 +6,7 @@ using UnityEngine;
 public class KingsBehaviour : BasicAIMovement
 {
     public int numberOfFollower;
+    public int followersMax = 5;
     //Setup in specific class
     protected string followersTag;
 
@@ -23,15 +24,13 @@ public class KingsBehaviour : BasicAIMovement
     // Update is called once per frame
     void Update()
     {
-        CheckProtector();
+
     }
 
     protected void CheckProtector()
     {
         var targs = Physics.OverlapSphere(transform.position, 20).Where(w => w.gameObject.CompareTag(followersTag));
-        foreach(var fol in targs)
-        {
-            numberOfFollower++;
-        }
+        Debug.Log(numberOfFollower);
+        numberOfFollower = targs.Count() < numberOfFollower ? targs.Count() : numberOfFollower;
     }
 }

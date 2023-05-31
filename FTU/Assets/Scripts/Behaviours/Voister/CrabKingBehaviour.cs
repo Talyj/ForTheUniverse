@@ -29,6 +29,6 @@ public class CrabKingBehaviour : KingsBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 }
