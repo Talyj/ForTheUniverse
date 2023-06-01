@@ -1,4 +1,5 @@
 using Photon.Pun;
+using Photon.Pun.UtilityScripts;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -35,18 +36,19 @@ public class SpawnMinion : MonoBehaviour
                     cpt = 30;
                     for (int i = 0; i <= 1; i++)
                     {
-                        SetMinions(BasicAIStats.Way.up, Team.Veritas, i);
-                        SetMinions(BasicAIStats.Way.down, Team.Veritas, i);
+                        //1 == veritas , 0 == Dominion
+                        SetMinions(BasicAIStats.Way.up, 1, i);
+                        //SetMinions(BasicAIStats.Way.down, Team.Veritas, i);
 
-                        SetMinions(BasicAIStats.Way.up, Team.Dominion, i);
-                        SetMinions(BasicAIStats.Way.down, Team.Dominion, i);
+                        //SetMinions(BasicAIStats.Way.up, Team.Dominion, i);
+                        //SetMinions(BasicAIStats.Way.down, Team.Dominion, i);
                     }
                 }
             }
         }
     }
 
-    public void SetMinions(BasicAIStats.Way way, Team team, int loopCounter)
+    public void SetMinions(BasicAIStats.Way way, int team, int loopCounter)
     {
         Vector3 spawn = new Vector3(0, 0, 0);
         var x = Random.Range(-10, 10);
@@ -54,7 +56,7 @@ public class SpawnMinion : MonoBehaviour
 
         var color = new Color();
 
-        if (team == Team.Veritas)
+        if (team == 1)
         {
             spawn = spawnPoint[0].position + new Vector3(x, 0, Z);
             color = Color.yellow;
@@ -67,7 +69,19 @@ public class SpawnMinion : MonoBehaviour
 
         var minionTemp = PhotonNetwork.Instantiate(minion.name, spawn, Quaternion.identity);
         minionTemp.GetComponent<MinionsBehaviour>().way = way;
-        minionTemp.GetComponent<MinionsBehaviour>().team = team;
+        switch (team)
+        {
+            case 0:
+                minionTemp.GetComponent<MinionsBehaviour>().team.Name = "Dominion";
+                break;
+            case 1:
+                minionTemp.GetComponent<MinionsBehaviour>().team.Name = "Veritas";
+                break;
+            case 2:
+                minionTemp.GetComponent<MinionsBehaviour>().team.Name = "Voister";
+                break;
+        }
+        minionTemp.GetComponent<MinionsBehaviour>().team.Code = (byte)team;
         minionTemp.GetComponent<MinionsBehaviour>().targetsUp = pathUp;
         minionTemp.GetComponent<MinionsBehaviour>().targetsDown = pathDown;
         minionTemp.gameObject.GetComponent<Renderer>().material.color = color;

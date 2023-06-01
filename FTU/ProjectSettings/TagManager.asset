@@ -12,9 +12,10 @@ TagManager:
   - consLight
   - CheckPoint
   - walls
-  - kingCrab
   - crab
   - waypoint
+  - fox
+  - slime
   layers:
   - Default
   - TransparentFX

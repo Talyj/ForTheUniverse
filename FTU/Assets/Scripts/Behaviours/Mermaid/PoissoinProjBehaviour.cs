@@ -6,7 +6,7 @@ using UnityEngine;
 public class PoissoinProjBehaviour : Projectile
 {
     public MermaidBehaviour source;
-    public Team team;
+
     [SerializeField] private GameObject puddle;
 
     public new void Start()

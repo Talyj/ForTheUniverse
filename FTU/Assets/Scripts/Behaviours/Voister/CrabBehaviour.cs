@@ -9,7 +9,6 @@ public class CrabBehaviour : VoisterBehaviour, IPunObservable
     // Start is called before the first frame update
     public void Start()
     {
-        kingVoisters = FindObjectsOfType<KingsBehaviour>().Single(x => x.CompareTag("kingCrab"));
         BaseInit();
         AISetup();
         VoisterStatsSetup();

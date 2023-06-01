@@ -119,6 +119,7 @@ MonoBehaviour:
   target: {fileID: 0}
   targetSet: 1
   touched: 0
+  playerId: 
 --- !u!114 &-7484010404481044025
 MonoBehaviour:
   m_ObjectHideFlags: 0

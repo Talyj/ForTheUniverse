@@ -1,4 +1,5 @@
 using Photon.Pun;
+using Photon.Pun.UtilityScripts;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
@@ -7,10 +8,9 @@ using UnityEngine.AI;
 public class VoisterBehaviour : BasicAIMovement, IPunObservable
 {
 
-    protected KingsBehaviour kingVoisters;
+    public KingsBehaviour kingVoisters;
     protected int numberOfCharges;
     protected Vector3 spawnPoint;
-    protected Vector3 kingSpawnPoint;
     protected bool isNearKing;
     protected bool isTurned;
     protected bool isProtecting;
@@ -37,8 +37,6 @@ public class VoisterBehaviour : BasicAIMovement, IPunObservable
     #endregion
     protected void VoisterStatsSetup()
     {
-        //TODO put that in the start method of a specific voister
-        //kingVoisters = FindObjectsOfType<KingsBehaviour>().Where(x => x.CompareTag(""))
         _navMeshAgent = this.GetComponent<NavMeshAgent>();
 
         if (_navMeshAgent == null)
@@ -49,7 +47,6 @@ public class VoisterBehaviour : BasicAIMovement, IPunObservable
         numberOfCharges = 0;
         currentState = actionState.feed;
         spawnPoint = transform.position;
-        kingSpawnPoint = kingVoisters.transform.position;
         isNearKing = true;
         isTurned = false;
         isProtecting = false;
@@ -58,7 +55,7 @@ public class VoisterBehaviour : BasicAIMovement, IPunObservable
         requiredNumberOfCharge = Random.Range(2, 5);
 
         SetEnemyType(EnemyType.voister);
-        SetTeam(Team.Voister);
+        SetTeam(2);
         SetMaxMana(500);
         SetMana(500);
         SetMaxExp(100);
@@ -104,13 +101,13 @@ public class VoisterBehaviour : BasicAIMovement, IPunObservable
         {
             currentState = kingVoisters.numberOfFollower >= kingVoisters.followersMax ? actionState.patrol : actionState.protect;
         }
-        if (!isNearKing && _navMeshAgent.remainingDistance <= 10)
+        if (!isNearKing && _navMeshAgent.remainingDistance <= 15)
         {
             isNearKing = true;
             numberOfCharges++;
             posToGo = spawnPoint;
         }
-        else if (isNearKing && _navMeshAgent.remainingDistance <= 10)
+        else if (isNearKing && _navMeshAgent.remainingDistance <= 15)
         {
             isNearKing = false;
             posToGo = kingVoisters.gameObject.transform.position;
@@ -125,6 +122,7 @@ public class VoisterBehaviour : BasicAIMovement, IPunObservable
         {
             isProtecting = true;
             kingVoisters.numberOfFollower++;
+            _navMeshAgent.ResetPath();
         }
         transform.RotateAround(kingVoisters.transform.position, Vector3.up, GetMoveSpeed() * Time.deltaTime * 10);
     }

@@ -140,7 +140,7 @@ public class MauBehaviour : BasicAIMovement
             {
                 if (col.gameObject.GetComponent<IDamageable>())
                 {
-                    if (col.gameObject.GetComponent<IDamageable>().teams != teams)
+                    if (col.gameObject.GetComponent<IDamageable>().team != team)
                     {
                         enemyTargets.Add(col.gameObject);
                         Debug.Log("if " + col.gameObject.GetComponent<PhotonView>().ViewID);

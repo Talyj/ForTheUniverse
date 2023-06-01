@@ -6,7 +6,6 @@ using UnityEngine;
 
 public class PuddlePoissoinBehaviour : Projectile
 {
-    public Team team;
     private float cpt;
 
     // Start is called before the first frame update

@@ -40,11 +40,11 @@ public class MinionsBehaviour : BasicAIMovement, IPunObservable
             if (GetCanAct() && GetCanMove())
             {
                 GetNearestTarget();
-                if (Cible)
-                {
-                    WalkToward();
-                    gameObject.transform.LookAt(new Vector3(Cible.transform.position.x, transform.position.y, Cible.transform.position.z));
-                }        
+                //if (Cible)
+                //{
+                //    WalkToward();
+                //    gameObject.transform.LookAt(new Vector3(Cible.transform.position.x, transform.position.y, Cible.transform.position.z));
+                //}        
                 //Movement + attack
                 if(GetHealth() > 0)
                 {

@@ -49,8 +49,8 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     public GameObject projPrefab;
     public Transform SpawnPrefab;
 
-    public Team team;
-    public PhotonTeam teams;
+    //public Team team;
+    public PhotonTeam team;
     public float damageSupp;
     public bool isAI;
 
@@ -203,9 +203,9 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     #endregion
     #region Setter
 
-    public void SetTeam(Team value)
+    public void SetTeam(int value)
     {
-        team = value;
+        team.Code = (byte)value;
     }
     public void SetExp(float value)
     {
@@ -478,8 +478,8 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
                 var collider = col.GetComponent<IDamageable>();
                 if (collider)
                 {
-                    if (collider.teams != teams && collider.enemyType == EnemyType.player ||
-                        collider.teams != teams && collider.enemyType == EnemyType.voister)
+                    if (collider.team != team && collider.enemyType == EnemyType.player ||
+                        collider.team != team && collider.enemyType == EnemyType.voister)
                     {
                         collider.SetExp(expToGive);
                     }
@@ -585,7 +585,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         Gizmos.DrawWireSphere(transform.position, AttackRange);
     }
 
-    public bool IsTargetable(Team team)
+    public bool IsTargetable(PhotonTeam team)
     {
         if (this.team == team) return false;
         if(enemyType == EnemyType.minion ||
@@ -771,10 +771,10 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         }
     }
 }
-public enum Team
-{
-    Veritas = 0,
-    Dominion = 1,
-    Voister = 2,
-    nothing = 3
-}
+//public enum Team
+//{
+//    Veritas = 0,
+//    Dominion = 1,
+//    Voister = 2,
+//    nothing = 3
+//}

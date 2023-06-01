@@ -35,7 +35,7 @@ public class BasicAIStats : IDamageable, IPunObservable
                     //If the target is a player
                     if (col.GetComponent<PlayerStats>())
                     {
-                        if (col.GetComponent<PlayerStats>().teams != teams)
+                        if (col.GetComponent<PlayerStats>().team.Code != team.Code)
                         {
                             Cible = col.gameObject;
                             break;
@@ -43,7 +43,7 @@ public class BasicAIStats : IDamageable, IPunObservable
                     }//If the target is a minion, a golem or a dd
                     else if (col.GetComponent<BasicAIStats>())
                     {
-                        if(col.GetComponent<BasicAIStats>().teams != teams)
+                        if(col.GetComponent<BasicAIStats>().team.Code != team.Code)
                         {
                             Cible = col.gameObject;
                         }
@@ -73,7 +73,7 @@ public class BasicAIStats : IDamageable, IPunObservable
     public Transform[] whichTeam(Transform[] way)
     {
         tempArray = new Transform[way.Length];
-        if (team == Team.Veritas)
+        if (team.Code == 1)
         {
             for (int i = 0; i < way.Length; i++)
             {
