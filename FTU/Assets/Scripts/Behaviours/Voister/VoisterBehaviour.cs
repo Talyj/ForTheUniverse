@@ -14,10 +14,7 @@ public class VoisterBehaviour : BasicAIMovement, IPunObservable
     protected bool isNearKing;
     protected bool isTurned;
     protected bool isProtecting;
-    protected Vector3 posToGo;
     private int requiredNumberOfCharge;
-
-    NavMeshAgent _navMeshAgent;
 
 
     public enum actionState
@@ -92,7 +89,7 @@ public class VoisterBehaviour : BasicAIMovement, IPunObservable
         }
 
         //TODO check the attack code
-        //VoisterBasicAttack();
+        VoisterBasicAttack();
     }
 
     protected void VoisterFeed()

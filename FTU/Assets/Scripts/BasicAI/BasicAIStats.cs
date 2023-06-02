@@ -32,6 +32,7 @@ public class BasicAIStats : IDamageable, IPunObservable
             {
                 foreach (var col in hitColliders)
                 {
+                    if (col.gameObject == this.gameObject) return;
                     //If the target is a player
                     if (col.GetComponent<PlayerStats>())
                     {
@@ -40,7 +41,7 @@ public class BasicAIStats : IDamageable, IPunObservable
                             Cible = col.gameObject;
                             break;
                         }
-                    }//If the target is a minion, a golem or a dd
+                    }//If the target is a minion, a golem, a voisters or a dd
                     else if (col.GetComponent<BasicAIStats>())
                     {
                         if(col.GetComponent<BasicAIStats>().team.Code != team.Code)
@@ -48,10 +49,6 @@ public class BasicAIStats : IDamageable, IPunObservable
                             Cible = col.gameObject;
                         }
                     }
-                    //else if (col.GetComponent<VoisterStats>())
-                    //{
-                    //    Cible = col.gameObject;
-                    //}
                 }
             }
         }
@@ -59,7 +56,6 @@ public class BasicAIStats : IDamageable, IPunObservable
 
     public void BasicAttackIA()
     {
-        WalkToward();
         if (attackType == AttackType.Melee)
         {
             StartCoroutine(AutoAttack());

@@ -227,8 +227,7 @@ MonoBehaviour:
   lvl: 0
   projPrefab: {fileID: 0}
   SpawnPrefab: {fileID: 0}
-  team: 0
-  teams:
+  team:
     Name: 
     Code: 0
   damageSupp: 0

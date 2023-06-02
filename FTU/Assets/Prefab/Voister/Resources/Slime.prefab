@@ -227,8 +227,7 @@ MonoBehaviour:
   lvl: 0
   projPrefab: {fileID: 3524439937703818370, guid: ca45cb44d81306e409c4149613d2cdd6, type: 3}
   SpawnPrefab: {fileID: 8482263699181198301}
-  team: 0
-  teams:
+  team:
     Name: 
     Code: 0
   damageSupp: 0

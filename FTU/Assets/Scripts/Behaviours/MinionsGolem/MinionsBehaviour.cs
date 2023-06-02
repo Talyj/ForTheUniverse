@@ -1,5 +1,6 @@
 ﻿using Photon.Pun;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class MinionsBehaviour : BasicAIMovement, IPunObservable
 {
@@ -9,7 +10,7 @@ public class MinionsBehaviour : BasicAIMovement, IPunObservable
     {
         BaseInit();
         AISetup();
-        //current = 0;
+        current = 0;
         pathDone = false;
         if (attackType == AttackType.Ranged)
         {
@@ -28,6 +29,13 @@ public class MinionsBehaviour : BasicAIMovement, IPunObservable
         SetAttackSpeed(2f);
         SetEnemyType(EnemyType.minion);
         isAttacking = false;
+
+        _navMeshAgent = this.GetComponent<NavMeshAgent>();
+
+        if (_navMeshAgent == null)
+        {
+            Debug.LogError("No NavMeshAgent attached to " + gameObject.name);
+        }
     }
 
     public void Update()
@@ -37,18 +45,15 @@ public class MinionsBehaviour : BasicAIMovement, IPunObservable
             HealthBehaviour();
             CheckTarget();
 
-            if (GetCanAct() && GetCanMove())
+            if (GetHealth() > 0 && GetCanAct() && GetCanMove())
             {
                 GetNearestTarget();
-                //if (Cible)
-                //{
-                //    WalkToward();
-                //    gameObject.transform.LookAt(new Vector3(Cible.transform.position.x, transform.position.y, Cible.transform.position.z));
-                //}        
-                //Movement + attack
-                if(GetHealth() > 0)
+                DefaultMovement();
+                if (Cible)
                 {
-                    DefaultMinionBehaviour();
+                    WalkToward();
+                    DefaultAttack();
+                    gameObject.transform.LookAt(new Vector3(Cible.transform.position.x, transform.position.y, Cible.transform.position.z));
                 }
             }
             //TODO this is made for test have to get rid of the lines later
@@ -60,6 +65,32 @@ public class MinionsBehaviour : BasicAIMovement, IPunObservable
             //}
         }
 
+    }
+
+    private void DefaultAttack()
+    {
+        if (Cible == null)
+        {
+            isAttacking = false;
+        }
+
+        if (!isAttacking && Cible != null)
+        {
+            isAttacking = true;
+            BasicAttackIA();
+        }
+    }
+
+    private void DefaultMovement()
+    {       
+        if (!pathDone && !isAttacking && Cible == null)
+        {
+            if (way == Way.up)
+            {
+                MovementAI(whichTeam(targetsUp));
+            }
+            else MovementAI(whichTeam(targetsDown));
+        }
     }
 
     void IPunObservable.OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)

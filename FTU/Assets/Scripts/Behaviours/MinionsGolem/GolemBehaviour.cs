@@ -17,8 +17,8 @@ public class GolemBehaviour : BasicAIStats
         SetAttackRange(30f);
         SetViewRange(GetAttackRange());
         SetAttackSpeed(2.0f);
-        SetDegMag(200f);
-        SetDegPhys(200f);
+        SetDegMag(200);
+        SetDegPhys(200);
         SetEnemyType(EnemyType.golem);
         attackCooldown = 0;
         Cible = null;
@@ -34,8 +34,8 @@ public class GolemBehaviour : BasicAIStats
         else
         {
             Attack();
-            var test = Vector3.Distance(transform.position, Cible.transform.position);
-            if (test > GetAttackRange() + 5)
+            var dist = Vector3.Distance(transform.position, Cible.transform.position);
+            if (dist > GetAttackRange() + 5)
             {
                 Cible = null;
             }

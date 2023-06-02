@@ -24,7 +24,7 @@ public class VoisterManager : MonoBehaviour
             {
                 if (/*mainGame.isPlaying && */cpt <= 0)
                 {
-                    cpt = 20;
+                    cpt = 60;
                     for(int i = 0; i < kings.Length; i++)
                     {
                         SpawnVoisters(voisters[i], kings[i]);
@@ -38,7 +38,11 @@ public class VoisterManager : MonoBehaviour
     {
         var x = Random.Range(-11, 11);
         var z = Random.Range(-11, 11);
-        var voisterTemp = PhotonNetwork.Instantiate(voister.name, new Vector3(x, king.transform.position.y, z), Quaternion.identity);
-        voisterTemp.GetComponent<VoisterBehaviour>().kingVoisters = king;
+        var occurence = Random.Range(1, 3);
+        for(int i = 0; i < occurence; i++)
+        {
+            var voisterTemp = PhotonNetwork.Instantiate(voister.name, new Vector3(x, king.transform.position.y, z), Quaternion.identity);
+            voisterTemp.GetComponent<VoisterBehaviour>().kingVoisters = king;
+        }
     }
 }

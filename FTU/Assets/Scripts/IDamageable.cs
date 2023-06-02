@@ -391,7 +391,8 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
             else if (gameObject.CompareTag("minion"))
             {
 
-                PhotonView.Get(this).RPC("SendKillfeed", RpcTarget.All, PhotonNetwork.LocalPlayer.NickName, Cible.name);
+                //PhotonView.Get(this).RPC("SendKillfeed", RpcTarget.All, PhotonNetwork.LocalPlayer.NickName, Cible.name);
+                PhotonNetwork.Destroy(gameObject);
             }
             else if (PhotonNetwork.IsMasterClient)
             {
@@ -539,24 +540,6 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     public void DealDamages(float DegatsRecu)
     {
         Health = Health - DegatsRecu;
-    }
-
-    public void WalkToward()
-    {
-        try
-        {
-            var dist = Vector3.Distance(transform.position, Cible.transform.position);
-            if (dist > gameObject.GetComponent<IDamageable>().GetAttackRange())
-            {
-                SetIsMoving(true);
-                transform.position = Vector3.MoveTowards(transform.position, new Vector3(Cible.transform.position.x, transform.position.y, Cible.transform.position.z), GetMoveSpeed() * Time.deltaTime);
-            }
-            SetIsMoving(false);
-        }
-        catch (NullReferenceException e)
-        {
-            Cible = null;
-        }
     }
 
     public void TakeCC(ControlType _cc,float time)

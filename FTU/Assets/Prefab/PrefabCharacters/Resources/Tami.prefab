@@ -838,6 +838,8 @@ MonoBehaviour:
   MaxHealth: 0
   AttackSpeed: 0
   AttackRange: 0
+  DegatsPhysique: 0
+  DegatsMagique: 0
   canUlt: 0
   isAttacking: 0
   Exp: 0
@@ -846,9 +848,8 @@ MonoBehaviour:
   lvl: 0
   projPrefab: {fileID: 1442863784273826401, guid: 21489d385334c8a4a9c933e27f0f7f49, type: 3}
   SpawnPrefab: {fileID: 4224584778427126948}
-  team: 0
-  teams:
-    Name: Dominion
+  team:
+    Name: 
     Code: 0
   damageSupp: 0
   isAI: 0

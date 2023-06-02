@@ -1574,9 +1574,8 @@ MonoBehaviour:
   lvl: 0
   projPrefab: {fileID: 1442863784273826401, guid: 21489d385334c8a4a9c933e27f0f7f49, type: 3}
   SpawnPrefab: {fileID: 0}
-  team: 1
-  teams:
-    Name: Dominion
+  team:
+    Name: 
     Code: 0
   damageSupp: 0
   isAI: 0
