@@ -213,7 +213,7 @@ public class ConsBehaviour : PlayerStats
             var dir = targ.transform.position - spawns[r].transform.position;
             proj.GetComponent<ProjCons>().SetDamages(GetDegPhys(), DamageType.physique);
             proj.GetComponent<ProjCons>().source = this;
-            proj.GetComponent<ProjCons>().teams = teams;
+            proj.GetComponent<ProjCons>().teams = team;
             proj.GetComponent<Rigidbody>().AddForce(dir.normalized * 30f, ForceMode.Impulse);
 
             CheckPassive();

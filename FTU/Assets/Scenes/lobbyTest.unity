@@ -334,6 +334,8 @@ MonoBehaviour:
     Code: 0
   - Name: Veritas
     Code: 1
+  - Name: Voister
+    Code: 2
 --- !u!4 &7165439
 Transform:
   m_ObjectHideFlags: 0

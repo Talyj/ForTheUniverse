@@ -1,6 +1,7 @@
 ﻿using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class CrabBehaviour : VoisterBehaviour, IPunObservable
@@ -13,13 +14,15 @@ public class CrabBehaviour : VoisterBehaviour, IPunObservable
         VoisterStatsSetup();
         current = 0;
 
+
+
         //Stat to change
         SetDegMag(30f);
         SetDegPhys(30f);
         SetResMag(50f);
         SetResPhys(50f);
-        SetAttackSpeed(10f);
-        SetAttackRange(10f);
+        SetAttackSpeed(100f);
+        SetAttackRange(30f);
         SetMaxHealth(500f);
         
         SetMoveSpeed(20f);
@@ -37,9 +40,11 @@ public class CrabBehaviour : VoisterBehaviour, IPunObservable
             VoisterBaseAction();
             CheckTarget();
 
+
             if (GetCanAct() && GetCanMove())
             {
-                //GetNearestTarget();
+                VoisterBaseBehaviour();
+                GetNearestTarget();
                 //if (Cible)
                 //{
                 //    WalkToward();

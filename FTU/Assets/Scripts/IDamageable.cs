@@ -49,8 +49,8 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     public GameObject projPrefab;
     public Transform SpawnPrefab;
 
-    public Team team;
-    public PhotonTeam teams;
+    //public Team team;
+    public PhotonTeam team;
     public float damageSupp;
     public bool isAI;
 
@@ -203,9 +203,9 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     #endregion
     #region Setter
 
-    public void SetTeam(Team value)
+    public void SetTeam(int value)
     {
-        team = value;
+        team.Code = (byte)value;
     }
     public void SetExp(float value)
     {
@@ -391,7 +391,8 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
             else if (gameObject.CompareTag("minion"))
             {
 
-                PhotonView.Get(this).RPC("SendKillfeed", RpcTarget.All, PhotonNetwork.LocalPlayer.NickName, Cible.name);
+                //PhotonView.Get(this).RPC("SendKillfeed", RpcTarget.All, PhotonNetwork.LocalPlayer.NickName, Cible.name);
+                PhotonNetwork.Destroy(gameObject);
             }
             else if (PhotonNetwork.IsMasterClient)
             {
@@ -478,8 +479,8 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
                 var collider = col.GetComponent<IDamageable>();
                 if (collider)
                 {
-                    if (collider.teams != teams && collider.enemyType == EnemyType.player ||
-                        collider.teams != teams && collider.enemyType == EnemyType.voister)
+                    if (collider.team != team && collider.enemyType == EnemyType.player ||
+                        collider.team != team && collider.enemyType == EnemyType.voister)
                     {
                         collider.SetExp(expToGive);
                     }
@@ -541,24 +542,6 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         Health = Health - DegatsRecu;
     }
 
-    public void WalkToward()
-    {
-        try
-        {
-            var dist = Vector3.Distance(transform.position, Cible.transform.position);
-            if (dist > gameObject.GetComponent<IDamageable>().GetAttackRange())
-            {
-                SetIsMoving(true);
-                transform.position = Vector3.MoveTowards(transform.position, new Vector3(Cible.transform.position.x, transform.position.y, Cible.transform.position.z), GetMoveSpeed() * Time.deltaTime);
-            }
-            SetIsMoving(false);
-        }
-        catch (NullReferenceException e)
-        {
-            Cible = null;
-        }
-    }
-
     public void TakeCC(ControlType _cc,float time)
     {
         cc = _cc;
@@ -585,7 +568,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         Gizmos.DrawWireSphere(transform.position, AttackRange);
     }
 
-    public bool IsTargetable(Team team)
+    public bool IsTargetable(PhotonTeam team)
     {
         if (this.team == team) return false;
         if(enemyType == EnemyType.minion ||
@@ -687,7 +670,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
                 Cible = null;
             }
 
-            yield return new WaitForSeconds(GetAttackSpeed() / ((100 / +GetAttackSpeed()) * 0.01f));
+            yield return new WaitForSeconds(GetAttackSpeed() / ((100 / GetAttackSpeed()) * 0.01f));
         }
 
     }
@@ -771,10 +754,10 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         }
     }
 }
-public enum Team
-{
-    Veritas = 0,
-    Dominion = 1,
-    Voister = 2,
-    nothing = 3
-}
+//public enum Team
+//{
+//    Veritas = 0,
+//    Dominion = 1,
+//    Voister = 2,
+//    nothing = 3
+//}

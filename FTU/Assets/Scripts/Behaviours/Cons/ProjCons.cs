@@ -29,7 +29,7 @@ public class ProjCons : Projectile
         {
             if (other.gameObject.GetComponent<IDamageable>())
             {
-                if (other.gameObject.GetComponent<IDamageable>().teams != teams)
+                if (other.gameObject.GetComponent<IDamageable>().team != teams)
                 {
                     source.AddPassive();
                     DealDamage(other.gameObject, GetDamages(), GetDamageType());

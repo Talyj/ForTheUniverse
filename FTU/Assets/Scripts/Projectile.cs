@@ -1,4 +1,5 @@
 using Photon.Pun;
+using Photon.Pun.UtilityScripts;
 using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
@@ -16,6 +17,7 @@ public class Projectile : MonoBehaviourPun
     protected bool stopProjectile = false;
     public bool touched;
     public string playerId;
+    public PhotonTeam team;
 
     public void Awake()
     {

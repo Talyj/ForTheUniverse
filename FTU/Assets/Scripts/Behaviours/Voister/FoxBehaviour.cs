@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class FoxBehaviour : VoisterBehaviour, IPunObservable
 {
-    // Start is called before the first frame update
     public void Start()
     {
         BaseInit();
@@ -13,14 +12,16 @@ public class FoxBehaviour : VoisterBehaviour, IPunObservable
         VoisterStatsSetup();
         current = 0;
 
+
+
         //Stat to change
         SetDegMag(30f);
         SetDegPhys(30f);
-        SetResMag(10f);
-        SetResPhys(10f);
-        SetAttackSpeed(10f);
-        SetAttackRange(10f);
-        SetMaxHealth(100f);
+        SetResMag(50f);
+        SetResPhys(50f);
+        SetAttackSpeed(100f);
+        SetAttackRange(30f);
+        SetMaxHealth(500f);
 
         SetMoveSpeed(20f);
         SetViewRange(30f);
@@ -37,21 +38,19 @@ public class FoxBehaviour : VoisterBehaviour, IPunObservable
             VoisterBaseAction();
             CheckTarget();
 
+
             if (GetCanAct() && GetCanMove())
             {
+                VoisterBaseBehaviour();
                 GetNearestTarget();
-                if (Cible)
-                {
-                    WalkToward();
-                    gameObject.transform.LookAt(new Vector3(Cible.transform.position.x, transform.position.y, Cible.transform.position.z));
-                    VoisterBasicAttack();
-                }
+                //if (Cible)
+                //{
+                //    WalkToward();
+                //    gameObject.transform.LookAt(new Vector3(Cible.transform.position.x, transform.position.y, Cible.transform.position.z));
+                //    VoisterBasicAttack();
+                //}
                 //Movement + attack
-                VoisterMovement();
-            }
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                Stab();
+                //VoisterMovement();
             }
         }
     }

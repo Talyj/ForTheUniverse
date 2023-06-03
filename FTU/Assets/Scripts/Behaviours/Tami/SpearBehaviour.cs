@@ -6,7 +6,7 @@ using UnityEngine;
 public class SpearBehaviour : Projectile
 {
     public TamiBehaviour source;
-    public Team team;
+
     //public Transform targetTransform;
     public new void Start()
     {

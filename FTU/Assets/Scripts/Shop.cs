@@ -15,7 +15,7 @@ public class Shop : MonoBehaviourPun
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") && other.gameObject.GetComponent<IDamageable>().teams.Code== teams.Code)
+        if (other.CompareTag("Player") && other.gameObject.GetComponent<IDamageable>().team.Code== teams.Code)
         {
             playerPrefab = other.gameObject.GetComponent<PlayerStats>();
             if (Input.GetKeyDown(KeyCode.P))
@@ -28,7 +28,7 @@ public class Shop : MonoBehaviourPun
     }
     private void OnTriggerStay(Collider other)
     {
-        if(other.CompareTag("Player") && other.gameObject.GetComponent<IDamageable>().teams.Code == teams.Code)
+        if(other.CompareTag("Player") && other.gameObject.GetComponent<IDamageable>().team.Code == teams.Code)
         {
             playerPrefab = other.gameObject.GetComponent<PlayerStats>();
             if (Input.GetKeyDown(KeyCode.P))

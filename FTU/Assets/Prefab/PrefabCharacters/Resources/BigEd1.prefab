@@ -516,6 +516,8 @@ MonoBehaviour:
   MaxHealth: 0
   AttackSpeed: 0
   AttackRange: 0
+  DegatsPhysique: 0
+  DegatsMagique: 0
   canUlt: 0
   isAttacking: 0
   Exp: 0
@@ -524,9 +526,8 @@ MonoBehaviour:
   lvl: 0
   projPrefab: {fileID: 1442863784273826401, guid: 21489d385334c8a4a9c933e27f0f7f49, type: 3}
   SpawnPrefab: {fileID: 3853125024926037199}
-  team: 0
-  teams:
-    Name: Dominion
+  team:
+    Name: 
     Code: 0
   damageSupp: 0
   isAI: 0
@@ -544,6 +545,7 @@ MonoBehaviour:
   gold: 0
   respawnPos: {x: 313.3, y: 2.14, z: -37.118}
   deathPos: {x: 0, y: 0, z: 0}
+  playerManage: {fileID: 0}
   items: []
   role: 2
   ultime: {fileID: 7061508128071392999, guid: 76cc9656b8f14d44f8524cdb961fcb30, type: 3}

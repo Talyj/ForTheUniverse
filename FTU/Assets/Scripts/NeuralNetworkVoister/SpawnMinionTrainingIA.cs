@@ -1,4 +1,5 @@
 using Photon.Pun;
+using Photon.Pun.UtilityScripts;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -45,14 +46,14 @@ public class SpawnMinionTrainingIA : MonoBehaviour
                     var randPos = Random.Range(0, 3);                    
                     for (int i = 0; i <= 10; i++)
                     {
-                        SetMinions(BasicAIStats.Way.up, Team.Veritas, i, paths[j][randPos], paths[j], randPos);
+                        //SetMinions(BasicAIStats.Way.up, Team.Veritas, i, paths[j][randPos], paths[j], randPos);
                     }
                 }
             }
         }
     }
 
-    public void SetMinions(BasicAIStats.Way way, Team team, int loopCounter, Transform spawnPos, Transform[] path, int currentPos)
+    public void SetMinions(BasicAIStats.Way way, PhotonTeam team, int loopCounter, Transform spawnPos, Transform[] path, int currentPos)
     {
         //Vector3 spawn = spawnPos.position;
         var x = Random.Range(-3, 3);

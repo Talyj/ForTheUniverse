@@ -7,22 +7,25 @@ public class SlimeBehaviour : VoisterBehaviour, IPunObservable
 {
     public void Start()
     {
-        current = 0;
         BaseInit();
-        VoisterStatsSetup();
         AISetup();
+        VoisterStatsSetup();
+        current = 0;
+
+
+
         //Stat to change
-        SetDegMag(50f);
-        SetDegPhys(50f);
-        SetResMag(20f);
-        SetResPhys(20f);
-        SetAttackSpeed(1f);
-        SetAttackRange(20f);
+        SetDegMag(30f);
+        SetDegPhys(30f);
+        SetResMag(50f);
+        SetResPhys(50f);
+        SetAttackSpeed(100f);
+        SetAttackRange(30f);
+        SetMaxHealth(500f);
 
         SetMoveSpeed(20f);
         SetViewRange(30f);
         isAttacking = false;
-        
     }
 
     // Update is called once per frame
@@ -35,25 +38,27 @@ public class SlimeBehaviour : VoisterBehaviour, IPunObservable
             VoisterBaseAction();
             CheckTarget();
 
+
             if (GetCanAct() && GetCanMove())
             {
+                VoisterBaseBehaviour();
                 GetNearestTarget();
-                if (Cible)
-                {
-                    //WalkToward();
-                    //gameObject.transform.LookAt(new Vector3(Cible.transform.position.x, transform.position.y, Cible.transform.position.z));
-                    VoisterBasicAttack();
-                }
+                //if (Cible)
+                //{
+                //    WalkToward();
+                //    gameObject.transform.LookAt(new Vector3(Cible.transform.position.x, transform.position.y, Cible.transform.position.z));
+                //    VoisterBasicAttack();
+                //}
                 //Movement + attack
                 //VoisterMovement();
             }
         }
     }
 
-    public void FixedUpdate()
-    {
-        if (PhotonNetwork.IsMasterClient) SurviveTraining();
-    }
+    //public void FixedUpdate()
+    //{
+    //    if (PhotonNetwork.IsMasterClient) SurviveTraining();
+    //}
 
     public void BouleBoom()
     {
