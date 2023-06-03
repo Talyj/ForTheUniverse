@@ -58,7 +58,7 @@ public class Launch : MonoBehaviourPunCallbacks
         MenuManager.Instance.OpenMenu("base");
         Debug.Log("Joined lobby");
         PhotonNetwork.NickName = "Player " + Random.Range(0, 1000).ToString("0000");
-        //Debug.Log(PhotonNetwork.NickName);
+        Debug.Log(PhotonNetwork.NickName);
     }
 
     //public void SetName()
