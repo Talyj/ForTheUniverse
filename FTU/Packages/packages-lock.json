@@ -138,6 +138,7 @@
     },
     "com.unity.render-pipelines.core": {
       "version": "12.1.8",
+      "version": "12.1.2",
       "depth": 1,
       "source": "builtin",
       "dependencies": {
