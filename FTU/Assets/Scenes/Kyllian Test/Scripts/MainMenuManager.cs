@@ -72,4 +72,9 @@ public class MainMenuManager : MonoBehaviourPunCallbacks
     {
         return PhotonNetwork.LocalPlayer;
     }
+
+    public void LaunchGame()
+    {
+        PhotonNetwork.LoadLevel(1);
+    }
 }

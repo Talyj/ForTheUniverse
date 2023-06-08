@@ -43,6 +43,7 @@ public class Launch : MonoBehaviourPunCallbacks
     {
         Debug.Log("connecting to master..");
         PhotonNetwork.ConnectUsingSettings();
+       
     }
 
 
@@ -57,7 +58,10 @@ public class Launch : MonoBehaviourPunCallbacks
     {
         MenuManager.Instance.OpenMenu("base");
         Debug.Log("Joined lobby");
-        PhotonNetwork.NickName = "Player " + Random.Range(0, 1000).ToString("0000");
+        //PhotonNetwork.NickName = "Player " + Random.Range(0, 1000).ToString("0000");
+        PhotonNetwork.LocalPlayer.NickName = "Player " + Random.Range(0, 1000).ToString("0000");
+        PhotonNetwork.CreateRoom(PhotonNetwork.NickName + " room", new RoomOptions() { MaxPlayers = 4, BroadcastPropsChangeToAll = true });
+
         Debug.Log(PhotonNetwork.NickName);
     }
 
@@ -94,7 +98,6 @@ public class Launch : MonoBehaviourPunCallbacks
     {
         MenuManager.Instance.OpenMenu("room");
         roomNameText.text = PhotonNetwork.CurrentRoom.Name;
-       
             
         startGameButton.SetActive(PhotonNetwork.IsMasterClient);
         UpdatePlayerList();
@@ -237,7 +240,7 @@ public class Launch : MonoBehaviourPunCallbacks
         //        //load scene traning
         //        break;
         //}
-        PhotonNetwork.LoadLevel(1);
+        PhotonNetwork.LoadLevel(2);
 
     }
 }

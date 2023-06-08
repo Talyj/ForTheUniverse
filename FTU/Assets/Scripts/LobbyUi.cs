@@ -47,25 +47,25 @@ public class LobbyUi : MonoBehaviourPunCallbacks
 
     public void GetCharacter(Character character)
     {
-        //foreach (var player in PhotonNetwork.CurrentRoom.Players)
-        //{
-        //    if (player.Value == PhotonNetwork.LocalPlayer)
-        //    {
-        //        //var plI = GameObject.FindObjectOfType<PlayerListItem>().CheckIsMine;
+        foreach (var player in PhotonNetwork.CurrentRoom.Players)
+        {
+            if (player.Value == PhotonNetwork.LocalPlayer)
+            {
+                //var plI = GameObject.FindObjectOfType<PlayerListItem>().CheckIsMine;
 
-        //        foreach(var pi in GameObject.FindObjectsOfType<PlayerListItem>())
-        //        {
-        //            if(player.Value == pi.player)
-        //            {
-        //                Debug.Log($" perso : {character.characterName} index: {character.characterIndex} <color=blue>  {player.Value.NickName}</color> <color=green>  {player.Value}</color>");
-        //                pi.PersoSelected(character);
-        //            }
-        //        }
+                foreach (var pi in GameObject.FindObjectsOfType<PlayerListItem>())
+                {
+                    if (player.Value == pi.player)
+                    {
+                        Debug.Log($" perso : {character.characterName} index: {character.characterIndex} <color=blue>  {player.Value.NickName}</color> <color=green>  {player.Value}</color>");
+                        pi.PersoSelected(character);
+                    }
+                }
 
-        //        //plI.PersoSelected(character);
-        //    }
-        //}
-        Debug.Log($" perso : {character.characterName} index: {character.characterIndex}");
+                //plI.PersoSelected(character);
+            }
+        }
+        //Debug.Log($" perso : {character.characterName} index: {character.characterIndex}");
     }
 
     // Update is called once per frame

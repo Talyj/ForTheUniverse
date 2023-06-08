@@ -16,25 +16,26 @@ public class ConnectionToServer : MonoBehaviour
     }
     public IEnumerator TryConnection()
     {
-        
-        Debug.Log(usernameInput.text);
-        Debug.Log(passwordInput.text);
-        var highscoreURL = "http://localhost/ftu/PHP/accessServer.php?user=" +
-                              usernameInput.text + "&password=" +
-                              passwordInput.text;
-        WWW hs_get = new WWW(highscoreURL);
-        yield return hs_get;
+        MainMenuManager.Instance().Connect();
+        //Debug.Log(usernameInput.text);
+        //Debug.Log(passwordInput.text);
+        //var highscoreURL = "http://localhost/ftu/PHP/accessServer.php?user=" +
+        //                      usernameInput.text + "&password=" +
+        //                      passwordInput.text;
+        //WWW hs_get = new WWW(highscoreURL);
+        //yield return hs_get;
 
-        if (hs_get.error != null)
-        {
-            print("There was an error getting the high score: " + hs_get.error);
-        }
-        else
-        {
-            if (hs_get.text == "200")
-            {
-                MainMenuManager.Instance().Connect();
-            }
-        }
+        //if (hs_get.error != null)
+        //{
+        //    print("There was an error getting the high score: " + hs_get.error);
+        //}
+        //else
+        //{
+        //    if (hs_get.text == "200")
+        //    {
+
+        //    }
+        //}
+        yield return null;
     }
 }

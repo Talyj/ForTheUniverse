@@ -12,6 +12,17 @@ public class MenuManager : MonoBehaviour
     {
         Instance = this;
     }
+
+    private void Start()
+    {
+        StartCoroutine("RoomOpen");
+    }
+
+    IEnumerator RoomOpen()
+    {
+        yield return new WaitForSeconds(.5f);
+        OpenMenu("room");
+    }
     public void OpenMenu(string menuName)
     {
         for (int i = 0; i < menus.Length; i++)
@@ -19,9 +30,6 @@ public class MenuManager : MonoBehaviour
             if(menus[i].menuName == menuName)
             {
                 menus[i].Open();
-            }else if(menus[i].open)
-            {
-                CloseMenu(menus[i]);
             }
         }
     }
