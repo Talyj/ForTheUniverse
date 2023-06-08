@@ -41,26 +41,23 @@ public class Launch : MonoBehaviourPunCallbacks
     }
     void Start()
     {
-        Debug.Log("connecting to master..");
-        PhotonNetwork.ConnectUsingSettings();
-       
-    }
-
-
-    public override void OnConnectedToMaster()
-    {
         Debug.Log("connected to master");
         PhotonNetwork.JoinLobby();
         PhotonNetwork.AutomaticallySyncScene = true;
+
     }
+
+
 
     public override void OnJoinedLobby()
     {
+        // creer nouvelle fonction avec joinorcreate
         MenuManager.Instance.OpenMenu("base");
         Debug.Log("Joined lobby");
         //PhotonNetwork.NickName = "Player " + Random.Range(0, 1000).ToString("0000");
         PhotonNetwork.LocalPlayer.NickName = "Player " + Random.Range(0, 1000).ToString("0000");
-        PhotonNetwork.CreateRoom(PhotonNetwork.NickName + " room", new RoomOptions() { MaxPlayers = 4, BroadcastPropsChangeToAll = true });
+        
+        PhotonNetwork.JoinOrCreateRoom("TheRoom", new RoomOptions() { MaxPlayers = 4, BroadcastPropsChangeToAll = true },PhotonNetwork.CurrentLobby);
 
         Debug.Log(PhotonNetwork.NickName);
     }

@@ -25,7 +25,7 @@ public class PlayerManager : MonoBehaviour
     {
         if (PV.IsMine)
         {
-        index =(int) PhotonNetwork.LocalPlayer.CustomProperties["_pp"];
+            index =(int) PhotonNetwork.LocalPlayer.CustomProperties["championsSelected"];
             Debug.LogFormat("My team is {0} I am {1} and a play : {2}", player.GetPhotonTeam(), player.NickName, playerPrefabs[index].name);
             CreateController();
         }
@@ -43,8 +43,6 @@ public class PlayerManager : MonoBehaviour
         if (_playerPrefab.GetComponent<IDamageable>().team.Code == 0)
         {
             _playerPrefab.GetComponent<PlayerStats>().deathPos = new Vector3(413.3f, 2.14f, -37.118f);
-            //_playerPrefab.GetComponent<PlayerStats>().deathPos = new Vector3(15f, 2.14f, -37.118f);
-            //_playerPrefab.GetComponent<PlayerStats>().respawnPos = new Vector3(15f, 2.14f, -37.118f);
             _playerPrefab.GetComponent<PlayerStats>().respawnPos = new Vector3(323.3f, 2.14f, -37.118f);
         }
         else if(_playerPrefab.GetComponent<IDamageable>().team.Code == 1)
