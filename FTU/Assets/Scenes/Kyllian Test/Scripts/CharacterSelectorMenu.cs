@@ -26,16 +26,7 @@ public class CharacterSelectorMenu : MonoBehaviourPunCallbacks
     void Start()
     {
         
-        if (PlayerPrefs.HasKey("championsSelected"))
-        {
-            championsSelected = PlayerPrefs.GetInt("championsSelected");
-        }
-        ExitGames.Client.Photon.Hashtable customProp = new ExitGames.Client.Photon.Hashtable();
-        customProp.Add("championsSelected",championsSelected);
-        MainMenuManager.Instance().GetLocalPlayer().SetCustomProperties(customProp);
-
         
-        DisplaySelectedChampion();
     }
 
     // Update is called once per frame
@@ -90,6 +81,20 @@ public class CharacterSelectorMenu : MonoBehaviourPunCallbacks
         championPrefab.GetComponent<CameraWork>().enabled = false;
         championPrefab.GetComponent<Targeting>().enabled = false;
         championPrefab.GetComponent<Animator>().enabled = false;
+    }
+
+    public override void OnConnectedToMaster()
+    {
+        if (PlayerPrefs.HasKey("championsSelected"))
+        {
+            championsSelected = PlayerPrefs.GetInt("championsSelected");
+        }
+        ExitGames.Client.Photon.Hashtable customProp = new ExitGames.Client.Photon.Hashtable();
+        customProp.Add("championsSelected",championsSelected);
+        MainMenuManager.Instance().GetLocalPlayer().SetCustomProperties(customProp);
+
+        
+        DisplaySelectedChampion();
     }
     
     

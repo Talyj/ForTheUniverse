@@ -21,11 +21,13 @@ public class MainMenuManager : MonoBehaviourPunCallbacks
             return;
         }
         _singleton = this;
-        Connect();
     }
     
     public GameObject contentFriendList;
     public GameObject buttonFriendList;
+    public GameObject controlPanel;
+    public GameObject connectionPanel;
+    public GameObject characterHolder;
     
     // Start is called before the first frame update
     void Start()
@@ -46,6 +48,9 @@ public class MainMenuManager : MonoBehaviourPunCallbacks
     
     public override void OnConnectedToMaster()
     {
+        connectionPanel.SetActive(false);
+        controlPanel.SetActive(true);
+        characterHolder.SetActive(true);
         Debug.Log("PUN Basics Tutorial/Launcher: OnConnectedToMaster() was called by PUN");
         Debug.Log(PhotonNetwork.LocalPlayer.UserId);
         
