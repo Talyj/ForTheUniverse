@@ -93,7 +93,7 @@ public class VoisterBehaviour : BasicAIMovement, IPunObservable
 
     protected void VoisterFeed()
     {
-        if (numberOfCharges >= requiredNumberOfCharge)
+        if (numberOfCharges >= requiredNumberOfCharge && _navMeshAgent.remainingDistance <= 5)
         {
             currentState = kingVoisters.numberOfFollower >= kingVoisters.followersMax ? actionState.patrol : actionState.protect;
         }
@@ -120,7 +120,7 @@ public class VoisterBehaviour : BasicAIMovement, IPunObservable
             kingVoisters.numberOfFollower++;
             _navMeshAgent.ResetPath();
         }
-        transform.RotateAround(kingVoisters.transform.position, Vector3.up, GetMoveSpeed() * Time.deltaTime * 10);
+        transform.RotateAround(kingVoisters.transform.position, Vector3.up, GetMoveSpeed() * Time.deltaTime);
     }
 
     #region patrol

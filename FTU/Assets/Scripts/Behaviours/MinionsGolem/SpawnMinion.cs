@@ -7,7 +7,12 @@ using UnityEngine.SceneManagement;
 
 public class SpawnMinion : MonoBehaviour
 {
-    [SerializeField] private GameObject minion;
+    [SerializeField] private GameObject minionCacGreen;
+    [SerializeField] private GameObject minionCacPurple;
+    [SerializeField] private GameObject minionDistGreen;
+    [SerializeField] private GameObject minionDistPurple;
+
+
     [SerializeField] private Transform[] spawnPoint;
     public Transform[] pathUp;
     public Transform[] pathDown;
@@ -54,20 +59,40 @@ public class SpawnMinion : MonoBehaviour
         var x = Random.Range(-10, 10);
         var Z = Random.Range(-10, 10);
 
-        var color = new Color();
+        GameObject minionToSpaw = minionCacGreen;
 
-        if (team == 1)
+        GameObject minionTemp = null;
+
+        if (loopCounter >= 2)
         {
-            spawn = spawnPoint[0].position + new Vector3(x, 3, Z);
-            color = Color.yellow;
+            if (team == 1)
+            {
+                spawn = spawnPoint[0].position + new Vector3(x, 3, Z);
+                minionToSpaw = minionDistGreen;
+            }
+            else
+            {
+                spawn = spawnPoint[1].position + new Vector3(x, 3, Z);
+                minionToSpaw = minionDistPurple;
+            }
+            minionTemp = PhotonNetwork.Instantiate(minionToSpaw.name, spawn, Quaternion.identity);
+            minionTemp.GetComponent<MinionsBehaviour>().attackType = IDamageable.AttackType.Ranged;
         }
         else
         {
-            spawn = spawnPoint[1].position + new Vector3(x, 3, Z);
-            color = Color.red;
+            if (team == 1)
+            {
+                spawn = spawnPoint[0].position + new Vector3(x, 3, Z);
+                minionToSpaw = minionCacGreen;
+            }
+            else
+            {
+                spawn = spawnPoint[1].position + new Vector3(x, 3, Z);
+                minionToSpaw = minionCacPurple;
+            }
+            minionTemp = PhotonNetwork.Instantiate(minionToSpaw.name, spawn, Quaternion.identity);
+            minionTemp.GetComponent<MinionsBehaviour>().attackType = IDamageable.AttackType.Melee;
         }
-
-        var minionTemp = PhotonNetwork.Instantiate(minion.name, spawn, Quaternion.identity);
         minionTemp.GetComponent<MinionsBehaviour>().way = way;
         switch (team)
         {
@@ -84,11 +109,5 @@ public class SpawnMinion : MonoBehaviour
         minionTemp.GetComponent<MinionsBehaviour>().team.Code = (byte)team;
         minionTemp.GetComponent<MinionsBehaviour>().targetsUp = pathUp;
         minionTemp.GetComponent<MinionsBehaviour>().targetsDown = pathDown;
-        minionTemp.gameObject.GetComponent<Renderer>().material.color = color;
-        if (loopCounter > 2)
-        {
-            minionTemp.GetComponent<MinionsBehaviour>().attackType = IDamageable.AttackType.Ranged;
-        }
-        else minionTemp.GetComponent<MinionsBehaviour>().attackType = IDamageable.AttackType.Melee;
     }
 }
