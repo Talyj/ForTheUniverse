@@ -36,8 +36,8 @@ public class VoisterManager : MonoBehaviour
 
     private void SpawnVoisters(GameObject voister, KingsBehaviour king)
     {
-        var x = Random.Range(-11, 11);
-        var z = Random.Range(-11, 11);
+        var x = Random.Range(-150, 150);
+        var z = Random.Range(-50, 50);
         var occurence = Random.Range(1, 3);
         for(int i = 0; i < occurence; i++)
         {
