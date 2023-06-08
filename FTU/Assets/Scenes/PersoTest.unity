@@ -5110,8 +5110,7 @@ MonoBehaviour:
   lvl: 0
   projPrefab: {fileID: 0}
   SpawnPrefab: {fileID: 0}
-  team: 0
-  teams:
+  team:
     Name: Veritas
     Code: 1
   damageSupp: 0
@@ -10764,7 +10763,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8597483264512879776, guid: 58fa13ea9462c6a41bfedaf78e7c4658, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8597483264512879777, guid: 58fa13ea9462c6a41bfedaf78e7c4658, type: 3}
+      propertyPath: team.Name
+      value: Dominion
       objectReference: {fileID: 0}
     - target: {fileID: 8597483264512879833, guid: 58fa13ea9462c6a41bfedaf78e7c4658, type: 3}
       propertyPath: m_RootOrder
@@ -11538,7 +11541,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!95 &1385166056
 Animator:
   serializedVersion: 4
