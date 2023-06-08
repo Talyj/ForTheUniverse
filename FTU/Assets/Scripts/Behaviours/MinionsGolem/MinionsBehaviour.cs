@@ -47,7 +47,7 @@ public class MinionsBehaviour : BasicAIMovement, IPunObservable
 
             if (GetHealth() > 0 && GetCanAct() && GetCanMove())
             {
-                GetNearestTarget();
+                GetNearestTargetMinion();
                 DefaultMovement();
                 if (Cible)
                 {
@@ -65,6 +65,39 @@ public class MinionsBehaviour : BasicAIMovement, IPunObservable
             //}
         }
 
+    }
+
+    public void GetNearestTargetMinion()
+    {
+        if (Cible == null)
+        {
+            Collider[] hitColliders = Physics.OverlapSphere(gameObject.transform.position, GetViewRange());
+            if (hitColliders != null)
+            {
+                foreach (var col in hitColliders)
+                {
+                    if (col.gameObject == this.gameObject) return;
+                    //If the target is a player
+                    if (col.GetComponent<PlayerStats>())
+                    {
+                        if (col.GetComponent<PlayerStats>().team.Code != team.Code)
+                        {
+                            Cible = col.gameObject;
+                            break;
+                        }
+                    }//If the target is a minion, a golem, a voisters or a dd
+                    else if (col.GetComponent<BasicAIStats>())
+                    {
+                        if (col.GetComponent<VoisterBehaviour>()) continue;
+                        if (col.GetComponent<BasicAIStats>().team.Code != team.Code)
+                        {
+                            Cible = col.gameObject;
+                        }
+                    }
+                }
+            }
+        }
+        
     }
 
     private void DefaultAttack()

@@ -17,7 +17,7 @@ public class BasicAIMovement : BasicAIStats, IPunObservable
     {
         if (GetCanMove() && GetCanAct())
         {
-            if (_navMeshAgent.remainingDistance < 3f)
+            if (_navMeshAgent.remainingDistance <= 3f)
             {
                 current = (current + 1)/* % targets.Length*/;
             }

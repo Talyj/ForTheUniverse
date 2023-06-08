@@ -88,7 +88,6 @@ public class VoisterBehaviour : BasicAIMovement, IPunObservable
 
         }
 
-        //TODO check the attack code
         VoisterBasicAttack();
     }
 
