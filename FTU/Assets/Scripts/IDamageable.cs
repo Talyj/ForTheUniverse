@@ -719,8 +719,8 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     {
         var bullets = PhotonNetwork.Instantiate(projPrefab.name, transform.position, Quaternion.identity);
         bullets.GetPhotonView().TransferOwnership(PhotonNetwork.LocalPlayer);
-        Debug.Log(bullets.GetComponent<Projectile>().playerId);
-        Debug.Log(userId);
+        //Debug.Log(bullets.GetComponent<Projectile>().playerId);
+        //Debug.Log(userId);
         bullets.GetComponent<Projectile>().SetDamages(GetDegPhys() + dmgSupp, DamageType.physique);
         bullets.GetComponent<Projectile>().target = Target;
         bullets.GetComponent<Projectile>().targetSet = true;
