@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/Kyllian Test/MainMenu.unity
+    guid: 9878dbd1cf37a0a4bb42d4838e337ad6
+  - enabled: 1
     path: Assets/Scenes/lobbyTest.unity
     guid: d3951e17ff674814894d806d4625cf57
   - enabled: 0
