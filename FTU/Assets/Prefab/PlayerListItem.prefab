@@ -228,10 +228,10 @@ MonoBehaviour:
   text: {fileID: 8564769031362089425}
   background: {fileID: 3265608482714479950}
   sp:
-  - {fileID: 21300000, guid: c73c9ccba5da4d24db796177367746ba, type: 3}
   - {fileID: 21300000, guid: f58cd1a5fa6a663458e05b97b69bac6a, type: 3}
+  - {fileID: 21300000, guid: 6aa8b4bdfce601742af2bf0f97ae14c3, type: 3}
+  - {fileID: 21300000, guid: c73c9ccba5da4d24db796177367746ba, type: 3}
   - {fileID: 21300000, guid: 92d26295e43486b4485bc2d13dcd4769, type: 3}
   - {fileID: 21300000, guid: 3289499dee33d464aac7f18e8a1acf2e, type: 3}
   - {fileID: 21300000, guid: f3885fcb7a50fac46ac486c0c82ee89e, type: 3}
-  - {fileID: 21300000, guid: 6aa8b4bdfce601742af2bf0f97ae14c3, type: 3}
   manag: {fileID: 0}

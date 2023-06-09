@@ -9,7 +9,6 @@ using Photon.Pun.UtilityScripts;
 
 public class Launch : MonoBehaviourPunCallbacks
 {
-
     public static Launch Instance;
     [SerializeField] PhotonTeamsManager manag;
     PhotonTeam team;
@@ -41,25 +40,28 @@ public class Launch : MonoBehaviourPunCallbacks
     }
     void Start()
     {
-        Debug.Log("connected to master");
+        Connect();
+    }
+
+    private void Connect()
+    {
         PhotonNetwork.JoinLobby();
+        Debug.Log("connected to master");
         PhotonNetwork.AutomaticallySyncScene = true;
+        PhotonNetwork.LocalPlayer.NickName = "Player " + Random.Range(0, 1000).ToString("0000");
+        Debug.Log(PhotonNetwork.NickName);
 
     }
 
 
-
     public override void OnJoinedLobby()
     {
+        LobbyJoin();
         // creer nouvelle fonction avec joinorcreate
-        MenuManager.Instance.OpenMenu("base");
         Debug.Log("Joined lobby");
         //PhotonNetwork.NickName = "Player " + Random.Range(0, 1000).ToString("0000");
-        PhotonNetwork.LocalPlayer.NickName = "Player " + Random.Range(0, 1000).ToString("0000");
         
-        PhotonNetwork.JoinOrCreateRoom("TheRoom", new RoomOptions() { MaxPlayers = 4, BroadcastPropsChangeToAll = true },PhotonNetwork.CurrentLobby);
 
-        Debug.Log(PhotonNetwork.NickName);
     }
 
     //public void SetName()
@@ -68,6 +70,11 @@ public class Launch : MonoBehaviourPunCallbacks
     //    Debug.Log(PhotonNetwork.NickName +" name set");
     //}
     
+    public void LobbyJoin()
+    {
+        Debug.Log("on room");
+        PhotonNetwork.JoinOrCreateRoom("Group2", new RoomOptions() { MaxPlayers = 4, BroadcastPropsChangeToAll = true },PhotonNetwork.CurrentLobby);
+    }
     public void CreateRoom()
     {
         if (string.IsNullOrEmpty(roomName.text))
@@ -82,6 +89,8 @@ public class Launch : MonoBehaviourPunCallbacks
         MenuManager.Instance.OpenMenu("loading");
 
     }
+
+
     private void OnPlayerJoinedTeam(Player player, PhotonTeam team)
     {
         Debug.LogFormat("Player {0} joined team {1}", player, team);
@@ -134,7 +143,7 @@ public class Launch : MonoBehaviourPunCallbacks
     public void JoinRoom(RoomInfo info)
     {
         PhotonNetwork.JoinRoom(info.Name);
-        MenuManager.Instance.OpenMenu("loading");
+        //MenuManager.Instance.OpenMenu("loading");
         UpdatePlayerList();
 
     }

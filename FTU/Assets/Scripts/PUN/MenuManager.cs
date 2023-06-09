@@ -22,6 +22,8 @@ public class MenuManager : MonoBehaviour
     {
         yield return new WaitForSeconds(.5f);
         OpenMenu("room");
+        yield return new WaitForSeconds(.5f);
+        OpenMenu("loading");
     }
     public void OpenMenu(string menuName)
     {
@@ -30,6 +32,18 @@ public class MenuManager : MonoBehaviour
             if(menus[i].menuName == menuName)
             {
                 menus[i].Open();
+            }
+        }
+    }
+
+
+    public void CloseMenu(string menuName)
+    {
+        for (int i = 0; i < menus.Length; i++)
+        {
+            if (menus[i].menuName == menuName)
+            {
+                menus[i].Close();
             }
         }
     }

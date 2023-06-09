@@ -53,14 +53,14 @@ public class MainMenuManager : MonoBehaviourPunCallbacks
         characterHolder.SetActive(true);
         Debug.Log("PUN Basics Tutorial/Launcher: OnConnectedToMaster() was called by PUN");
         Debug.Log(PhotonNetwork.LocalPlayer.UserId);
-        
-        GroupManager.Instance().JoinGroup("Group1");
+        PhotonNetwork.JoinLobby();
         foreach (var player in PhotonNetwork.PlayerList)
         {
             var btn = Instantiate(buttonFriendList, contentFriendList.transform);
             btn.GetComponent<Button>().onClick.AddListener(() => DisplayFriend(player));
             btn.GetComponentInChildren<TMP_Text>().text = player.UserId;
         }
+        GroupManager.Instance().JoinGroup("Group2");
     }
 
     private void DisplayFriend(Player player)

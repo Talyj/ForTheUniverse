@@ -56,8 +56,8 @@ public class PlayerListItem : MonoBehaviourPunCallbacks
     {
         if (player.IsLocal)
         {
-            player.SetCustomProperties(new Hashtable { { PersoPlayerProp, charac.characterIndex } });
-            background.sprite = charac.characterSprite;
+            //player.SetCustomProperties(new Hashtable { { PersoPlayerProp, charac.characterIndex } });
+            background.sprite = sp[(int)player.CustomProperties["championsSelected"]]; 
             //if (player.CustomProperties.ContainsKey("_pp"))
             //{
             //    background.sprite = sp[(int)player.CustomProperties["_pp"]];
