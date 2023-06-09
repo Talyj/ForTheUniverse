@@ -49,6 +49,11 @@ public class MinionsBehaviour : BasicAIMovement, IPunObservable
             {
                 GetNearestTargetMinion();
                 DefaultMovement();
+                if (Cible is null)
+                {
+                    Debug.LogError("checkAttackIsnull");
+                    isAttacking = false;
+                }
                 if (Cible)
                 {
                     WalkToward();
@@ -102,8 +107,9 @@ public class MinionsBehaviour : BasicAIMovement, IPunObservable
 
     private void DefaultAttack()
     {
-        if (Cible == null)
+        if (Cible is null)
         {
+            Debug.LogError("checkAttackIsnull");
             isAttacking = false;
         }
 

@@ -34,7 +34,7 @@ public class GroupManager : MonoBehaviourPunCallbacks
 
     public void JoinGroup(string groupName)
     {
-        PhotonNetwork.JoinRandomOrCreateRoom(roomName:groupName);
+        PhotonNetwork.JoinOrCreateRoom(groupName,  new RoomOptions() { MaxPlayers = 4, BroadcastPropsChangeToAll = true },PhotonNetwork.CurrentLobby);
     }
 
     public void LeaveGroup(string groupName)
