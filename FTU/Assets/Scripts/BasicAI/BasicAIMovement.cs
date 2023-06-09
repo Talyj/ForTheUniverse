@@ -17,12 +17,23 @@ public class BasicAIMovement : BasicAIStats, IPunObservable
     {
         if (GetCanMove() && GetCanAct())
         {
-            if (_navMeshAgent.remainingDistance <= 10f)
+            //if (_navMeshAgent.remainingDistance <= 10f)
+            //{
+            //    current = (current + 1)/* % targets.Length*/;
+            //}
+            //if (current >= moveTo.Length) current = 0;             
+            //_navMeshAgent.SetDestination(new Vector3(moveTo[current].position.x, transform.position.y, moveTo[current].position.z));    
+            
+
+            if(_navMeshAgent.remainingDistance > 10)
             {
-                current = (current + 1)/* % targets.Length*/;
+                _navMeshAgent.SetDestination(new Vector3(moveTo[current].position.x, transform.position.y, moveTo[current].position.z));
             }
-            if (current >= moveTo.Length) current = 0;             
-            _navMeshAgent.SetDestination(new Vector3(moveTo[current].position.x, transform.position.y, moveTo[current].position.z));                
+            else
+            {
+                current++;
+                if (current >= moveTo.Length) current = 0;
+            }
         }
     }
 
