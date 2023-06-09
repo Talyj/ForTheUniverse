@@ -121,8 +121,15 @@ MonoBehaviour:
   target: {fileID: 0}
   targetSet: 0
   touched: 0
+  playerId: 
+  team:
+    Name: 
+    Code: 0
   source: {fileID: 0}
-  team: 0
+  manag: {fileID: 0}
+  teams:
+    Name: 
+    Code: 0
 --- !u!54 &2705276689310945520
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -181,7 +188,7 @@ MonoBehaviour:
   m_UseLocal: 1
 --- !u!95 &2294159896831309890
 Animator:
-  serializedVersion: 4
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -198,7 +205,8 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &1244830772691062513
 MonoBehaviour:
   m_ObjectHideFlags: 0
