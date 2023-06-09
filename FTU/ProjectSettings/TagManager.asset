@@ -16,6 +16,7 @@ TagManager:
   - waypoint
   - fox
   - slime
+  - Bush
   layers:
   - Default
   - TransparentFX
@@ -25,8 +26,8 @@ TagManager:
   - UI
   - CheckPoint
   - Learner
-  - 
-  - 
+  - InvisibleVeritas
+  - InvisibleDominion
   - 
   - 
   - 

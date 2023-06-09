@@ -54,6 +54,8 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     public float damageSupp;
     public bool isAI;
 
+    //State
+    public int inBush;
 
 
 
@@ -310,6 +312,8 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
 
         Health = MaxHealth;
         Mana = MaxMana;
+
+        inBush = 0;
 
         Rigidbody rb = GetComponent<Rigidbody>();
         if (rb != null)
@@ -751,6 +755,24 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         else
         {
             SetHealth((float)stream.ReceiveNext());
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Bush") && inBush == 0)
+        {
+            Debug.Log("InBush");
+            gameObject.layer = LayerMask.NameToLayer("InvisibleDominion");
+        }
+    }
+
+    private void OnCollisionExit(Collision other)
+    {
+        if (other.gameObject.CompareTag("Bush") && inBush > 0)
+        {
+            Debug.Log("ExitBush");
+            gameObject.layer = LayerMask.NameToLayer("Default");
         }
     }
 }
