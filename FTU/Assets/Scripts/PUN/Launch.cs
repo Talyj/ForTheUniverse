@@ -186,17 +186,17 @@ public class Launch : MonoBehaviourPunCallbacks
         {
             PlayerListItem newPlayerItem = Instantiate(_playerListPrefab, playerListContentInRoom);
             
-            newPlayerItem.SetUp(player.Value);
 
             if(player.Value == PhotonNetwork.LocalPlayer)
             {
+                newPlayerItem.SetUp(player.Value);
                 newPlayerItem.JoinTeam(players);
             }
             playerList.Add(newPlayerItem);
         }
         //Debug.Log($"<color=blue> after potential ADD clear :  {playerList.Count}</color>");
         Invoke("SetTeams", 0.1f);
-        photonView.RPC("SetTeams", RpcTarget.AllBuffered);
+        //photonView.RPC("SetTeams", RpcTarget.All);
     }
 
     [PunRPC]
@@ -226,7 +226,6 @@ public class Launch : MonoBehaviourPunCallbacks
             }
         }
         
-
     }
 
     public void StartGame()

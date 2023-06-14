@@ -44,7 +44,8 @@ public class PlayerListItem : MonoBehaviourPunCallbacks
         {
             team = _player.GetPhotonTeam();
             Debug.Log($"<color=green> Setup {player.GetPhotonTeam().Name}</color>");
-
+            background.sprite = sp[(int)player.CustomProperties["championsSelected"]];
+            background.color = new Color(255f, 255f, 255f, 0.25f);
         }
     }
     

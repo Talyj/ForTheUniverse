@@ -23,7 +23,7 @@ public class MenuManager : MonoBehaviour
         yield return new WaitForSeconds(.5f);
         OpenMenu("room");
         yield return new WaitForSeconds(.5f);
-        OpenMenu("loading");
+        CloseMenu("loading");
     }
     public void OpenMenu(string menuName)
     {
