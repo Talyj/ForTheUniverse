@@ -52,6 +52,7 @@ public class BasicAIStats : IDamageable, IPunObservable
                 }
             }
         }
+        CheckTarget();
     }
 
     public void BasicAttackIA()
@@ -82,10 +83,8 @@ public class BasicAIStats : IDamageable, IPunObservable
 
     public void CheckTarget()
     {
-        if (Cible == null)
-        {
-            Cible = null;
-        }
+        var isMissing = ReferenceEquals(Cible, null) ? false : (Cible ? false : true);
+        if (isMissing) Cible = null;
 
         if (Cible != null)
         {

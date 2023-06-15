@@ -14,7 +14,7 @@ public class GolemBehaviour : BasicAIStats
         AISetup();
         SetHealth(2500f);
         SetMaxHealth(2500f);
-        SetAttackRange(30f);
+        SetAttackRange(50f);
         SetViewRange(GetAttackRange());
         SetAttackSpeed(2.0f);
         SetDegMag(200);
@@ -26,20 +26,17 @@ public class GolemBehaviour : BasicAIStats
 
     public void Update()
     {
-
-        if (Cible == null)
+        GetNearestTarget();
+        if(Cible != null)
         {
-            GetNearestTarget();
-        }
-        else
-        {
-            Attack();
             var dist = Vector3.Distance(transform.position, Cible.transform.position);
             if (dist > GetAttackRange() + 5)
             {
                 Cible = null;
             }
+            Attack();
         }
+
         HealthBehaviour();
 
     }

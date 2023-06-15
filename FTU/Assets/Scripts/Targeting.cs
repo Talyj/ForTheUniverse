@@ -20,33 +20,25 @@ public class Targeting : MonoBehaviour
         
         if (Input.GetMouseButtonDown(0))
         {
-
-            try
+            if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, Mathf.Infinity))
             {
-                if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, Mathf.Infinity))
+                if (hit.collider.TryGetComponent(typeof(IDamageable), out Component component))
                 {
-                    if (hit.collider.TryGetComponent(typeof(IDamageable), out Component component))
+                    if (component.GetComponent<IDamageable>().GetEnemyType()== IDamageable.EnemyType.minion ||
+                        component.GetComponent<IDamageable>().GetEnemyType()== IDamageable.EnemyType.voister ||
+                        component.GetComponent<IDamageable>().GetEnemyType()== IDamageable.EnemyType.player ||
+                        component.GetComponent<IDamageable>().GetEnemyType()== IDamageable.EnemyType.dieu ||
+                        component.GetComponent<IDamageable>().GetEnemyType()== IDamageable.EnemyType.golem)
                     {
-                        if (component.GetComponent<IDamageable>().GetEnemyType()== IDamageable.EnemyType.minion ||
-                            component.GetComponent<IDamageable>().GetEnemyType()== IDamageable.EnemyType.voister ||
-                            component.GetComponent<IDamageable>().GetEnemyType()== IDamageable.EnemyType.player ||
-                            component.GetComponent<IDamageable>().GetEnemyType()== IDamageable.EnemyType.dieu ||
-                            component.GetComponent<IDamageable>().GetEnemyType()== IDamageable.EnemyType.golem)
-                        {
-                            if(hit.collider.GetComponent<IDamageable>().team.Code != gameObject.GetComponent<IDamageable>().team.Code)
-                            entity.GetComponent<IDamageable>().Cible = hit.collider.gameObject;
-                        }
-                    }
-                    else if (hit.collider.GetComponent<IDamageable>() == null)
-                    {
-                        entity.GetComponent<IDamageable>().Cible = null;
+                        if(hit.collider.GetComponent<IDamageable>().team.Code != gameObject.GetComponent<IDamageable>().team.Code) entity.GetComponent<IDamageable>().Cible = hit.collider.gameObject;
+                        return;
                     }
                 }
             }
-            catch(Exception ue)
-            {
-                //:)
-            }
+        }
+        if (Input.GetMouseButtonDown(2))
+        {
+            this.gameObject.GetComponent<IDamageable>().Cible = null;
         }
     }
 }

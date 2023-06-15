@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.AI;
 
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerMovement : IDamageable
@@ -18,11 +19,14 @@ public class PlayerMovement : IDamageable
     Rigidbody myRigidbody;
     Camera viewCamera;
 
+    NavMeshAgent _navMeshAgent;
+
     //Animator anim;
     public NetworkVariable<Vector3> Position = new NetworkVariable<Vector3>();
     public void Awake()
     {
         myRigidbody = GetComponent<Rigidbody>();
+        _navMeshAgent = this.GetComponent<NavMeshAgent>();
         viewCamera = Camera.main;
         //anim = GetComponent<Animator>();
         myPV = GetComponent<PhotonView>();
@@ -68,9 +72,9 @@ public class PlayerMovement : IDamageable
         if (GetCanMove())
         {
             // Movement input
-            Vector3 moveInput = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
-            Vector3 moveVelocity = moveInput.normalized * GetMoveSpeed();
-            Move(moveVelocity);
+            //Vector3 moveInput = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
+            //Vector3 moveVelocity = moveInput.normalized * GetMoveSpeed();
+            //Move(moveVelocity);
             //anim.SetFloat("MoveX", Input.GetAxisRaw("Horizontal"));
             //anim.SetFloat("MoveY", Input.GetAxisRaw("Vertical"));
             // Look input
@@ -82,7 +86,14 @@ public class PlayerMovement : IDamageable
             {
                 Vector3 point = ray.GetPoint(rayDistance);
                 LookAt(point);
-
+                if (Input.GetMouseButtonDown(1))
+                {
+                    _navMeshAgent.SetDestination(point);
+                }
+                //if(_navMeshAgent.remainingDistance <= 2f)
+                //{
+                //    _navMeshAgent.ResetPath();
+                //}
             }
         }
     }

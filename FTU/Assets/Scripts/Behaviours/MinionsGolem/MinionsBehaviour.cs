@@ -51,7 +51,6 @@ public class MinionsBehaviour : BasicAIMovement, IPunObservable
                 DefaultMovement();
                 if (Cible is null)
                 {
-                    Debug.LogError("checkAttackIsnull");
                     isAttacking = false;
                 }
                 if (Cible)

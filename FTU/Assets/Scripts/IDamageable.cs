@@ -325,6 +325,22 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         {
             col.enabled = true;
         }
+        if (this.GetEnemyType() == EnemyType.player)
+        {
+            var GM = GameObject.FindGameObjectWithTag("gamemanager");
+            if (GM)
+            {
+                if (team.Code == 1)
+                {
+                    gameObject.transform.position = GM.GetComponent<MainGame>().spawnTransformVeritas.transform.position;
+                }
+                else
+                {
+                    gameObject.transform.position = GM.GetComponent<MainGame>().spawnTransformDominion.transform.position;
+                }
+
+            }
+        }
     }
 
     public void SetupForAI()

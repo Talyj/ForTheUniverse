@@ -481,6 +481,7 @@ GameObject:
   - component: {fileID: 4678321541287554614}
   - component: {fileID: -2004355098177081931}
   - component: {fileID: -7343261030961575311}
+  - component: {fileID: 4669379698072390576}
   m_Layer: 9
   m_Name: Actio
   m_TagString: Player
@@ -624,6 +625,7 @@ MonoBehaviour:
     Code: 0
   damageSupp: 0
   isAI: 0
+  inBush: 0
   enemyType: 2
   passif: {fileID: 11400000, guid: 87fae4db772d3424d9371539600022d8, type: 2}
   skills:
@@ -751,7 +753,7 @@ MonoBehaviour:
   player: {fileID: 0}
 --- !u!95 &4678321541287554614
 Animator:
-  serializedVersion: 4
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -768,7 +770,8 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &-2004355098177081931
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -807,6 +810,28 @@ MonoBehaviour:
   viewMeshFilter: {fileID: 1534532444718661457}
   edgeResolveIteration: 4
   edgeDstTreshold: 0.5
+--- !u!195 &4669379698072390576
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8597483264512879776}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 20
+  m_Acceleration: 20
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 0
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!1001 &8577605423247120896
 PrefabInstance:
   m_ObjectHideFlags: 0

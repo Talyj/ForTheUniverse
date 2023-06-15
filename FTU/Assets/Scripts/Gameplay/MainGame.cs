@@ -15,8 +15,8 @@ public class MainGame : MonoBehaviourPun
     //[0] = veritas, [1] = dominion
     public GameObject[] victoryDisplay;
 
-    [SerializeField] private Transform spawnTransformVeritas;
-    [SerializeField] private Transform spawnTransformDominion;
+    [SerializeField] public Transform spawnTransformVeritas;
+    [SerializeField] public Transform spawnTransformDominion;
     [SerializeField] private Transform deathPos;
 
     // Start is called before the first frame update

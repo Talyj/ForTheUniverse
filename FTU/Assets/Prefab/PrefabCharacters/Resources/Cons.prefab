@@ -1468,6 +1468,7 @@ GameObject:
   - component: {fileID: 2175924336990334503}
   - component: {fileID: 2776643353293979873}
   - component: {fileID: 7438440511118260228}
+  - component: {fileID: 7386407174355162409}
   m_Layer: 0
   m_Name: Cons
   m_TagString: Player
@@ -1612,6 +1613,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!54 &7213121623342912308
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1644,8 +1646,8 @@ MonoBehaviour:
   cc: 0
   Cible: {fileID: 0}
   userId: 
-  Health: 0
-  MaxHealth: 0
+  Health: 1
+  MaxHealth: 1
   AttackSpeed: 0
   AttackRange: 0
   DegatsPhysique: 0
@@ -1749,6 +1751,28 @@ MonoBehaviour:
   - {fileID: 4174342330187873815}
   cibleHp: {fileID: 4174342331267159164}
   ciblePm: {fileID: 4174342331873818598}
+--- !u!195 &7386407174355162409
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7836138528982380508}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 20
+  m_Acceleration: 20
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 0
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!1 &8619375219186545885
 GameObject:
   m_ObjectHideFlags: 0

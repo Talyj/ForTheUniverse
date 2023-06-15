@@ -17,6 +17,7 @@ TagManager:
   - fox
   - slime
   - Bush
+  - gamemanager
   layers:
   - Default
   - TransparentFX
