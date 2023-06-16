@@ -758,23 +758,28 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        if (collision.gameObject.CompareTag("Bush") && inBush == 0)
+        if (other.gameObject.CompareTag("Bush") && inBush == 0)
         {
             Debug.Log("InBush");
+            inBush++;
             gameObject.layer = LayerMask.NameToLayer("InvisibleDominion");
+            transform.SetLayerRecursively(LayerMask.NameToLayer("InvisibleDominion"));
         }
     }
 
-    private void OnCollisionExit(Collision other)
+    private void OnTriggerExit(Collider other)
     {
         if (other.gameObject.CompareTag("Bush") && inBush > 0)
         {
             Debug.Log("ExitBush");
             gameObject.layer = LayerMask.NameToLayer("Default");
+            transform.SetLayerRecursively(LayerMask.NameToLayer("Default"));
+            inBush--;
         }
     }
+    
 }
 //public enum Team
 //{
@@ -783,3 +788,17 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
 //    Voister = 2,
 //    nothing = 3
 //}
+
+
+public static class Utils
+{
+    public static void SetLayerRecursively(this Transform parent, int layer)
+    {
+        parent.gameObject.layer = layer;
+ 
+        for (int i = 0, count = parent.childCount; i < count; i++)
+        {
+            parent.GetChild(i).SetLayerRecursively(layer);
+        }
+    }
+}
