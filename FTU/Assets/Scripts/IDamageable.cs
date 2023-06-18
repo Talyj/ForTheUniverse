@@ -760,23 +760,34 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Bush") && inBush == 0)
+        if (other.gameObject.CompareTag("Bush"))
         {
             Debug.Log("InBush");
             inBush++;
-            gameObject.layer = LayerMask.NameToLayer("InvisibleDominion");
-            transform.SetLayerRecursively(LayerMask.NameToLayer("InvisibleDominion"));
+        }
+
+        if (inBush == 1)
+        {
+            var layer = team.Code == 1 ? "InvisibleDominion" : "InvisibleVeritas";
+            gameObject.layer = LayerMask.NameToLayer(layer);
+            transform.SetLayerRecursively(LayerMask.NameToLayer(layer));
+            BushManager.Instance().AddEntityToBush(other.gameObject.GetComponent<BushBehavior>().bushID, gameObject);
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.CompareTag("Bush") && inBush > 0)
+        if (other.gameObject.CompareTag("Bush"))
         {
             Debug.Log("ExitBush");
+            inBush--;
+        }
+
+        if (inBush <= 0)
+        {
             gameObject.layer = LayerMask.NameToLayer("Default");
             transform.SetLayerRecursively(LayerMask.NameToLayer("Default"));
-            inBush--;
+            BushManager.Instance().RemoveEntityToBush(other.gameObject.GetComponent<BushBehavior>().bushID, gameObject);
         }
     }
     
