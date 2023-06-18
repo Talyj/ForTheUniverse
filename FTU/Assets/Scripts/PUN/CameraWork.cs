@@ -30,7 +30,7 @@ public class CameraWork : MonoBehaviour
     public void Start()
     {
         var team = gameObject.GetComponent<IDamageable>().team.Code;
-        var layer = team == 0 ? "InvisibleDominion" : "InvisibleVeritas";
+        var layer = team == 1 ? "InvisibleDominion" : "InvisibleVeritas";
         
         var invisible_layer_mask=LayerMask.NameToLayer(layer);
         invisible_layer_mask=~ (1 <<invisible_layer_mask);//This inverts the value
