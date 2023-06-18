@@ -764,15 +764,17 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         {
             Debug.Log("InBush");
             inBush++;
+            
+            if (inBush == 1)
+            {
+                var layer = team.Code == 1 ? "InvisibleDominion" : "InvisibleVeritas";
+                gameObject.layer = LayerMask.NameToLayer(layer);
+                transform.SetLayerRecursively(LayerMask.NameToLayer(layer));
+                BushManager.Instance().AddEntityToBush(other.gameObject.GetComponent<BushBehavior>().bushID, gameObject);
+            }
         }
 
-        if (inBush == 1)
-        {
-            var layer = team.Code == 1 ? "InvisibleDominion" : "InvisibleVeritas";
-            gameObject.layer = LayerMask.NameToLayer(layer);
-            transform.SetLayerRecursively(LayerMask.NameToLayer(layer));
-            BushManager.Instance().AddEntityToBush(other.gameObject.GetComponent<BushBehavior>().bushID, gameObject);
-        }
+        
     }
 
     private void OnTriggerExit(Collider other)
@@ -781,14 +783,16 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         {
             Debug.Log("ExitBush");
             inBush--;
+            
+            if (inBush <= 0)
+            {
+                gameObject.layer = LayerMask.NameToLayer("Default");
+                transform.SetLayerRecursively(LayerMask.NameToLayer("Default"));
+                BushManager.Instance().RemoveEntityToBush(other.gameObject.GetComponent<BushBehavior>().bushID, gameObject);
+            }
         }
 
-        if (inBush <= 0)
-        {
-            gameObject.layer = LayerMask.NameToLayer("Default");
-            transform.SetLayerRecursively(LayerMask.NameToLayer("Default"));
-            BushManager.Instance().RemoveEntityToBush(other.gameObject.GetComponent<BushBehavior>().bushID, gameObject);
-        }
+        
     }
     
 }
