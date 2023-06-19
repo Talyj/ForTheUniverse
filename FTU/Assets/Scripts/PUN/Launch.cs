@@ -18,8 +18,6 @@ public class Launch : MonoBehaviourPunCallbacks
     [SerializeField] TMP_Text roomNameText;
     [SerializeField] Transform roomListContent;
     [SerializeField] GameObject roomListPrefab;
-    [SerializeField] Transform playerListContentDom;
-    [SerializeField] Transform playerListContentVer;
     [SerializeField] Transform playerListContentInRoom;
     [SerializeField] GameObject playerListPrefab;
     [SerializeField] PlayerListItem _playerListPrefab;
@@ -213,14 +211,14 @@ public class Launch : MonoBehaviourPunCallbacks
             
             if (players[i].GetPhotonTeam().Code == 0)
             {
-                PlayerListItem newPlayerItem= Instantiate(_playerListPrefab, playerListContentDom);
+                PlayerListItem newPlayerItem= Instantiate(_playerListPrefab, playerListContentInRoom);
                 newPlayerItem.SetUp(players[i]);
                 playerList.Add(newPlayerItem);
             }
             else if(players[i].GetPhotonTeam().Code == 1)
             {
 
-                PlayerListItem newPlayerItem=Instantiate(_playerListPrefab, playerListContentVer);
+                PlayerListItem newPlayerItem=Instantiate(_playerListPrefab, playerListContentInRoom);
                 newPlayerItem.SetUp(players[i]);
                 playerList.Add(newPlayerItem);
             }

@@ -16,7 +16,9 @@ public class PlayerListItem : MonoBehaviourPunCallbacks
     public const string PersoPlayerProp = "_pp";
     [SerializeField] TMP_Text text;
     [SerializeField] Image background;
+    [SerializeField] Image logoteam;
     [SerializeField] Sprite[] sp;
+    [SerializeField] Sprite[] teamicone;
     //[SerializeField] TMP_Text textPerso;
     //public TMP_Text textTeam;
     //[SerializeField] TMP_Dropdown perso;
@@ -29,6 +31,7 @@ public class PlayerListItem : MonoBehaviourPunCallbacks
     {
         manag = GameObject.Find("RoomManager").GetComponentInChildren<PhotonTeamsManager>();
         background.color = new Color(0f, 0f, 0f, 0f);
+        logoteam.color = new Color(0f, 0f, 0f, 0f);
     }
 
     public void SetUp(Player _player)
@@ -46,6 +49,17 @@ public class PlayerListItem : MonoBehaviourPunCallbacks
             Debug.Log($"<color=green> Setup {player.GetPhotonTeam().Name}</color>");
             background.sprite = sp[(int)player.CustomProperties["championsSelected"]];
             background.color = new Color(255f, 255f, 255f, 0.25f);
+            if (player.GetPhotonTeam().Code == 0)
+            {
+                logoteam.sprite = teamicone[0];
+
+            }
+            else
+            {
+
+                logoteam.sprite = teamicone[1];
+            }
+            logoteam.color = new Color(255f, 255f, 255f, 0.25f);
         }
     }
     
