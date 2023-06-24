@@ -16,6 +16,7 @@ public class BigEdBehaviours : PlayerStats
     {
         PlayerStatsSetUp();
         BaseInit();
+        characterID = 0;
         SetUpCharacters(role, false, false);
 
         CameraWork();

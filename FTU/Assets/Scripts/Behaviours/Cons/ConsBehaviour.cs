@@ -26,6 +26,7 @@ public class ConsBehaviour : PlayerStats
     {
         PlayerStatsSetUp();
         BaseInit();
+        characterID = 3;
         SetUpCharacters(role, true, true);
 
 
