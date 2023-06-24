@@ -10,7 +10,7 @@ using UnityEngine;
 
 public abstract class IDamageable : MonoBehaviourPun, IPunObservable
 {
-    public int characterID;
+    public int characterID = -1;
     public enum AttackType { Melee, Ranged }
     public AttackType attackType;
     [SerializeField]
