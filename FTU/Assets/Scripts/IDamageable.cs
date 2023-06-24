@@ -3,6 +3,7 @@ using Photon.Pun.UtilityScripts;
 using Photon.Realtime;
 using System;
 using System.Collections;
+using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
 //TODO change class name
@@ -314,6 +315,21 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         Mana = MaxMana;
 
         inBush = 0;
+
+        if (photonView.IsMine)
+        {
+            Player[] teamPlayers;
+            var teams = PhotonTeamsManager.Instance.GetAvailableTeams();
+            PhotonTeamsManager.Instance.TryGetTeamMembers(teams[0].Name,out teamPlayers);
+            if (teamPlayers.Contains(PhotonNetwork.LocalPlayer))
+            {
+                team = teams[0];
+            }
+            else
+            {
+                team = teams[1];
+            }
+        }
 
         Rigidbody rb = GetComponent<Rigidbody>();
         if (rb != null)
