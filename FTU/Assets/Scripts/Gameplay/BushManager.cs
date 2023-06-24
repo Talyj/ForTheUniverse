@@ -31,7 +31,7 @@ public class BushManager : MonoBehaviour
     public void AddEntityToBush(int idBush, GameObject go)
     {
         entitiesInBush[idBush].Add(go);
-        if (entitiesInBush[idBush].Select(x => x.GetComponent<IDamageable>().team).Distinct().Count() > 1)
+        if (entitiesInBush[idBush].Select(x => x.GetComponent<IDamageable>().team.Code).Distinct().Count() > 1)
         {
             foreach (var entity in entitiesInBush[idBush])
             {
@@ -49,9 +49,9 @@ public class BushManager : MonoBehaviour
             return;
         }
         
-        if (entitiesInBush[idBush].Select(x => x.GetComponent<IDamageable>().team).Distinct().Count() == 1)
+        if (entitiesInBush[idBush].Select(x => x.GetComponent<IDamageable>().team.Code).Distinct().Count() == 1)
         {
-            var team = entitiesInBush[idBush].Select(x => x.GetComponent<IDamageable>().team).Distinct().First().Code;
+            var team = entitiesInBush[idBush].Select(x => x.GetComponent<IDamageable>().team.Code).Distinct().First();
             var layer = team == 0 ? "InvisibleDominion" : "InvisibleVeritas";
             foreach (var entity in entitiesInBush[idBush])
             {
