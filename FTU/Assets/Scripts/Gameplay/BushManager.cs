@@ -52,7 +52,7 @@ public class BushManager : MonoBehaviour
         if (entitiesInBush[idBush].Select(x => x.GetComponent<IDamageable>().team).Distinct().Count() == 1)
         {
             var team = entitiesInBush[idBush].Select(x => x.GetComponent<IDamageable>().team).Distinct().First().Code;
-            var layer = team == 1 ? "InvisibleDominion" : "InvisibleVeritas";
+            var layer = team == 0 ? "InvisibleDominion" : "InvisibleVeritas";
             foreach (var entity in entitiesInBush[idBush])
             {
                 entity.layer = LayerMask.NameToLayer(layer);

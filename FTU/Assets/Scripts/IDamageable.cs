@@ -767,7 +767,8 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
             
             if (inBush == 1)
             {
-                var layer = team.Code == 1 ? "InvisibleDominion" : "InvisibleVeritas";
+                Debug.Log($"Team code : {team.Code} - Team Name : {team.Name}");
+                var layer = team.Code == 0 ? "InvisibleDominion" : "InvisibleVeritas";
                 gameObject.layer = LayerMask.NameToLayer(layer);
                 transform.SetLayerRecursively(LayerMask.NameToLayer(layer));
                 BushManager.Instance().AddEntityToBush(other.gameObject.GetComponent<BushBehavior>().bushID, gameObject);
