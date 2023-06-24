@@ -41,6 +41,7 @@ public class PlayerManager : MonoBehaviour
     {
         _playerPrefab = PhotonNetwork.Instantiate(playerPrefabs[index].name, new Vector3(0f, 2.14f, 0f), Quaternion.identity, 0);
         
+        _playerPrefab.GetComponent<IDamageable>().team.Code =(byte) player.CustomProperties["_pt"];
         _playerPrefab.GetComponent<IDamageable>().userId = player.NickName;
         Debug.Log(_playerPrefab.GetComponent<IDamageable>().userId);
 
