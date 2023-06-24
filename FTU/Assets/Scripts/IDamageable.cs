@@ -316,7 +316,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
 
         inBush = 0;
 
-        team = PhotonTeamsManager.Instance.GetAvailableTeams()[1];
+        //team = PhotonTeamsManager.Instance.GetAvailableTeams()[1];
 
         Rigidbody rb = GetComponent<Rigidbody>();
         if (rb != null)
