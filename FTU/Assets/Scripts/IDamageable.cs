@@ -403,7 +403,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
                 Debug.Log("dead");
                 PhotonNetwork.Destroy(gameObject.GetComponent<PhotonView>());
             }
-                photonView.RPC("SendKillfeed", RpcTarget.All, PhotonNetwork.LocalPlayer.NickName, Cible.name);
+                //photonView.RPC("SendKillfeed", RpcTarget.All, PhotonNetwork.LocalPlayer.NickName, Cible.name);
         }        
     }
 
@@ -453,12 +453,12 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     [PunRPC] // NE PEUT TRANSMETTRE QUE DES TYPE CLASSIQUE (int, float, bool)
     public void GiveExperience()
     {
-        var expToGive = 0;
+        float expToGive = 0;
         //TODO Change the amount of xp
         switch (enemyType)
         {
             case EnemyType.minion:
-                expToGive = 100;
+                expToGive = .1f;
                 break;
             case EnemyType.player:
                 //expToGive = 1000 * gameObject.GetComponent<PlayerStats>().GetLvl();
