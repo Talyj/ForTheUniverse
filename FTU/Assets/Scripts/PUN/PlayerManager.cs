@@ -59,9 +59,9 @@ public class PlayerManager : MonoBehaviour
     }
     
     [PunRPC]
-    void SyncTeam(PhotonTeam team)
+    void SyncTeam(byte team)
     {
-        _playerPrefab.GetComponent<IDamageable>().team.Code =(byte) team.Code;
+        _playerPrefab.GetComponent<IDamageable>().team.Code =(byte) team;
     }
 
     
