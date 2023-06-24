@@ -25,7 +25,6 @@ public class PlayerManager : MonoBehaviour
     
     private void Start()
     {
-        
         if (PV.IsMine)
         {
             index =(int) PhotonNetwork.LocalPlayer.CustomProperties["championsSelected"];
@@ -62,7 +61,7 @@ public class PlayerManager : MonoBehaviour
     [PunRPC]
     void SyncTeam(PhotonTeam team)
     {
-        _playerPrefab.GetComponent<IDamageable>().team.Code =(byte) player.CustomProperties["_pt"];
+        _playerPrefab.GetComponent<IDamageable>().team.Code =(byte) team.Code;
     }
 
     
