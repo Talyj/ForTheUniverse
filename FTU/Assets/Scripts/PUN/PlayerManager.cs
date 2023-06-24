@@ -31,9 +31,10 @@ public class PlayerManager : MonoBehaviour
             index =(int) PhotonNetwork.LocalPlayer.CustomProperties["championsSelected"];
             
             CreateController();
+            PV.RPC("SyncTeam", RpcTarget.All, player.GetPhotonTeam() );
         }
         Debug.LogFormat("My team is {0} I am {1} and a play : {2}", player.GetPhotonTeam(), player.NickName, playerPrefabs[index].name);
-        PV.RPC("SyncTeam", RpcTarget.All, player.GetPhotonTeam() );
+        
     }
 
     void CreateController()
@@ -60,7 +61,7 @@ public class PlayerManager : MonoBehaviour
     [PunRPC]
     void SyncTeam(PhotonTeam team)
     {
-        _playerPrefab.GetComponent<IDamageable>().team = player.GetPhotonTeam();
+        _playerPrefab.GetComponent<IDamageable>().team.Code =(byte) player.CustomProperties["_pt"];
     }
 
     
