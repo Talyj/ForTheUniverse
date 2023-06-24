@@ -13,6 +13,8 @@ public class PlayerManager : MonoBehaviour
     [Tooltip("The list of prefab that represent the differente characters")]
     public GameObject[] playerPrefabs;
 
+    private GameObject _playerPrefab;
+
     private void Awake()
     {
         PV = GetComponent<PhotonView>();
@@ -23,19 +25,21 @@ public class PlayerManager : MonoBehaviour
     
     private void Start()
     {
+        
         if (PV.IsMine)
         {
             index =(int) PhotonNetwork.LocalPlayer.CustomProperties["championsSelected"];
-            Debug.LogFormat("My team is {0} I am {1} and a play : {2}", player.GetPhotonTeam(), player.NickName, playerPrefabs[index].name);
+            
             CreateController();
         }
+        Debug.LogFormat("My team is {0} I am {1} and a play : {2}", player.GetPhotonTeam(), player.NickName, playerPrefabs[index].name);
+        _playerPrefab.GetComponent<IDamageable>().team = player.GetPhotonTeam();
     }
 
     void CreateController()
     {
-        GameObject _playerPrefab = PhotonNetwork.Instantiate(playerPrefabs[index].name, new Vector3(0f, 2.14f, 0f), Quaternion.identity, 0);
+        _playerPrefab = PhotonNetwork.Instantiate(playerPrefabs[index].name, new Vector3(0f, 2.14f, 0f), Quaternion.identity, 0);
         
-        _playerPrefab.GetComponent<IDamageable>().team.Code =(byte) player.CustomProperties["_pt"];
         _playerPrefab.GetComponent<IDamageable>().userId = player.NickName;
         Debug.Log(_playerPrefab.GetComponent<IDamageable>().userId);
 
