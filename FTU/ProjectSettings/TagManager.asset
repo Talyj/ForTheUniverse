@@ -18,6 +18,7 @@ TagManager:
   - slime
   - Bush
   - gamemanager
+  - temple
   layers:
   - Default
   - TransparentFX

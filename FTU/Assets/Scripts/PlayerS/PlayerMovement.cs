@@ -90,7 +90,7 @@ public class PlayerMovement : IDamageable
                 {
                     _navMeshAgent.SetDestination(point);
                 }
-                //if(_navMeshAgent.remainingDistance <= 2f)
+                //if (_navMeshAgent.remainingDistance <= 2f)
                 //{
                 //    _navMeshAgent.ResetPath();
                 //}

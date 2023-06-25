@@ -31,17 +31,17 @@ public class TempleBehaviour : MonoBehaviour
 
     private void GetInsideTemple()
     {
-        switch (gameObject.name)
-        {
-            case "Temple1":
-                teams.Code = 1;
-                break;
+        //switch (gameObject.name)
+        //{
+        //    case "Temple1":
+        //        teams.Code = 1;
+        //        break;
 
-            case "Temple2":
-                teams.Code = 0;
-                break;
+        //    case "Temple2":
+        //        teams.Code = 0;
+        //        break;
 
-        }
+        //}
         Collider[] hitColliders = Physics.OverlapSphere(gameObject.transform.position, 50f);
 
         if (hitColliders != null)

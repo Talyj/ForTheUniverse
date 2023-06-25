@@ -28,7 +28,7 @@ public class ConsBehaviour : PlayerStats
         BaseInit();
         SetUpCharacters(role, true, true);
 
-
+        SetMoveSpeed(40f);
         slow = 5;
         foreach (var elmt in skills)
         {

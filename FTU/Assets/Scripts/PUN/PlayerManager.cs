@@ -12,6 +12,7 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] int index;
     [Tooltip("The list of prefab that represent the differente characters")]
     public GameObject[] playerPrefabs;
+    public GameObject deathPos;
 
     private void Awake()
     {
@@ -42,12 +43,14 @@ public class PlayerManager : MonoBehaviour
         _playerPrefab.GetComponent<PlayerStats>().playerManage = this;
         if (_playerPrefab.GetComponent<IDamageable>().team.Code == 0)
         {
-            _playerPrefab.GetComponent<PlayerStats>().deathPos = new Vector3(413.3f, 2.14f, -37.118f);
+            //_playerPrefab.GetComponent<PlayerStats>().deathPos = new Vector3(413.3f, 2.14f, -37.118f);
+            _playerPrefab.GetComponent<PlayerStats>().deathPos = deathPos.transform.position;
             _playerPrefab.GetComponent<PlayerStats>().respawnPos = new Vector3(323.3f, 2.14f, -37.118f);
         }
         else if(_playerPrefab.GetComponent<IDamageable>().team.Code == 1)
         {
-            _playerPrefab.GetComponent<PlayerStats>().deathPos = new Vector3(-413.3f, 2.14f, -37.118f);
+            //_playerPrefab.GetComponent<PlayerStats>().deathPos = new Vector3(-413.3f, 2.14f, -37.118f);
+            _playerPrefab.GetComponent<PlayerStats>().deathPos = deathPos.transform.position;
             _playerPrefab.GetComponent<PlayerStats>().respawnPos = new Vector3(-323.3f, 2.14f, -37.118f);
         }
 

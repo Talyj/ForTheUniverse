@@ -325,22 +325,26 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         {
             col.enabled = true;
         }
-        if (this.GetEnemyType() == EnemyType.player)
-        {
-            var GM = GameObject.FindGameObjectWithTag("gamemanager");
-            if (GM)
-            {
-                if (team.Code == 1)
-                {
-                    gameObject.transform.position = GM.GetComponent<MainGame>().spawnTransformVeritas.transform.position;
-                }
-                else
-                {
-                    gameObject.transform.position = GM.GetComponent<MainGame>().spawnTransformDominion.transform.position;
-                }
-
-            }
-        }
+        //if (this.GetEnemyType() == EnemyType.player)
+        //{
+        //    var temples = GameObject.FindGameObjectsWithTag("temple");
+        //    foreach(var temple in temples)
+        //    {
+        //        if (temple.GetComponent<TempleBehaviour>().teams.Code == this.team.Code)
+        //        {
+        //            //gameObject.transform.position = new Vector3(temple.gameObject.transform.position.x, 2.5f, temple.gameObject.transform.position.z);
+        //            //return;
+        //            if (team.Code == 1)
+        //            {
+        //                gameObject.transform.position = new Vector3(-323.3f, 2.14f, -37.118f);
+        //            }
+        //            else
+        //            {
+        //                gameObject.transform.position = new Vector3(323.3f, 2.14f, -37.118f);
+        //            }
+        //        }
+        //    }
+        //}
     }
 
     public void SetupForAI()
@@ -403,7 +407,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
 
         if (Health <= 0)
         {
-            photonView.RPC("GiveExperience", RpcTarget.All, new object[] { });
+            //photonView.RPC("GiveExperience", RpcTarget.All, new object[] { });
             if (gameObject.CompareTag("dd"))
             {
                 //Victory
@@ -419,7 +423,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
                 Debug.Log("dead");
                 PhotonNetwork.Destroy(gameObject.GetComponent<PhotonView>());
             }
-                photonView.RPC("SendKillfeed", RpcTarget.All, PhotonNetwork.LocalPlayer.NickName, Cible.name);
+                //photonView.RPC("SendKillfeed", RpcTarget.All, PhotonNetwork.LocalPlayer.NickName, Cible.name);
         }        
     }
 
