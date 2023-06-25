@@ -120,8 +120,11 @@ MonoBehaviour:
   target: {fileID: 0}
   targetSet: 0
   touched: 0
+  playerId: 
+  team:
+    Name: 
+    Code: 0
   source: {fileID: 0}
-  team: 0
   puddle: {fileID: 4502250090578076546, guid: 73a570051899389468aae2031cfff001, type: 3}
 --- !u!114 &-343245719357870577
 MonoBehaviour:
@@ -165,7 +168,7 @@ MonoBehaviour:
   m_UseLocal: 1
 --- !u!95 &5544861370171023093
 Animator:
-  serializedVersion: 4
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -182,7 +185,7 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_KeepAnimatorStateOnDisable: 0
 --- !u!114 &-6810795471738476118
 MonoBehaviour:
   m_ObjectHideFlags: 0

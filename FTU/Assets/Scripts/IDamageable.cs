@@ -3,12 +3,14 @@ using Photon.Pun.UtilityScripts;
 using Photon.Realtime;
 using System;
 using System.Collections;
+using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
 //TODO change class name
 
 public abstract class IDamageable : MonoBehaviourPun, IPunObservable
 {
+    public int characterID = -1;
     public enum AttackType { Melee, Ranged }
     public AttackType attackType;
     [SerializeField]
@@ -315,6 +317,8 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
 
         inBush = 0;
 
+        //team = PhotonTeamsManager.Instance.GetAvailableTeams()[1];
+
         Rigidbody rb = GetComponent<Rigidbody>();
         if (rb != null)
         {
@@ -473,12 +477,12 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     [PunRPC] // NE PEUT TRANSMETTRE QUE DES TYPE CLASSIQUE (int, float, bool)
     public void GiveExperience()
     {
-        var expToGive = 0;
+        float expToGive = 0;
         //TODO Change the amount of xp
         switch (enemyType)
         {
             case EnemyType.minion:
-                expToGive = 100;
+                expToGive = .1f;
                 break;
             case EnemyType.player:
                 //expToGive = 1000 * gameObject.GetComponent<PlayerStats>().GetLvl();
@@ -778,23 +782,44 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        if (collision.gameObject.CompareTag("Bush") && inBush == 0)
+        if (other.gameObject.CompareTag("Bush"))
         {
             Debug.Log("InBush");
-            gameObject.layer = LayerMask.NameToLayer("InvisibleDominion");
+            inBush++;
+            
+            if (inBush == 1)
+            {
+                Debug.Log($"Team code : {team.Code} - Team Name : {team.Name}");
+                var layer = team.Code == 0 ? "InvisibleDominion" : "InvisibleVeritas";
+                gameObject.layer = LayerMask.NameToLayer(layer);
+                transform.SetLayerRecursively(LayerMask.NameToLayer(layer));
+                BushManager.Instance().AddEntityToBush(other.gameObject.GetComponent<BushBehavior>().bushID, gameObject);
+            }
         }
+
+        
     }
 
-    private void OnCollisionExit(Collision other)
+    private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.CompareTag("Bush") && inBush > 0)
+        if (other.gameObject.CompareTag("Bush"))
         {
             Debug.Log("ExitBush");
-            gameObject.layer = LayerMask.NameToLayer("Default");
+            inBush--;
+            
+            if (inBush <= 0)
+            {
+                gameObject.layer = LayerMask.NameToLayer("Default");
+                transform.SetLayerRecursively(LayerMask.NameToLayer("Default"));
+                BushManager.Instance().RemoveEntityToBush(other.gameObject.GetComponent<BushBehavior>().bushID, gameObject);
+            }
         }
+
+        
     }
+    
 }
 //public enum Team
 //{
@@ -803,3 +828,17 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
 //    Voister = 2,
 //    nothing = 3
 //}
+
+
+public static class Utils
+{
+    public static void SetLayerRecursively(this Transform parent, int layer)
+    {
+        parent.gameObject.layer = layer;
+ 
+        for (int i = 0, count = parent.childCount; i < count; i++)
+        {
+            parent.GetChild(i).SetLayerRecursively(layer);
+        }
+    }
+}

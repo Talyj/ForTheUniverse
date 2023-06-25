@@ -1,7 +1,9 @@
+using Photon.Pun;
+using Photon.Pun.UtilityScripts;
 using UnityEngine;
 
 
-public class CameraWork : MonoBehaviour
+public class CameraWork : MonoBehaviourPun
 {
 
     [Tooltip("The distance in the local x-z plane to the target")]
@@ -29,16 +31,23 @@ public class CameraWork : MonoBehaviour
 
     public void Start()
     {
-        var invisible_layer_mask=LayerMask.NameToLayer("InvisibleDominion");
-        invisible_layer_mask=~ (1 <<invisible_layer_mask);//This inverts the value
-        Debug.Log(invisible_layer_mask);
-        Camera.main.cullingMask= invisible_layer_mask;
-        
-        // Start following the target if wanted.
-        if (followOnStart)
+        if (photonView.IsMine)
         {
-            OnStartFollowing();
+            var team = gameObject.GetComponent<IDamageable>().team.Code;
+            var layer = team == 1 ? "InvisibleDominion" : "InvisibleVeritas";
+        
+            var invisible_layer_mask=LayerMask.NameToLayer(layer);
+            invisible_layer_mask=~ (1 <<invisible_layer_mask);//This inverts the value
+            Debug.Log(invisible_layer_mask);
+            Camera.main.cullingMask= invisible_layer_mask;
+        
+            // Start following the target if wanted.
+            if (followOnStart)
+            {
+                OnStartFollowing();
+            }
         }
+        
     }
 
 

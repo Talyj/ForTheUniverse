@@ -48,12 +48,12 @@ public class MainMenuManager : MonoBehaviourPunCallbacks
     
     public override void OnConnectedToMaster()
     {
+        PhotonNetwork.JoinLobby();
         connectionPanel.SetActive(false);
         controlPanel.SetActive(true);
         characterHolder.SetActive(true);
         Debug.Log("PUN Basics Tutorial/Launcher: OnConnectedToMaster() was called by PUN");
         Debug.Log(PhotonNetwork.LocalPlayer.UserId);
-        PhotonNetwork.JoinLobby();
         foreach (var player in PhotonNetwork.PlayerList)
         {
             var btn = Instantiate(buttonFriendList, contentFriendList.transform);

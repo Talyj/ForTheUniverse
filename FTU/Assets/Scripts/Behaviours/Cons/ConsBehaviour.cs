@@ -26,6 +26,7 @@ public class ConsBehaviour : PlayerStats
     {
         PlayerStatsSetUp();
         BaseInit();
+        characterID = 3;
         SetUpCharacters(role, true, true);
 
         SetMoveSpeed(40f);
@@ -60,31 +61,32 @@ public class ConsBehaviour : PlayerStats
             MovementPlayer();
             if (!isAttacking)
             {
-                try
-                {
-                    if (Input.GetMouseButtonDown(0))
-                    {
-                        if (Vector3.Distance(gameObject.transform.position, Cible.transform.position) > GetAttackRange())
-                        {
-                            print("Hors d portée");
-                        }
-                        else
-                        {
-                            if (attackType == AttackType.Melee)
-                            {
-                                StartCoroutine(AutoAttack());
-                            }
-                            if (attackType == AttackType.Ranged)
-                            {
-                                StartCoroutine(RangeAutoAttackCons());
-                            }
-                        }
-                    }
-                }
-                catch (Exception e)
-                {
-                    Debug.Log("No target available");
-                }
+                //try
+                //{
+                //    if (Input.GetMouseButtonDown(0))
+                //    {
+                //        if (Vector3.Distance(gameObject.transform.position, Cible.transform.position) > GetAttackRange())
+                //        {
+                //            print("Hors d portée");
+                //        }
+                //        else
+                //        {
+                //            if (attackType == AttackType.Melee)
+                //            {
+                //                StartCoroutine(AutoAttack());
+                //            }
+                //            if (attackType == AttackType.Ranged)
+                //            {
+                //                StartCoroutine(RangeAutoAttackCons());
+                //            }
+                //        }
+                //    }
+                //}
+                //catch (Exception e)
+                //{
+                //    Debug.Log("No target available");
+                //}
+                CheckRangeAttack();
                 if (Input.GetKeyDown(KeyCode.K))
                 {
                     //photonView.RPC("DealDamages",RpcTarget.All, new object[] { 9999 });
