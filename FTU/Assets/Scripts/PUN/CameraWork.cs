@@ -28,6 +28,9 @@ public class CameraWork : MonoBehaviourPun
     bool isFollowing;
     // Cache for camera offset
     Vector3 cameraOffset = Vector3.zero;
+    public float zoomLevel;
+    float zoomPosition;
+
 
     public void Start()
     {
@@ -38,7 +41,7 @@ public class CameraWork : MonoBehaviourPun
         
             var invisible_layer_mask=LayerMask.NameToLayer(layer);
             invisible_layer_mask=~ (1 <<invisible_layer_mask);//This inverts the value
-            Debug.Log(invisible_layer_mask);
+            //Debug.Log(invisible_layer_mask);
             Camera.main.cullingMask= invisible_layer_mask;
         
             // Start following the target if wanted.
@@ -48,6 +51,17 @@ public class CameraWork : MonoBehaviourPun
             }
         }
         
+    }
+
+    public void Update()
+    {
+        if (photonView.IsMine)
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                isFollowing = !isFollowing; 
+            }
+        }
     }
 
 
@@ -65,6 +79,58 @@ public class CameraWork : MonoBehaviourPun
         if (isFollowing)
         {
             Follow();
+        }
+        else
+        {
+            MoveCamera();
+            Zoom();
+        }
+
+    }
+
+    public void MoveCamera()
+    {
+        float moveAmount = 100f;
+        float edgeSize = 30f;
+        Vector3 vectorToGo = new Vector3(0, 0, 0);
+
+        if (Input.mousePosition.x > Screen.width - edgeSize)
+        {
+            vectorToGo.x += moveAmount * Time.deltaTime;
+        }
+        if (Input.mousePosition.x < edgeSize)
+        {
+            vectorToGo.x -= moveAmount * Time.deltaTime;
+        }
+         
+        if (Input.mousePosition.y > Screen.height - edgeSize)
+        {
+            vectorToGo.z += moveAmount * Time.deltaTime;
+        }
+        if (Input.mousePosition.y < edgeSize)
+        {
+            vectorToGo.z -= moveAmount * Time.deltaTime;
+        }
+        cameraTransform.position += vectorToGo * 50 * Time.deltaTime;
+    }
+
+    public void Zoom()
+    {
+        float ScrollWheelChange = Input.GetAxis("Mouse ScrollWheel");
+        if (ScrollWheelChange != 0)
+        {                                            
+            float R = ScrollWheelChange * 15;
+            float PosX = cameraTransform.eulerAngles.x + 90;
+            float PosY = -1 * (cameraTransform.eulerAngles.y - 90);
+            PosX = PosX / 180 * Mathf.PI;
+            PosY = PosY / 180 * Mathf.PI;
+            float X = R * Mathf.Sin(PosX) * Mathf.Cos(PosY);
+            float Z = R * Mathf.Sin(PosX) * Mathf.Sin(PosY);
+            float Y = R * Mathf.Cos(PosX);
+            float CamX = cameraTransform.position.x;
+            float CamY = cameraTransform.position.y;
+            float CamZ = cameraTransform.position.z;
+            cameraTransform.position = new Vector3(CamX + X, CamY + Y, CamZ + Z);
         }
     }
 

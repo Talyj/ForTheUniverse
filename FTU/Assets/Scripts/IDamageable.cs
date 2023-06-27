@@ -305,6 +305,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     //TODO Awake ?
     public void BaseInit()
     {
+        SetMaxHealth(5000);
         canMove = true;
         canAct = true;
         //useSkills = true;
@@ -416,7 +417,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
             {
                 //Victory
             }
-            else if (gameObject.CompareTag("minion"))
+            else if (gameObject.GetComponent<BasicAIStats>())
             {
 
                 //PhotonView.Get(this).RPC("SendKillfeed", RpcTarget.All, PhotonNetwork.LocalPlayer.NickName, Cible.name);

@@ -3409,7 +3409,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 860899146}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1440177273}
+        m_TargetAssemblyTypeName: CharacterSelectorMenu, Assembly-CSharp
+        m_MethodName: ChangeSelectedCharacter
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 6
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &860899146
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3577,7 +3589,7 @@ MonoBehaviour:
   m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5302535af1044152a457ed104f1f4b91, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2164040, guid: 5302535af1044152a457ed104f1f4b91, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -7716,6 +7728,7 @@ MonoBehaviour:
   - {fileID: 7836138528982380508, guid: 8c617b8487485c745a42bf41dfff256e, type: 3}
   - {fileID: 1675429051430411217, guid: f350f475da558ad448b725cea3ecc90e, type: 3}
   - {fileID: 1744873933731375706, guid: 2618147335a510c438b898b8db7778f6, type: 3}
+  - {fileID: 3060554245038704445, guid: 0f06ed13fb0c1594393e723f91fec5e7, type: 3}
   championPad:
   - {fileID: 1294382287}
   - {fileID: 73675179}

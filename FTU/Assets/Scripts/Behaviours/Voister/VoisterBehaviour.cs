@@ -93,34 +93,49 @@ public class VoisterBehaviour : BasicAIMovement, IPunObservable
 
     protected void VoisterFeed()
     {
-        if (numberOfCharges >= requiredNumberOfCharge && _navMeshAgent.remainingDistance <= 5)
+        try
         {
-            currentState = kingVoisters.numberOfFollower >= kingVoisters.followersMax ? actionState.patrol : actionState.protect;
+            if (!_navMeshAgent.isOnNavMesh) return;
+            if (numberOfCharges >= requiredNumberOfCharge && _navMeshAgent.remainingDistance <= 5)
+            {
+                currentState = kingVoisters.numberOfFollower >= kingVoisters.followersMax ? actionState.patrol : actionState.protect;
+            }
+            if (!isNearKing && _navMeshAgent.remainingDistance <= 15)
+            {
+                isNearKing = true;
+                numberOfCharges++;
+                posToGo = spawnPoint;
+            }
+            else if (isNearKing && _navMeshAgent.remainingDistance <= 15)
+            {
+                isNearKing = false;
+                posToGo = kingVoisters.gameObject.transform.position;
+            }
+            _navMeshAgent.SetDestination(posToGo);
         }
-        if (!isNearKing && _navMeshAgent.remainingDistance <= 15)
+        catch(MissingReferenceException e)
         {
-            isNearKing = true;
-            numberOfCharges++;
-            posToGo = spawnPoint;
+            currentState = actionState.patrol;
         }
-        else if (isNearKing && _navMeshAgent.remainingDistance <= 15)
-        {
-            isNearKing = false;
-            posToGo = kingVoisters.gameObject.transform.position;
-        }
-        _navMeshAgent.SetDestination(posToGo);
 
     }
 
     protected void VoisterProtect()
     {
-        if (!isProtecting)
+        try
         {
-            isProtecting = true;
-            kingVoisters.numberOfFollower++;
-            _navMeshAgent.ResetPath();
+            if (!isProtecting)
+            {
+                isProtecting = true;
+                kingVoisters.numberOfFollower++;
+                _navMeshAgent.ResetPath();
+            }
+            transform.RotateAround(kingVoisters.transform.position, Vector3.up, GetMoveSpeed() * Time.deltaTime);
         }
-        transform.RotateAround(kingVoisters.transform.position, Vector3.up, GetMoveSpeed() * Time.deltaTime);
+        catch(MissingReferenceException e)
+        {
+            currentState = actionState.patrol;
+        }
     }
 
     #region patrol
@@ -140,6 +155,7 @@ public class VoisterBehaviour : BasicAIMovement, IPunObservable
 
     protected void VoisterPatrol()
     {
+        if (!_navMeshAgent.isOnNavMesh) return;
         if (!GotFirstWayPoint)
         {
             GotFirstWayPoint = true;
@@ -169,7 +185,7 @@ public class VoisterBehaviour : BasicAIMovement, IPunObservable
                 _waiting = false;
                 SetDestination();
             }
-        }
+        }        
     }
 
     public void InitFirstWaypoint()

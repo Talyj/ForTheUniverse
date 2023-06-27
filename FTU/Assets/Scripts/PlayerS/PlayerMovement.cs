@@ -71,13 +71,6 @@ public class PlayerMovement : IDamageable
     {
         if (GetCanMove())
         {
-            // Movement input
-            //Vector3 moveInput = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
-            //Vector3 moveVelocity = moveInput.normalized * GetMoveSpeed();
-            //Move(moveVelocity);
-            //anim.SetFloat("MoveX", Input.GetAxisRaw("Horizontal"));
-            //anim.SetFloat("MoveY", Input.GetAxisRaw("Vertical"));
-            // Look input
             Ray ray = viewCamera.ScreenPointToRay(Input.mousePosition);
             Plane groundPlane = new Plane(Vector3.up, Vector3.zero);
             float rayDistance;
@@ -88,12 +81,9 @@ public class PlayerMovement : IDamageable
                 LookAt(point);
                 if (Input.GetMouseButtonDown(1))
                 {
+                    _navMeshAgent.ResetPath();
                     _navMeshAgent.SetDestination(point);
                 }
-                //if (_navMeshAgent.remainingDistance <= 2f)
-                //{
-                //    _navMeshAgent.ResetPath();
-                //}
             }
         }
     }
