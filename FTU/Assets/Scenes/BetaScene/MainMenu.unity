@@ -7771,6 +7771,7 @@ MonoBehaviour:
   - {fileID: 7836138528982380508, guid: 8c617b8487485c745a42bf41dfff256e, type: 3}
   - {fileID: 1675429051430411217, guid: f350f475da558ad448b725cea3ecc90e, type: 3}
   - {fileID: 1744873933731375706, guid: 2618147335a510c438b898b8db7778f6, type: 3}
+  - {fileID: 3060554245038704445, guid: 0f06ed13fb0c1594393e723f91fec5e7, type: 3}
   championPad:
   - {fileID: 1294382287}
   - {fileID: 73675179}
