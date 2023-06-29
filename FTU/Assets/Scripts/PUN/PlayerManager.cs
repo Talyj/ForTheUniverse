@@ -40,7 +40,8 @@ public class PlayerManager : MonoBehaviour
 
     void CreateController()
     {
-        _playerPrefab = PhotonNetwork.Instantiate(playerPrefabs[index].name, new Vector3(0f, 2.14f, 0f), Quaternion.identity, 0);
+        //TODO spawn coté bon :)
+        _playerPrefab = PhotonNetwork.Instantiate(playerPrefabs[index].name, new Vector3(323.3f, 2.14f, -37.118f), Quaternion.identity, 0);
         
         _playerPrefab.GetComponent<IDamageable>().team.Code =(byte) player.CustomProperties["_pt"];
         _playerPrefab.GetComponent<IDamageable>().userId = player.NickName;
