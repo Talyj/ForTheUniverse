@@ -135,6 +135,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98853701f8a900940a87f47a1cc6b049, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  characterID: -1
   attackType: 0
   cc: 0
   Cible: {fileID: 0}
@@ -158,6 +159,7 @@ MonoBehaviour:
     Code: 0
   damageSupp: 0
   isAI: 0
+  inBush: 0
   enemyType: 3
   passif: {fileID: 11400000, guid: 2c1e005c56d159a42b7b9d2798e74552, type: 2}
   skills:

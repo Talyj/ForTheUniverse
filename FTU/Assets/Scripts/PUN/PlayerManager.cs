@@ -21,7 +21,7 @@ public class PlayerManager : MonoBehaviour
     {
         PV = GetComponent<PhotonView>();
         player = PV.Controller;
-        //index = PlayerPrefs.GetInt("persoID");
+        index = PlayerPrefs.GetInt("championsSelected");
     }
 
     
@@ -30,11 +30,10 @@ public class PlayerManager : MonoBehaviour
         if (PV.IsMine)
         {
             index =(int) PhotonNetwork.LocalPlayer.CustomProperties["championsSelected"];
-            
             CreateController();
-            PV.RPC("SyncTeam", RpcTarget.Others, player.GetPhotonTeam().Code, index );
-        }
+            PV.RPC("SyncTeam", RpcTarget.Others, player.GetPhotonTeam().Code, index);
         Debug.LogFormat("My team is {0} I am {1} and a play : {2}", player.GetPhotonTeam(), player.NickName, playerPrefabs[index].name);
+        }
         
     }
 
@@ -61,7 +60,6 @@ public class PlayerManager : MonoBehaviour
             //_playerPrefab.GetComponent<PlayerStats>().deathPos = new Vector3(0, 220, -339);
             _playerPrefab.GetComponent<PlayerStats>().respawnPos = new Vector3(-323.3f, 2.14f, -37.118f);
         }
-
     }
 
     [PunRPC]

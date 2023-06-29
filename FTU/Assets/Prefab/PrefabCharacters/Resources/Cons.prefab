@@ -1630,7 +1630,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 515ad940e01569342bf94e5b5c140cc0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterID: -1
+  characterID: 3
   attackType: 1
   cc: 0
   Cible: {fileID: 0}
