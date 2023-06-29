@@ -10,7 +10,6 @@ public class BasicAIMovement : BasicAIStats, IPunObservable
     //Movement AI
     public int current;
     public bool pathDone;
-    protected NavMeshAgent _navMeshAgent;
     protected Vector3 posToGo;
 
     public void MovementAI(Transform[] moveTo)

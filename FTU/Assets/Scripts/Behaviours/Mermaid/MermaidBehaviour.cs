@@ -210,6 +210,7 @@ public class MermaidBehaviour : PlayerStats
     public void GoAway(int viewId)
     {
         var target = viewIdToGameObject(viewId);
+        target.GetComponent<IDamageable>()._navMeshAgent.ResetPath();
         Vector3 direction = target.transform.position - transform.position;
         target.GetComponent<Rigidbody>().AddForce(direction.normalized * 200f, ForceMode.VelocityChange);
         target.GetComponent<IDamageable>().SetCanMove(true);

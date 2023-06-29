@@ -22,7 +22,7 @@ public class VoidManager : MonoBehaviour
         {
             cpt = 180;
             var qtyRand = Random.Range(1, 6);
-            for(int i = 0; i < 1; i++)
+            for(int i = 0; i < qtyRand; i++)
             {
                 var x = Random.Range(-175f, 175f);
                 var y = Random.Range(60f, 150f);

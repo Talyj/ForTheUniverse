@@ -59,6 +59,9 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     //State
     public int inBush;
 
+    //Nav Mesh
+    [HideInInspector] public UnityEngine.AI.NavMeshAgent _navMeshAgent;
+
 
 
     public EnemyType enemyType;
@@ -302,7 +305,6 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
 
     #endregion
 
-    //TODO Awake ?
     public void BaseInit()
     {
         SetMaxHealth(5000);
@@ -318,8 +320,6 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
 
         inBush = 0;
 
-        //team = PhotonTeamsManager.Instance.GetAvailableTeams()[1];
-
         Rigidbody rb = GetComponent<Rigidbody>();
         if (rb != null)
         {
@@ -330,26 +330,27 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         {
             col.enabled = true;
         }
-        //if (this.GetEnemyType() == EnemyType.player)
-        //{
-        //    var temples = GameObject.FindGameObjectsWithTag("temple");
-        //    foreach(var temple in temples)
-        //    {
-        //        if (temple.GetComponent<TempleBehaviour>().teams.Code == this.team.Code)
-        //        {
-        //            //gameObject.transform.position = new Vector3(temple.gameObject.transform.position.x, 2.5f, temple.gameObject.transform.position.z);
-        //            //return;
-        //            if (team.Code == 1)
-        //            {
-        //                gameObject.transform.position = new Vector3(-323.3f, 2.14f, -37.118f);
-        //            }
-        //            else
-        //            {
-        //                gameObject.transform.position = new Vector3(323.3f, 2.14f, -37.118f);
-        //            }
-        //        }
-        //    }
-        //}
+        if (this.GetEnemyType() == EnemyType.player)
+        {
+            //TODO check where the player is instanciated
+            //var temples = GameObject.FindGameObjectsWithTag("temple");
+            //foreach (var temple in temples)
+            //{
+            //    if (temple.GetComponent<TempleBehaviour>().teams.Code == this.team.Code)
+            //    {
+            //        //gameObject.transform.position = new Vector3(temple.gameObject.transform.position.x, 2.5f, temple.gameObject.transform.position.z);
+            //        //return;
+            //        if (team.Code == 1)
+            //        {
+            //            gameObject.transform.position = new Vector3(-323.3f, 2.14f, -37.118f);
+            //        }
+            //        else
+            //        {
+            //            gameObject.transform.position = new Vector3(323.3f, 2.14f, -37.118f);
+            //        }
+            //    }
+            //}
+        }
     }
 
     public void SetupForAI()

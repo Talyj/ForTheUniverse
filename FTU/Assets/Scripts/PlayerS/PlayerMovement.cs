@@ -19,8 +19,6 @@ public class PlayerMovement : IDamageable
     Rigidbody myRigidbody;
     Camera viewCamera;
 
-    [HideInInspector] public NavMeshAgent _navMeshAgent;
-
     //Animator anim;
     public NetworkVariable<Vector3> Position = new NetworkVariable<Vector3>();
     public void Awake()
