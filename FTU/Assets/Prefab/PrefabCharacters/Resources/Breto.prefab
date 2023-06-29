@@ -417,6 +417,7 @@ MonoBehaviour:
   ult: {fileID: 0}
   SpawnPrefab2: {fileID: 2052851039597146130}
   Ui: {fileID: 7004625990238323681}
+  _navMeshAgent: {fileID: 0}
   Position:
     m_InternalValue: {x: 0, y: 0, z: 0}
   gold: 0

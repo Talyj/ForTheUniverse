@@ -233,6 +233,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 880dcc702bb3fa54cb7bfb1a11a95ee2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  characterID: -1
   attackType: 0
   cc: 0
   Cible: {fileID: 0}
@@ -256,6 +257,7 @@ MonoBehaviour:
     Code: 0
   damageSupp: 0
   isAI: 0
+  inBush: 0
   enemyType: 0
   passif: {fileID: 0}
   skills: []
@@ -268,6 +270,7 @@ MonoBehaviour:
   pathDone: 0
   numberOfFollower: 0
   followersMax: 5
+  voister: {fileID: 7297893142613042275, guid: 0cb92ee05e67d1541bdfe0daaefab110, type: 3}
 --- !u!1001 &8946177008597013273
 PrefabInstance:
   m_ObjectHideFlags: 0

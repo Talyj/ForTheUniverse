@@ -19,7 +19,7 @@ public class PlayerMovement : IDamageable
     Rigidbody myRigidbody;
     Camera viewCamera;
 
-    NavMeshAgent _navMeshAgent;
+    [HideInInspector] public NavMeshAgent _navMeshAgent;
 
     //Animator anim;
     public NetworkVariable<Vector3> Position = new NetworkVariable<Vector3>();

@@ -132,6 +132,7 @@ public class BretoBehaviour : PlayerStats
         var dir = SpawnPrefab2.transform.position - SpawnPrefab.transform.position;
 
         proj.GetComponent<DashBehaviour>().source = this;
+        _navMeshAgent.ResetPath();
         gameObject.GetComponent<Rigidbody>().AddForce(dir * 150f, ForceMode.VelocityChange);
     }
 

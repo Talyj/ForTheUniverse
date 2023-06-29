@@ -64,7 +64,7 @@ public class MauBehaviour : BasicAIMovement
                 GetNearestTarget();
                 if (Cible)
                 {
-                    WalkToward();
+                    StartCoroutine(WalkToward());
                     gameObject.transform.LookAt(new Vector3(Cible.transform.position.x, transform.position.y, Cible.transform.position.z));
                 }
                 if (!Cible)

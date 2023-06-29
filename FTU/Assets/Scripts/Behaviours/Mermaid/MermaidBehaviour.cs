@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class MermaidBehaviour : PlayerStats
 {
@@ -256,7 +257,8 @@ public class MermaidBehaviour : PlayerStats
     {
         var target = viewIdToGameObject(viewId);
         Vector3 direction = target.transform.position - transform.position;
-        target.GetComponent<Rigidbody>().AddForce(-direction.normalized * 200f, ForceMode.VelocityChange);
+        //target.GetComponent<Rigidbody>().AddForce(-direction.normalized * 200f, ForceMode.VelocityChange);
+        target.GetComponent<NavMeshAgent>().SetDestination(transform.position);
         target.GetComponent<IDamageable>().SetCanMove(true);
     }
 

@@ -547,8 +547,13 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         }
     }
 
-    public float TakeDamage(float DegatsRecu, DamageType type)
+    public float TakeDamage(float DegatsRecu, DamageType type, bool toMana = false)
     {
+        if (toMana)
+        {
+            photonView.RPC("DealDamagesToMana", RpcTarget.All, DegatsRecu);
+            return DegatsRecu;
+        }
         //Degat brut
         float degRes = DegatsRecu;
         switch (type)
@@ -568,7 +573,13 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     [PunRPC] // NE PEUT TRANSMETTRE QUE DES TYPE CLASSIQUE (int, float, bool)
     public void DealDamages(float DegatsRecu)
     {
-        Health = Health - DegatsRecu;
+        Health -= DegatsRecu;
+    }
+
+    [PunRPC] // NE PEUT TRANSMETTRE QUE DES TYPE CLASSIQUE (int, float, bool)
+    public void DealDamagesToMana(float DegatsRecu)
+    {
+        Mana -= DegatsRecu;
     }
 
     public void TakeCC(ControlType _cc,float time)
