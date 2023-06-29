@@ -46,9 +46,7 @@ public class Launch : MonoBehaviourPunCallbacks
         PhotonNetwork.JoinLobby();
         Debug.Log("connected to master");
         PhotonNetwork.AutomaticallySyncScene = true;
-        PhotonNetwork.LocalPlayer.NickName = "Player " + Random.Range(0, 1000).ToString("0000");
-        Debug.Log(PhotonNetwork.NickName);
-
+        
     }
 
 
