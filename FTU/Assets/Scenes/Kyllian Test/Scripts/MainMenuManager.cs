@@ -28,6 +28,7 @@ public class MainMenuManager : MonoBehaviourPunCallbacks
     public GameObject controlPanel;
     public GameObject connectionPanel;
     public GameObject characterHolder;
+    public TMP_Text profilName;
     
     // Start is called before the first frame update
     void Start()
@@ -61,6 +62,7 @@ public class MainMenuManager : MonoBehaviourPunCallbacks
             btn.GetComponentInChildren<TMP_Text>().text = player.UserId;
         }
         GroupManager.Instance().JoinGroup("Group2");
+        profilName.text = PhotonNetwork.LocalPlayer.NickName;
     }
 
     private void DisplayFriend(Player player)

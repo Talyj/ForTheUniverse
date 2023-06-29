@@ -198,7 +198,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &211247644007514587
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -211,6 +210,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98f1d22f5610c164b9ed908b57363753, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  characterID: -1
   attackType: 0
   cc: 0
   Cible: {fileID: 0}
@@ -234,6 +234,7 @@ MonoBehaviour:
     Code: 0
   damageSupp: 0
   isAI: 0
+  inBush: 0
   enemyType: 0
   passif: {fileID: 0}
   skills: []
@@ -246,6 +247,7 @@ MonoBehaviour:
   pathDone: 0
   numberOfFollower: 0
   followersMax: 5
+  voister: {fileID: 0}
 --- !u!195 &211247644007514586
 NavMeshAgent:
   m_ObjectHideFlags: 0
