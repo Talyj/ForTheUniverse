@@ -10,7 +10,6 @@ public class BasicAIMovement : BasicAIStats, IPunObservable
     //Movement AI
     public int current;
     public bool pathDone;
-    protected NavMeshAgent _navMeshAgent;
     protected Vector3 posToGo;
 
     public void MovementAI(Transform[] moveTo)
@@ -38,24 +37,51 @@ public class BasicAIMovement : BasicAIStats, IPunObservable
         }
     }
 
-    public void WalkToward()
+    //public void WalkToward()
+    //{
+    //    try
+    //    {
+    //        //if (_navMeshAgent.remainingDistance <= GetAttackRange() + 5)
+    //        //{
+    //        //    _navMeshAgent.ResetPath();
+    //        //    SetIsMoving(false);
+    //        //}
+    //        //else if(Vector3.Distance(transform.position, Cible.transform.position) > GetAttackRange())
+    //        //{
+    //        //    _navMeshAgent.SetDestination(new Vector3(Cible.transform.position.x, transform.position.y, Cible.transform.position.z));
+    //        //    SetIsMoving(true);
+    //        //}
+    //        SetIsMoving(true);
+    //        _navMeshAgent.SetDestination(Cible.transform.position);
+    //        if(_navMeshAgent.remainingDistance <= 2f)
+    //        {
+    //            SetIsMoving(false);
+    //            _navMeshAgent.ResetPath();
+    //        }
+    //    }
+    //    catch (NullReferenceException e)
+    //    {
+    //        Cible = null;
+    //    }
+    //}
+
+    public IEnumerator WalkToward()
     {
-        try
+        while (Cible)
         {
-            if (_navMeshAgent.remainingDistance <= GetAttackRange() - 1)
+            SetIsMoving(true);
+            _navMeshAgent.SetDestination(Cible.transform.position);
+            yield return new WaitForSeconds(0.1f);
+            if (_navMeshAgent.remainingDistance < GetAttackRange())
             {
-                _navMeshAgent.ResetPath();
                 SetIsMoving(false);
+                _navMeshAgent.ResetPath();
             }
-            else if(Vector3.Distance(transform.position, Cible.transform.position) > GetAttackRange())
+            if(_navMeshAgent.remainingDistance > 40f)
             {
+                Cible = null;
             }
-                _navMeshAgent.SetDestination(new Vector3(Cible.transform.position.x, transform.position.y, Cible.transform.position.z));
-                SetIsMoving(true);
-        }
-        catch (NullReferenceException e)
-        {
-            Cible = null;
+            yield return new WaitForSeconds(0.1f);
         }
     }
 }

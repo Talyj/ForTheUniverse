@@ -59,6 +59,9 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     //State
     public int inBush;
 
+    //Nav Mesh
+    [HideInInspector] public UnityEngine.AI.NavMeshAgent _navMeshAgent;
+
 
 
     public EnemyType enemyType;
@@ -302,7 +305,6 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
 
     #endregion
 
-    //TODO Awake ?
     public void BaseInit()
     {
         SetMaxHealth(5000);
@@ -317,6 +319,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         Mana = MaxMana;
 
         inBush = 0;
+
         var layer = "Player";
         SetGameLayerRecursive(gameObject, layer);
         //team = PhotonTeamsManager.Instance.GetAvailableTeams()[1];
@@ -331,26 +334,27 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         {
             col.enabled = true;
         }
-        //if (this.GetEnemyType() == EnemyType.player)
-        //{
-        //    var temples = GameObject.FindGameObjectsWithTag("temple");
-        //    foreach(var temple in temples)
-        //    {
-        //        if (temple.GetComponent<TempleBehaviour>().teams.Code == this.team.Code)
-        //        {
-        //            //gameObject.transform.position = new Vector3(temple.gameObject.transform.position.x, 2.5f, temple.gameObject.transform.position.z);
-        //            //return;
-        //            if (team.Code == 1)
-        //            {
-        //                gameObject.transform.position = new Vector3(-323.3f, 2.14f, -37.118f);
-        //            }
-        //            else
-        //            {
-        //                gameObject.transform.position = new Vector3(323.3f, 2.14f, -37.118f);
-        //            }
-        //        }
-        //    }
-        //}
+        if (this.GetEnemyType() == EnemyType.player)
+        {
+            //TODO check where the player is instanciated
+            //var temples = GameObject.FindGameObjectsWithTag("temple");
+            //foreach (var temple in temples)
+            //{
+            //    if (temple.GetComponent<TempleBehaviour>().teams.Code == this.team.Code)
+            //    {
+            //        //gameObject.transform.position = new Vector3(temple.gameObject.transform.position.x, 2.5f, temple.gameObject.transform.position.z);
+            //        //return;
+            //        if (team.Code == 1)
+            //        {
+            //            gameObject.transform.position = new Vector3(-323.3f, 2.14f, -37.118f);
+            //        }
+            //        else
+            //        {
+            //            gameObject.transform.position = new Vector3(323.3f, 2.14f, -37.118f);
+            //        }
+            //    }
+            //}
+        }
     }
 
     private void SetGameLayerRecursive(GameObject gameObject, string layer)
@@ -556,8 +560,13 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         }
     }
 
-    public float TakeDamage(float DegatsRecu, DamageType type)
+    public float TakeDamage(float DegatsRecu, DamageType type, bool toMana = false)
     {
+        if (toMana)
+        {
+            photonView.RPC("DealDamagesToMana", RpcTarget.All, DegatsRecu);
+            return DegatsRecu;
+        }
         //Degat brut
         float degRes = DegatsRecu;
         switch (type)
@@ -577,7 +586,13 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     [PunRPC] // NE PEUT TRANSMETTRE QUE DES TYPE CLASSIQUE (int, float, bool)
     public void DealDamages(float DegatsRecu)
     {
-        Health = Health - DegatsRecu;
+        Health -= DegatsRecu;
+    }
+
+    [PunRPC] // NE PEUT TRANSMETTRE QUE DES TYPE CLASSIQUE (int, float, bool)
+    public void DealDamagesToMana(float DegatsRecu)
+    {
+        Mana -= DegatsRecu;
     }
 
     public void TakeCC(ControlType _cc,float time)

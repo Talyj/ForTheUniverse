@@ -22,9 +22,11 @@ public class VoisterBehaviour : BasicAIMovement, IPunObservable
         feed,
         protect,
         patrol,
-        awoken
+        awoken,
+        attack
     }
     public actionState currentState;
+    public actionState previousState;
 
     #region getter
     public actionState GetCurrentState()
@@ -68,6 +70,15 @@ public class VoisterBehaviour : BasicAIMovement, IPunObservable
 
     protected void VoisterBaseBehaviour()
     {
+        if (Cible)
+        {
+            previousState = currentState;
+            currentState = actionState.attack;
+        }
+        else
+        {
+            currentState = previousState;
+        }
         switch (currentState)
         {
             case actionState.feed:
@@ -85,10 +96,11 @@ public class VoisterBehaviour : BasicAIMovement, IPunObservable
             case actionState.awoken:
                 Debug.Log("Awoken");
                 break;
+            case actionState.attack:
+                VoisterBasicAttack();
+                break;
 
         }
-
-        VoisterBasicAttack();
     }
 
     protected void VoisterFeed()
@@ -98,6 +110,7 @@ public class VoisterBehaviour : BasicAIMovement, IPunObservable
             if (!_navMeshAgent.isOnNavMesh) return;
             if (numberOfCharges >= requiredNumberOfCharge && _navMeshAgent.remainingDistance <= 5)
             {
+                previousState = currentState;
                 currentState = kingVoisters.numberOfFollower >= kingVoisters.followersMax ? actionState.patrol : actionState.protect;
             }
             if (!isNearKing && _navMeshAgent.remainingDistance <= 15)
@@ -134,6 +147,7 @@ public class VoisterBehaviour : BasicAIMovement, IPunObservable
         }
         catch(MissingReferenceException e)
         {
+            previousState = currentState;
             currentState = actionState.patrol;
         }
     }
@@ -250,10 +264,7 @@ public class VoisterBehaviour : BasicAIMovement, IPunObservable
         if (!isAttacking && Cible != null)
         {
             isAttacking = true;
-            if(currentState != actionState.feed)
-            {
-                WalkToward();
-            }
+            StartCoroutine(WalkToward());
 
             if (attackType == AttackType.Melee)
             {

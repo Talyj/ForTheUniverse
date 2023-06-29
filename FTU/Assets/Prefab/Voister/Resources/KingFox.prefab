@@ -270,7 +270,7 @@ MonoBehaviour:
   pathDone: 0
   numberOfFollower: 0
   followersMax: 5
-  voister: {fileID: 0}
+  voister: {fileID: 7297893142613042275, guid: 0cb92ee05e67d1541bdfe0daaefab110, type: 3}
 --- !u!1001 &8946177008597013273
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -56,7 +56,7 @@ public class MinionsBehaviour : BasicAIMovement, IPunObservable
                 }
                 if (Cible)
                 {
-                    WalkToward();
+                    StartCoroutine(WalkToward());
                     DefaultAttack();
                     gameObject.transform.LookAt(new Vector3(Cible.transform.position.x, transform.position.y, Cible.transform.position.z));
                 }
@@ -81,7 +81,7 @@ public class MinionsBehaviour : BasicAIMovement, IPunObservable
             {
                 foreach (var col in hitColliders)
                 {
-                    if (col.gameObject == this.gameObject) return;
+                    if (col.gameObject == this.gameObject) break;
                     //If the target is a player
                     if (col.GetComponent<PlayerStats>())
                     {

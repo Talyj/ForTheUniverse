@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography;
+using Photon.Pun;
 using TMPro;
 using UnityEngine;
 
@@ -17,6 +18,14 @@ public class ConnectionToServer : MonoBehaviour
     public IEnumerator TryConnection()
     {
         MainMenuManager.Instance().Connect();
+        if (usernameInput.text.Length > 0)
+        {
+            PhotonNetwork.LocalPlayer.NickName = usernameInput.text;
+        }
+        else
+        {
+            PhotonNetwork.LocalPlayer.NickName = "Player " + Random.Range(0, 1000).ToString("0000");
+        }
         //Debug.Log(usernameInput.text);
         //Debug.Log(passwordInput.text);
         //var highscoreURL = "http://localhost/ftu/PHP/accessServer.php?user=" +

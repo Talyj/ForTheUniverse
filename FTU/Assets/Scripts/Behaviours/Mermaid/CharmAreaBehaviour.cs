@@ -10,10 +10,8 @@ public class CharmAreaBehaviour : Projectile
 
     private new void Start()
     {
-        if (PhotonNetwork.IsMasterClient)
-        {
-            StartCoroutine(DestroyBullet(1f));
-        }
+
+        StartCoroutine(DestroyBullet(1f));
     }
 
     public new void Update()
