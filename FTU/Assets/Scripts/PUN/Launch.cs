@@ -71,7 +71,7 @@ public class Launch : MonoBehaviourPunCallbacks
     public void LobbyJoin()
     {
         Debug.Log("on room");
-        PhotonNetwork.JoinOrCreateRoom("Group2", new RoomOptions() { MaxPlayers = 4, BroadcastPropsChangeToAll = true },PhotonNetwork.CurrentLobby);
+        PhotonNetwork.JoinOrCreateRoom("Group3", new RoomOptions() { MaxPlayers = 4, BroadcastPropsChangeToAll = true },PhotonNetwork.CurrentLobby);
     }
     public void CreateRoom()
     {

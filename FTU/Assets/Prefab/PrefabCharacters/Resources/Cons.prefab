@@ -1521,6 +1521,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   entity: {fileID: 7836138528982380508}
+  layerToIgnore:
+    serializedVersion: 2
+    m_Bits: 1023
 --- !u!114 &7003188671493851091
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1598,6 +1601,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!54 &7213121623342912308
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1702,6 +1706,7 @@ MonoBehaviour:
   centerOffset: {x: 0, y: 0, z: 0}
   followOnStart: 0
   player: {fileID: 0}
+  zoomLevel: 0
 --- !u!114 &7438440511118260228
 MonoBehaviour:
   m_ObjectHideFlags: 0

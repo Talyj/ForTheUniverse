@@ -317,7 +317,8 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         Mana = MaxMana;
 
         inBush = 0;
-
+        var layer = "Player";
+        SetGameLayerRecursive(gameObject, layer);
         //team = PhotonTeamsManager.Instance.GetAvailableTeams()[1];
 
         Rigidbody rb = GetComponent<Rigidbody>();
@@ -352,6 +353,14 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         //}
     }
 
+    private void SetGameLayerRecursive(GameObject gameObject, string layer)
+    {
+        gameObject.layer = LayerMask.NameToLayer(layer);
+        foreach (Transform child in gameObject.transform)
+        {
+            SetGameLayerRecursive(child.gameObject, layer);
+        }
+    }
     public void SetupForAI()
     {
         SetMaxHealth(500);
@@ -812,8 +821,8 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
             
             if (inBush <= 0)
             {
-                gameObject.layer = LayerMask.NameToLayer("Default");
-                transform.SetLayerRecursively(LayerMask.NameToLayer("Default"));
+                gameObject.layer = LayerMask.NameToLayer("Player");
+                transform.SetLayerRecursively(LayerMask.NameToLayer("Player"));
                 BushManager.Instance().RemoveEntityToBush(other.gameObject.GetComponent<BushBehavior>().bushID, gameObject);
             }
         }

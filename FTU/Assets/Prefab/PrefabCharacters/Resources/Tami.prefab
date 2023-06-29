@@ -782,6 +782,7 @@ MonoBehaviour:
   centerOffset: {x: 0, y: 0, z: 0}
   followOnStart: 0
   player: {fileID: 0}
+  zoomLevel: 0
 --- !u!114 &5696732043382915556
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -795,6 +796,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   entity: {fileID: 9173982970317064210}
+  layerToIgnore:
+    serializedVersion: 2
+    m_Bits: 1023
 --- !u!114 &461897856848549218
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -832,6 +836,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 800e20d054f0353479375abece652e14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  characterID: -1
   attackType: 0
   cc: 0
   Cible: {fileID: 0}

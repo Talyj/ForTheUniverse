@@ -225,6 +225,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 674886ef26d88ac48a5433255cd0d6eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  characterID: -1
   attackType: 0
   cc: 0
   Cible: {fileID: 0}
@@ -286,6 +287,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   entity: {fileID: 1744873933731375706}
+  layerToIgnore:
+    serializedVersion: 2
+    m_Bits: 1023
 --- !u!114 &1744873933731375681
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -413,6 +417,7 @@ MonoBehaviour:
   centerOffset: {x: 0, y: 0, z: 0}
   followOnStart: 0
   player: {fileID: 0}
+  zoomLevel: 0
 --- !u!114 &1411291776681341111
 MonoBehaviour:
   m_ObjectHideFlags: 0

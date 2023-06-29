@@ -202,6 +202,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   entity: {fileID: 3060554245038704445}
+  layerToIgnore:
+    serializedVersion: 2
+    m_Bits: 1023
 --- !u!54 &3060554245038704442
 Rigidbody:
   m_ObjectHideFlags: 0
