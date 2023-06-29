@@ -15,10 +15,11 @@ public class BretoBehaviour : PlayerStats
     [SerializeField] private GameObject dashHitbox;
 
     //Skill 2
+    [SerializeField] private GameObject scan;
 
     //Ulti
     [SerializeField] private GameObject maelstrom;
-    public Vector3 UltPos;
+    [HideInInspector] public Vector3 UltPos;
     
     //private List<GameObject> charmTargets;
     //public GameObject charmArea;
@@ -170,7 +171,8 @@ public class BretoBehaviour : PlayerStats
             SetMana(GetMana() - skills[1].Cost);
             Debug.Log(skills[1].Name + " lanc�e");
 
-            
+            var scanTemp = PhotonNetwork.Instantiate(scan.name, transform.position, Quaternion.identity);
+            scanTemp.GetComponent<ScanBehaviour>().source = this;
 
             CheckPassive();
             StartCoroutine(CoolDown(skills[1]));

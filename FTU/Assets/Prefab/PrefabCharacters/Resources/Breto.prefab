@@ -427,6 +427,7 @@ MonoBehaviour:
   items: []
   role: 0
   dashHitbox: {fileID: 8908298652762476498, guid: 94ebc07d80a53804b9d7bd8e31e93d1d, type: 3}
+  scan: {fileID: 5534614494981178280, guid: 7806f8567a9f9bd4c8482fbf95cf4bda, type: 3}
   maelstrom: {fileID: 2402855257649641753, guid: a0ee2811ec4d30c4f9eeeae3d151609c, type: 3}
   UltPos: {x: 0, y: 0, z: 0}
 --- !u!195 &1711767357598591867
