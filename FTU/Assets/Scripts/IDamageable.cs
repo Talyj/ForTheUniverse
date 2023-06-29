@@ -319,9 +319,19 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         Mana = MaxMana;
 
         inBush = 0;
-
-        var layer = "Player";
-        SetGameLayerRecursive(gameObject, layer);
+        var layer = "Default";
+        switch (this.team.Code)
+        {
+            case 0:
+                layer = "Dominion";
+                SetGameLayerRecursive(gameObject, layer);
+                break;
+            case 1:
+                layer = "Veritas";
+                SetGameLayerRecursive(gameObject, layer);
+                break;
+        }
+        
         //team = PhotonTeamsManager.Instance.GetAvailableTeams()[1];
 
         Rigidbody rb = GetComponent<Rigidbody>();
@@ -836,8 +846,20 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
             
             if (inBush <= 0)
             {
-                gameObject.layer = LayerMask.NameToLayer("Player");
-                transform.SetLayerRecursively(LayerMask.NameToLayer("Player"));
+                switch (this.team.Code)
+                {
+                    case 0:
+                        gameObject.layer = LayerMask.NameToLayer("Dominion");
+                        transform.SetLayerRecursively(LayerMask.NameToLayer("Dominion"));
+                        break;
+                    case 1:
+                        gameObject.layer = LayerMask.NameToLayer("Veritas");
+                        transform.SetLayerRecursively(LayerMask.NameToLayer("Veritas"));
+                        break;
+                }
+                //gameObject.layer = LayerMask.NameToLayer("Player");
+
+                //transform.SetLayerRecursively(LayerMask.NameToLayer("Player"));
                 BushManager.Instance().RemoveEntityToBush(other.gameObject.GetComponent<BushBehavior>().bushID, gameObject);
             }
         }

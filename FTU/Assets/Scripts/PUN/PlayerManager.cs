@@ -21,7 +21,7 @@ public class PlayerManager : MonoBehaviour
     {
         PV = GetComponent<PhotonView>();
         player = PV.Controller;
-        index = PlayerPrefs.GetInt("championsSelected");
+        //index = PlayerPrefs.GetInt("championsSelected");
     }
 
     
@@ -32,8 +32,8 @@ public class PlayerManager : MonoBehaviour
             index =(int) PhotonNetwork.LocalPlayer.CustomProperties["championsSelected"];
             CreateController();
             PV.RPC("SyncTeam", RpcTarget.Others, player.GetPhotonTeam().Code, index);
-        Debug.LogFormat("My team is {0} I am {1} and a play : {2}", player.GetPhotonTeam(), player.NickName, playerPrefabs[index].name);
         }
+        Debug.LogFormat("My team is {0} I am {1} and a play : {2}", player.GetPhotonTeam(), player.NickName, playerPrefabs[(int)PhotonNetwork.LocalPlayer.CustomProperties["championsSelected"]].name);
         
     }
 
