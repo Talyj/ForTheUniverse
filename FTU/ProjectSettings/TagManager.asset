@@ -19,6 +19,8 @@ TagManager:
   - Bush
   - gamemanager
   - temple
+  - minimapCam
+  - minimapView
   layers:
   - Default
   - TransparentFX
@@ -30,8 +32,8 @@ TagManager:
   - Learner
   - InvisibleVeritas
   - InvisibleDominion
-  - 
-  - 
+  - RaycastMinimap
+  - MinimapCamera
   - 
   - 
   - 

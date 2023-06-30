@@ -42,7 +42,7 @@ public class PlayerManager : MonoBehaviour
     void CreateController()
     {
         //TODO spawn coté bon :)
-        var posToSpawn = (byte)player.CustomProperties["_pt"] == 1 ? new Vector3(286.649933f, 2.14f, -39f) : new Vector3(-313.3f, 2.14f, -39f);
+        var posToSpawn = (byte)player.CustomProperties["_pt"] == 0 ? new Vector3(286.649933f, 2.14f, -39f) : new Vector3(-313.3f, 2.14f, -39f);
         _playerPrefab = PhotonNetwork.Instantiate(playerPrefabs[index].name, posToSpawn, Quaternion.identity, 0);
         
         _playerPrefab.GetComponent<IDamageable>().team.Code =(byte) player.CustomProperties["_pt"];
