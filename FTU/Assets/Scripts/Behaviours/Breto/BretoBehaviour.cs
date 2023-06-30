@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class BretoBehaviour : PlayerStats
 {
@@ -14,8 +15,11 @@ public class BretoBehaviour : PlayerStats
     [SerializeField] private GameObject dashHitbox;
 
     //Skill 2
+    [SerializeField] private GameObject scan;
 
     //Ulti
+    [SerializeField] private GameObject maelstrom;
+    [HideInInspector] public Vector3 UltPos;
     
     //private List<GameObject> charmTargets;
     //public GameObject charmArea;
@@ -132,6 +136,7 @@ public class BretoBehaviour : PlayerStats
         var dir = SpawnPrefab2.transform.position - SpawnPrefab.transform.position;
 
         proj.GetComponent<DashBehaviour>().source = this;
+        _navMeshAgent.ResetPath();
         gameObject.GetComponent<Rigidbody>().AddForce(dir * 150f, ForceMode.VelocityChange);
     }
 
@@ -164,7 +169,10 @@ public class BretoBehaviour : PlayerStats
         {
             //buff
             SetMana(GetMana() - skills[1].Cost);
-            Debug.Log(skills[1].Name + " lanc�e");         
+            Debug.Log(skills[1].Name + " lanc�e");
+
+            var scanTemp = PhotonNetwork.Instantiate(scan.name, transform.position, Quaternion.identity);
+            scanTemp.GetComponent<ScanBehaviour>().source = this;
 
             CheckPassive();
             StartCoroutine(CoolDown(skills[1]));
@@ -178,6 +186,7 @@ public class BretoBehaviour : PlayerStats
             Debug.Log("pas assez de mana");
         }
     }
+
 
     IEnumerator Buff(Skills skill)
     {
@@ -195,8 +204,8 @@ public class BretoBehaviour : PlayerStats
             SetMana(GetMana() - skills[2].Cost);
             Debug.Log(skills[2].Name + " lanc�e");
 
-            //var area = PhotonNetwork.Instantiate(charmArea.name, transform.position, Quaternion.identity);
-            //area.GetComponent<CharmAreaBehaviour>().source = this;
+            var maelstromTemp = PhotonNetwork.Instantiate(maelstrom.name, transform.position, Quaternion.identity);
+            maelstromTemp.GetComponent<MaelstromBehaviour>().source = this;
 
             StartCoroutine(CoolDown(skills[2]));
         }
@@ -210,10 +219,8 @@ public class BretoBehaviour : PlayerStats
         }
     }
 
-    //TODO reuse that to make the ult
-    public void AddTCharmedTargets(GameObject target)
+    public void AddCaughtTargets(GameObject target)
     {
-        target.GetComponent<IDamageable>().SetCanMove(false);
         photonView.RPC("GetNear", RpcTarget.All, new object[] { target.GetPhotonView().ViewID });
     }
 
@@ -221,9 +228,8 @@ public class BretoBehaviour : PlayerStats
     public void GetNear(int viewId)
     {
         var target = viewIdToGameObject(viewId);
-        Vector3 direction = target.transform.position - transform.position;
-        target.GetComponent<Rigidbody>().AddForce(-direction.normalized * 200f, ForceMode.VelocityChange);
-        target.GetComponent<IDamageable>().SetCanMove(true);
+        Vector3 direction = target.transform.position - UltPos;
+        target.GetComponent<Rigidbody>().AddForce(-direction.normalized * 2000f, ForceMode.Acceleration);
     }
 
     //Copy that in a new character file

@@ -9,40 +9,44 @@ public class VoisterManager : MonoBehaviour
     [SerializeField] private GameObject[] voisters;
     [SerializeField] private KingsBehaviour[] kings;
     private float cpt;
+    private KingsBehaviour currentKing;
+    private bool isRespawning;
 
     void Start()
     {
-        cpt = 5;
+        isRespawning = false;
+
+        var randKing = Random.Range(0, 3);
+        if (PhotonNetwork.IsMasterClient)
+        {
+            currentKing = PhotonNetwork.Instantiate(kings[randKing].name, new Vector3(0, 2.5f, 0), Quaternion.identity).GetComponent<KingsBehaviour>();
+        }
     }
 
     void Update()
     {
         if (PhotonNetwork.IsMasterClient)
         {
-            cpt -= Time.deltaTime;
-            if (/*SceneManager.GetActiveScene().name == "MainGameRoom"*/ true)
+            if (CheckCurrentKing() && !isRespawning)
             {
-                if (/*mainGame.isPlaying && */cpt <= 0)
-                {
-                    cpt = 60;
-                    for(int i = 0; i < kings.Length; i++)
-                    {
-                        SpawnVoisters(voisters[i], kings[i]);
-                    }
-                }
+                isRespawning = true;
+                StartCoroutine(SpawnKings());
             }
         }
     }
 
-    private void SpawnVoisters(GameObject voister, KingsBehaviour king)
+    private bool CheckCurrentKing()
     {
-        var x = Random.Range(-150, 150);
-        var z = Random.Range(-50, 50);
-        var occurence = Random.Range(1, 3);
-        for(int i = 0; i < occurence; i++)
-        {
-            var voisterTemp = PhotonNetwork.Instantiate(voister.name, new Vector3(x, king.transform.position.y, z), Quaternion.identity);
-            voisterTemp.GetComponent<VoisterBehaviour>().kingVoisters = king;
-        }
+        if (!currentKing | currentKing.GetHealth() <= 0) return true;
+        return false;
+    }
+
+    public IEnumerator SpawnKings()
+    {
+        yield return new WaitForSeconds(60);
+        var randKing = Random.Range(0, 2);
+        currentKing = PhotonNetwork.Instantiate(kings[randKing].name, new Vector3(0, 2.5f, 0), Quaternion.identity).GetComponent<KingsBehaviour>();
+        isRespawning = false;
+
     }
 }

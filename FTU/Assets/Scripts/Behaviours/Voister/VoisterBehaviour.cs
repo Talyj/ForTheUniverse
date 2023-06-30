@@ -22,9 +22,11 @@ public class VoisterBehaviour : BasicAIMovement, IPunObservable
         feed,
         protect,
         patrol,
-        awoken
+        awoken,
+        attack
     }
     public actionState currentState;
+    public actionState previousState;
 
     #region getter
     public actionState GetCurrentState()
@@ -68,6 +70,15 @@ public class VoisterBehaviour : BasicAIMovement, IPunObservable
 
     protected void VoisterBaseBehaviour()
     {
+        if (Cible)
+        {
+            previousState = currentState;
+            currentState = actionState.attack;
+        }
+        else
+        {
+            currentState = previousState;
+        }
         switch (currentState)
         {
             case actionState.feed:
@@ -85,42 +96,60 @@ public class VoisterBehaviour : BasicAIMovement, IPunObservable
             case actionState.awoken:
                 Debug.Log("Awoken");
                 break;
+            case actionState.attack:
+                VoisterBasicAttack();
+                break;
 
         }
-
-        VoisterBasicAttack();
     }
 
     protected void VoisterFeed()
     {
-        if (numberOfCharges >= requiredNumberOfCharge && _navMeshAgent.remainingDistance <= 5)
+        try
         {
-            currentState = kingVoisters.numberOfFollower >= kingVoisters.followersMax ? actionState.patrol : actionState.protect;
+            if (!_navMeshAgent.isOnNavMesh) return;
+            if (numberOfCharges >= requiredNumberOfCharge && _navMeshAgent.remainingDistance <= 5)
+            {
+                previousState = currentState;
+                currentState = kingVoisters.numberOfFollower >= kingVoisters.followersMax ? actionState.patrol : actionState.protect;
+            }
+            if (!isNearKing && _navMeshAgent.remainingDistance <= 15)
+            {
+                isNearKing = true;
+                numberOfCharges++;
+                posToGo = spawnPoint;
+            }
+            else if (isNearKing && _navMeshAgent.remainingDistance <= 15)
+            {
+                isNearKing = false;
+                posToGo = kingVoisters.gameObject.transform.position;
+            }
+            _navMeshAgent.SetDestination(posToGo);
         }
-        if (!isNearKing && _navMeshAgent.remainingDistance <= 15)
+        catch(MissingReferenceException e)
         {
-            isNearKing = true;
-            numberOfCharges++;
-            posToGo = spawnPoint;
+            currentState = actionState.patrol;
         }
-        else if (isNearKing && _navMeshAgent.remainingDistance <= 15)
-        {
-            isNearKing = false;
-            posToGo = kingVoisters.gameObject.transform.position;
-        }
-        _navMeshAgent.SetDestination(posToGo);
 
     }
 
     protected void VoisterProtect()
     {
-        if (!isProtecting)
+        try
         {
-            isProtecting = true;
-            kingVoisters.numberOfFollower++;
-            _navMeshAgent.ResetPath();
+            if (!isProtecting)
+            {
+                isProtecting = true;
+                kingVoisters.numberOfFollower++;
+                _navMeshAgent.ResetPath();
+            }
+            transform.RotateAround(kingVoisters.transform.position, Vector3.up, GetMoveSpeed() * Time.deltaTime);
         }
-        transform.RotateAround(kingVoisters.transform.position, Vector3.up, GetMoveSpeed() * Time.deltaTime);
+        catch(MissingReferenceException e)
+        {
+            previousState = currentState;
+            currentState = actionState.patrol;
+        }
     }
 
     #region patrol
@@ -140,6 +169,7 @@ public class VoisterBehaviour : BasicAIMovement, IPunObservable
 
     protected void VoisterPatrol()
     {
+        if (!_navMeshAgent.isOnNavMesh) return;
         if (!GotFirstWayPoint)
         {
             GotFirstWayPoint = true;
@@ -169,7 +199,7 @@ public class VoisterBehaviour : BasicAIMovement, IPunObservable
                 _waiting = false;
                 SetDestination();
             }
-        }
+        }        
     }
 
     public void InitFirstWaypoint()
@@ -234,10 +264,7 @@ public class VoisterBehaviour : BasicAIMovement, IPunObservable
         if (!isAttacking && Cible != null)
         {
             isAttacking = true;
-            if(currentState != actionState.feed)
-            {
-                WalkToward();
-            }
+            StartCoroutine(WalkToward());
 
             if (attackType == AttackType.Melee)
             {

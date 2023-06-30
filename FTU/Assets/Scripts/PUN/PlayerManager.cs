@@ -38,9 +38,12 @@ public class PlayerManager : MonoBehaviour
         
     }
 
+    //TODO change the hard coded value to variable
     void CreateController()
     {
-        _playerPrefab = PhotonNetwork.Instantiate(playerPrefabs[index].name, new Vector3(0f, 2.14f, 0f), Quaternion.identity, 0);
+        //TODO spawn coté bon :)
+        var posToSpawn = (byte)player.CustomProperties["_pt"] == 1 ? new Vector3(286.649933f, 2.14f, -39f) : new Vector3(-313.3f, 2.14f, -39f);
+        _playerPrefab = PhotonNetwork.Instantiate(playerPrefabs[index].name, posToSpawn, Quaternion.identity, 0);
         
         _playerPrefab.GetComponent<IDamageable>().team.Code =(byte) player.CustomProperties["_pt"];
         _playerPrefab.GetComponent<IDamageable>().userId = player.NickName;
@@ -49,14 +52,16 @@ public class PlayerManager : MonoBehaviour
         _playerPrefab.GetComponent<PlayerStats>().playerManage = this;
         if (_playerPrefab.GetComponent<IDamageable>().team.Code == 0)
         {
-            //_playerPrefab.GetComponent<PlayerStats>().deathPos = new Vector3(413.3f, 2.14f, -37.118f);
-            _playerPrefab.GetComponent<PlayerStats>().deathPos = deathPos.transform.position;
+            _playerPrefab.GetComponent<PlayerStats>().deathPos = new Vector3(413.3f, 2.14f, -37.118f);
+            //_playerPrefab.GetComponent<PlayerStats>().deathPos = deathPos.transform.position;
+            //_playerPrefab.GetComponent<PlayerStats>().deathPos = new Vector3(0, 220, -339);
             _playerPrefab.GetComponent<PlayerStats>().respawnPos = new Vector3(323.3f, 2.14f, -37.118f);
         }
         else if(_playerPrefab.GetComponent<IDamageable>().team.Code == 1)
         {
-            //_playerPrefab.GetComponent<PlayerStats>().deathPos = new Vector3(-413.3f, 2.14f, -37.118f);
             _playerPrefab.GetComponent<PlayerStats>().deathPos = deathPos.transform.position;
+            //_playerPrefab.GetComponent<PlayerStats>().deathPos = deathPos.transform.position;
+            //_playerPrefab.GetComponent<PlayerStats>().deathPos = new Vector3(0, 220, -339);
             _playerPrefab.GetComponent<PlayerStats>().respawnPos = new Vector3(-323.3f, 2.14f, -37.118f);
         }
 
