@@ -250,6 +250,7 @@ MonoBehaviour:
   damageSupp: 0
   isAI: 0
   inBush: 0
+  _navMeshAgent: {fileID: 0}
   enemyType: 2
   passif: {fileID: 11400000, guid: d2c9dc6b1ca2bc94ebe53101f1a9a950, type: 2}
   skills:
@@ -289,7 +290,7 @@ MonoBehaviour:
   entity: {fileID: 1744873933731375706}
   layerToIgnore:
     serializedVersion: 2
-    m_Bits: 1023
+    m_Bits: 7167
 --- !u!114 &1744873933731375681
 MonoBehaviour:
   m_ObjectHideFlags: 0
