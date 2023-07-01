@@ -9,24 +9,33 @@ public class Deplacement : MonoBehaviour
     public VisualEffect sort1; 
     public VisualEffect sort2; 
     public VisualEffect ulti; 
-    public string animationTriggerName = "Ulti";
 
     void Update()
     {
+
+        if(Input.GetKeyDown(KeyCode.U)) {
+            animator.SetTrigger("Sort2");
+            
+            //StartCoroutine(TriggerVFXAfterDelay(sort1, 0));
+        }
+
         if (Input.GetKeyDown(KeyCode.A))
         {
+            animator.SetTrigger("Auto");
             StartCoroutine(TriggerVFXAfterDelay(sort1, 0));
         }
 
-        if (Input.GetKeyDown(KeyCode.Z))
+        if (Input.GetKey(KeyCode.Z))
         {
+            animator.SetBool("Walk", true);
             StartCoroutine(TriggerVFXAfterDelay(sort2, 0));
+        } else {
+            animator.SetBool("Walk", false);
         }
 
         if (Input.GetKeyDown(KeyCode.R))
         {
-            animator.SetTrigger(animationTriggerName);
-
+            animator.SetTrigger("Ulti");
             StartCoroutine(TriggerVFXAfterDelay(ulti, 1.05f));
         }
     }
