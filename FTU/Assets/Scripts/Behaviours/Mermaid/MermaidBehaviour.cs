@@ -24,6 +24,10 @@ public class MermaidBehaviour : PlayerStats
     private float charmSpeed;
     //private List<GameObject> charmTargets;
     public GameObject charmArea;
+    
+    //Animator
+    public Animator animator;
+    
     public void Start()
     {
         PlayerStatsSetUp();
@@ -64,6 +68,14 @@ public class MermaidBehaviour : PlayerStats
         if (GetCanAct())
         {
             MovementPlayer();
+            if (Vector3.Distance(_navMeshAgent.destination, transform.position) < 0.5f)
+            {
+                animator.SetBool("Walk", false);
+            }
+            else
+            {
+                animator.SetBool("Walk", true);
+            }
             if (!isAttacking)
             {
                 //try
@@ -149,7 +161,7 @@ public class MermaidBehaviour : PlayerStats
 
             //Modifier le skill ici
             var proj = PhotonNetwork.Instantiate(poissoin.name, transform.position, Quaternion.identity);
-            var dir = SpawnPrefab2.transform.position - SpawnPrefab.transform.position;
+            var dir = transform.forward;
             proj.GetComponent<PoissoinProjBehaviour>().SetDamages(GetDegMag(), DamageType.magique);
             proj.GetComponent<PoissoinProjBehaviour>().source = this;
             proj.GetComponent<PoissoinProjBehaviour>().team = team;

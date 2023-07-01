@@ -31,17 +31,17 @@ public class DeplacementSirene : MonoBehaviour {
             StartCoroutine(SpawnFish(0.9f));
         }
 
-        if(Input.GetKeyDown(KeyCode.U)) { // Sort 2
+        if(Input.GetKeyDown(KeyCode.Z)) { // Sort 2
             animator.SetTrigger("Sort2");
             StartCoroutine(TriggerVFXAfterDelay(sort2, 0.5f));
         }
 
-        if (Input.GetKey(KeyCode.Z)) // Animation de quand elle avance
+        /*if (Input.GetKey(KeyCode.Z)) // Animation de quand elle avance
         {
             animator.SetBool("Walk", true);
         } else {
             animator.SetBool("Walk", false);
-        }
+        }*/
 
         if (Input.GetKeyDown(KeyCode.R)) { // Ulti
             animator.SetTrigger("Ulti");
@@ -74,6 +74,7 @@ public class DeplacementSirene : MonoBehaviour {
         if(currentFlaque != null) { // Detruit la flaque au bout de X SECONDES
             StartCoroutine(DestroyFlaque(life_flaque));
         }
+        
     }
 
     private IEnumerator SpawnFish(float delay) {
@@ -85,9 +86,33 @@ public class DeplacementSirene : MonoBehaviour {
         yield return new WaitForSeconds(delay);
         Destroy(currentFlaque);
     }
-
-    private IEnumerator TriggerVFXAfterDelay(VisualEffect vfx, float delay) {
+    
+    private IEnumerator DestroyVFX(VisualEffect vfx,float delay) {
         yield return new WaitForSeconds(delay);
-        vfx.SendEvent("OnPlay");
+        Destroy(vfx.transform.parent.gameObject);
+    }
+
+    private IEnumerator TriggerVFXAfterDelay(VisualEffect vfx, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        VisualEffect newVFX = vfx;
+        if (vfx == sort2)
+        {
+            GameObject parentVFX = new GameObject("VFXObject");
+            parentVFX.transform.position = vfx.gameObject.GetComponentInParent<Transform>().position;
+            parentVFX.transform.rotation = vfx.gameObject.GetComponentInParent<Transform>().rotation;
+            newVFX = Instantiate(vfx, parentVFX.transform.position, parentVFX.transform.rotation , parentVFX.transform);
+        }
+        
+        //newVFX.transform.parent = parentVFX.transform;
+        //newVFX.transform.rotation = Quaternion.identity;
+
+        newVFX.SendEvent("OnPlay");
+
+        if (vfx == sort2)
+        {
+            StartCoroutine(DestroyVFX(newVFX, newVFX.GetFloat("TsunamiLifetime")));
+        }
+        
     }
 }
