@@ -4,7 +4,7 @@ using Photon.Pun;
 using UnityEngine;
 using UnityEngine.VFX;
 
-public class DeplacementSirene : MonoBehaviour {
+public class MermaidAnimation : MonoBehaviour {
     public Animator animator;
     public VisualEffect sort1; 
     public VisualEffect sort1_explosion; 
