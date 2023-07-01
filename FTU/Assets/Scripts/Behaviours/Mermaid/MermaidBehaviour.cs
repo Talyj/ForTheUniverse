@@ -105,16 +105,16 @@ public class MermaidBehaviour : PlayerStats
                 //}
 
                 CheckRangeAttack();
-                if (Input.GetKeyDown(KeyCode.Alpha1))
+                /*if (Input.GetKeyDown(KeyCode.A))
                 {
                     Poissoin();
-                }
-                if (Input.GetKeyDown(KeyCode.Alpha2))
+                }*/
+                if (Input.GetKeyDown(KeyCode.Z))
                 {
                     MagicWind();
                 }
 
-                if (Input.GetKeyDown(KeyCode.Alpha3) && GetCanUlt() == true)
+                if (Input.GetKeyDown(KeyCode.R) && GetCanUlt() == true)
                 {
                     Ultime();
                 }
@@ -151,7 +151,7 @@ public class MermaidBehaviour : PlayerStats
     }
 
     //Copy that in a new character file (skill1)
-    public void Poissoin()
+    public void Poissoin(GameObject proj)
     {
         if (skills[0].isCooldown == false && GetMana() >= skills[0].Cost)
         {
@@ -160,7 +160,7 @@ public class MermaidBehaviour : PlayerStats
             skills[0].isCooldown = true;
 
             //Modifier le skill ici
-            var proj = PhotonNetwork.Instantiate(poissoin.name, transform.position, Quaternion.identity);
+            //var proj = PhotonNetwork.Instantiate(poissoin.name, transform.position, Quaternion.identity);
             var dir = transform.forward;
             proj.GetComponent<PoissoinProjBehaviour>().SetDamages(GetDegMag(), DamageType.magique);
             proj.GetComponent<PoissoinProjBehaviour>().source = this;

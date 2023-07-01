@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 using UnityEngine.VFX;
 
@@ -79,7 +80,9 @@ public class DeplacementSirene : MonoBehaviour {
 
     private IEnumerator SpawnFish(float delay) {
         yield return new WaitForSeconds(delay);
-        currentFish = Instantiate(fishPrefab, transform.TransformPoint(pointA), Quaternion.identity);
+        currentFish =  PhotonNetwork.Instantiate(fishPrefab.name, transform.TransformPoint(pointA), Quaternion.identity);
+        //GetComponentInParent<MermaidBehaviour>().poissoin = currentFish;
+        GetComponentInParent<MermaidBehaviour>().Poissoin(currentFish);
     }
 
     private IEnumerator DestroyFlaque(float delay) {
