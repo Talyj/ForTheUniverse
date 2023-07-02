@@ -11,7 +11,7 @@ public class VoidManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        cpt = 60;
+        cpt = 5;
     }
 
     // Update is called once per frame
@@ -20,7 +20,7 @@ public class VoidManager : MonoBehaviour
         cpt -= Time.deltaTime;
         if (cpt <= 0)
         {
-            cpt = 180;
+            cpt = 60;
             var qtyRand = Random.Range(1, 6);
             for(int i = 0; i < qtyRand; i++)
             {

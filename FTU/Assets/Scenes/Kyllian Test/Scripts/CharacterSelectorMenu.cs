@@ -72,7 +72,7 @@ public class CharacterSelectorMenu : MonoBehaviourPunCallbacks
         {
             Destroy(championPrefab);
         }
-        championPrefab = Instantiate(champions[championsSelected], championPad[slotToDisplay].transform.position + new UnityEngine.Vector3(0,1.16f, 0), Quaternion.Euler(0, 180, 0));
+        championPrefab = Instantiate(champions[championsSelected], championPad[slotToDisplay].transform.position , Quaternion.Euler(0, 180, 0));
         foreach (var monoBehaviourPun in championPrefab.GetComponents<MonoBehaviourPun>())
         {
             monoBehaviourPun.enabled = false;

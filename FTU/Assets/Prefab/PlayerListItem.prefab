@@ -312,6 +312,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 92d26295e43486b4485bc2d13dcd4769, type: 3}
   - {fileID: 21300000, guid: 3289499dee33d464aac7f18e8a1acf2e, type: 3}
   - {fileID: 21300000, guid: f3885fcb7a50fac46ac486c0c82ee89e, type: 3}
+  - {fileID: 21300000, guid: f3885fcb7a50fac46ac486c0c82ee89e, type: 3}
   teamicone:
   - {fileID: 21300000, guid: ca458e99b85b5874abfe78c30c6baae9, type: 3}
   - {fileID: 21300000, guid: 2cf813f1afd15a24fbfb2917cd3ded7c, type: 3}

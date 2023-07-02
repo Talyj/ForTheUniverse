@@ -15,10 +15,11 @@ public class BretoBehaviour : PlayerStats
     [SerializeField] private GameObject dashHitbox;
 
     //Skill 2
+    [SerializeField] private GameObject scan;
 
     //Ulti
     [SerializeField] private GameObject maelstrom;
-    public Vector3 UltPos;
+    [HideInInspector] public Vector3 UltPos;
     
     //private List<GameObject> charmTargets;
     //public GameObject charmArea;
@@ -61,19 +62,19 @@ public class BretoBehaviour : PlayerStats
             if (!isAttacking)
             {
                 CheckRangeAttack();
-                if (Input.GetKeyDown(KeyCode.Alpha1))
+                if (Input.GetKeyDown(KeyCode.A))
                 {
                     Skill1();
                 }
-                if (Input.GetKeyDown(KeyCode.Alpha2))
+                /*if (Input.GetKeyDown(KeyCode.Z))
                 {
                     Skill2();
-                }
+                }*/
 
-                if (Input.GetKeyDown(KeyCode.Alpha3) && GetCanUlt() == true)
+                /*if (Input.GetKeyDown(KeyCode.R) && GetCanUlt() == true)
                 {
                     Ultime();
-                }
+                }*/
             }
         }
     }
@@ -144,7 +145,7 @@ public class BretoBehaviour : PlayerStats
         yield return new WaitForSeconds(1);
         var cpt = 0f;
 
-        while (!Input.GetKeyDown(KeyCode.Alpha1))
+        while (!Input.GetKeyDown(KeyCode.A))
         {
             cpt += Time.deltaTime;
             if(cpt >= 3f)
@@ -170,7 +171,8 @@ public class BretoBehaviour : PlayerStats
             SetMana(GetMana() - skills[1].Cost);
             Debug.Log(skills[1].Name + " lanc�e");
 
-            
+            //var scanTemp = PhotonNetwork.Instantiate(scan.name, transform.position, Quaternion.identity);
+            //scan.GetComponent<ScanBehaviour>().source = this;
 
             CheckPassive();
             StartCoroutine(CoolDown(skills[1]));
@@ -194,7 +196,7 @@ public class BretoBehaviour : PlayerStats
     }
 
 
-    public void Ultime()
+    public void Ultime(GameObject maelstromTemp)
     {
         if (skills[2].isCooldown == false && GetMana() >= skills[2].Cost)
         {
@@ -202,7 +204,7 @@ public class BretoBehaviour : PlayerStats
             SetMana(GetMana() - skills[2].Cost);
             Debug.Log(skills[2].Name + " lanc�e");
 
-            var maelstromTemp = PhotonNetwork.Instantiate(maelstrom.name, transform.position, Quaternion.identity);
+            //var maelstromTemp = PhotonNetwork.Instantiate(maelstrom.name, transform.position, Quaternion.identity);
             maelstromTemp.GetComponent<MaelstromBehaviour>().source = this;
 
             StartCoroutine(CoolDown(skills[2]));

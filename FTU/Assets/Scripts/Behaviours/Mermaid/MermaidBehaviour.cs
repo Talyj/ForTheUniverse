@@ -24,6 +24,10 @@ public class MermaidBehaviour : PlayerStats
     private float charmSpeed;
     //private List<GameObject> charmTargets;
     public GameObject charmArea;
+    
+    //Animator
+    public Animator animator;
+    
     public void Start()
     {
         PlayerStatsSetUp();
@@ -64,6 +68,14 @@ public class MermaidBehaviour : PlayerStats
         if (GetCanAct())
         {
             MovementPlayer();
+            if (Vector3.Distance(_navMeshAgent.destination, transform.position) < 0.5f)
+            {
+                animator.SetBool("Walk", false);
+            }
+            else
+            {
+                animator.SetBool("Walk", true);
+            }
             if (!isAttacking)
             {
                 //try
@@ -93,16 +105,16 @@ public class MermaidBehaviour : PlayerStats
                 //}
 
                 CheckRangeAttack();
-                if (Input.GetKeyDown(KeyCode.Alpha1))
+                /*if (Input.GetKeyDown(KeyCode.A))
                 {
                     Poissoin();
-                }
-                if (Input.GetKeyDown(KeyCode.Alpha2))
+                }*/
+                if (Input.GetKeyDown(KeyCode.Z))
                 {
                     MagicWind();
                 }
 
-                if (Input.GetKeyDown(KeyCode.Alpha3) && GetCanUlt() == true)
+                if (Input.GetKeyDown(KeyCode.R) && GetCanUlt() == true)
                 {
                     Ultime();
                 }
@@ -139,7 +151,7 @@ public class MermaidBehaviour : PlayerStats
     }
 
     //Copy that in a new character file (skill1)
-    public void Poissoin()
+    public void Poissoin(GameObject proj)
     {
         if (skills[0].isCooldown == false && GetMana() >= skills[0].Cost)
         {
@@ -148,8 +160,8 @@ public class MermaidBehaviour : PlayerStats
             skills[0].isCooldown = true;
 
             //Modifier le skill ici
-            var proj = PhotonNetwork.Instantiate(poissoin.name, transform.position, Quaternion.identity);
-            var dir = SpawnPrefab2.transform.position - SpawnPrefab.transform.position;
+            //var proj = PhotonNetwork.Instantiate(poissoin.name, transform.position, Quaternion.identity);
+            var dir = transform.forward;
             proj.GetComponent<PoissoinProjBehaviour>().SetDamages(GetDegMag(), DamageType.magique);
             proj.GetComponent<PoissoinProjBehaviour>().source = this;
             proj.GetComponent<PoissoinProjBehaviour>().team = team;

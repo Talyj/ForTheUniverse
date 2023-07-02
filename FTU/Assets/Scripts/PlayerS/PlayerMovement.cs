@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerMovement : IDamageable
@@ -18,6 +20,7 @@ public class PlayerMovement : IDamageable
     Vector3 velocity;
     Rigidbody myRigidbody;
     Camera viewCamera;
+    Camera minimapCamera;
 
     //Animator anim;
     public NetworkVariable<Vector3> Position = new NetworkVariable<Vector3>();
@@ -49,7 +52,6 @@ public class PlayerMovement : IDamageable
     {
         CameraWork _cameraWork = this.gameObject.GetComponent<CameraWork>();
 
-
         if (_cameraWork != null)
         {
             if (myPV.IsMine)
@@ -67,9 +69,22 @@ public class PlayerMovement : IDamageable
 
     public void MovementPlayer()
     {
+        if(minimapCamera == null)
+        {
+            minimapCamera = GameObject.FindGameObjectWithTag("minimapCam") ? GameObject.FindGameObjectWithTag("minimapCam").GetComponent<Camera>() : null;
+        }
         if (GetCanMove())
         {
             Ray ray = viewCamera.ScreenPointToRay(Input.mousePosition);
+            Ray minimapRay = new Ray();
+            if (minimapCamera != null)
+            {
+                minimapRay = minimapCamera.ScreenPointToRay(Input.mousePosition);
+                //Debug.DrawRay(minimapRay.origin, minimapRay.direction * 500000);
+            }
+            //Debug.DrawRay(ray.origin, ray.direction * 500000);
+
+
             Plane groundPlane = new Plane(Vector3.up, Vector3.zero);
             float rayDistance;
 
@@ -79,6 +94,13 @@ public class PlayerMovement : IDamageable
                 LookAt(point);
                 if (Input.GetMouseButtonDown(1))
                 {
+                    //if(minimapCamera != null)
+                    //{
+                    //    if(groundPlane.Raycast(minimapRay, out rayDistance))
+                    //    {
+                    //        point = minimapRay.GetPoint(rayDistance);
+                    //    }
+                    //}
                     _navMeshAgent.ResetPath();
                     _navMeshAgent.SetDestination(point);
                 }
