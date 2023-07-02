@@ -602,6 +602,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fff2de244b3cafb45b19a0c6728f7e28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  characterID: 2
   attackType: 1
   cc: 0
   Cible: {fileID: 0}
@@ -626,6 +627,7 @@ MonoBehaviour:
   damageSupp: 0
   isAI: 0
   inBush: 0
+  _navMeshAgent: {fileID: 0}
   enemyType: 2
   passif: {fileID: 11400000, guid: 87fae4db772d3424d9371539600022d8, type: 2}
   skills:
@@ -751,6 +753,7 @@ MonoBehaviour:
   centerOffset: {x: 0, y: 0, z: 0}
   followOnStart: 0
   player: {fileID: 0}
+  zoomLevel: 0
 --- !u!95 &4678321541287554614
 Animator:
   serializedVersion: 5
@@ -785,6 +788,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   entity: {fileID: 8597483264512879776}
+  layerToIgnore:
+    serializedVersion: 2
+    m_Bits: 7167
 --- !u!114 &-7343261030961575311
 MonoBehaviour:
   m_ObjectHideFlags: 0

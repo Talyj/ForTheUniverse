@@ -7,6 +7,8 @@ public class Targeting : MonoBehaviour
 {
     [SerializeField]
     private GameObject entity;
+    [SerializeField]
+    LayerMask layerToIgnore;
     RaycastHit hit;
     // Start is called before the first frame update
     public void Start()
@@ -20,8 +22,9 @@ public class Targeting : MonoBehaviour
         
         if (Input.GetMouseButtonDown(0))
         {
-            if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, Mathf.Infinity))
+            if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, Mathf.Infinity,layerToIgnore))
             {
+                //Debug.DrawRay(Camera.main.ScreenToWorldPoint(Input.mousePosition), Camera.main.transform.forward * Mathf.Infinity, Color.red);
                 if (hit.collider.TryGetComponent(typeof(IDamageable), out Component component))
                 {
                     if (component.GetComponent<IDamageable>().GetEnemyType()== IDamageable.EnemyType.minion ||

@@ -7739,6 +7739,7 @@ MonoBehaviour:
   controlPanel: {fileID: 1899048335}
   connectionPanel: {fileID: 1544318419}
   characterHolder: {fileID: 1677462667}
+  profilName: {fileID: 0}
 --- !u!114 &1440177275
 MonoBehaviour:
   m_ObjectHideFlags: 0

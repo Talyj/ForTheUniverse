@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:FTU/Assets/HDRPDefaultResources/DefaultLookDevProfile.asset.meta
+guid: 95acdb5408f1c2846867a4a8b327f8ef
+========
 guid: 0aaa0ee173ead2e4f80be363d00eca94
+>>>>>>>> main:FTU/Assets/Blender/Personnages/cons/VFX/Passif.anim.meta
 NativeFormatImporter:
   externalObjects: {}
   mainObjectFileID: 7400000
