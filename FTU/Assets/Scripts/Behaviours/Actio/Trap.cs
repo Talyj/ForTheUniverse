@@ -31,6 +31,7 @@ public class Trap : MonoBehaviourPun
             DmgPerHeal = heal / 4;
             degats = skills.Damage + DmgPerHeal;
             Debug.Log("trap " + degats);
+            col.gameObject.GetComponent<IDamageable>().TakeCC(IDamageable.ControlType.stun,1.25f);
             col.gameObject.GetComponent<IDamageable>().TakeDamage(degats, typeDegats);
         }
         

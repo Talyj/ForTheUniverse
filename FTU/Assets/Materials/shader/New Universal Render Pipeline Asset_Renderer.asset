@@ -20,7 +20,7 @@ MonoBehaviour:
       RenderQueueType: 0
       LayerMask:
         serializedVersion: 2
-        m_Bits: 4872
+        m_Bits: 39688
       PassNames: []
     overrideMaterial: {fileID: 2100000, guid: 559bdfeff5448d84081716aa5d2542c9, type: 2}
     overrideMaterialPassIndex: 0
@@ -116,7 +116,7 @@ MonoBehaviour:
       RenderQueueType: 0
       LayerMask:
         serializedVersion: 2
-        m_Bits: 2824
+        m_Bits: 19208
       PassNames: []
     overrideMaterial: {fileID: 2100000, guid: 8c5218300fb69bf43b6d046d6455036f, type: 2}
     overrideMaterialPassIndex: 0
@@ -145,17 +145,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6b3d386ba5cd94485973aee1479b272e, type: 3}
-  m_Name: PlayerVisibleD
+  m_Name: PlayerVisibleV
   m_EditorClassIdentifier: 
   m_Active: 1
   settings:
-    passTag: PlayerVisibleD
+    passTag: PlayerVisibleV
     Event: 300
     filterSettings:
       RenderQueueType: 0
       LayerMask:
         serializedVersion: 2
-        m_Bits: 4872
+        m_Bits: 37640
       PassNames: []
     overrideMaterial: {fileID: 0}
     overrideMaterialPassIndex: 0
@@ -194,7 +194,7 @@ MonoBehaviour:
       RenderQueueType: 0
       LayerMask:
         serializedVersion: 2
-        m_Bits: 2824
+        m_Bits: 19208
       PassNames: []
     overrideMaterial: {fileID: 0}
     overrideMaterialPassIndex: 0

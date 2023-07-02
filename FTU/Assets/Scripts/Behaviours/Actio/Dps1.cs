@@ -8,7 +8,7 @@ public class Dps1 : PlayerStats
     Dps1 Instance;
     public GameObject sp2;
     public GameObject sp;
-
+    List<GameObject> traps = new List<GameObject>(6);
 
 
 
@@ -75,7 +75,7 @@ public class Dps1 : PlayerStats
             MovementPlayer();
             if (!isAttacking)
             {
-                
+                Passif();
                 if (Cible != null)
                 {
                     if (Input.GetMouseButtonDown(1))
@@ -110,6 +110,11 @@ public class Dps1 : PlayerStats
                 if (Input.GetKeyDown(KeyCode.Alpha3) && GetCanUlt() == true)
                 {
                     Ultime();
+                }
+                if (Input.GetKeyDown(KeyCode.K))
+                {
+                    //photonView.RPC("DealDamages",RpcTarget.All, new object[] { 9999 });
+                    SetExp(999f);
                 }
             }
         }
@@ -285,7 +290,17 @@ public class Dps1 : PlayerStats
         {
             SetMana(GetMana() - skills[2].Cost);
             Debug.Log(skills[2].Name + " lancée");
-            PhotonNetwork.Instantiate(ult.name, SpawnPrefab.transform.position, Quaternion.identity);
+            GameObject trap = PhotonNetwork.Instantiate(ult.name, SpawnPrefab.transform.position, Quaternion.identity);
+            if(traps.Count <= 6)
+            {
+            traps.Add(trap);
+
+            }
+            else
+            {
+                Destroy(traps[0].gameObject);
+                traps.Add(trap);
+            }
             skills[2].isCooldown = true;
             if (skills[2].isCooldown == true)
             {

@@ -187,6 +187,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   entity: {fileID: 1675429051430411217}
+  layerToIgnore:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!54 &1675429051430411222
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -298,6 +301,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &3806698042274399858
 MonoBehaviour:
   m_ObjectHideFlags: 0
