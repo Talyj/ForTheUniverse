@@ -21,6 +21,7 @@ TagManager:
   - temple
   - minimapCam
   - minimapView
+  - PlaneMinimapMove
   layers:
   - Default
   - TransparentFX
