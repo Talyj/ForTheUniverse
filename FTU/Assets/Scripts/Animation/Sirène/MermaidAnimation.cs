@@ -106,9 +106,6 @@ public class MermaidAnimation : MonoBehaviour {
             parentVFX.transform.rotation = vfx.gameObject.GetComponentInParent<Transform>().rotation;
             newVFX = Instantiate(vfx, parentVFX.transform.position, parentVFX.transform.rotation , parentVFX.transform);
         }
-        
-        //newVFX.transform.parent = parentVFX.transform;
-        //newVFX.transform.rotation = Quaternion.identity;
 
         newVFX.SendEvent("OnPlay");
 

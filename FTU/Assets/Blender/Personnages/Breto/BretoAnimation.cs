@@ -1,16 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 using UnityEngine.VFX;
 
-public class DeplacementBreto : MonoBehaviour {
+public class BretoAnimation : MonoBehaviour {
     public Animator animator;
 
     public VisualEffect auto_explosion;
     public VisualEffect destroy_explosion;
 
     public VisualEffect slash;
-    public ParticleSystem sort2;
+    public ParticleSystem sort1;
 
     public GameObject trident;
     public GameObject sonar;
@@ -30,13 +31,18 @@ public class DeplacementBreto : MonoBehaviour {
     }
     
     void Update() {
-        if (Input.GetKeyDown(KeyCode.A)) { // Autoattack
+        /*if (Input.GetKeyDown(KeyCode.A)) { // Autoattack
             animator.SetTrigger("Auto");
             StartCoroutine(PutTrident(0.2f));
             StartCoroutine(TriggerVFXAfterDelay(slash, 0.3f));
+        }*/
+        
+        if (Input.GetKeyDown(KeyCode.A)) { // Dash
+            animator.SetTrigger("Dash");
+            sort1.Play();
         }
 
-        if(Input.GetKeyDown(KeyCode.U)) { // Sonar
+        if(Input.GetKeyDown(KeyCode.Z)) { // Sonar
             animator.SetTrigger("Sonar");
             if(trident.activeSelf) {
                 StartCoroutine(DestroyTrident(0.0f));
@@ -53,16 +59,13 @@ public class DeplacementBreto : MonoBehaviour {
             StartCoroutine(DestroyUlti(lifetime_ulti));
         }
 
-        if (Input.GetKey(KeyCode.Z)) { //Mouvement quand il avance
+        /*if (Input.GetKey(KeyCode.Z)) { //Mouvement quand il avance
             animator.SetBool("Walk", true);
         } else {
             animator.SetBool("Walk", false);
-        }
+        }*/
 
-        if (Input.GetKeyDown(KeyCode.E)) { // Dash
-            animator.SetTrigger("Dash");
-            sort2.Play();
-        }
+        
     }
 
     private IEnumerator DestroyTrident(float delay) {
@@ -78,7 +81,9 @@ public class DeplacementBreto : MonoBehaviour {
 
     private IEnumerator PutUlti(float delay) {
         yield return new WaitForSeconds(delay);
-        ulti.SetActive(true);
+        var ultiPref = PhotonNetwork.Instantiate(ulti.name, /*transform.parent.*/transform.position, /*transform.parent.*/transform.rotation);
+        GetComponentInParent<BretoBehaviour>().Ultime(ulti);
+        ultiPref.SetActive(true);
     }
     
     private IEnumerator PutTrident(float delay) {
@@ -90,13 +95,17 @@ public class DeplacementBreto : MonoBehaviour {
     }
 
     private IEnumerator RunSonar(float delay) {
+        GetComponentInParent<BretoBehaviour>().Skill2();
         yield return new WaitForSeconds(delay);
         StartCoroutine(Sonar());
     }
 
-    private IEnumerator Sonar() {
+    private IEnumerator Sonar()
+    {
         for (int i = 0; i < 5; i++) {
-            GameObject wave = Instantiate(sonar, transform.position, transform.rotation, transform);
+            GameObject wave = PhotonNetwork.Instantiate(sonar.name, transform.position, transform.rotation);
+            wave.transform.parent = transform;
+            wave.GetComponent<ScanBehaviour>().source = GetComponentInParent<BretoBehaviour>();
             wave.SetActive(true);
             yield return new WaitForSeconds(temps_sonar/5);
         }
