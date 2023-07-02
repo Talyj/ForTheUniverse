@@ -24,7 +24,7 @@ public class PuddlePoissoinBehaviour : Projectile
     {        
         foreach(var targ in targets.ToArray())
         {
-            if (targ.GetComponent<IDamageable>().team != team)
+            if (targ.GetComponent<IDamageable>().team.Code != team.Code)
             {
                 targ.GetComponent<IDamageable>().TakeDamage(dmg, typeDmg);
             }
@@ -52,7 +52,7 @@ public class PuddlePoissoinBehaviour : Projectile
         {
             try
             {
-                if(target.GetComponent<IDamageable>().team != team)
+                if(target.GetComponent<IDamageable>().team.Code != team.Code)
                 {
                     target.GetComponent<IDamageable>().TakeDamage(GetDamages(), GetDamageType());
                 }

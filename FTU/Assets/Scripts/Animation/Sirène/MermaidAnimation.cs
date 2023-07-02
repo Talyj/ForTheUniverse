@@ -4,7 +4,7 @@ using Photon.Pun;
 using UnityEngine;
 using UnityEngine.VFX;
 
-public class DeplacementSirene : MonoBehaviour {
+public class MermaidAnimation : MonoBehaviour {
     public Animator animator;
     public VisualEffect sort1; 
     public VisualEffect sort1_explosion; 
@@ -106,9 +106,6 @@ public class DeplacementSirene : MonoBehaviour {
             parentVFX.transform.rotation = vfx.gameObject.GetComponentInParent<Transform>().rotation;
             newVFX = Instantiate(vfx, parentVFX.transform.position, parentVFX.transform.rotation , parentVFX.transform);
         }
-        
-        //newVFX.transform.parent = parentVFX.transform;
-        //newVFX.transform.rotation = Quaternion.identity;
 
         newVFX.SendEvent("OnPlay");
 

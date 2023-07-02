@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.VFX;
 
-public class Deplacement : MonoBehaviour
+public class ConsAnimation : MonoBehaviour
 {
     public Animator animator;
     public VisualEffect sort1; 
@@ -12,26 +12,25 @@ public class Deplacement : MonoBehaviour
 
     void Update()
     {
-
-        if(Input.GetKeyDown(KeyCode.U)) {
-            animator.SetTrigger("Sort2");
-            
-            //StartCoroutine(TriggerVFXAfterDelay(sort1, 0));
-        }
-
         if (Input.GetKeyDown(KeyCode.A))
         {
             animator.SetTrigger("Auto");
             StartCoroutine(TriggerVFXAfterDelay(sort1, 0));
         }
+        
+        if(Input.GetKeyDown(KeyCode.Z)) {
+            animator.SetTrigger("Sort2");
+            
+            StartCoroutine(TriggerVFXAfterDelay(sort2, 0));
+        }
 
-        if (Input.GetKey(KeyCode.Z))
+        /*if (Input.GetKey(KeyCode.Z))
         {
             animator.SetBool("Walk", true);
             StartCoroutine(TriggerVFXAfterDelay(sort2, 0));
         } else {
             animator.SetBool("Walk", false);
-        }
+        }*/
 
         if (Input.GetKeyDown(KeyCode.R))
         {
