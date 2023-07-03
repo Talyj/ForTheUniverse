@@ -603,7 +603,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fff2de244b3cafb45b19a0c6728f7e28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterID: -1
+  characterID: 2
   attackType: 1
   cc: 0
   Cible: {fileID: 0}
@@ -791,6 +791,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   entity: {fileID: 8597483264512879776}
+  layerToIgnore:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!114 &-7343261030961575311
 MonoBehaviour:
   m_ObjectHideFlags: 0
