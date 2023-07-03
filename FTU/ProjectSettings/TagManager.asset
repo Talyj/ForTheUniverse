@@ -19,20 +19,26 @@ TagManager:
   - Bush
   - gamemanager
   - temple
+  - minimapCam
+  - minimapView
+  - PlaneMinimapMove
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Player
   - Water
   - UI
   - CheckPoint
   - Learner
   - InvisibleVeritas
   - InvisibleDominion
+  - RaycastMinimap
+  - MinimapCamera
   - 
-  - 
-  - 
+  - Map
+  - Dominion
+  - Veritas
   - 
   - 
   - 

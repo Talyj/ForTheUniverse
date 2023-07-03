@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class UIDps : MonoBehaviour
 {
     [SerializeField]
-    Dps1 stats;
+    ActioBehaviour stats;
     [SerializeField]
     Image[] spells;
     [SerializeField]
@@ -24,7 +24,7 @@ public class UIDps : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        stats = gameObject.GetComponent<Dps1>();
+        stats = gameObject.GetComponent<ActioBehaviour>();
         BaseStats();
     }
 

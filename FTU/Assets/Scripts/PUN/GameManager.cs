@@ -19,7 +19,7 @@ namespace Com.MyCompany.MyGame
         
         private int numberPlayer = 2;
 
-        public PlayerManager selector;
+        //public PlayerManager selector;
         public void Start()
         {
             if (SceneManager.GetActiveScene().name == "WaitingRoom")

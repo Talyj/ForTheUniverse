@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+<<<<<<<< HEAD:FTU/Assets/Prefab/Breto/Resources/BretoMesh.prefab.meta
+guid: a57317b22367f4748933961a34990137
+PrefabImporter:
+  externalObjects: {}
+========
+guid: 9b3ed9c2f7de04848b6f3a510a352044
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+>>>>>>>> origin/Raf:FTU/Assets/Blender/Personnages/Actio/Actio.controller.meta
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

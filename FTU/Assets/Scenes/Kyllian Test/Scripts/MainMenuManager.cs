@@ -61,8 +61,8 @@ public class MainMenuManager : MonoBehaviourPunCallbacks
             btn.GetComponent<Button>().onClick.AddListener(() => DisplayFriend(player));
             btn.GetComponentInChildren<TMP_Text>().text = player.UserId;
         }
-        GroupManager.Instance().JoinGroup("Group2");
-        profilName.text = PhotonNetwork.LocalPlayer.NickName;
+        //GroupManager.Instance().JoinGroup("Group2");
+        //profilName.text = PhotonNetwork.LocalPlayer.NickName;
     }
 
     private void DisplayFriend(Player player)

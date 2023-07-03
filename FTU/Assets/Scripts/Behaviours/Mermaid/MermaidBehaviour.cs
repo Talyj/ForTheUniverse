@@ -24,6 +24,10 @@ public class MermaidBehaviour : PlayerStats
     private float charmSpeed;
     //private List<GameObject> charmTargets;
     public GameObject charmArea;
+    
+    //Animation
+    public MermaidAnimation mermaidAnimation;
+    
     public void Start()
     {
         PlayerStatsSetUp();
@@ -93,16 +97,16 @@ public class MermaidBehaviour : PlayerStats
                 //}
 
                 CheckRangeAttack();
-                if (Input.GetKeyDown(KeyCode.Alpha1))
+                if (Input.GetKeyDown(KeyCode.A))
                 {
                     Poissoin();
                 }
-                if (Input.GetKeyDown(KeyCode.Alpha2))
+                if (Input.GetKeyDown(KeyCode.Z))
                 {
                     MagicWind();
                 }
 
-                if (Input.GetKeyDown(KeyCode.Alpha3) && GetCanUlt() == true)
+                if (Input.GetKeyDown(KeyCode.R) && GetCanUlt() == true)
                 {
                     Ultime();
                 }
@@ -143,17 +147,13 @@ public class MermaidBehaviour : PlayerStats
     {
         if (skills[0].isCooldown == false && GetMana() >= skills[0].Cost)
         {
+            mermaidAnimation.Skill1Animation();
             SetMana(GetMana() - skills[0].Cost);
             Debug.Log(skills[0].Name + " lanc�e");
             skills[0].isCooldown = true;
 
             //Modifier le skill ici
-            var proj = PhotonNetwork.Instantiate(poissoin.name, transform.position, Quaternion.identity);
-            var dir = SpawnPrefab2.transform.position - SpawnPrefab.transform.position;
-            proj.GetComponent<PoissoinProjBehaviour>().SetDamages(GetDegMag(), DamageType.magique);
-            proj.GetComponent<PoissoinProjBehaviour>().source = this;
-            proj.GetComponent<PoissoinProjBehaviour>().team = team;
-            proj.GetComponent<Rigidbody>().AddForce(dir.normalized * 30f, ForceMode.Impulse);
+            //var proj = PhotonNetwork.Instantiate(poissoin.name, transform.position, Quaternion.identity);
 
             CheckPassive();   
 
@@ -175,18 +175,17 @@ public class MermaidBehaviour : PlayerStats
     {
         if (skills[1].isCooldown == false && GetMana() >= skills[1].Cost)
         {
+            mermaidAnimation.Skill2Animation();
             //buff
             SetMana(GetMana() - skills[1].Cost);
             Debug.Log(skills[1].Name + " lanc�e");
             skills[1].isCooldown = true;
 
-            Quaternion rotation = Quaternion.LookRotation(SpawnPrefab2.position - SpawnPrefab.position);
+            /*Quaternion rotation = Quaternion.LookRotation(SpawnPrefab2.position - SpawnPrefab.position);
             Vector3 direction = SpawnPrefab2.position - SpawnPrefab.position;
 
-            var proj = PhotonNetwork.Instantiate(windArea.name, transform.position, rotation);
-            proj.GetComponent<WindAreaBehaviour>().SetDamages(GetDegMag(), DamageType.magique);
-            proj.GetComponent<WindAreaBehaviour>().direction = new Vector3(direction.x, direction.y, direction.z);
-            proj.GetComponent<WindAreaBehaviour>().source = this;
+            var proj = PhotonNetwork.Instantiate(windArea.name, transform.position, rotation);*/
+            
 
             CheckPassive();
             StartCoroutine(CoolDown(skills[1]));
@@ -228,12 +227,13 @@ public class MermaidBehaviour : PlayerStats
     {
         if (skills[2].isCooldown == false && GetMana() >= skills[2].Cost)
         {
+            mermaidAnimation.UltimateAnimation();
             //buff
             SetMana(GetMana() - skills[2].Cost);
             Debug.Log(skills[2].Name + " lanc�e");
 
-            var area = PhotonNetwork.Instantiate(charmArea.name, transform.position, Quaternion.identity);
-            area.GetComponent<CharmAreaBehaviour>().source = this;
+            //var area = PhotonNetwork.Instantiate(charmArea.name, transform.position, Quaternion.identity);
+            
 
             StartCoroutine(CoolDown(skills[2]));
         }

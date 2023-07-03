@@ -11,7 +11,7 @@ public class Ball2 : Projectile
         StartCoroutine(DestroyBullet(3f));
     }
 
-    public Dps1 dps;
+    public ActioBehaviour dps;
     private void OnCollisionEnter(Collision col)
     {
         if (photonView.IsMine)
