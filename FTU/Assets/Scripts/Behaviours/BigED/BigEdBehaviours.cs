@@ -227,7 +227,7 @@ public class BigEdBehaviours : PlayerStats
         //Debug.Log("<color=blue>Endhealth full: </color>" + endHealth);
         float fulldmg = (endHealth * 10) / 100;
         skills[2].Damage += fulldmg;
-        Collider[] hitColliders = Physics.OverlapSphere(ultime.transform.position, 1.5f);
+        Collider[] hitColliders = Physics.OverlapSphere(ultime.transform.position, 5.5f);
         foreach (var hitCollider in hitColliders)
         {
             //Debug.Log("<color=green> touch: </color>" + hitCollider.name);

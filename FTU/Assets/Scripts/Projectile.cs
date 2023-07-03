@@ -21,7 +21,7 @@ public class Projectile : MonoBehaviourPun
 
     public void Awake()
     {
-        playerId = PhotonNetwork.NickName;
+        //playerId = photonView.gameObject.name;
     }
 
     public void Start()
@@ -96,7 +96,7 @@ public class Projectile : MonoBehaviourPun
     public void DealDamage(GameObject target, float dmg, IDamageable.DamageType typeDmg)
     {
         target.GetComponent<IDamageable>().TakeDamage(dmg, typeDmg);
-        Debug.Log(playerId + " a fait " + dmg + " de degats " + typeDmg + " à :" + target.name);
+        //Debug.Log(playerId + " a fait " + dmg + " de degats " + typeDmg + " à :" + target.name);
     }
 
     protected IEnumerator DestroyBullet(float time)

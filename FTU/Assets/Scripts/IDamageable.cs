@@ -342,35 +342,18 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         {
             col.enabled = true;
         }
-        if (this.GetEnemyType() == EnemyType.player)
-        {
-            //TODO check where the player is instanciated
-            //var temples = GameObject.FindGameObjectsWithTag("temple");
-            //foreach (var temple in temples)
-            //{
-            //    if (temple.GetComponent<TempleBehaviour>().teams.Code == this.team.Code)
-            //    {
-            //        //gameObject.transform.position = new Vector3(temple.gameObject.transform.position.x, 2.5f, temple.gameObject.transform.position.z);
-            //        //return;
-            //        if (team.Code == 1)
-            //        {
-            //            gameObject.transform.position = new Vector3(-323.3f, 2.14f, -37.118f);
-            //        }
-            //        else
-            //        {
-            //            gameObject.transform.position = new Vector3(323.3f, 2.14f, -37.118f);
-            //        }
-            //    }
-            //}
-        }
     }
 
     private void SetGameLayerRecursive(GameObject gameObject, string layer)
     {
-        gameObject.layer = LayerMask.NameToLayer(layer);
-        foreach (Transform child in gameObject.transform)
+        if (!gameObject.CompareTag("minimapView"))
         {
-            SetGameLayerRecursive(child.gameObject, layer);
+            gameObject.layer = LayerMask.NameToLayer(layer);
+            foreach (Transform child in gameObject.transform)
+            {
+
+                SetGameLayerRecursive(child.gameObject, layer);
+            }
         }
     }
     public void SetupForAI()
@@ -456,31 +439,41 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
             }
             else if (gameObject.GetComponent<BasicAIStats>())
             {
-
-                //PhotonView.Get(this).RPC("SendKillfeed", RpcTarget.All, PhotonNetwork.LocalPlayer.NickName, Cible.name);
+                userId = gameObject.name;
+                //PhotonView.Get(this).RPC("SendKillfeed", RpcTarget.AllBuffered,  Cible.name, userId);
+                //PhotonView.Get(this).RPC("RPC_ReceiveKillfeed", RpcTarget.All,userId, Cible.name);
                 PhotonNetwork.Destroy(gameObject);
             }
-            else if (PhotonNetwork.IsMasterClient)
+            else
             {
-                Debug.Log("dead");
-                PhotonNetwork.Destroy(gameObject.GetComponent<PhotonView>());
+                PhotonView.Get(this).RPC("RPC_SendKillfeed", RpcTarget.All, this.GetComponent<PhotonView>().ViewID, Cible.GetComponent<PhotonView>().ViewID);
             }
-                //photonView.RPC("SendKillfeed", RpcTarget.All, PhotonNetwork.LocalPlayer.NickName, Cible.name);
-        }        
+            //else if (PhotonNetwork.IsMasterClient)
+            //{
+            //    Debug.Log("dead");
+            //    PhotonNetwork.Destroy(gameObject.GetComponent<PhotonView>());
+            //}
+            PhotonView.Get(this).RPC("RPC_ReceiveKillfeed", RpcTarget.All, PhotonNetwork.LocalPlayer.UserId, Cible.name);
+        }
     }
 
     [PunRPC]
-    public void SendKillfeed(string killerName, string victimName)
+    public void SendKillfeed(string killerName, string victimName, PhotonMessageInfo info)
     {
         // Envoyer les informations d'élimination aux autres clients
         // Vous pouvez également mettre à jour votre UI pour afficher les informations dans le killfeed
         Debug.Log(killerName + " a kill " + victimName);
+        //Debug.LogFormat("Info: {0} sender {1} {2}", info.Sender, info.photonView, info.SentServerTime);
+
+        photonView.RPC("GiveExperience", RpcTarget.All, new object[] { });
     }
 
     [PunRPC]
-    public void ReceiveKillfeed(string killerName, string victimName)
+    public void RPC_SendKillfeed(int killerId, int victimId)
     {
-        Debug.Log(killerName + " a kill " + victimName);
+        Player killer = PhotonNetwork.CurrentRoom.GetPlayer(killerId);
+        Player victim = PhotonNetwork.CurrentRoom.GetPlayer(victimId);
+        Debug.Log(killer + " a kill " + victim);
         // Mettre à jour votre UI pour afficher les informations dans le killfeed
     }
 
@@ -517,10 +510,11 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     {
         float expToGive = 0;
         //TODO Change the amount of xp
-        switch (enemyType)
+        Debug.Log("test enemytype "+ Cible.GetComponent<IDamageable>().enemyType);
+        switch (Cible.GetComponent<IDamageable>().enemyType)
         {
             case EnemyType.minion:
-                expToGive = .1f;
+                expToGive = 1f;
                 break;
             case EnemyType.player:
                 //expToGive = 1000 * gameObject.GetComponent<PlayerStats>().GetLvl();
@@ -714,6 +708,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         catch (Exception e)
         {
             Debug.Log("No target available");
+            Debug.Log(e);
         }
     }
 
@@ -801,6 +796,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         bullets.GetComponent<Projectile>().SetDamages(GetDegPhys() + dmgSupp, DamageType.physique);
         bullets.GetComponent<Projectile>().target = Target;
         bullets.GetComponent<Projectile>().targetSet = true;
+        bullets.GetComponent<Projectile>().playerId = photonView.name;
         //photonView.RPC("OnProjectileCreated", RpcTarget.OthersBuffered, bullets.GetPhotonView().ViewID, PhotonNetwork.LocalPlayer.ActorNumber);
     }
 
@@ -842,9 +838,18 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
             {
                 Debug.Log($"Team code : {team.Code} - Team Name : {team.Name}");
                 var layer = team.Code == 0 ? "InvisibleDominion" : "InvisibleVeritas";
-                gameObject.layer = LayerMask.NameToLayer(layer);
-                transform.SetLayerRecursively(LayerMask.NameToLayer(layer));
-                BushManager.Instance().AddEntityToBush(other.gameObject.GetComponent<BushBehavior>().bushID, gameObject);
+                foreach (Transform child in gameObject.transform)
+                {
+
+                    if (!child.gameObject.CompareTag("minimapView"))
+                    {
+                        child.gameObject.layer = LayerMask.NameToLayer(layer);
+                        child.SetLayerRecursively(LayerMask.NameToLayer(layer));
+
+                    }
+                }
+                
+                //BushManager.Instance().AddEntityToBush(other.gameObject.GetComponent<BushBehavior>().bushID, gameObject);
             }
         }
 
@@ -863,18 +868,32 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
                 switch (this.team.Code)
                 {
                     case 0:
-                        gameObject.layer = LayerMask.NameToLayer("Dominion");
-                        transform.SetLayerRecursively(LayerMask.NameToLayer("Dominion"));
+                        foreach (Transform child in gameObject.transform)
+                        {
+                            if (!child.gameObject.CompareTag("minimapView"))
+                            {
+                                child.gameObject.layer = LayerMask.NameToLayer("Dominion");
+                                child.SetLayerRecursively(LayerMask.NameToLayer("Dominion"));
+
+                            }
+                        }
                         break;
                     case 1:
-                        gameObject.layer = LayerMask.NameToLayer("Veritas");
-                        transform.SetLayerRecursively(LayerMask.NameToLayer("Veritas"));
+                        foreach (Transform child in gameObject.transform)
+                        {
+                            if (!child.gameObject.CompareTag("minimapView"))
+                            {
+                                child.gameObject.layer = LayerMask.NameToLayer("Veritas");
+                                child.SetLayerRecursively(LayerMask.NameToLayer("Veritas"));
+
+                            }
+                        }
                         break;
                 }
                 //gameObject.layer = LayerMask.NameToLayer("Player");
 
                 //transform.SetLayerRecursively(LayerMask.NameToLayer("Player"));
-                BushManager.Instance().RemoveEntityToBush(other.gameObject.GetComponent<BushBehavior>().bushID, gameObject);
+                //BushManager.Instance().RemoveEntityToBush(other.gameObject.GetComponent<BushBehavior>().bushID, gameObject);
             }
         }
 

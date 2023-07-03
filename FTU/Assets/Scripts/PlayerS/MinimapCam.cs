@@ -24,6 +24,7 @@ public class MinimapCam : MonoBehaviour
 	[SerializeField]
 	float offset;
 
+	float mapWidth, mapHeight;
 
 
 	void Start()
@@ -32,6 +33,8 @@ public class MinimapCam : MonoBehaviour
 		{
 			cam = GetComponent<Camera>();
 		}
+		mapHeight = 340;
+		mapWidth = 700;
 	}
 
 
@@ -58,23 +61,28 @@ public class MinimapCam : MonoBehaviour
 			}
 		}
 
-		if (IspointerOverUiObject())
+		if (Input.GetMouseButtonDown(1) && IspointerOverUiObject())
 		{
-			ray = cam.ScreenPointToRay(Input.mousePosition);
-			Debug.DrawRay(ray.origin, ray.direction * 500);
-			if (Input.GetMouseButtonDown(1))
-			{
 
 
+			Vector3 mousePos = cam.ScreenToViewportPoint(Input.mousePosition);
+			Vector3 worldPos = new Vector3(mousePos.x * mapWidth, 0, mousePos.y * mapHeight);
+
+			// Adjust for map proportions
+			worldPos.x *= (mapWidth / (float)Screen.width);
+			worldPos.z *= (mapHeight / (float)Screen.height);
 
 
-				if (Physics.Raycast(ray, out hit, Mathf.Infinity, mask))
-				{
+			//character.transform.position = worldPos;
+			Debug.Log(worldPos);
 
-					//your function move a selected unit to clicked area, etc.
-					Debug.LogError("ça bouge");
-				}
-			}
+
+			//if (Physics.Raycast(ray, out hit, Mathf.Infinity, mask))
+			//{
+
+			//    //your function move a selected unit to clicked area, etc.
+			//    Debug.LogError("ça bouge");
+			//}
 		}
 
 	}

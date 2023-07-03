@@ -40,9 +40,17 @@ public class PlayerStats : PlayerMovement
     {
         return skills[2];
     }    
+
+    public float GetGold()
+    {
+        return gold;
+    }
     #endregion
     #region Setter
-    
+    public void SetGold(float value)
+    {
+        gold += value;
+    }
     #endregion
 
     #endregion
@@ -62,6 +70,7 @@ public class PlayerStats : PlayerMovement
         ExpRate = 1.85f;
         SetExp(0);
         SetLvl(1);
+        SetGold(500);
         respawnCooldown = 10.0f;
         SetEnemyType(EnemyType.player);
 

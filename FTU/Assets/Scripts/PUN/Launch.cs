@@ -132,7 +132,8 @@ public class Launch : MonoBehaviourPunCallbacks
     public void LeaveRoom()
     {
         PhotonNetwork.LeaveRoom();
-        MenuManager.Instance.OpenMenu("loading");
+        //MenuManager.Instance.OpenMenu("loading");
+        PhotonNetwork.LoadLevel(0);
         //UpdatePlayerList();
     }
 
