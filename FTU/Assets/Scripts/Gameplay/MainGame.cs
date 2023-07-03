@@ -18,8 +18,10 @@ public class MainGame : MonoBehaviourPun
     [SerializeField] public Transform spawnTransformVeritas;
     [SerializeField] public Transform spawnTransformDominion;
     [SerializeField] private Transform deathPos;
-
-    // Start is called before the first frame update
+    //Dominion = 0,
+    //Veritas = 1,
+    //Voister = 2
+    public Material[] materialsMinimapView;    // Start is called before the first frame update
     public void Start()
     {
         isPlaying = false;

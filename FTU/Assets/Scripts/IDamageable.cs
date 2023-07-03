@@ -62,8 +62,6 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     //Nav Mesh
     [HideInInspector] public UnityEngine.AI.NavMeshAgent _navMeshAgent;
 
-
-
     public EnemyType enemyType;
     public enum EnemyType
     {
@@ -319,6 +317,20 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         Mana = MaxMana;
 
         inBush = 0;
+        var layer = "Default";
+        switch (this.team.Code)
+        {
+            case 0:
+                layer = "Dominion";
+                SetGameLayerRecursive(gameObject, layer);
+                break;
+            case 1:
+                layer = "Veritas";
+                SetGameLayerRecursive(gameObject, layer);
+                break;
+        }
+        
+        //team = PhotonTeamsManager.Instance.GetAvailableTeams()[1];
 
         Rigidbody rb = GetComponent<Rigidbody>();
         if (rb != null)
@@ -353,6 +365,14 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         }
     }
 
+    private void SetGameLayerRecursive(GameObject gameObject, string layer)
+    {
+        gameObject.layer = LayerMask.NameToLayer(layer);
+        foreach (Transform child in gameObject.transform)
+        {
+            SetGameLayerRecursive(child.gameObject, layer);
+        }
+    }
     public void SetupForAI()
     {
         SetMaxHealth(500);
@@ -366,6 +386,22 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         SetResMag(0);
         SetDegPhys(100);
         SetDegMag(100);
+        SetupMinimap();
+    }
+
+    protected void SetupMinimap()
+    {
+        var MainGame = GameObject.FindObjectOfType<MainGame>();
+        if(MainGame != null)
+        {
+            foreach (Transform child in transform)
+            {
+                if (child.gameObject.CompareTag("minimapView"))
+                {
+                    child.GetComponent<Renderer>().material = MainGame.materialsMinimapView[team.Code];
+                }
+            }
+        }
     }
 
     
@@ -824,8 +860,20 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
             
             if (inBush <= 0)
             {
-                gameObject.layer = LayerMask.NameToLayer("Default");
-                transform.SetLayerRecursively(LayerMask.NameToLayer("Default"));
+                switch (this.team.Code)
+                {
+                    case 0:
+                        gameObject.layer = LayerMask.NameToLayer("Dominion");
+                        transform.SetLayerRecursively(LayerMask.NameToLayer("Dominion"));
+                        break;
+                    case 1:
+                        gameObject.layer = LayerMask.NameToLayer("Veritas");
+                        transform.SetLayerRecursively(LayerMask.NameToLayer("Veritas"));
+                        break;
+                }
+                //gameObject.layer = LayerMask.NameToLayer("Player");
+
+                //transform.SetLayerRecursively(LayerMask.NameToLayer("Player"));
                 BushManager.Instance().RemoveEntityToBush(other.gameObject.GetComponent<BushBehavior>().bushID, gameObject);
             }
         }

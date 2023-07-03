@@ -14,7 +14,7 @@ public class MauBehaviour : BasicAIMovement
     private float basePhys;
     public List<GameObject> enemyTargets = new List<GameObject>();
     public List<GameObject> AllyTargets = new List<GameObject>();
-    [HideInInspector] public Transform templeTransform;
+    public Transform templeTransform;
 
     
 

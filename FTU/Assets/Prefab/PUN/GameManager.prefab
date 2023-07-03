@@ -48,6 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerPrefabs:
   - {fileID: 1675429051430411217, guid: f350f475da558ad448b725cea3ecc90e, type: 3}
+  selector: {fileID: 0}
 --- !u!114 &8155366620173427672
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -67,6 +68,10 @@ MonoBehaviour:
   spawnTransformVeritas: {fileID: 0}
   spawnTransformDominion: {fileID: 0}
   deathPos: {fileID: 0}
+  materialsMinimapView:
+  - {fileID: 2100000, guid: f1300a57d94e7084b9365d71eb263ff5, type: 2}
+  - {fileID: 2100000, guid: 2e67815a1b727d34a874cb6572f716b8, type: 2}
+  - {fileID: 2100000, guid: 4f3faa7cdd0f66b40b5cc0cc6b3b4ae5, type: 2}
 --- !u!114 &8155366620173427673
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -79,7 +84,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 030f6f77864a385458a263a594f41133, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minion: {fileID: 8118329312662599778, guid: b5c3ea629b695194cb7c4f38efe2a513, type: 3}
+  minionCacGreen: {fileID: 0}
+  minionCacPurple: {fileID: 0}
+  minionDistGreen: {fileID: 0}
+  minionDistPurple: {fileID: 0}
   spawnPoint:
   - {fileID: 0}
   - {fileID: 0}

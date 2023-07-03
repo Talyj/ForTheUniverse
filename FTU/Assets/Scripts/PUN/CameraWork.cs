@@ -36,14 +36,21 @@ public class CameraWork : MonoBehaviourPun
     {
         if (photonView.IsMine)
         {
+            //Mask for main Camera
             var team = gameObject.GetComponent<IDamageable>().team.Code;
             var layer = team == 1 ? "InvisibleDominion" : "InvisibleVeritas";
         
             var invisible_layer_mask=LayerMask.NameToLayer(layer);
-            invisible_layer_mask=~ (1 <<invisible_layer_mask);//This inverts the value
+            //var final_layer_mask=~ (1 <<invisible_layer_mask);//This inverts the value
+
+            var minimap_layer_mask = LayerMask.NameToLayer("MinimapCamera");
+            var final_layer_mask = ~(1 << invisible_layer_mask | 1 << minimap_layer_mask);
             //Debug.Log(invisible_layer_mask);
-            Camera.main.cullingMask= invisible_layer_mask;
-        
+            Camera.main.cullingMask= final_layer_mask;
+
+            //Mask for minimap Camera
+            GameObject.FindGameObjectWithTag("minimapCam").GetComponent<Camera>().cullingMask = ~(1 << invisible_layer_mask);
+
             // Start following the target if wanted.
             if (followOnStart)
             {

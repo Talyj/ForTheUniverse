@@ -61,6 +61,7 @@ public class VoisterBehaviour : BasicAIMovement, IPunObservable
         ExpRate = 1.85f;
         SetExp(0);
         SetLvl(1);
+        SetupMinimap();
     }
 
     protected void VoisterBaseAction()

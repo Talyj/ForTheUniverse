@@ -21,7 +21,7 @@ public class PlayerManager : MonoBehaviour
     {
         PV = GetComponent<PhotonView>();
         player = PV.Controller;
-        //index = PlayerPrefs.GetInt("persoID");
+        //index = PlayerPrefs.GetInt("championsSelected");
     }
 
     
@@ -30,50 +30,70 @@ public class PlayerManager : MonoBehaviour
         if (PV.IsMine)
         {
             index =(int) PhotonNetwork.LocalPlayer.CustomProperties["championsSelected"];
-            
-            CreateController();
-            PV.RPC("SyncTeam", RpcTarget.Others, player.GetPhotonTeam().Code, index );
+            CreateControllerV2();
+            //PV.RPC("SyncTeam", RpcTarget.AllBuffered, player.GetPhotonTeam().Name, index);
+            Debug.LogFormat("My team is {0} I am {1} and a play : {2}", player.GetPhotonTeam().Name, player.NickName, playerPrefabs[index].name);
         }
-        Debug.LogFormat("My team is {0} I am {1} and a play : {2}", player.GetPhotonTeam(), player.NickName, playerPrefabs[index].name);
         
     }
 
-    //TODO change the hard coded value to variable
-    void CreateController()
+    //void CreateController()
+    //{
+    //    _playerPrefab = PhotonNetwork.Instantiate(playerPrefabs[index].name, new Vector3(0f, 2.14f, 0f), Quaternion.identity, 0);
+
+    //    _playerPrefab.GetComponent<IDamageable>().team.Code =(byte) player.CustomProperties["_pt"];
+    //    _playerPrefab.GetComponent<IDamageable>().userId = PhotonNetwork.LocalPlayer.UserId;
+    //    Debug.Log(_playerPrefab.GetComponent<IDamageable>().userId);
+
+    //    _playerPrefab.GetComponent<PlayerStats>().playerManage = this;
+    //    if (_playerPrefab.GetComponent<IDamageable>().team.Code == 0)
+    //    {
+    //        _playerPrefab.GetComponent<PlayerStats>().deathPos = new Vector3(413.3f, 2.14f, -37.118f);
+    //        //_playerPrefab.GetComponent<PlayerStats>().deathPos = deathPos.transform.position;
+    //        //_playerPrefab.GetComponent<PlayerStats>().deathPos = new Vector3(0, 220, -339);
+    //        _playerPrefab.GetComponent<PlayerStats>().respawnPos = new Vector3(323.3f, 2.14f, -37.118f);
+    //    }
+    //    else if(_playerPrefab.GetComponent<IDamageable>().team.Code == 1)
+    //    {
+    //        _playerPrefab.GetComponent<PlayerStats>().deathPos = deathPos.transform.position;
+    //        //_playerPrefab.GetComponent<PlayerStats>().deathPos = deathPos.transform.position;
+    //        //_playerPrefab.GetComponent<PlayerStats>().deathPos = new Vector3(0, 220, -339);
+    //        _playerPrefab.GetComponent<PlayerStats>().respawnPos = new Vector3(-323.3f, 2.14f, -37.118f);
+    //    }
+    //}
+
+    
+    void CreateControllerV2()
     {
-        //TODO spawn coté bon :)
-        var posToSpawn = (byte)player.CustomProperties["_pt"] == 1 ? new Vector3(286.649933f, 2.14f, -39f) : new Vector3(-313.3f, 2.14f, -39f);
-        _playerPrefab = PhotonNetwork.Instantiate(playerPrefabs[index].name, posToSpawn, Quaternion.identity, 0);
         
-        _playerPrefab.GetComponent<IDamageable>().team.Code =(byte) player.CustomProperties["_pt"];
-        _playerPrefab.GetComponent<IDamageable>().userId = player.NickName;
-        Debug.Log(_playerPrefab.GetComponent<IDamageable>().userId);
-
-        _playerPrefab.GetComponent<PlayerStats>().playerManage = this;
-        if (_playerPrefab.GetComponent<IDamageable>().team.Code == 0)
+        if(player.GetPhotonTeam().Code == 0)
         {
-            _playerPrefab.GetComponent<PlayerStats>().deathPos = new Vector3(413.3f, 2.14f, -37.118f);
-            //_playerPrefab.GetComponent<PlayerStats>().deathPos = deathPos.transform.position;
-            //_playerPrefab.GetComponent<PlayerStats>().deathPos = new Vector3(0, 220, -339);
-            _playerPrefab.GetComponent<PlayerStats>().respawnPos = new Vector3(323.3f, 2.14f, -37.118f);
+            _playerPrefab = PhotonNetwork.Instantiate(playerPrefabs[index].name, new Vector3(323.3f, 2.14f, -37.118f), Quaternion.identity, 0);
+            _playerPrefab.GetComponent<IDamageable>().team.Code = (byte)player.CustomProperties["_pt"];
+            _playerPrefab.GetComponent<IDamageable>().team.Name = player.GetPhotonTeam().Name;
+            _playerPrefab.GetComponent<IDamageable>().userId = PhotonNetwork.LocalPlayer.UserId;
+            _playerPrefab.GetComponent<PlayerStats>().playerManage = this;
         }
-        else if(_playerPrefab.GetComponent<IDamageable>().team.Code == 1)
+        else if(player.GetPhotonTeam().Code == 1)
         {
-            _playerPrefab.GetComponent<PlayerStats>().deathPos = deathPos.transform.position;
-            //_playerPrefab.GetComponent<PlayerStats>().deathPos = deathPos.transform.position;
-            //_playerPrefab.GetComponent<PlayerStats>().deathPos = new Vector3(0, 220, -339);
-            _playerPrefab.GetComponent<PlayerStats>().respawnPos = new Vector3(-323.3f, 2.14f, -37.118f);
+            _playerPrefab = PhotonNetwork.Instantiate(playerPrefabs[index].name, new Vector3(-323.3f, 2.14f, -37.118f), Quaternion.identity, 0);
+            _playerPrefab.GetComponent<IDamageable>().team.Code = (byte)player.CustomProperties["_pt"];
+            _playerPrefab.GetComponent<IDamageable>().team.Name = player.GetPhotonTeam().Name;
+            _playerPrefab.GetComponent<IDamageable>().userId = PhotonNetwork.LocalPlayer.UserId;
+            _playerPrefab.GetComponent<PlayerStats>().playerManage = this;
         }
-
+        PV.RPC("SyncTeam", RpcTarget.AllBuffered, player.GetPhotonTeam().Code, index);
     }
 
     [PunRPC]
     void SyncTeam(byte team, int index)
     {
-        var chara = FindObjectsOfType<IDamageable>();
-        Debug.Log(index);
+        var chara = FindObjectsOfType<PlayerStats>();
+        Debug.Log(index +"fjffhfhfhfhfhfhf");
+        Debug.Log(chara.Length + " count");
         var prefab = chara.First(x => x.characterID == index);
-        prefab.team.Code = (byte)team;
+        prefab.team.Code = team;
+        prefab.team.Name = player.GetPhotonTeam().Name;
     }
 
 
