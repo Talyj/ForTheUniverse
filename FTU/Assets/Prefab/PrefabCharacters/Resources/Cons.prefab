@@ -175,6 +175,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!54 &7213121623342912308
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -238,6 +239,7 @@ MonoBehaviour:
   ult: {fileID: 0}
   SpawnPrefab2: {fileID: 5488236438643698054}
   Ui: {fileID: 4174342330855382529}
+  animator: {fileID: 2838189218122524992}
   Position:
     m_InternalValue: {x: 0, y: 0, z: 0}
   gold: 0
@@ -265,6 +267,7 @@ MonoBehaviour:
   - {fileID: 0}
   beam: {fileID: 3724081308419832764, guid: b737d936cc63a604cb7a69d50c428440, type: 3}
   ultArea: {fileID: 0}
+  consAnimation: {fileID: 2838189217696714569}
 --- !u!114 &2776643353293979873
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -716,8 +719,24 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ddd208c80e3bdc140ac9838f12f61fbc, type: 3}
+--- !u!114 &2838189217696714569 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4060904649322121735, guid: ddd208c80e3bdc140ac9838f12f61fbc, type: 3}
+  m_PrefabInstance: {fileID: 2249685783801480526}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a6cbd9badc06a549afbd9ab83ed8d44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &2838189217696714570 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4060904649322121732, guid: ddd208c80e3bdc140ac9838f12f61fbc, type: 3}
+  m_PrefabInstance: {fileID: 2249685783801480526}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &2838189218122524992 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 4060904649970068494, guid: ddd208c80e3bdc140ac9838f12f61fbc, type: 3}
   m_PrefabInstance: {fileID: 2249685783801480526}
   m_PrefabAsset: {fileID: 0}

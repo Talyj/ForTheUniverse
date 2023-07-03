@@ -25,8 +25,8 @@ public class MermaidBehaviour : PlayerStats
     //private List<GameObject> charmTargets;
     public GameObject charmArea;
     
-    //Animator
-    public Animator animator;
+    //Animation
+    public MermaidAnimation mermaidAnimation;
     
     public void Start()
     {
@@ -68,14 +68,6 @@ public class MermaidBehaviour : PlayerStats
         if (GetCanAct())
         {
             MovementPlayer();
-            if (Vector3.Distance(_navMeshAgent.destination, transform.position) < 0.5f)
-            {
-                animator.SetBool("Walk", false);
-            }
-            else
-            {
-                animator.SetBool("Walk", true);
-            }
             if (!isAttacking)
             {
                 //try
@@ -105,10 +97,10 @@ public class MermaidBehaviour : PlayerStats
                 //}
 
                 CheckRangeAttack();
-                /*if (Input.GetKeyDown(KeyCode.A))
+                if (Input.GetKeyDown(KeyCode.A))
                 {
                     Poissoin();
-                }*/
+                }
                 if (Input.GetKeyDown(KeyCode.Z))
                 {
                     MagicWind();
@@ -151,21 +143,17 @@ public class MermaidBehaviour : PlayerStats
     }
 
     //Copy that in a new character file (skill1)
-    public void Poissoin(GameObject proj)
+    public void Poissoin()
     {
         if (skills[0].isCooldown == false && GetMana() >= skills[0].Cost)
         {
+            mermaidAnimation.Skill1Animation();
             SetMana(GetMana() - skills[0].Cost);
             Debug.Log(skills[0].Name + " lanc�e");
             skills[0].isCooldown = true;
 
             //Modifier le skill ici
             //var proj = PhotonNetwork.Instantiate(poissoin.name, transform.position, Quaternion.identity);
-            var dir = transform.forward;
-            proj.GetComponent<PoissoinProjBehaviour>().SetDamages(GetDegMag(), DamageType.magique);
-            proj.GetComponent<PoissoinProjBehaviour>().source = this;
-            proj.GetComponent<PoissoinProjBehaviour>().team = team;
-            proj.GetComponent<Rigidbody>().AddForce(dir.normalized * 30f, ForceMode.Impulse);
 
             CheckPassive();   
 
@@ -187,18 +175,17 @@ public class MermaidBehaviour : PlayerStats
     {
         if (skills[1].isCooldown == false && GetMana() >= skills[1].Cost)
         {
+            mermaidAnimation.Skill2Animation();
             //buff
             SetMana(GetMana() - skills[1].Cost);
             Debug.Log(skills[1].Name + " lanc�e");
             skills[1].isCooldown = true;
 
-            Quaternion rotation = Quaternion.LookRotation(SpawnPrefab2.position - SpawnPrefab.position);
+            /*Quaternion rotation = Quaternion.LookRotation(SpawnPrefab2.position - SpawnPrefab.position);
             Vector3 direction = SpawnPrefab2.position - SpawnPrefab.position;
 
-            var proj = PhotonNetwork.Instantiate(windArea.name, transform.position, rotation);
-            proj.GetComponent<WindAreaBehaviour>().SetDamages(GetDegMag(), DamageType.magique);
-            proj.GetComponent<WindAreaBehaviour>().direction = new Vector3(direction.x, direction.y, direction.z);
-            proj.GetComponent<WindAreaBehaviour>().source = this;
+            var proj = PhotonNetwork.Instantiate(windArea.name, transform.position, rotation);*/
+            
 
             CheckPassive();
             StartCoroutine(CoolDown(skills[1]));
@@ -240,12 +227,13 @@ public class MermaidBehaviour : PlayerStats
     {
         if (skills[2].isCooldown == false && GetMana() >= skills[2].Cost)
         {
+            mermaidAnimation.UltimateAnimation();
             //buff
             SetMana(GetMana() - skills[2].Cost);
             Debug.Log(skills[2].Name + " lanc�e");
 
-            var area = PhotonNetwork.Instantiate(charmArea.name, transform.position, Quaternion.identity);
-            area.GetComponent<CharmAreaBehaviour>().source = this;
+            //var area = PhotonNetwork.Instantiate(charmArea.name, transform.position, Quaternion.identity);
+            
 
             StartCoroutine(CoolDown(skills[2]));
         }

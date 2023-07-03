@@ -18,6 +18,9 @@ public class PlayerMovement : IDamageable
     Vector3 velocity;
     Rigidbody myRigidbody;
     Camera viewCamera;
+    
+    //Animator
+    public Animator animator;
 
     //Animator anim;
     public NetworkVariable<Vector3> Position = new NetworkVariable<Vector3>();
@@ -82,6 +85,20 @@ public class PlayerMovement : IDamageable
                     _navMeshAgent.ResetPath();
                     _navMeshAgent.SetDestination(point);
                 }
+            }
+
+            var stateId = Animator.StringToHash("Walk");
+            if (animator.HasState(0,stateId))
+            {
+                
+            }
+            if (Vector3.Distance(_navMeshAgent.destination, transform.position) < 0.5f)
+            {
+                animator.SetBool("Walk", false);
+            }
+            else
+            {
+                animator.SetBool("Walk", true);
             }
         }
     }

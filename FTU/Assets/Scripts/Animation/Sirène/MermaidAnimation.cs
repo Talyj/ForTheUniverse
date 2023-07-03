@@ -13,6 +13,8 @@ public class MermaidAnimation : MonoBehaviour {
 
     public GameObject fishPrefab; // Les prefabs 
     public GameObject flaquePrefab; 
+    public GameObject windPrefab; 
+    public GameObject charmePrefab; 
 
     private GameObject currentFish; // Les objets actuels
     private GameObject currentFlaque; 
@@ -21,12 +23,12 @@ public class MermaidAnimation : MonoBehaviour {
     public Vector3 pointB; // Le point d'arrivee POINT B EN FONCTION DU SPELL A VOIR AVEC JULIEN
 
     public float speed = 1.0f; // La vitesse dU poisson
-    public float life_flaque = 5.0f; 
+    public float life_flaque = 5.0f;
 
 
     void Update() {
 
-        if (Input.GetKeyDown(KeyCode.A)) { // Sort 1
+        /*if (Input.GetKeyDown(KeyCode.A)) { // Sort 1
             animator.SetTrigger("Auto");
             StartCoroutine(TriggerVFXAfterDelay(sort1, 0.9f));
             StartCoroutine(SpawnFish(0.9f));
@@ -35,7 +37,7 @@ public class MermaidAnimation : MonoBehaviour {
         if(Input.GetKeyDown(KeyCode.Z)) { // Sort 2
             animator.SetTrigger("Sort2");
             StartCoroutine(TriggerVFXAfterDelay(sort2, 0.5f));
-        }
+        }*/
 
         /*if (Input.GetKey(KeyCode.Z)) // Animation de quand elle avance
         {
@@ -44,10 +46,10 @@ public class MermaidAnimation : MonoBehaviour {
             animator.SetBool("Walk", false);
         }*/
 
-        if (Input.GetKeyDown(KeyCode.R)) { // Ulti
+        /*if (Input.GetKeyDown(KeyCode.R)) { // Ulti
             animator.SetTrigger("Ulti");
             ulti.Play(); 
-        }
+        }*/
 
         //CHECK POUR LE SORT 1 
 
@@ -81,8 +83,16 @@ public class MermaidAnimation : MonoBehaviour {
     private IEnumerator SpawnFish(float delay) {
         yield return new WaitForSeconds(delay);
         currentFish =  PhotonNetwork.Instantiate(fishPrefab.name, transform.TransformPoint(pointA), Quaternion.identity);
+
+        var source = GetComponentInParent<MermaidBehaviour>();
+        
+        var dir = transform.forward;
+        currentFish.GetComponent<PoissoinProjBehaviour>().SetDamages(source.GetDegMag(), IDamageable.DamageType.magique);
+        currentFish.GetComponent<PoissoinProjBehaviour>().source = source;
+        currentFish.GetComponent<PoissoinProjBehaviour>().team = source.team;
+        currentFish.GetComponent<Rigidbody>().AddForce(dir.normalized * 30f, ForceMode.Impulse);
         //GetComponentInParent<MermaidBehaviour>().poissoin = currentFish;
-        GetComponentInParent<MermaidBehaviour>().Poissoin(currentFish);
+        //GetComponentInParent<MermaidBehaviour>().Poissoin(currentFish);
     }
 
     private IEnumerator DestroyFlaque(float delay) {
@@ -98,21 +108,58 @@ public class MermaidAnimation : MonoBehaviour {
     private IEnumerator TriggerVFXAfterDelay(VisualEffect vfx, float delay)
     {
         yield return new WaitForSeconds(delay);
-        VisualEffect newVFX = vfx;
+        GameObject newVFX = vfx.gameObject;
         if (vfx == sort2)
         {
             GameObject parentVFX = new GameObject("VFXObject");
-            parentVFX.transform.position = vfx.gameObject.GetComponentInParent<Transform>().position;
-            parentVFX.transform.rotation = vfx.gameObject.GetComponentInParent<Transform>().rotation;
-            newVFX = Instantiate(vfx, parentVFX.transform.position, parentVFX.transform.rotation , parentVFX.transform);
+            parentVFX.transform.position = GetComponentInParent<Transform>().position;
+            parentVFX.transform.rotation = GetComponentInParent<Transform>().rotation;
+            //Debug.Log(newVFX);
+            newVFX = PhotonNetwork.Instantiate(newVFX.name, parentVFX.transform.position, parentVFX.transform.rotation);
+            newVFX.transform.parent = parentVFX.transform;
+
+            GameObject wind = PhotonNetwork.Instantiate(windPrefab.name, parentVFX.transform.position, parentVFX.transform.rotation);
+            wind.transform.parent = parentVFX.transform;
+            
+            var source = GetComponentInParent<MermaidBehaviour>();
+            
+            wind.GetComponent<WindAreaBehaviour>().SetDamages(source.GetDegMag(), IDamageable.DamageType.magique);
+            wind.GetComponent<WindAreaBehaviour>().direction = newVFX.transform.forward;
+            wind.GetComponent<WindAreaBehaviour>().source = source;
         }
 
-        newVFX.SendEvent("OnPlay");
+        newVFX.GetComponent<VisualEffect>().SendEvent("OnPlay");
 
         if (vfx == sort2)
         {
-            StartCoroutine(DestroyVFX(newVFX, newVFX.GetFloat("TsunamiLifetime")));
+            StartCoroutine(DestroyVFX(newVFX.GetComponent<VisualEffect>(), newVFX.GetComponent<VisualEffect>().GetFloat("TsunamiLifetime")));
         }
         
+    }
+    
+    
+    public GameObject Skill1Animation()
+    {
+        animator.SetTrigger("Auto");
+        StartCoroutine(TriggerVFXAfterDelay(sort1, 0.9f));
+        StartCoroutine(SpawnFish(0.9f));
+        return currentFish;
+    }
+
+    public void Skill2Animation()
+    {
+        animator.SetTrigger("Sort2");
+        StartCoroutine(TriggerVFXAfterDelay(sort2, 0.5f));
+    }
+
+    public void UltimateAnimation()
+    {
+        ulti.gameObject.SetActive(true);
+        animator.SetTrigger("Ulti");
+        var source = GetComponentInParent<MermaidBehaviour>();
+        var area = PhotonNetwork.Instantiate(charmePrefab.name, transform.position, Quaternion.identity);
+        area.transform.parent = ulti.transform;
+        area.GetComponent<CharmAreaBehaviour>().source = source;
+        ulti.Play(); 
     }
 }

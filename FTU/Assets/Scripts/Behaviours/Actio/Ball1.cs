@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Ball1 : Projectile
 {
-    public Dps1 dps;
+    public ActioBehaviour dps;
 
     private new void Start()
     {

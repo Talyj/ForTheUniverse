@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Photon.Pun;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.VFX;
 
@@ -21,6 +22,8 @@ public class BretoAnimation : MonoBehaviour {
     public float lifetime_ulti;
 
     public float temps_sonar;
+    
+    private GameObject ultiPref = null;
 
 
 
@@ -37,7 +40,7 @@ public class BretoAnimation : MonoBehaviour {
             StartCoroutine(TriggerVFXAfterDelay(slash, 0.3f));
         }*/
         
-        if (Input.GetKeyDown(KeyCode.A)) { // Dash
+        /*if (Input.GetKeyDown(KeyCode.A)) { // Dash
             animator.SetTrigger("Dash");
             sort1.Play();
         }
@@ -57,7 +60,7 @@ public class BretoAnimation : MonoBehaviour {
             }
             StartCoroutine(PutUlti(0.2f));
             StartCoroutine(DestroyUlti(lifetime_ulti));
-        }
+        }*/
 
         /*if (Input.GetKey(KeyCode.Z)) { //Mouvement quand il avance
             animator.SetBool("Walk", true);
@@ -81,8 +84,8 @@ public class BretoAnimation : MonoBehaviour {
 
     private IEnumerator PutUlti(float delay) {
         yield return new WaitForSeconds(delay);
-        var ultiPref = PhotonNetwork.Instantiate(ulti.name, /*transform.parent.*/transform.position, /*transform.parent.*/transform.rotation);
-        GetComponentInParent<BretoBehaviour>().Ultime(ulti);
+        ultiPref = PhotonNetwork.Instantiate(ulti.name, /*transform.parent.*/transform.position, /*transform.parent.*/transform.rotation);
+        //GetComponentInParent<BretoBehaviour>().Ultime(ulti);
         ultiPref.SetActive(true);
     }
     
@@ -114,5 +117,31 @@ public class BretoAnimation : MonoBehaviour {
     private IEnumerator TriggerVFXAfterDelay(VisualEffect vfx, float delay) {
         yield return new WaitForSeconds(delay);
         vfx.SendEvent("OnPlay");
+    }
+
+    public void Skill1Animation()
+    {
+        animator.SetTrigger("Dash");
+        sort1.Play();
+    }
+    
+    public void Skill2Animation()
+    {
+        animator.SetTrigger("Sonar");
+        if(trident.activeSelf) {
+            StartCoroutine(DestroyTrident(0.0f));
+        }
+        StartCoroutine(RunSonar(0.3f));
+    }
+    
+    public GameObject UltimateAnimation()
+    {
+        animator.SetTrigger("Ulti");
+        if(trident.activeSelf) {
+            StartCoroutine(DestroyTrident(0.0f));
+        }
+        StartCoroutine(PutUlti(0.2f));
+        StartCoroutine(DestroyUlti(lifetime_ulti));
+        return ultiPref;
     }
 }
