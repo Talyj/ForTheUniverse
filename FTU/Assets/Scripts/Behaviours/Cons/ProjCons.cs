@@ -7,13 +7,9 @@ using Photon.Pun.UtilityScripts;
 public class ProjCons : Projectile
 {
     public ConsBehaviour source;
-    [SerializeField] PhotonTeamsManager manag;
-    public PhotonTeam teams;
 
     public new void Start()
     {
-        manag = GameObject.Find("RoomManager").GetComponentInChildren<PhotonTeamsManager>();
-
         StartCoroutine(DestroyBullet(3f));
     }
 
@@ -29,7 +25,7 @@ public class ProjCons : Projectile
         {
             if (other.gameObject.GetComponent<IDamageable>())
             {
-                if (other.gameObject.GetComponent<IDamageable>().team != teams)
+                if (other.gameObject.GetComponent<IDamageable>().team.Code != team.Code)
                 {
                     source.AddPassive();
                     DealDamage(other.gameObject, GetDamages(), GetDamageType());

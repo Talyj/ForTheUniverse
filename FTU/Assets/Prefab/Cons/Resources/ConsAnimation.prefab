@@ -231,7 +231,7 @@ GameObject:
   - component: {fileID: 4060904649322121732}
   - component: {fileID: 4060904649322121735}
   m_Layer: 0
-  m_Name: Cons
+  m_Name: ConsAnimation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -476,6 +476,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!4 &4598599897431657446 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 423f1ca25e854fe44baccfb945c6f0da, type: 3}

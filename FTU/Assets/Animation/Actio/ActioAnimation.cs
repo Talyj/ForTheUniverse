@@ -12,10 +12,12 @@ public class ActioAnimation : MonoBehaviour {
     public VisualEffect explosion_ulti;
 
     public GameObject trap;
+    public ActioBehaviour source;
 
 
     void Start() {
         trap.SetActive(false);
+        source = GetComponentInParent<ActioBehaviour>();
     }
     
     void Update() {
@@ -49,8 +51,8 @@ public class ActioAnimation : MonoBehaviour {
 
     private IEnumerator PutTrap(float delay) {
         yield return new WaitForSeconds(delay);
-        GameObject trapchild = PhotonNetwork.Instantiate(trap.name, transform.position, transform.rotation);
-        //trapchild.transform.parent = transform.parent.transform;
+        GameObject trapchild = PhotonNetwork.Instantiate(trap.name, new Vector3(transform.position.x, 0, transform.position.z), transform.rotation);
+        trapchild.GetComponent<Trap>().source = source;
         trapchild.SetActive(true);
     }
 
