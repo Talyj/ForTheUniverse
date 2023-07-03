@@ -20,6 +20,6 @@ public class MouseClicked : MonoBehaviour
 
         private IEnumerator DestroyAfterPlay(float delay) {
         yield return new WaitForSeconds(delay);
-        Destroy(this);
+        Destroy(gameObject);
     }
 }

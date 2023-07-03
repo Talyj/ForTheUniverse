@@ -107,7 +107,7 @@ public class PlayerMovement : IDamageable
                     //}
                     _navMeshAgent.ResetPath();
                     _navMeshAgent.SetDestination(point);
-                    Instantiate(animation_click, point, Quaternion.identity);
+                    Instantiate(animation_click, new Vector3(point.x, 0.2f, point.z), Quaternion.identity);
                 }
             }
 
