@@ -30,6 +30,9 @@ public class MinimapBehaviour : MonoBehaviourPun
 	[Range(-50f, 50f)]
 	public float valueZ;
 
+	private float offsetx;
+	private float offsety;
+
 	PlayerMovement player;
 
 	// Start is called before the first frame update
@@ -57,92 +60,69 @@ public class MinimapBehaviour : MonoBehaviourPun
 
 	void Update()
 	{
-		//to move camera :
-		//if (IspointerOverUiObject())
-		//{
-		//	if (Input.GetMouseButton(0))
-		//	{
+		if (!photonView.IsMine) {
+			return;
+		}
 
+		if (IspointerOverUiObject() && Input.GetMouseButtonDown(0)) {
+			Vector2 localCursor;
 
-		//		ray = cam.GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
+			// Using TryRebuildCanvasRenderMode just in case something changes the RenderMode on the canvas at runtime.
+			if (!RectTransformUtility.ScreenPointToLocalPointInRectangle(rawImage.rectTransform, Input.mousePosition, rawImage.canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : cam, out localCursor))
+				return;
 
+			Rect r = rawImage.rectTransform.rect;
+			Debug.Log(rawImage.rectTransform);
 
-		//		if (Physics.Raycast(ray, out hit, Mathf.Infinity, mask))
-		//		{
-		//			YPos = camToMove.transform.position.y;
+			if (r.Contains(localCursor)) {
+				Debug.Log("Mouse click detected inside minimap at position " + localCursor);
 
-		//			movePoint = new Vector3(hit.point.x, YPos, hit.point.z - offset);
-		//			camToMove.transform.position = movePoint;
+				if(localCursor.x > 0.0f) {
+					offsetx = 20.0f;
+				} else {
+					offsetx = -20.0f;
+				}
 
-		//		}
-		//	}
-		//}
+				if(localCursor.x < 20.0f && localCursor.x > -20.0f) {
+					offsetx = 0.0f;
+				}
 
-		if (IspointerOverUiObject())
-		{
-			//ray = cam.ScreenPointToRay(Input.mousePosition);
+				if(localCursor.y > 155.0f) {
+					offsety = 10.0f;
+				} else {
+					offsety = -10.0f;
+				}
 
-			//Debug.DrawRay(ray.origin, (ray.direction /** new Vector2(1, 1)*/) * 4500);
+				if(localCursor.y < 155.0f && localCursor.y > -155.0f) {
+					localCursor.y = 0.0f;
+				}
 
-			//         ray.origin = new Vector3(ray.origin.x - 1000, ray.origin.y, ray.origin.z + 80);
-			//         Debug.LogError(ray.origin);
-			//ray.direction  = new Vector3(ray.direction.x * valueX, ray.direction.y * valueY, ray.direction.z * valueZ);
+				player._navMeshAgent.ResetPath();
+        		player._navMeshAgent.SetDestination(new Vector3(localCursor.x+offsetx, 0, localCursor.y+offsety));
 
-			//Debug.DrawRay(ray.origin, ray.direction * 500000, Color.red);
+				// Normalize localCursor coordinates to [0, 1] range
+				//Vector2 normalizedPos = new Vector2((localCursor.x / r.width) + 0.5f, (localCursor.y / r.height) + 0.5f);
+				// Cast the ray to the world
+				//CastRayToWorld(normalizedPos);
+			}
 
-			//if (Input.GetMouseButtonDown(0))
-			//{
-
-			//	float rayDistance;
-			//	Plane groundPlane = new Plane(Vector3.up, Vector3.zero);
-
-			//	if (groundPlane.Raycast(ray, out rayDistance))
-			//             {
-			//		var point = ray.GetPoint(rayDistance);
-			//                 player._navMeshAgent.ResetPath();
-			//                 player._navMeshAgent.SetDestination(point);
-			//             }
-			//             //if (Physics.Raycast(ray, out hit, Mathf.Infinity, mask))
-			//             //{
-			//             //	//your function move a selected unit to clicked area, etc.
-			//             //}
-			//         }
-
-			Vector2 curosr = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
-
-			//if (RectTransformUtility.ScreenPointToLocalPointInRectangle(GetComponent<RawImage>().rectTransform, new Vector2(Input.mousePosition.x, Input.mousePosition.y), cam, out curosr))
-			//{
-
-				Texture texture = GetComponent<RawImage>().texture;
-				Rect rect = GetComponent<RawImage>().rectTransform.rect;
-
-				float coordX = Mathf.Clamp(0, (((curosr.x - rect.x) * texture.width) / rect.width), texture.width);
-				float coordY = Mathf.Clamp(0, (((curosr.y - rect.y) * texture.height) / rect.height), texture.height);
-
-				float calX = coordX / texture.width;
-				float calY = coordY / texture.height;
-
-
-				curosr = new Vector2(calX, calY);
-
-				CastRayToWorld(curosr);
-			//}
+			
 		}
 	}
 
 	private void CastRayToWorld(Vector2 vec)
 	{
         Ray MapRay = cam.ScreenPointToRay(new Vector3(vec.x * cam.pixelWidth, 0, vec.y * cam.pixelHeight));
-        //Ray MapRay = cam.ScreenPointToRay(new Vector3(vec.x * cam.pixelWidth, vec.y * cam.pixelHeight));
 
-        RaycastHit miniMapHit;
-		Debug.DrawRay(MapRay.origin, MapRay.direction * 5000);
+		// Dessinez le rayon dans la fenêtre Scene pour le débogage
+		Debug.DrawRay(MapRay.origin, MapRay.direction * 5000, Color.red);
+
+		RaycastHit miniMapHit;
 		if (Physics.Raycast(MapRay, out miniMapHit, Mathf.Infinity, mask))
 		{
 			Debug.Log("miniMapHit: " + miniMapHit.collider.gameObject);
 			Debug.LogError(miniMapHit.point);
 		}
-
 	}
 
 
