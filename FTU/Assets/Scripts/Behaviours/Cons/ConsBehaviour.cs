@@ -11,9 +11,8 @@ public class ConsBehaviour : PlayerStats
     [SerializeField]
     private int _passiveCounter;
     private bool isPassiveStart;
-    //public GameObject[] spawns;
-    //public GameObject[] lights;
-    public GameObject sp;
+    public GameObject[] spawns;
+    public GameObject[] lights;
     //Skill 1
     public GameObject beam;
 
@@ -22,6 +21,9 @@ public class ConsBehaviour : PlayerStats
     private float ultiTimerDefault = 1;
     private float slow;
     public GameObject ultArea;
+    
+    //Animation
+    public ConsAnimation consAnimation;
 
     public void Start()
     {
@@ -93,16 +95,16 @@ public class ConsBehaviour : PlayerStats
                     //photonView.RPC("DealDamages",RpcTarget.All, new object[] { 9999 });
                     TakeDamage(9999, DamageType.physique);
                 }
-                    if (Input.GetKeyDown(KeyCode.Alpha1))
+                    if (Input.GetKeyDown(KeyCode.A))
                 {
                     BeamUltra();
                 }
-                if (Input.GetKeyDown(KeyCode.Alpha2))
+                if (Input.GetKeyDown(KeyCode.Z))
                 {
                     Vvs();
                 }
 
-                if (Input.GetKeyDown(KeyCode.Alpha3) && GetCanUlt() == true)
+                if (Input.GetKeyDown(KeyCode.R) && GetCanUlt() == true)
                 {
                     Ultime();
                 }
@@ -145,13 +147,13 @@ public class ConsBehaviour : PlayerStats
     }
     public void SpawnRangeAttackCons(GameObject Target, float dmgSupp = 0)
     {
-        //var r = UnityEngine.Random.Range(0, spawns.Length);
-        //foreach(var l in lights)
-        //{
-        //    l.SetActive(false);
-        //}
-        //lights[r].SetActive(true);
-        var bullets = PhotonNetwork.Instantiate(projPrefab.name, sp.transform.position, Quaternion.identity);
+        var r = UnityEngine.Random.Range(0, spawns.Length);
+        foreach(var l in lights)
+        {
+            l.SetActive(false);
+        }
+        lights[r].SetActive(true);
+        var bullets = PhotonNetwork.Instantiate(projPrefab.name, spawns[r].transform.position, Quaternion.identity);
 
         bullets.GetComponent<Projectile>().SetDamages(GetDegMag() + dmgSupp, DamageType.magique);
         bullets.GetComponent<Projectile>().target = Target;
@@ -191,16 +193,17 @@ public class ConsBehaviour : PlayerStats
     {
         if (skills[0].isCooldown == false && GetMana() >= skills[0].Cost)
         {
+            consAnimation.Skill1Animation();
             SetMana(GetMana() - skills[0].Cost);
             Debug.Log(skills[0].Name + " lanc�e");
 
             skills[0].isCooldown = true;
-            //var r = UnityEngine.Random.Range(0, spawns.Length);
-            //foreach (var l in lights)
-            //{
-            //    l.SetActive(false);
-            //}
-            //lights[r].SetActive(true);
+            /*var r = UnityEngine.Random.Range(0, spawns.Length);
+            foreach (var l in lights)
+            {
+                l.SetActive(false);
+            }
+            lights[r].SetActive(true);
 
             Transform targ;
             if (Cible)
@@ -212,12 +215,12 @@ public class ConsBehaviour : PlayerStats
                 targ = SpawnPrefab2;
             }
 
-            var proj = PhotonNetwork.Instantiate(beam.name, sp.transform.position, Quaternion.identity);
-            var dir = targ.transform.position - sp.transform.position;
+            var proj = PhotonNetwork.Instantiate(beam.name, spawns[r].transform.position, Quaternion.identity);
+            var dir = targ.transform.position - spawns[r].transform.position;
             proj.GetComponent<ProjCons>().SetDamages(GetDegPhys(), DamageType.physique);
             proj.GetComponent<ProjCons>().source = this;
             proj.GetComponent<ProjCons>().teams = team;
-            proj.GetComponent<Rigidbody>().AddForce(dir.normalized * 30f, ForceMode.Impulse);
+            proj.GetComponent<Rigidbody>().AddForce(dir.normalized * 30f, ForceMode.Impulse);*/
 
             CheckPassive();
             StartCoroutine(CoolDown(skills[0]));
@@ -237,6 +240,7 @@ public class ConsBehaviour : PlayerStats
     {
         if (skills[1].isCooldown == false && GetMana() >= skills[1].Cost && _passiveCounter >= 1)
         {
+            consAnimation.Skill2Animation();
             //buff
             SetMana(GetMana() - skills[1].Cost);
             Debug.Log(skills[1].Name + " lanc�e");
@@ -304,6 +308,7 @@ public class ConsBehaviour : PlayerStats
     {
         if (skills[2].isCooldown == false && GetMana() >= skills[2].Cost)
         {
+            consAnimation.UltimateAnimation();
             //buff
             SetMana(GetMana() - skills[2].Cost);
             Debug.Log(skills[2].Name + " lanc�e");

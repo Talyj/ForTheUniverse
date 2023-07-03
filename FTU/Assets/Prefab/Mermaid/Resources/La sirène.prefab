@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 141393997935331775}
   - component: {fileID: 141393997935331773}
   - component: {fileID: 141393997935331774}
+  - component: {fileID: 8784442346045914674}
   m_Layer: 0
   m_Name: Tsunami
   m_TagString: Untagged
@@ -119,6 +120,28 @@ VFXRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &8784442346045914674
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 141393997935331768}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &141393998050970788
 GameObject:
   m_ObjectHideFlags: 0
@@ -10169,10 +10192,12 @@ MonoBehaviour:
   animator: {fileID: 141393998578202482}
   sort1: {fileID: 141393999261295327}
   sort1_explosion: {fileID: 141393998237629287}
-  sort2: {fileID: 141393997935331773}
+  sort2: {fileID: 1523848458585649662, guid: 25f79bd91b0dfa843bc69b73f261b6fb, type: 3}
   ulti: {fileID: 141393999291791464}
   fishPrefab: {fileID: 2998339924352033714, guid: cd8c4f20f01b9a54fafc1350bd4355e1, type: 3}
   flaquePrefab: {fileID: 4799184673761136450, guid: 2455b182212ee554696e57df6c905a4e, type: 3}
+  windPrefab: {fileID: 8917880201405145998, guid: 18f6b7adf5cc6b04fbe97f790a318be7, type: 3}
+  charmePrefab: {fileID: 1991124717125365115, guid: b9be727e9d299204e9fc027ae70790a7, type: 3}
   pointA: {x: 0, y: 1.106, z: 0.412}
   pointB: {x: 0, y: 1.106, z: 5}
   speed: 1
@@ -10268,6 +10293,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1001 &9109663162776852877
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -11,6 +11,8 @@ public class BigEdBehaviours : PlayerStats
 
     BigEdBehaviours Instance;
 
+    public BigEdAnimation bigEdAnimation;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -75,16 +77,16 @@ public class BigEdBehaviours : PlayerStats
                 //    Debug.Log("No target available");
                 //}
                 CheckRangeAttack();
-                if (Input.GetKeyDown(KeyCode.Alpha1) && Cible != null )
+                if (Input.GetKeyDown(KeyCode.A) && Cible != null )
                 {
                     HeadImpact();
                 }
-                if (Input.GetKeyDown(KeyCode.Alpha2))
+                if (Input.GetKeyDown(KeyCode.Z))
                 {
                     EnPlace();
                 }
 
-                if (Input.GetKeyDown(KeyCode.Alpha3) && GetCanUlt() == true)
+                if (Input.GetKeyDown(KeyCode.R) && GetCanUlt() == true)
                 {
                     Ultime();
                 }
@@ -127,6 +129,7 @@ public class BigEdBehaviours : PlayerStats
     {
         if (skills[0].isCooldown == false && GetMana() >= skills[0].Cost)
         {
+            bigEdAnimation.Skill1Animation();
             SetMana(GetMana() - skills[0].Cost);
             Debug.Log(skills[0].Name + " lancée");
 
@@ -158,6 +161,7 @@ public class BigEdBehaviours : PlayerStats
     {
         if (skills[1].isCooldown == false && GetMana() >= skills[1].Cost)
         {
+            bigEdAnimation.Skill2Animation();
             SetMana(GetMana() - skills[1].Cost);
             Debug.Log(skills[1].Name + " lancée");
             StartCoroutine(skill2());
@@ -193,6 +197,7 @@ public class BigEdBehaviours : PlayerStats
     {
         if (skills[2].isCooldown == false && GetMana() >= skills[2].Cost)
         {
+            bigEdAnimation.UltimateAnimation();
             SetMana(GetMana() - skills[2].Cost);
             Debug.Log(skills[2].Name + " lanc�e");
 

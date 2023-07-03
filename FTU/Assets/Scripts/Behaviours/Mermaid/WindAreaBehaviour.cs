@@ -14,10 +14,10 @@ public class WindAreaBehaviour : Projectile
     {
         //scaleChange = new Vector3(0.1f, 0.0f, 0.0f);
         //speed = 50;
-        timerDefault = 0.5f;
+        timerDefault = 2f;
         StartCoroutine(Movement());
         StartCoroutine(SizeModification());
-        StartCoroutine(DestroyBullet(timerDefault));
+        //StartCoroutine(DestroyBullet(timerDefault));
     }
 
     public new void Update()
@@ -52,13 +52,14 @@ public class WindAreaBehaviour : Projectile
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.GetComponent<IDamageable>() && photonView.IsMine)
+        IDamageable otherEntity;
+        if (other.gameObject.TryGetComponent(out otherEntity) && photonView.IsMine)
         {
-            if(other.gameObject.GetComponent<IDamageable>().enemyType == IDamageable.EnemyType.dieu ||
-                other.gameObject.GetComponent<IDamageable>().enemyType == IDamageable.EnemyType.player ||
-                other.gameObject.GetComponent<IDamageable>().enemyType == IDamageable.EnemyType.minion)
+            if(otherEntity.enemyType == IDamageable.EnemyType.dieu ||
+               otherEntity.enemyType == IDamageable.EnemyType.player ||
+               otherEntity.enemyType == IDamageable.EnemyType.minion)
             {
-                if(other.gameObject.GetComponent<IDamageable>().team != source.team)
+                if(otherEntity.team != source.team)
                 {
                     source.AddWindedTarget(other.gameObject);
                 }

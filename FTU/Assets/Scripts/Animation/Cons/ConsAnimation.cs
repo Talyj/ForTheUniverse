@@ -12,7 +12,7 @@ public class ConsAnimation : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.A))
+        /*if (Input.GetKeyDown(KeyCode.A))
         {
             animator.SetTrigger("Auto");
             StartCoroutine(TriggerVFXAfterDelay(sort1, 0));
@@ -22,7 +22,7 @@ public class ConsAnimation : MonoBehaviour
             animator.SetTrigger("Sort2");
             
             StartCoroutine(TriggerVFXAfterDelay(sort2, 0));
-        }
+        }*/
 
         /*if (Input.GetKey(KeyCode.Z))
         {
@@ -32,11 +32,11 @@ public class ConsAnimation : MonoBehaviour
             animator.SetBool("Walk", false);
         }*/
 
-        if (Input.GetKeyDown(KeyCode.R))
+        /*if (Input.GetKeyDown(KeyCode.R))
         {
             animator.SetTrigger("Ulti");
             StartCoroutine(TriggerVFXAfterDelay(ulti, 1.05f));
-        }
+        }*/
     }
 
     private IEnumerator TriggerVFXAfterDelay(VisualEffect vfx, float delay)
@@ -45,5 +45,24 @@ public class ConsAnimation : MonoBehaviour
         
         // Lancez le VFX
         vfx.SendEvent("OnPlay");
+    }
+    
+    public void Skill1Animation()
+    {
+        animator.SetTrigger("Auto");
+        StartCoroutine(TriggerVFXAfterDelay(sort1, 0));
+    }
+    
+    public void Skill2Animation()
+    {
+        animator.SetTrigger("Sort2");
+            
+        StartCoroutine(TriggerVFXAfterDelay(sort2, 0));
+    }
+    
+    public void UltimateAnimation()
+    {
+        animator.SetTrigger("Ulti");
+        StartCoroutine(TriggerVFXAfterDelay(ulti, 1.05f));
     }
 }

@@ -11,7 +11,7 @@ public class CharmAreaBehaviour : Projectile
     private new void Start()
     {
 
-        StartCoroutine(DestroyBullet(1f));
+        StartCoroutine(DestroyBullet(3f));
     }
 
     public new void Update()

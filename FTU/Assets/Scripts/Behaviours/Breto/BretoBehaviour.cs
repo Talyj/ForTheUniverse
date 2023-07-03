@@ -23,6 +23,9 @@ public class BretoBehaviour : PlayerStats
     
     //private List<GameObject> charmTargets;
     //public GameObject charmArea;
+    
+    //Animation
+    public BretoAnimation bretoAnimation;
 
     public void Start()
     {
@@ -66,15 +69,15 @@ public class BretoBehaviour : PlayerStats
                 {
                     Skill1();
                 }
-                /*if (Input.GetKeyDown(KeyCode.Z))
+                if (Input.GetKeyDown(KeyCode.Z))
                 {
                     Skill2();
-                }*/
+                }
 
-                /*if (Input.GetKeyDown(KeyCode.R) && GetCanUlt() == true)
+                if (Input.GetKeyDown(KeyCode.R) && GetCanUlt() == true)
                 {
                     Ultime();
-                }*/
+                }
             }
         }
     }
@@ -112,6 +115,7 @@ public class BretoBehaviour : PlayerStats
     {
         if (skills[0].isCooldown == false && GetMana() >= skills[0].Cost)
         {
+            bretoAnimation.Skill1Animation();
             SetMana(GetMana() - skills[0].Cost);
             Debug.Log(skills[0].Name + " lanc�e");
             skills[0].isCooldown = true;
@@ -167,6 +171,7 @@ public class BretoBehaviour : PlayerStats
     {
         if (skills[1].isCooldown == false && GetMana() >= skills[1].Cost)
         {
+            bretoAnimation.Skill2Animation();
             //buff
             SetMana(GetMana() - skills[1].Cost);
             Debug.Log(skills[1].Name + " lanc�e");
@@ -196,10 +201,11 @@ public class BretoBehaviour : PlayerStats
     }
 
 
-    public void Ultime(GameObject maelstromTemp)
+    public void Ultime()
     {
         if (skills[2].isCooldown == false && GetMana() >= skills[2].Cost)
         {
+            GameObject maelstromTemp = bretoAnimation.UltimateAnimation();
             //buff
             SetMana(GetMana() - skills[2].Cost);
             Debug.Log(skills[2].Name + " lanc�e");
