@@ -64,7 +64,7 @@ namespace Com.MyCompany.MyGame
 
         public override void OnLeftRoom()
         {
-            SceneManager.LoadScene("Launcher");
+            PhotonNetwork.LoadLevel(0);
         }
 
         public void LeaveRoom()
@@ -87,7 +87,7 @@ namespace Com.MyCompany.MyGame
             //{
             //    PhotonNetwork.LoadLevel("WaitingRoom");
             //}
-            PhotonNetwork.LoadLevel("DevNewChar");
+            PhotonNetwork.LoadLevel(0);
         }
 
         public override void OnPlayerEnteredRoom(Player other)
@@ -101,6 +101,7 @@ namespace Com.MyCompany.MyGame
                 Debug.LogFormat("OnPlayerEnteredRoom IsMasterClient {0}", PhotonNetwork.IsMasterClient); // called before OnPlayerLeftRoom
 
 
+                PhotonNetwork.DestroyPlayerObjects(PhotonNetwork.LocalPlayer);
                 LoadArena();
             }
         }
@@ -115,7 +116,7 @@ namespace Com.MyCompany.MyGame
                 Debug.LogFormat("OnPlayerLeftRoom IsMasterClient {0}", PhotonNetwork.IsMasterClient); // called before OnPlayerLeftRoom
 
 
-                LoadArena();
+                LeaveRoom();
             }
         }
     }

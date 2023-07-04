@@ -59,6 +59,7 @@ MonoBehaviour:
   - RPC_ReceiveKillfeed
   - RPC_SendKillfeed
   - RPC_SendKillfeed2
+  - CheckVictory
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

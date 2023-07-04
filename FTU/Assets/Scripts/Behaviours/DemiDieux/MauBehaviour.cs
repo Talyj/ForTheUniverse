@@ -16,9 +16,6 @@ public class MauBehaviour : BasicAIMovement
     public List<GameObject> AllyTargets = new List<GameObject>();
     public Transform templeTransform;
 
-    
-
-
     // Start is called before the first frame update
     public void Start()
     {
@@ -51,8 +48,8 @@ public class MauBehaviour : BasicAIMovement
         if (PhotonNetwork.IsMasterClient)
         {
             HealthBehaviour();
+            if (GetHealth() <= 0) return;
             CheckTarget();
-
             if (GetCanAct() && GetCanMove())
             {
                 //Attack
@@ -84,11 +81,10 @@ public class MauBehaviour : BasicAIMovement
         }
         else
         {
-            //var dist = Vector3.Distance(Cible.transform.position, templeTransform.position);
-            //if (dist >= 50)
-            //{
-            //    Cible = null;
-            //}
+            if (Vector3.Distance(Cible.transform.position, templeTransform.position) >= 50f)
+            {
+                Cible = null;
+            }
         }
     }
 

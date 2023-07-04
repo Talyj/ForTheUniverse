@@ -7,6 +7,8 @@ using UnityEngine;
 public class GolemBehaviour : BasicAIStats
 {
     private float attackCooldown;
+    [SerializeField] private bool isInvincible;
+    [SerializeField] private GameObject otherGolem;
 
     public void Start()
     {
@@ -37,7 +39,15 @@ public class GolemBehaviour : BasicAIStats
             Attack();
         }
 
-        HealthBehaviour();
+        if (!isInvincible)
+        {
+            HealthBehaviour();
+        }
+        else
+        {
+            SetHealth(GetMaxHealth());
+            CheckFirstGolem();
+        }
 
     }
 
@@ -49,5 +59,13 @@ public class GolemBehaviour : BasicAIStats
             attackCooldown = 5;
         }
         attackCooldown -= Time.deltaTime;
+    }
+
+    private void CheckFirstGolem()
+    {
+        if(otherGolem == null)
+        {
+            isInvincible = false;
+        }
     }
 }
