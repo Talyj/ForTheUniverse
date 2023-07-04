@@ -75,35 +75,23 @@ public class MinimapBehaviour : MonoBehaviourPun
 			Debug.Log(rawImage.rectTransform);
 
 			if (r.Contains(localCursor)) {
-				Debug.Log("Mouse click detected inside minimap at position " + localCursor);
+				//Debug.Log("Mouse click detected inside minimap at position " + localCursor);
 
 				if(localCursor.x > 0.0f) {
 					offsetx = 20.0f;
+					offsety = -1.0f;
 				} else {
 					offsetx = -20.0f;
+					offsety = 1.0f;
 				}
 
 				if(localCursor.x < 20.0f && localCursor.x > -20.0f) {
 					offsetx = 0.0f;
-				}
-
-				if(localCursor.y > 155.0f) {
-					offsety = 10.0f;
-				} else {
-					offsety = -10.0f;
-				}
-
-				if(localCursor.y < 155.0f && localCursor.y > -155.0f) {
-					localCursor.y = 0.0f;
+					offsety = 0.0f;
 				}
 
 				player._navMeshAgent.ResetPath();
         		player._navMeshAgent.SetDestination(new Vector3(localCursor.x+offsetx, 0, localCursor.y+offsety));
-
-				// Normalize localCursor coordinates to [0, 1] range
-				//Vector2 normalizedPos = new Vector2((localCursor.x / r.width) + 0.5f, (localCursor.y / r.height) + 0.5f);
-				// Cast the ray to the world
-				//CastRayToWorld(normalizedPos);
 			}
 
 			
