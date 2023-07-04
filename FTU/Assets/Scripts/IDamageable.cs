@@ -344,35 +344,18 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         {
             col.enabled = true;
         }
-        if (this.GetEnemyType() == EnemyType.player)
-        {
-            //TODO check where the player is instanciated
-            //var temples = GameObject.FindGameObjectsWithTag("temple");
-            //foreach (var temple in temples)
-            //{
-            //    if (temple.GetComponent<TempleBehaviour>().teams.Code == this.team.Code)
-            //    {
-            //        //gameObject.transform.position = new Vector3(temple.gameObject.transform.position.x, 2.5f, temple.gameObject.transform.position.z);
-            //        //return;
-            //        if (team.Code == 1)
-            //        {
-            //            gameObject.transform.position = new Vector3(-323.3f, 2.14f, -37.118f);
-            //        }
-            //        else
-            //        {
-            //            gameObject.transform.position = new Vector3(323.3f, 2.14f, -37.118f);
-            //        }
-            //    }
-            //}
-        }
     }
 
     private void SetGameLayerRecursive(GameObject gameObject, string layer)
     {
-        gameObject.layer = LayerMask.NameToLayer(layer);
-        foreach (Transform child in gameObject.transform)
+        if (!gameObject.CompareTag("minimapView"))
         {
-            SetGameLayerRecursive(child.gameObject, layer);
+            gameObject.layer = LayerMask.NameToLayer(layer);
+            foreach (Transform child in gameObject.transform)
+            {
+
+                SetGameLayerRecursive(child.gameObject, layer);
+            }
         }
     }
     public void SetupForAI()
@@ -439,15 +422,15 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
 
     public virtual void HealthBehaviour()
     {
-
-        if (Health >= MaxHealth)
-        {
-            Health = MaxHealth;
-        }
-        if (Mana >= MaxMana)
-        {
-            Mana = MaxMana;
-        }
+        //Debug.Log("toto");
+        //if (Health >= MaxHealth)
+        //{
+        //    Health = MaxHealth;
+        //}
+        //if (Mana >= MaxMana)
+        //{
+        //    Mana = MaxMana;
+        //}
 
         if (Health <= 0)
         {
@@ -458,33 +441,35 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
             }
             else if (gameObject.GetComponent<BasicAIStats>())
             {
-
-                //PhotonView.Get(this).RPC("SendKillfeed", RpcTarget.All, PhotonNetwork.LocalPlayer.NickName, Cible.name);
+                //userId = gameObject.name;
+                //PhotonView.Get(this).RPC("SendKillfeed", RpcTarget.AllBuffered,  Cible.name, userId);
+                //PhotonView.Get(this).RPC("RPC_ReceiveKillfeed", RpcTarget.All,userId, Cible.name);
                 PhotonNetwork.Destroy(gameObject);
             }
-            else if (PhotonNetwork.IsMasterClient)
-            {
-                Debug.Log("dead");
-                PhotonNetwork.Destroy(gameObject.GetComponent<PhotonView>());
-            }
-                //photonView.RPC("SendKillfeed", RpcTarget.All, PhotonNetwork.LocalPlayer.NickName, Cible.name);
-        }        
+            //RPC_SendKillfeed(this.GetComponent<PhotonView>().ViewID, Cible.GetComponent<PhotonView>().ViewID);
+            //else if (PhotonNetwork.IsMasterClient)
+            //{
+            //    Debug.Log("dead");
+            //    PhotonNetwork.Destroy(gameObject.GetComponent<PhotonView>());
+            //}
+            //PhotonView.Get(this).RPC("RPC_ReceiveKillfeed", RpcTarget.All, PhotonNetwork.LocalPlayer.UserId, Cible.name);
+        }
     }
 
+
+
     [PunRPC]
-    public void SendKillfeed(string killerName, string victimName)
+    public void SendKillfeed(string killerName, string victimName, PhotonMessageInfo info)
     {
         // Envoyer les informations d'élimination aux autres clients
         // Vous pouvez également mettre à jour votre UI pour afficher les informations dans le killfeed
         Debug.Log(killerName + " a kill " + victimName);
+        //Debug.LogFormat("Info: {0} sender {1} {2}", info.Sender, info.photonView, info.SentServerTime);
+
+        photonView.RPC("GiveExperience", RpcTarget.All, new object[] { });
     }
 
-    [PunRPC]
-    public void ReceiveKillfeed(string killerName, string victimName)
-    {
-        Debug.Log(killerName + " a kill " + victimName);
-        // Mettre à jour votre UI pour afficher les informations dans le killfeed
-    }
+    
 
     public void ExperienceBehaviour()
     {
@@ -519,10 +504,11 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     {
         float expToGive = 0;
         //TODO Change the amount of xp
-        switch (enemyType)
+        Debug.Log("test enemytype "+ Cible.GetComponent<IDamageable>().enemyType);
+        switch (Cible.GetComponent<IDamageable>().enemyType)
         {
             case EnemyType.minion:
-                expToGive = .1f;
+                expToGive = 1f;
                 break;
             case EnemyType.player:
                 //expToGive = 1000 * gameObject.GetComponent<PlayerStats>().GetLvl();
@@ -557,6 +543,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         }
     }
 
+
     public IEnumerator CoolDown(Skills skill)
     {
         yield return new WaitForSeconds(skill.Cooldown);
@@ -586,7 +573,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         }
     }
 
-    public float TakeDamage(float DegatsRecu, DamageType type, bool toMana = false)
+    public float TakeDamage(float DegatsRecu, DamageType type,int de, bool toMana = false)
     {
         if (toMana)
         {
@@ -605,14 +592,33 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
                 break;
         }
         
-        photonView.RPC("DealDamages", RpcTarget.All,degRes);
+        photonView.RPC("DealDamages", RpcTarget.All,degRes,de);
         return degRes;
     }
 
     [PunRPC] // NE PEUT TRANSMETTRE QUE DES TYPE CLASSIQUE (int, float, bool)
-    public void DealDamages(float DegatsRecu)
+    public void DealDamages(float DegatsRecu,int de)
     {
         Health -= DegatsRecu;
+        string by = PhotonView.Find(de).gameObject.name;
+        Debug.Log(this.gameObject.name + " a recu " + DegatsRecu + " de " + by);
+        if (Health <= 0 && !gameObject.GetComponent<BasicAIStats>())
+        {
+            //Player killer = PhotonNetwork.CurrentRoom.GetPlayer(de);
+            PhotonView.Find(de).GetComponent<IDamageable>().photonView.RPC("GiveExperience", RpcTarget.AllBuffered);
+            PhotonView.Find(de).GetComponent<PlayerStats>().SetGold(300);
+        } else if (Health <= 0 && gameObject.GetComponent<BasicAIStats>() && enemyType == EnemyType.minion)
+        {
+            //Player killer = PhotonNetwork.CurrentRoom.GetPlayer(de);
+            PhotonView.Find(de).GetComponent<IDamageable>().photonView.RPC("GiveExperience",RpcTarget.AllBuffered);
+            PhotonView.Find(de).GetComponent<PlayerStats>().SetGold(50);
+        }
+        else if (Health <= 0 && gameObject.GetComponent<BasicAIStats>() && enemyType == EnemyType.golem)
+        {
+            //Player killer = PhotonNetwork.CurrentRoom.GetPlayer(de);
+            PhotonView.Find(de).GetComponent<IDamageable>().photonView.RPC("GiveExperience", RpcTarget.AllBuffered);
+            PhotonView.Find(de).GetComponent<PlayerStats>().SetGold(500);
+        }
     }
 
     [PunRPC] // NE PEUT TRANSMETTRE QUE DES TYPE CLASSIQUE (int, float, bool)
@@ -694,7 +700,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     {
         try
         {
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(0) && Time.deltaTime < GetAttackSpeed() / ((100 / +GetAttackSpeed()) * 0.01f))
             {
                 if (Vector3.Distance(gameObject.transform.position, Cible.transform.position) > GetAttackRange())
                 {
@@ -716,6 +722,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         catch (Exception e)
         {
             Debug.Log("No target available");
+            Debug.Log(e);
         }
     }
 
@@ -731,7 +738,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
                 {
                     if (Cible.GetComponent<IDamageable>().IsTargetable(team))
                     {
-                        Cible.GetComponent<IDamageable>().TakeDamage(GetDegPhys() + damageSupp, DamageType.physique);
+                        Cible.GetComponent<IDamageable>().TakeDamage(GetDegPhys() + damageSupp, DamageType.physique,this.photonView.ViewID);
                     }
                 }
                 else
@@ -797,12 +804,15 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     public void SpawnRangeAttack(GameObject Target, float dmgSupp = 0)
     {
         var bullets = PhotonNetwork.Instantiate(projPrefab.name, transform.position, Quaternion.identity);
-        bullets.GetPhotonView().TransferOwnership(PhotonNetwork.LocalPlayer);
+        //bullets.GetPhotonView().TransferOwnership(PhotonNetwork.LocalPlayer);
         //Debug.Log(bullets.GetComponent<Projectile>().playerId);
         //Debug.Log(userId);
+
         bullets.GetComponent<Projectile>().SetDamages(GetDegPhys() + dmgSupp, DamageType.physique);
         bullets.GetComponent<Projectile>().target = Target;
         bullets.GetComponent<Projectile>().targetSet = true;
+        bullets.GetComponent<Projectile>().playerId = photonView.name;
+        bullets.GetComponent<Projectile>().SetCreator(photonView);
         //photonView.RPC("OnProjectileCreated", RpcTarget.OthersBuffered, bullets.GetPhotonView().ViewID, PhotonNetwork.LocalPlayer.ActorNumber);
     }
 
@@ -847,6 +857,16 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
                 gameObject.layer = LayerMask.NameToLayer(layer);
                 transform.SetLayerRecursively(LayerMask.NameToLayer(layer));
                 BushManager.Instance().AddEntityToBush(other.gameObject.GetComponentInParent<BushBehavior>().bushID, gameObject);
+                foreach (Transform child in gameObject.transform)
+                {
+
+                    if (!child.gameObject.CompareTag("minimapView"))
+                    {
+                        child.gameObject.layer = LayerMask.NameToLayer(layer);
+                        child.SetLayerRecursively(LayerMask.NameToLayer(layer));
+
+                    }
+                }
             }
         }
 
@@ -865,12 +885,26 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
                 switch (this.team.Code)
                 {
                     case 0:
-                        gameObject.layer = LayerMask.NameToLayer("Dominion");
-                        transform.SetLayerRecursively(LayerMask.NameToLayer("Dominion"));
+                        foreach (Transform child in gameObject.transform)
+                        {
+                            if (!child.gameObject.CompareTag("minimapView"))
+                            {
+                                child.gameObject.layer = LayerMask.NameToLayer("Dominion");
+                                child.SetLayerRecursively(LayerMask.NameToLayer("Dominion"));
+
+                            }
+                        }
                         break;
                     case 1:
-                        gameObject.layer = LayerMask.NameToLayer("Veritas");
-                        transform.SetLayerRecursively(LayerMask.NameToLayer("Veritas"));
+                        foreach (Transform child in gameObject.transform)
+                        {
+                            if (!child.gameObject.CompareTag("minimapView"))
+                            {
+                                child.gameObject.layer = LayerMask.NameToLayer("Veritas");
+                                child.SetLayerRecursively(LayerMask.NameToLayer("Veritas"));
+
+                            }
+                        }
                         break;
                 }
                 //gameObject.layer = LayerMask.NameToLayer("Player");

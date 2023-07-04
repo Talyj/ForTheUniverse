@@ -18,17 +18,19 @@ public class Projectile : MonoBehaviourPun
     public bool touched;
     public string playerId;
     public PhotonTeam team;
+    [SerializeField]
+    PhotonView creator;
 
     public void Awake()
     {
-        playerId = PhotonNetwork.NickName;
+        //playerId = photonView.gameObject.name;
     }
 
     public void Start()
     {
         touched = false;
         DontDestroyOnLoad(gameObject);
-        DestroyBullet(10f);
+        DestroyBullet(5f);
     }
 
     public void Update()
@@ -88,6 +90,15 @@ public class Projectile : MonoBehaviourPun
         return degats;
     }
 
+    public void SetCreator(PhotonView _creator)
+    {
+        creator = _creator;
+    }
+    public PhotonView GetCreator()
+    {
+        return creator;
+    }
+
     public IDamageable.DamageType GetDamageType()
     {
         return typeDegats;
@@ -95,8 +106,8 @@ public class Projectile : MonoBehaviourPun
 
     public void DealDamage(GameObject target, float dmg, IDamageable.DamageType typeDmg)
     {
-        target.GetComponent<IDamageable>().TakeDamage(dmg, typeDmg);
-        Debug.Log(playerId + " a fait " + dmg + " de degats " + typeDmg + " à :" + target.name);
+        target.GetComponent<IDamageable>().TakeDamage(dmg, typeDmg,GetCreator().ViewID);
+        //Debug.Log(playerId + " a fait " + dmg + " de degats " + typeDmg + " à :" + target.name);
     }
 
     protected IEnumerator DestroyBullet(float time)

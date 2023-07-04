@@ -24,4 +24,14 @@ public class ItemBehaviours : ScriptableObject
     public float attackSpeed;
     [Tooltip("Image")]
     public Sprite img;
+    [Tooltip("Rarete")]
+    public ItemRarete rarete;
+
+}
+
+public enum ItemRarete{
+    Consommable,
+    Objet,
+    Talisman,
+    Relique
 }

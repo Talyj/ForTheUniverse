@@ -23,7 +23,7 @@ public class DashBehaviour : Projectile
         {
             if(damageable.IsTargetable(source.team))
             {
-                other.GetComponent<IDamageable>().TakeDamage(source.skills[0].Damage, IDamageable.DamageType.physique);
+                other.GetComponent<IDamageable>().TakeDamage(source.skills[0].Damage, IDamageable.DamageType.physique,source.photonView.ViewID);
                 Debug.Log("BBABABABABA");
             }
 

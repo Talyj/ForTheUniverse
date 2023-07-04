@@ -65,8 +65,8 @@ public class PlayerManager : MonoBehaviour
     void SyncTeam(byte team, int index)
     {
         var chara = FindObjectsOfType<PlayerStats>();
-        Debug.Log(index +"fjffhfhfhfhfhfhf");
-        Debug.Log(chara.Length + " count");
+        //Debug.Log(index +"fjffhfhfhfhfhfhf");
+        //Debug.Log(chara.Length + " count");
         var prefab = chara.First(x => x.characterID == index);
         prefab.team.Code = team;
         prefab.team.Name = player.GetPhotonTeam().Name;

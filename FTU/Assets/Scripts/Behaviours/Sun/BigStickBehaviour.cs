@@ -9,6 +9,7 @@ public class BigStickBehaviour : Projectile
     public Vector3 direction;
     private Vector3 startPos;
     private Vector3 currentPos;
+    public SunBehaviour source;
 
     // Start is called before the first frame update
     public new void Start()
@@ -52,7 +53,7 @@ public class BigStickBehaviour : Projectile
         if (other.GetComponent<IDamageable>() != null)
         {
             if(other.GetComponent<IDamageable>().team != team)
-            other.GetComponent<IDamageable>().TakeDamage(GetDamages(), GetDamageType());
+            other.GetComponent<IDamageable>().TakeDamage(GetDamages(), GetDamageType(),source.photonView.ViewID);
         }
     }
 }

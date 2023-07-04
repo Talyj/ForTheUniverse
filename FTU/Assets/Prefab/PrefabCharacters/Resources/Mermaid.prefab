@@ -119,7 +119,7 @@ MonoBehaviour:
   ult: {fileID: 0}
   SpawnPrefab2: {fileID: 2397081731242077438}
   Ui: {fileID: 6632810763874885389}
-  animation_click: {fileID: 9210041884925740887, guid: cd71dc984909d1c45959c71c395cb4c0, type: 3}
+  animation_click: {fileID: 9210041884925740887, guid: bdc87124ecd61c04c9d6e9b9023c1b35, type: 3}
   animator: {fileID: 2558541625120871036}
   Position:
     m_InternalValue: {x: 0, y: 0, z: 0}
@@ -149,7 +149,7 @@ MonoBehaviour:
   entity: {fileID: 1675429051430411217}
   layerToIgnore:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 52223
 --- !u!54 &1675429051430411222
 Rigidbody:
   m_ObjectHideFlags: 0

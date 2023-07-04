@@ -66,7 +66,7 @@ public class CrabBehaviour : VoisterBehaviour, IPunObservable
             Debug.Log(skills[0].Name + " lanc�e");
 
             var targ = Cible.GetComponent<IDamageable>();
-            var dmgDealt = GetHealth() <= GetMaxHealth() * 0.2 ? targ.TakeDamage(GetDegMag() * 2f, DamageType.magique) : targ.TakeDamage(GetDegMag() * 1.5f, DamageType.magique);
+            var dmgDealt = GetHealth() <= GetMaxHealth() * 0.2 ? targ.TakeDamage(GetDegMag() * 2f, DamageType.magique, photonView.ViewID) : targ.TakeDamage(GetDegMag() * 1.5f, DamageType.magique, photonView.ViewID);
             SetHealth(GetHealth() + (dmgDealt / 2));
 
             StartCoroutine(CoolDown(skills[0]));

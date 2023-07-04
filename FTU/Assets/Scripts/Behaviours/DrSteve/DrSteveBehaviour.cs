@@ -146,7 +146,7 @@ public class DrSteveBehaviour : PlayerStats
                 {
                     if (Cible.GetComponent<IDamageable>().IsTargetable(team))
                     {
-                        Cible.GetComponent<IDamageable>().TakeDamage(GetDegPhys() + damageSupp, DamageType.physique);
+                        Cible.GetComponent<IDamageable>().TakeDamage(GetDegPhys() + damageSupp, DamageType.physique,photonView.ViewID);
                     }
 
                     if (Cible.GetComponent<IDamageable>().team != team && ( Cible.GetComponent<IDamageable>().enemyType == EnemyType.player || Cible.GetComponent<IDamageable>().enemyType == EnemyType.minion))
@@ -154,7 +154,7 @@ public class DrSteveBehaviour : PlayerStats
                         if (serringueActive)
                         {
                             serringueActive = false;
-                            Cible.GetComponent<IDamageable>().TakeDamage(GetDegMag() * ratioSerringue, DamageType.magique);
+                            Cible.GetComponent<IDamageable>().TakeDamage(GetDegMag() * ratioSerringue, DamageType.magique,photonView.ViewID);
                         }
                     }
                 }

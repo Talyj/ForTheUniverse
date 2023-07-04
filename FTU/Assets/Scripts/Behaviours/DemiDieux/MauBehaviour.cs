@@ -206,7 +206,7 @@ public class MauBehaviour : BasicAIMovement
 
     public void RoaredDamageTarget(GameObject target)
     {
-        target.GetComponent<IDamageable>().TakeDamage(GetDegMag() * 2, DamageType.magique);
+        target.GetComponent<IDamageable>().TakeDamage(GetDegMag() * 2, DamageType.magique, photonView.ViewID);
     }
 
     //Copy that in a new character file (skill2)
@@ -222,7 +222,7 @@ public class MauBehaviour : BasicAIMovement
             var stompTargets = GetTargetsAround(false, 0.5f);
             foreach(var tar in stompTargets)
             {
-                tar.GetComponent<IDamageable>().TakeDamage(GetDegPhys() * 2, DamageType.physique);
+                tar.GetComponent<IDamageable>().TakeDamage(GetDegPhys() * 2, DamageType.physique, photonView.ViewID);
             }
 
 

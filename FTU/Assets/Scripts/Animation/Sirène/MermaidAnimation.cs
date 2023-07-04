@@ -90,6 +90,7 @@ public class MermaidAnimation : MonoBehaviour {
         currentFish =  PhotonNetwork.Instantiate(fishPrefab.name, transform.TransformPoint(pointA), Quaternion.identity);
         
         var dir = transform.forward;
+        currentFish.GetComponent<PoissoinProjBehaviour>().SetCreator(source.photonView);
         currentFish.GetComponent<PoissoinProjBehaviour>().SetDamages(source.GetDegMag(), IDamageable.DamageType.magique);
         currentFish.GetComponent<PoissoinProjBehaviour>().source = source;
         currentFish.GetComponent<PoissoinProjBehaviour>().team = source.team;

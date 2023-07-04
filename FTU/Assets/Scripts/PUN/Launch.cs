@@ -69,7 +69,7 @@ public class Launch : MonoBehaviourPunCallbacks
     public void LobbyJoin()
     {
         Debug.Log("on room");
-        PhotonNetwork.JoinOrCreateRoom("Group3", new RoomOptions() { MaxPlayers = 4, BroadcastPropsChangeToAll = true },PhotonNetwork.CurrentLobby);
+        PhotonNetwork.JoinOrCreateRoom("AWA", new RoomOptions() { MaxPlayers = 4, BroadcastPropsChangeToAll = true },PhotonNetwork.CurrentLobby);
     }
     public void CreateRoom()
     {
@@ -132,7 +132,8 @@ public class Launch : MonoBehaviourPunCallbacks
     public void LeaveRoom()
     {
         PhotonNetwork.LeaveRoom();
-        MenuManager.Instance.OpenMenu("loading");
+        //MenuManager.Instance.OpenMenu("loading");
+        PhotonNetwork.LoadLevel(0);
         //UpdatePlayerList();
     }
 

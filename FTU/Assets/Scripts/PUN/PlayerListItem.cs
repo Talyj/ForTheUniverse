@@ -59,7 +59,7 @@ public class PlayerListItem : MonoBehaviourPunCallbacks
 
                 logoteam.sprite = teamicone[1];
             }
-            logoteam.color = new Color(255f, 255f, 255f, 0.25f);
+            logoteam.color = new Color(255f, 255f, 255f, 0.75f);
         }
     }
     

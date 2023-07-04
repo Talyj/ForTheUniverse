@@ -31,20 +31,15 @@ public class Trap : MonoBehaviourPun
     {
         if (CanTarget(col.gameObject))
         {
-            var colliders = Physics.OverlapSphere(transform.position, 5f);
-            foreach (var collider in colliders)
-            {
-                if (CanTarget(collider.gameObject))
-                {
-                    animator.enabled = true;
-                    StartCoroutine(DestroyTrap(lifetime));
-                    float health = collider.GetComponent<IDamageable>().GetHealth();
-                    float DmgPerHeal = health / 4;
-                    degats = skills.Damage + DmgPerHeal;
-                    Debug.Log("trap " + degats);
-                    collider.GetComponent<IDamageable>().TakeDamage(degats, typeDegats);
-                }
-            }
+                animator.enabled = true;
+                StartCoroutine(DestroyTrap(lifetime));
+            float DmgPerHeal;
+            float heal = col.gameObject.GetComponent<IDamageable>().GetHealth();
+            DmgPerHeal = heal / 4;
+            degats = skills.Damage + DmgPerHeal;
+            Debug.Log("trap " + degats);
+            col.gameObject.GetComponent<IDamageable>().TakeCC(IDamageable.ControlType.stun,1.25f);
+            col.gameObject.GetComponent<IDamageable>().TakeDamage(degats, typeDegats,source.photonView.ViewID);
         }
     }
 

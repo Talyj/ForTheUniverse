@@ -63,7 +63,7 @@ public class FoxBehaviour : VoisterBehaviour, IPunObservable
             Debug.Log(skills[0].Name + " lanc�e");
 
             var targ = Cible.GetComponent<IDamageable>();
-            var dmgDealt = targ.GetHealth() <= targ.GetMaxHealth()/2 ? targ.TakeDamage(GetDegPhys() * 2.5f, DamageType.brut) : targ.TakeDamage(GetDegPhys() * 1.5f, DamageType.brut);
+            var dmgDealt = targ.GetHealth() <= targ.GetMaxHealth()/2 ? targ.TakeDamage(GetDegPhys() * 2.5f, DamageType.brut, photonView.ViewID) : targ.TakeDamage(GetDegPhys() * 1.5f, DamageType.brut, photonView.ViewID);
             Debug.Log(dmgDealt);
 
             StartCoroutine(CoolDown(skills[0]));

@@ -56,6 +56,9 @@ MonoBehaviour:
   - DealDamagesToMana
   - SyncTeamV2
   - CreateControllerV2
+  - RPC_ReceiveKillfeed
+  - RPC_SendKillfeed
+  - RPC_SendKillfeed2
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

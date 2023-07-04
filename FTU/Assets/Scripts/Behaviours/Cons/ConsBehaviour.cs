@@ -11,9 +11,12 @@ public class ConsBehaviour : PlayerStats
     [SerializeField]
     public int _passiveCounter;
     private bool isPassiveStart;
-    public GameObject[] spawns;
-    public GameObject[] lights;
+    //public GameObject[] spawns;
+    //public GameObject[] lights;
     //Skill 1
+    public GameObject beam;
+    public GameObject sp;
+
     
     //Ulti
     private float ultiTimerDefault = 1;
@@ -90,7 +93,7 @@ public class ConsBehaviour : PlayerStats
                 if (Input.GetKeyDown(KeyCode.K))
                 {
                     //photonView.RPC("DealDamages",RpcTarget.All, new object[] { 9999 });
-                    TakeDamage(9999, DamageType.physique);
+                    TakeDamage(9999, DamageType.physique, photonView.ViewID);
                 }
                     if (Input.GetKeyDown(KeyCode.A))
                 {
@@ -144,13 +147,13 @@ public class ConsBehaviour : PlayerStats
     }
     public void SpawnRangeAttackCons(GameObject Target, float dmgSupp = 0)
     {
-        var r = UnityEngine.Random.Range(0, spawns.Length);
-        foreach(var l in lights)
-        {
-            l.SetActive(false);
-        }
-        lights[r].SetActive(true);
-        var bullets = PhotonNetwork.Instantiate(projPrefab.name, spawns[r].transform.position, Quaternion.identity);
+        //var r = UnityEngine.Random.Range(0, spawns.Length);
+        //foreach(var l in lights)
+        //{
+        //    l.SetActive(false);
+        //}
+        //lights[r].SetActive(true);
+        var bullets = PhotonNetwork.Instantiate(projPrefab.name, sp.transform.position, Quaternion.identity);
 
         bullets.GetComponent<Projectile>().SetDamages(GetDegMag() + dmgSupp, DamageType.magique);
         bullets.GetComponent<Projectile>().target = Target;
@@ -269,6 +272,36 @@ public class ConsBehaviour : PlayerStats
             Debug.Log(skills[2].Name + " lanc�e");
             StartCoroutine(Ult());
             //var area = PhotonNetwork.Instantiate(ultArea.name, transform.position, Quaternion.identity);
+            Collider[] hitColliders = Physics.OverlapSphere(gameObject.transform.position, GetAttackRange());
+            if (hitColliders != null)
+            {
+                foreach (var col in hitColliders)
+                {
+                    if (col.gameObject.GetComponent<IDamageable>())
+                    {
+                        if(col.gameObject.GetComponent<IDamageable>().team != team)
+                        {
+                            if(col.gameObject.GetComponent<IDamageable>().enemyType == EnemyType.golem)
+                            {
+                                return;
+                            }
+                            else
+                            {
+                                var degMult = _passiveCounter;
+                                if(degMult <= 0)
+                                {
+                                    degMult = 1;
+                                }
+                                col.gameObject.GetComponent<IDamageable>().TakeDamage(GetDegPhys() * degMult, DamageType.magique, photonView.ViewID);
+                            }
+                        }
+                    }
+
+                }
+            }
+
+
+
             StartCoroutine(CoolDown(skills[2]));
         }
         else if (skills[2].isCooldown == true)

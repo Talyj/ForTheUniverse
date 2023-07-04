@@ -24,12 +24,12 @@ public class Ball2 : Projectile
                     if (col.gameObject.GetComponent<IDamageable>().GetControl() == IDamageable.ControlType.slow)
                     {
                         dmg *= 1.15f;
-                        col.gameObject.GetComponent<IDamageable>().TakeDamage(dmg, dps.skills[0].degats);
+                        col.gameObject.GetComponent<IDamageable>().TakeDamage(dmg, dps.skills[0].degats,dps.photonView.ViewID);
                         Debug.Log("<color=green> damage: </color>" + dmg + " " + dps.skills[0].degats.ToString());
                     }
                     else
                     {
-                        col.gameObject.GetComponent<IDamageable>().TakeDamage(dmg, dps.skills[0].degats);
+                        col.gameObject.GetComponent<IDamageable>().TakeDamage(dmg, dps.skills[0].degats, dps.photonView.ViewID);
                         Debug.Log("<color=blue> damage: </color>" + dmg + " " + dps.skills[0].degats.ToString());
                     }
 

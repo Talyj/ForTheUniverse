@@ -95,7 +95,18 @@ public class PlayerMovement : IDamageable
             if (groundPlane.Raycast(ray, out rayDistance))
             {
                 Vector3 point = ray.GetPoint(rayDistance);
-                LookAt(point);
+                if (_navMeshAgent.remainingDistance >= 2f)
+                {
+                    LookAt(_navMeshAgent.destination);
+                }
+                else if (Cible)
+                {
+                    LookAt(Cible.transform.position);
+                }
+                else
+                {
+                    LookAt(point);
+                }
                 if (Input.GetMouseButtonDown(1))
                 {
                     //if(minimapCamera != null)

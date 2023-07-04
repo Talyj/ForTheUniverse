@@ -807,7 +807,7 @@ MonoBehaviour:
   entity: {fileID: 9173982970317064210}
   layerToIgnore:
     serializedVersion: 2
-    m_Bits: 7167
+    m_Bits: 52223
 --- !u!114 &461897856848549218
 MonoBehaviour:
   m_ObjectHideFlags: 0

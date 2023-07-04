@@ -7,7 +7,7 @@ using UnityEngine;
 public class PuddlePoissoinBehaviour : Projectile
 {
     private float cpt;
-
+    public MermaidBehaviour mb;
     // Start is called before the first frame update
     public new void Start()
     {
@@ -26,7 +26,7 @@ public class PuddlePoissoinBehaviour : Projectile
         {
             if (targ.GetComponent<IDamageable>().team.Code != team.Code)
             {
-                targ.GetComponent<IDamageable>().TakeDamage(dmg, typeDmg);
+                targ.GetComponent<IDamageable>().TakeDamage(dmg, typeDmg,mb.photonView.ViewID);
             }
             else
             {
@@ -54,7 +54,7 @@ public class PuddlePoissoinBehaviour : Projectile
             {
                 if(target.GetComponent<IDamageable>().team.Code != team.Code)
                 {
-                    target.GetComponent<IDamageable>().TakeDamage(GetDamages(), GetDamageType());
+                    target.GetComponent<IDamageable>().TakeDamage(GetDamages(), GetDamageType(),mb.photonView.ViewID);
                 }
                 else
                 {

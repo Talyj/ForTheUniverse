@@ -421,7 +421,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8597483264112776019}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -313.3, y: 1.1400001, z: -33.488}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -596,7 +596,7 @@ MonoBehaviour:
   ult: {fileID: 661485606619552371, guid: 1687fa648e140dd4ca567e13a9f52450, type: 3}
   SpawnPrefab2: {fileID: 8597483263996633619}
   Ui: {fileID: 6473222536487516752}
-  animation_click: {fileID: 9210041884925740887, guid: cd71dc984909d1c45959c71c395cb4c0, type: 3}
+  animation_click: {fileID: 9210041884925740887, guid: bdc87124ecd61c04c9d6e9b9023c1b35, type: 3}
   animator: {fileID: 5765646088698268937}
   Position:
     m_InternalValue: {x: 0, y: 0, z: 0}
@@ -762,7 +762,7 @@ MonoBehaviour:
   entity: {fileID: 8597483264512879776}
   layerToIgnore:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 52223
 --- !u!114 &-7343261030961575311
 MonoBehaviour:
   m_ObjectHideFlags: 0

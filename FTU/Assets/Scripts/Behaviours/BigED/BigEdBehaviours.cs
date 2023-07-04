@@ -232,7 +232,7 @@ public class BigEdBehaviours : PlayerStats
         //Debug.Log("<color=blue>Endhealth full: </color>" + endHealth);
         float fulldmg = (endHealth * 10) / 100;
         skills[2].Damage += fulldmg;
-        Collider[] hitColliders = Physics.OverlapSphere(ultime.transform.position, 1.5f);
+        Collider[] hitColliders = Physics.OverlapSphere(ultime.transform.position, 5.5f);
         foreach (var hitCollider in hitColliders)
         {
             //Debug.Log("<color=green> touch: </color>" + hitCollider.name);
@@ -243,7 +243,7 @@ public class BigEdBehaviours : PlayerStats
                 {
                     if (hitCollider.GetComponent<IDamageable>().IsTargetable(team))
                     {
-                        hitCollider.GetComponent<IDamageable>().TakeDamage(skills[2].Damage, skills[2].degats);
+                        hitCollider.GetComponent<IDamageable>().TakeDamage(skills[2].Damage, skills[2].degats,photonView.ViewID);
                     }
                 }
             }
@@ -275,7 +275,7 @@ public class HeadImpact : MonoBehaviourPun
         {
 
             col.gameObject.GetComponent<IDamageable>().TakeCC(IDamageable.ControlType.slow, 2.55f);
-            col.gameObject.GetComponent<IDamageable>().TakeDamage(bg.skills[0].Damage, bg.skills[0].degats);
+            col.gameObject.GetComponent<IDamageable>().TakeDamage(bg.skills[0].Damage, bg.skills[0].degats,bg.photonView.ViewID);
             PhotonNetwork.Destroy(gameObject);
         }
 
