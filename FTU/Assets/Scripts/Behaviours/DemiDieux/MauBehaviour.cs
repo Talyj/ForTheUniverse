@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class MauBehaviour : BasicAIMovement
 {
@@ -40,6 +41,7 @@ public class MauBehaviour : BasicAIMovement
             elmt.isCooldown = false;
         }
         StartCoroutine(UseSkill());
+        _navMeshAgent = this.GetComponent<NavMeshAgent>();
     }
 
     // Update is called once per frame

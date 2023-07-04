@@ -36,10 +36,10 @@ public class SpawnMinion : MonoBehaviour
             cpt -= Time.deltaTime;
             if(/*SceneManager.GetActiveScene().name == "MainGameRoom"*/ true)
             {
-                if (/*mainGame.isPlaying && */cpt <= 2)
+                if (/*mainGame.isPlaying && */cpt <= 0)
                 {
                     cpt = 120;
-                    for (int i = 0; i < 3; i++)
+                    for (int i = 0; i < 5; i++)
                     {
                         //1 == veritas , 0 == Dominion
                         SetMinions(BasicAIStats.Way.up, 1, i);
@@ -61,38 +61,18 @@ public class SpawnMinion : MonoBehaviour
 
         GameObject minionToSpaw = minionCacGreen;
 
-        GameObject minionTemp = null;
+        GameObject minionTemp, minionGreenToSpawn, minionPurpleToSpawn = null;        
 
-        if (loopCounter >= 2)
-        {
-            if (team == 1)
-            {
-                spawn = spawnPoint[0].position + new Vector3(x, 3, Z);
-                minionToSpaw = minionDistGreen;
-            }
-            else
-            {
-                spawn = spawnPoint[1].position + new Vector3(x, 3, Z);
-                minionToSpaw = minionDistPurple;
-            }
-            minionTemp = PhotonNetwork.Instantiate(minionToSpaw.name, spawn, Quaternion.identity);
-            minionTemp.GetComponent<MinionsBehaviour>().attackType = IDamageable.AttackType.Ranged;
-        }
-        else
-        {
-            if (team == 1)
-            {
-                spawn = spawnPoint[0].position + new Vector3(x, 3, Z);
-                minionToSpaw = minionCacGreen;
-            }
-            else
-            {
-                spawn = spawnPoint[1].position + new Vector3(x, 3, Z);
-                minionToSpaw = minionCacPurple;
-            }
-            minionTemp = PhotonNetwork.Instantiate(minionToSpaw.name, spawn, Quaternion.identity);
-            minionTemp.GetComponent<MinionsBehaviour>().attackType = IDamageable.AttackType.Melee;
-        }
+        //Setup
+        spawn = team == 1 ? spawnPoint[0].position + new Vector3(x, 3, Z) : spawnPoint[1].position + new Vector3(x, 3, Z);
+        var attackType = loopCounter >= 2 ? IDamageable.AttackType.Ranged : IDamageable.AttackType.Melee;
+        minionGreenToSpawn = loopCounter >= 2 ? minionDistGreen : minionCacGreen;
+        minionPurpleToSpawn = loopCounter >= 2 ? minionDistPurple : minionCacPurple;
+        minionToSpaw = team == 1 ? minionGreenToSpawn : minionPurpleToSpawn;
+
+        //Instantiate
+        minionTemp = PhotonNetwork.Instantiate(minionToSpaw.name, spawn, Quaternion.identity);
+        minionTemp.GetComponent<MinionsBehaviour>().attackType = attackType;
         minionTemp.GetComponent<MinionsBehaviour>().way = way;
         switch (team)
         {
