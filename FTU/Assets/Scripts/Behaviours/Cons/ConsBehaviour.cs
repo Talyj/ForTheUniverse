@@ -328,7 +328,7 @@ public class ConsBehaviour : PlayerStats
                     if (col.gameObject.GetComponent<IDamageable>().team != team)
                     {
                         var degMult = _passiveCounter < 1 ? 1 : _passiveCounter;
-                        col.gameObject.GetComponent<IDamageable>().TakeDamage(GetDegPhys() * degMult, DamageType.magique);
+                        col.gameObject.GetComponent<IDamageable>().TakeDamage(GetDegPhys() * degMult, DamageType.magique, photonView.ViewID);
                     }
                 }
 

@@ -40,7 +40,7 @@ public class MaelstromBehaviour : Projectile
             cptDmg = 1f;
             foreach(var col in colliders)
             {
-                col.GetComponent<IDamageable>().TakeDamage(source.skills[2].Damage, IDamageable.DamageType.magique);
+                col.GetComponent<IDamageable>().TakeDamage(source.skills[2].Damage, IDamageable.DamageType.magique, source.photonView.ViewID);
             }
         }
     }

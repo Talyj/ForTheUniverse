@@ -40,7 +40,7 @@ public class PlayerStats : PlayerMovement
     public Skills GetUlt()
     {
         return skills[2];
-    }    
+    }
 
     public float GetGold()
     {
@@ -61,7 +61,7 @@ public class PlayerStats : PlayerMovement
     void Start()
     {
         //anim = GetComponent<Animator>();
-        
+
 
     }
 
@@ -95,10 +95,10 @@ public class PlayerStats : PlayerMovement
 
         if (GetHealth() <= 0)
         {
-            
+
             //photonView.RPC("GiveExperience", RpcTarget.All, new object[] { });
             var rend = GetComponents<Renderer>();
-            foreach(Transform child in transform)
+            foreach (Transform child in transform)
             {
                 child.GetComponent<Renderer>().enabled = false;
             }
@@ -109,37 +109,38 @@ public class PlayerStats : PlayerMovement
                     rend[i].enabled = false;
                 }
 
-            if (gameObject.CompareTag("dd"))
-            {
-                //Victory
-            }
-            else if (gameObject.GetComponent<BasicAIStats>())
-            {
-                //userId = gameObject.name;
-                //PhotonView.Get(this).RPC("SendKillfeed", RpcTarget.AllBuffered,  Cible.name, userId);
-                //PhotonView.Get(this).RPC("RPC_ReceiveKillfeed", RpcTarget.All,userId, Cible.name);
-                PhotonNetwork.Destroy(gameObject);
-            }
-            else if (gameObject.GetComponent<PlayerStats>())
-            {
-                //todo envoie de bon killer 
-                Debug.Log("kill");
-                if (Cible != null)
+                if (gameObject.CompareTag("dd"))
                 {
-
-                    photonView.RPC("RPC_SendKillfeed", RpcTarget.AllBuffered, this.userId, Cible.GetComponent<IDamageable>().userId);
+                    //Victory
                 }
-                else
+                else if (gameObject.GetComponent<BasicAIStats>())
                 {
-                    photonView.RPC("RPC_SendKillfeed2", RpcTarget.AllBuffered, GetComponent<PhotonView>().ViewID);
-
+                    //userId = gameObject.name;
+                    //PhotonView.Get(this).RPC("SendKillfeed", RpcTarget.AllBuffered,  Cible.name, userId);
+                    //PhotonView.Get(this).RPC("RPC_ReceiveKillfeed", RpcTarget.All,userId, Cible.name);
+                    PhotonNetwork.Destroy(gameObject);
                 }
+                else if (gameObject.GetComponent<PlayerStats>())
+                {
+                    //todo envoie de bon killer 
+                    Debug.Log("kill");
+                    if (Cible != null)
+                    {
+
+                        photonView.RPC("RPC_SendKillfeed", RpcTarget.AllBuffered, this.userId, Cible.GetComponent<IDamageable>().userId);
+                    }
+                    else
+                    {
+                        photonView.RPC("RPC_SendKillfeed2", RpcTarget.AllBuffered, GetComponent<PhotonView>().ViewID);
+
+                    }
+                }
+                StartCoroutine(Death());
             }
-            StartCoroutine(Death());
-        }
-        else
-        {
-            //Regen();
+            else
+            {
+                //Regen();
+            }
         }
     }
 
@@ -153,7 +154,7 @@ public class PlayerStats : PlayerMovement
         {
             child.gameObject.SetActive(false);
         }
-            gameObject.transform.position = deathPos;
+        gameObject.transform.position = deathPos;
         yield return new WaitForSeconds(respawnCooldown);
         foreach (Transform child in gameObject.transform)
         {
@@ -165,7 +166,7 @@ public class PlayerStats : PlayerMovement
         transform.position = respawnPos;
         SetDeath(false);
         gameObject.SetActive(true);
-       
+
     }
 
     [PunRPC]
@@ -182,7 +183,7 @@ public class PlayerStats : PlayerMovement
     {
         //Player killer = PhotonNetwork.CurrentRoom.GetPlayer(killerId);
         //Player victim = PhotonNetwork.CurrentRoom.GetPlayer(victimId);
-        Debug.Log(killerId +" is dead");
+        Debug.Log(killerId + " is dead");
         // Mettre � jour votre UI pour afficher les informations dans le killfeed
     }
     IEnumerator Spawn(Renderer[] rend)
@@ -206,17 +207,17 @@ public class PlayerStats : PlayerMovement
 
     public void ItemEquip()
     {
-        foreach(var item in items)
+        foreach (var item in items)
         {
-            SetMaxHealth(GetMaxHealth()  +item.health);
-            SetMaxMana(GetMaxMana()  +item.mana);
+            SetMaxHealth(GetMaxHealth() + item.health);
+            SetMaxMana(GetMaxMana() + item.mana);
             SetAttackSpeed(GetAttackSpeed() + item.attackSpeed);
             SetResMag(GetResMag() + item.resMag);
             SetResPhys(GetResPhys() + item.resPhys);
             SetDegPhys(GetDegPhys() + item.dmgPhys);
             SetDegMag(GetDegMag() + item.dmgMag);
         }
-    }    
+    }
 
     public float DamageMultiplier(float dmgSource, float dmgMultiplier)
     {
@@ -224,7 +225,7 @@ public class PlayerStats : PlayerMovement
         return res;
     }
 
-   
+
 
     public void SetDefault(Renderer[] rend)
     {
@@ -316,7 +317,7 @@ public class PlayerStats : PlayerMovement
                     SetDegPhys(60f);
                 }
                 break;
-        }        
+        }
     }
 
     private void SetupAttackRangeAndSpeed(bool range)
@@ -346,3 +347,4 @@ public enum Role
     support = 1,
     tank = 2
 }
+

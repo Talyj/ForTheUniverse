@@ -869,7 +869,6 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
                 }
             }
         }
-
         
     }
 
