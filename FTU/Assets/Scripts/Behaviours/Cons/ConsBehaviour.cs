@@ -9,13 +9,11 @@ public class ConsBehaviour : PlayerStats
 {
     //Passive
     [SerializeField]
-    private int _passiveCounter;
+    public int _passiveCounter;
     private bool isPassiveStart;
     public GameObject[] spawns;
     public GameObject[] lights;
     //Skill 1
-    public GameObject beam;
-
     
     //Ulti
     private float ultiTimerDefault = 1;
@@ -31,7 +29,6 @@ public class ConsBehaviour : PlayerStats
         BaseInit();
         characterID = 3;
         SetUpCharacters(role, true, true);
-
         SetMoveSpeed(40f);
         slow = 5;
         foreach (var elmt in skills)
@@ -39,7 +36,7 @@ public class ConsBehaviour : PlayerStats
             elmt.isCooldown = false;
         }
         isPassiveStart = false;
-        _passiveCounter = 0;
+        _passiveCounter = 10;
         CameraWork();
     }
 
@@ -245,7 +242,7 @@ public class ConsBehaviour : PlayerStats
             SetMana(GetMana() - skills[1].Cost);
             Debug.Log(skills[1].Name + " lanc�e");
 
-            StartCoroutine(skill2());
+            //StartCoroutine(skill2());
 
             CheckPassive();
             StartCoroutine(CoolDown(skills[1]));
@@ -259,48 +256,6 @@ public class ConsBehaviour : PlayerStats
             Debug.Log("pas assez de mana");
         }
     }
-    IEnumerator skill2()
-    {
-        switch (_passiveCounter)
-        {
-            case 1: case 2:
-                SetDegPhys(GetDegPhys() * 1.1f);
-                SetAttackSpeed(GetAttackSpeed() / 1.1f);
-                yield return new WaitForSeconds(skills[1].CastTime * 2);
-                SetDegPhys(GetDegPhys() / 1.1f);
-                SetAttackSpeed(GetAttackSpeed() * 1.1f);
-                break;
-            case 3: case 4: case 5:
-                SetDegPhys(GetDegPhys() * 1.15f);
-                SetAttackSpeed(GetAttackSpeed() / 1.15f);
-                yield return new WaitForSeconds(skills[1].CastTime * 2);
-                SetDegPhys(GetDegPhys() / 1.15f);
-                SetAttackSpeed(GetAttackSpeed() * 1.15f);
-                break;
-            case 6: case 7: case 8:
-                SetDegPhys(GetDegPhys() * 1.2f);
-                SetAttackSpeed(GetAttackSpeed() / 1.2f);
-                yield return new WaitForSeconds(skills[1].CastTime * 2);
-                SetDegPhys(GetDegPhys() / 1.2f);
-                SetAttackSpeed(GetAttackSpeed() * 1.2f);
-                break;
-            case 9:
-                SetDegPhys(GetDegPhys() * 1.8f);
-                SetAttackSpeed(GetAttackSpeed() / 1.8f);
-                yield return new WaitForSeconds(skills[1].CastTime * 2);
-                SetDegPhys(GetDegPhys() / 1.8f);
-                SetAttackSpeed(GetAttackSpeed() * 1.8f);
-                break;
-            case 10:
-                SetDegPhys(GetDegPhys() * 2f);
-                SetAttackSpeed(GetAttackSpeed() / 2f);
-                yield return new WaitForSeconds(skills[1].CastTime * 2);
-                SetDegPhys(GetDegPhys() / 2f);
-                SetAttackSpeed(GetAttackSpeed() * 2f);
-                break;
-        }
-        
-    }
 
 
     //Copy that in a new character file
@@ -312,38 +267,8 @@ public class ConsBehaviour : PlayerStats
             //buff
             SetMana(GetMana() - skills[2].Cost);
             Debug.Log(skills[2].Name + " lanc�e");
-
+            StartCoroutine(Ult());
             //var area = PhotonNetwork.Instantiate(ultArea.name, transform.position, Quaternion.identity);
-            Collider[] hitColliders = Physics.OverlapSphere(gameObject.transform.position, GetAttackRange());
-            if (hitColliders != null)
-            {
-                foreach (var col in hitColliders)
-                {
-                    if (col.gameObject.GetComponent<IDamageable>())
-                    {
-                        if(col.gameObject.GetComponent<IDamageable>().team != team)
-                        {
-                            if(col.gameObject.GetComponent<IDamageable>().enemyType == EnemyType.golem)
-                            {
-                                return;
-                            }
-                            else
-                            {
-                                var degMult = _passiveCounter;
-                                if(degMult <= 0)
-                                {
-                                    degMult = 1;
-                                }
-                                col.gameObject.GetComponent<IDamageable>().TakeDamage(GetDegPhys() * degMult, DamageType.magique);
-                            }
-                        }
-                    }
-
-                }
-            }
-
-
-
             StartCoroutine(CoolDown(skills[2]));
         }
         else if (skills[2].isCooldown == true)
@@ -353,6 +278,28 @@ public class ConsBehaviour : PlayerStats
         else if (GetMana() < skills[2].Cost)
         {
             Debug.Log("pas assez de mana");
+        }
+    }
+
+    private IEnumerator Ult()
+    {
+        yield return new WaitForSeconds(1.05f);
+        Collider[] hitColliders = Physics.OverlapSphere(gameObject.transform.position, GetAttackRange());
+        if (hitColliders != null)
+        {
+            foreach (var col in hitColliders)
+            {
+                if (col.gameObject.GetComponent<IDamageable>())
+                {
+                    if (col.gameObject.GetComponent<IDamageable>().enemyType == EnemyType.golem) yield return 0;
+                    if (col.gameObject.GetComponent<IDamageable>().team != team)
+                    {
+                        var degMult = _passiveCounter < 1 ? 1 : _passiveCounter;
+                        col.gameObject.GetComponent<IDamageable>().TakeDamage(GetDegPhys() * degMult, DamageType.magique);
+                    }
+                }
+
+            }
         }
     }
 

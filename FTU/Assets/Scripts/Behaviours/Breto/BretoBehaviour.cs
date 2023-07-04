@@ -115,7 +115,6 @@ public class BretoBehaviour : PlayerStats
     {
         if (skills[0].isCooldown == false && GetMana() >= skills[0].Cost)
         {
-            bretoAnimation.Skill1Animation();
             SetMana(GetMana() - skills[0].Cost);
             Debug.Log(skills[0].Name + " lanc�e");
             skills[0].isCooldown = true;
@@ -136,6 +135,7 @@ public class BretoBehaviour : PlayerStats
 
     public void Dash()
     {
+        bretoAnimation.Skill1Animation();
         var proj = PhotonNetwork.Instantiate(dashHitbox.name, new Vector3(transform.position.x, transform.position.y, transform.position.z), Quaternion.identity);
         var dir = SpawnPrefab2.transform.position - SpawnPrefab.transform.position;
 

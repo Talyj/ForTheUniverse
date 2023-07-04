@@ -306,6 +306,8 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     public void BaseInit()
     {
         SetMaxHealth(5000);
+        SetMaxMana(50000);
+        SetMaxMana(GetMaxMana());
         canMove = true;
         canAct = true;
         //useSkills = true;
@@ -566,19 +568,19 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
 
     public void Regen()
     {
-        cptRegen -= Time.deltaTime;
+        //cptRegen -= Time.deltaTime;
         if(cptRegen <= 0)
         {
             cptRegen = 5.0f;
             if (Health < MaxHealth)
             {
-                float val = Mathf.FloorToInt(MaxHealth * 0.1f);
+                float val = Mathf.FloorToInt(MaxHealth * 0.01f);
                 Health += val/2;
             }
 
             if (Mana < MaxMana)
             {
-                float val = Mathf.FloorToInt(MaxMana * 0.1f);
+                float val = Mathf.FloorToInt(MaxMana * 0.01f);
                 Mana += val/2;
             }
         }

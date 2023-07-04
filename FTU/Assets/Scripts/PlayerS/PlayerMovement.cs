@@ -96,7 +96,7 @@ public class PlayerMovement : IDamageable
             {
                 Vector3 point = ray.GetPoint(rayDistance);
                 LookAt(point);
-                if (Input.GetMouseButtonDown(1) && !EventSystem.current.IsPointerOverGameObject())
+                if (Input.GetMouseButtonDown(1))
                 {
                     //if(minimapCamera != null)
                     //{

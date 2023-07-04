@@ -36,52 +36,28 @@ public class PlayerManager : MonoBehaviour
         }
         
     }
-
-    //void CreateController()
-    //{
-    //    _playerPrefab = PhotonNetwork.Instantiate(playerPrefabs[index].name, new Vector3(0f, 2.14f, 0f), Quaternion.identity, 0);
-
-    //    _playerPrefab.GetComponent<IDamageable>().team.Code =(byte) player.CustomProperties["_pt"];
-    //    _playerPrefab.GetComponent<IDamageable>().userId = PhotonNetwork.LocalPlayer.UserId;
-    //    Debug.Log(_playerPrefab.GetComponent<IDamageable>().userId);
-
-    //    _playerPrefab.GetComponent<PlayerStats>().playerManage = this;
-    //    if (_playerPrefab.GetComponent<IDamageable>().team.Code == 0)
-    //    {
-    //        _playerPrefab.GetComponent<PlayerStats>().deathPos = new Vector3(413.3f, 2.14f, -37.118f);
-    //        //_playerPrefab.GetComponent<PlayerStats>().deathPos = deathPos.transform.position;
-    //        //_playerPrefab.GetComponent<PlayerStats>().deathPos = new Vector3(0, 220, -339);
-    //        _playerPrefab.GetComponent<PlayerStats>().respawnPos = new Vector3(323.3f, 2.14f, -37.118f);
-    //    }
-    //    else if(_playerPrefab.GetComponent<IDamageable>().team.Code == 1)
-    //    {
-    //        _playerPrefab.GetComponent<PlayerStats>().deathPos = deathPos.transform.position;
-    //        //_playerPrefab.GetComponent<PlayerStats>().deathPos = deathPos.transform.position;
-    //        //_playerPrefab.GetComponent<PlayerStats>().deathPos = new Vector3(0, 220, -339);
-    //        _playerPrefab.GetComponent<PlayerStats>().respawnPos = new Vector3(-323.3f, 2.14f, -37.118f);
-    //    }
-    //}
-
     
     void CreateControllerV2()
     {
         
-        if(player.GetPhotonTeam().Code == 0)
-        {
-            _playerPrefab = PhotonNetwork.Instantiate(playerPrefabs[index].name, new Vector3(323.3f, 2.14f, -37.118f), Quaternion.identity, 0);
-            _playerPrefab.GetComponent<IDamageable>().team.Code = (byte)player.CustomProperties["_pt"];
-            _playerPrefab.GetComponent<IDamageable>().team.Name = player.GetPhotonTeam().Name;
-            _playerPrefab.GetComponent<IDamageable>().userId = PhotonNetwork.LocalPlayer.UserId;
-            _playerPrefab.GetComponent<PlayerStats>().playerManage = this;
-        }
-        else if(player.GetPhotonTeam().Code == 1)
-        {
-            _playerPrefab = PhotonNetwork.Instantiate(playerPrefabs[index].name, new Vector3(-323.3f, 2.14f, -37.118f), Quaternion.identity, 0);
-            _playerPrefab.GetComponent<IDamageable>().team.Code = (byte)player.CustomProperties["_pt"];
-            _playerPrefab.GetComponent<IDamageable>().team.Name = player.GetPhotonTeam().Name;
-            _playerPrefab.GetComponent<IDamageable>().userId = PhotonNetwork.LocalPlayer.UserId;
-            _playerPrefab.GetComponent<PlayerStats>().playerManage = this;
-        }
+        var spawnPos = player.GetPhotonTeam().Code == 0 ? new Vector3(323.3f, 2.14f, -37.118f) : new Vector3(-323.3f, 2.14f, -37.118f);
+        //if(player.GetPhotonTeam().Code == 0)
+        //{
+        //    //_playerPrefab = PhotonNetwork.Instantiate(playerPrefabs[index].name, new Vector3(323.3f, 2.14f, -37.118f), Quaternion.identity, 0);
+        //    //_playerPrefab.GetComponent<IDamageable>().team.Code = (byte)player.CustomProperties["_pt"];
+        //    //_playerPrefab.GetComponent<IDamageable>().team.Name = player.GetPhotonTeam().Name;
+        //    //_playerPrefab.GetComponent<IDamageable>().userId = PhotonNetwork.LocalPlayer.UserId;
+        //    //_playerPrefab.GetComponent<PlayerStats>().playerManage = this;
+        //}
+        //else if(player.GetPhotonTeam().Code == 1)
+        //{
+        //}
+        _playerPrefab = PhotonNetwork.Instantiate(playerPrefabs[index].name, spawnPos, Quaternion.identity, 0);
+        _playerPrefab.GetComponent<PlayerStats>().respawnPos = spawnPos;
+        _playerPrefab.GetComponent<IDamageable>().team.Code = (byte)player.CustomProperties["_pt"];
+        _playerPrefab.GetComponent<IDamageable>().team.Name = player.GetPhotonTeam().Name;
+        _playerPrefab.GetComponent<IDamageable>().userId = PhotonNetwork.LocalPlayer.UserId;
+        _playerPrefab.GetComponent<PlayerStats>().playerManage = this;
         PV.RPC("SyncTeam", RpcTarget.AllBuffered, player.GetPhotonTeam().Code, index);
     }
 
