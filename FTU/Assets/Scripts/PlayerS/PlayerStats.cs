@@ -40,7 +40,7 @@ public class PlayerStats : PlayerMovement
     public Skills GetUlt()
     {
         return skills[2];
-    }    
+    }
 
     public float GetGold()
     {
@@ -61,7 +61,7 @@ public class PlayerStats : PlayerMovement
     void Start()
     {
         //anim = GetComponent<Animator>();
-        
+
 
     }
 
@@ -96,37 +96,51 @@ public class PlayerStats : PlayerMovement
         if (GetHealth() <= 0)
         {
 
-            if (gameObject.CompareTag("dd"))
+            //photonView.RPC("GiveExperience", RpcTarget.All, new object[] { });
+            var rend = GetComponents<Renderer>();
+            foreach (Transform child in transform)
             {
-                //Victory
+                child.GetComponent<Renderer>().enabled = false;
             }
-            else if (gameObject.GetComponent<BasicAIStats>())
+            if (rend != null)
             {
-                //userId = gameObject.name;
-                //PhotonView.Get(this).RPC("SendKillfeed", RpcTarget.AllBuffered,  Cible.name, userId);
-                //PhotonView.Get(this).RPC("RPC_ReceiveKillfeed", RpcTarget.All,userId, Cible.name);
-                PhotonNetwork.Destroy(gameObject);
-            }
-            else if (gameObject.GetComponent<PlayerStats>())
-            {
-                //todo envoie de bon killer 
-                Debug.Log("kill");
-                if (Cible != null)
+                for (int i = 0; i < rend.Length; i++)
                 {
-
-                    photonView.RPC("RPC_SendKillfeed", RpcTarget.AllBuffered, this.userId, Cible.GetComponent<IDamageable>().userId);
+                    rend[i].enabled = false;
                 }
-                else
+
+                if (gameObject.CompareTag("dd"))
                 {
-                    photonView.RPC("RPC_SendKillfeed2", RpcTarget.AllBuffered, GetComponent<PhotonView>().ViewID);
-
+                    //Victory
                 }
+                else if (gameObject.GetComponent<BasicAIStats>())
+                {
+                    //userId = gameObject.name;
+                    //PhotonView.Get(this).RPC("SendKillfeed", RpcTarget.AllBuffered,  Cible.name, userId);
+                    //PhotonView.Get(this).RPC("RPC_ReceiveKillfeed", RpcTarget.All,userId, Cible.name);
+                    PhotonNetwork.Destroy(gameObject);
+                }
+                else if (gameObject.GetComponent<PlayerStats>())
+                {
+                    //todo envoie de bon killer 
+                    Debug.Log("kill");
+                    if (Cible != null)
+                    {
+
+                        photonView.RPC("RPC_SendKillfeed", RpcTarget.AllBuffered, this.userId, Cible.GetComponent<IDamageable>().userId);
+                    }
+                    else
+                    {
+                        photonView.RPC("RPC_SendKillfeed2", RpcTarget.AllBuffered, GetComponent<PhotonView>().ViewID);
+
+                    }
+                }
+                StartCoroutine(Death());
             }
-            StartCoroutine(Death());
-        }
-        else
-        {
-            //Regen();
+            else
+            {
+                //Regen();
+            }
         }
     }
 
@@ -140,7 +154,7 @@ public class PlayerStats : PlayerMovement
         {
             child.gameObject.SetActive(false);
         }
-            gameObject.transform.position = deathPos;
+        gameObject.transform.position = deathPos;
         yield return new WaitForSeconds(respawnCooldown);
         foreach (Transform child in gameObject.transform)
         {
@@ -152,7 +166,7 @@ public class PlayerStats : PlayerMovement
         transform.position = respawnPos;
         SetDeath(false);
         gameObject.SetActive(true);
-       
+
     }
 
     [PunRPC]
@@ -161,7 +175,7 @@ public class PlayerStats : PlayerMovement
         //Player killer = PhotonNetwork.CurrentRoom.GetPlayer(killerId);
         //Player victim = PhotonNetwork.CurrentRoom.GetPlayer(victimId);
         Debug.Log(killerId + " a kill " + victimId);
-        // Mettre à jour votre UI pour afficher les informations dans le killfeed
+        // Mettre ï¿½ jour votre UI pour afficher les informations dans le killfeed
     }
 
     [PunRPC]
@@ -169,34 +183,41 @@ public class PlayerStats : PlayerMovement
     {
         //Player killer = PhotonNetwork.CurrentRoom.GetPlayer(killerId);
         //Player victim = PhotonNetwork.CurrentRoom.GetPlayer(victimId);
-        Debug.Log(killerId +" is dead");
-        // Mettre à jour votre UI pour afficher les informations dans le killfeed
+        Debug.Log(killerId + " is dead");
+        // Mettre ï¿½ jour votre UI pour afficher les informations dans le killfeed
     }
     IEnumerator Spawn(Renderer[] rend)
     {
-        if (transform.position != deathPos)
+        //if (transform.position != deathPos)
+        //{
+        //    transform.position = deathPos;
+        GetComponent<CameraWork>().isFollowing = false;
+        GetComponent<IDamageable>()._navMeshAgent.ResetPath();
+        yield return new WaitForSeconds(respawnCooldown);
+        transform.position = respawnPos;
+        foreach (Transform child in transform)
         {
-            transform.position = deathPos;
-            yield return new WaitForSeconds(respawnCooldown);
-
-            SetDefault(rend);
-            transform.position = respawnPos;
+            child.GetComponent<Renderer>().enabled = true;
         }
+        GetComponent<CameraWork>().isFollowing = true;
+
+        SetDefault(rend);
+        //}
     }
 
     public void ItemEquip()
     {
-        foreach(var item in items)
+        foreach (var item in items)
         {
-            SetMaxHealth(GetMaxHealth()  +item.health);
-            SetMaxMana(GetMaxMana()  +item.mana);
+            SetMaxHealth(GetMaxHealth() + item.health);
+            SetMaxMana(GetMaxMana() + item.mana);
             SetAttackSpeed(GetAttackSpeed() + item.attackSpeed);
             SetResMag(GetResMag() + item.resMag);
             SetResPhys(GetResPhys() + item.resPhys);
             SetDegPhys(GetDegPhys() + item.dmgPhys);
             SetDegMag(GetDegMag() + item.dmgMag);
         }
-    }    
+    }
 
     public float DamageMultiplier(float dmgSource, float dmgMultiplier)
     {
@@ -204,7 +225,7 @@ public class PlayerStats : PlayerMovement
         return res;
     }
 
-   
+
 
     public void SetDefault(Renderer[] rend)
     {
@@ -224,7 +245,7 @@ public class PlayerStats : PlayerMovement
     //SPE = true => Magique
     protected void SetUpCharacters(Role role, bool range, bool spe)
     {
-        SetMaxMana(500f);
+        //SetMaxMana(500f);
         switch (role)
         {
             case Role.dps:
@@ -296,7 +317,7 @@ public class PlayerStats : PlayerMovement
                     SetDegPhys(60f);
                 }
                 break;
-        }        
+        }
     }
 
     private void SetupAttackRangeAndSpeed(bool range)
@@ -326,3 +347,4 @@ public enum Role
     support = 1,
     tank = 2
 }
+

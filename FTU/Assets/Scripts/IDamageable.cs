@@ -306,6 +306,8 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     public void BaseInit()
     {
         SetMaxHealth(5000);
+        SetMaxMana(50000);
+        SetMaxMana(GetMaxMana());
         canMove = true;
         canAct = true;
         //useSkills = true;
@@ -418,7 +420,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         }
     }
 
-    protected void HealthBehaviour()
+    public virtual void HealthBehaviour()
     {
         //Debug.Log("toto");
         //if (Health >= MaxHealth)
@@ -553,18 +555,24 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
 
     public void Regen()
     {
+        //cptRegen -= Time.deltaTime;
+        if(cptRegen <= 0)
         cptRegen -= Time.deltaTime;
         if (cptRegen <= 0)
         {
             cptRegen = 5.0f;
             if (Health < MaxHealth)
             {
+                float val = Mathf.FloorToInt(MaxHealth * 0.01f);
+                Health += val/2;
                 float val = Mathf.FloorToInt(MaxHealth * 0.1f);
                 Health += val / 2;
             }
 
             if (Mana < MaxMana)
             {
+                float val = Mathf.FloorToInt(MaxMana * 0.01f);
+                Mana += val/2;
                 float val = Mathf.FloorToInt(MaxMana * 0.1f);
                 Mana += val / 2;
             }
@@ -865,6 +873,9 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
             {
                 Debug.Log($"Team code : {team.Code} - Team Name : {team.Name}");
                 var layer = team.Code == 0 ? "InvisibleDominion" : "InvisibleVeritas";
+                gameObject.layer = LayerMask.NameToLayer(layer);
+                transform.SetLayerRecursively(LayerMask.NameToLayer(layer));
+                BushManager.Instance().AddEntityToBush(other.gameObject.GetComponentInParent<BushBehavior>().bushID, gameObject);
                 foreach (Transform child in gameObject.transform)
                 {
 
@@ -879,6 +890,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
                 //BushManager.Instance().AddEntityToBush(other.gameObject.GetComponent<BushBehavior>().bushID, gameObject);
             }
         }
+        
 
 
     }
@@ -920,7 +932,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
                 //gameObject.layer = LayerMask.NameToLayer("Player");
 
                 //transform.SetLayerRecursively(LayerMask.NameToLayer("Player"));
-                //BushManager.Instance().RemoveEntityToBush(other.gameObject.GetComponent<BushBehavior>().bushID, gameObject);
+                BushManager.Instance().RemoveEntityToBush(other.gameObject.GetComponentInParent<BushBehavior>().bushID, gameObject);
             }
         }
 

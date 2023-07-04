@@ -1,22 +1,32 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class UI : MonoBehaviour
 {
-    [SerializeField]
+    //[SerializeField]
     PlayerStats stats;
     [SerializeField]
     Image[] spells;
+    [SerializeField]
+    Image[] cd;
     [SerializeField]
     Image health, mana;
     [SerializeField]
     Image healthCible, manaCible;
     [SerializeField]
-    Text[] costsCible;
+    TMP_Text[] costsCible;
     [SerializeField]
-    Text[] costs;
+    TMP_Text[] costs;
+    [SerializeField]
+    GameObject statsPanel;
+
+    [SerializeField]
+    private TMP_Text levelText, healthText, manaText;
+
+    [SerializeField] private TMP_Text[] statsTexts;
 
     [SerializeField]
     GameObject cibleHp, ciblePm;
@@ -24,7 +34,7 @@ public class UI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        stats = gameObject.GetComponent<PlayerStats>();
+        stats = gameObject.GetComponentInParent<PlayerStats>();
         BaseStats();
     }
 
@@ -55,51 +65,61 @@ public class UI : MonoBehaviour
         }
         else
         {
-            cibleHp.SetActive(false);
+            /*cibleHp.SetActive(false);
             ciblePm.SetActive(false);
             costsCible[0].enabled = false;
-            costsCible[1].enabled = false;
+            costsCible[1].enabled = false;*/
         }
         //stats a modfier
-        costs[6].text = "RM : " + stats.GetResMag() + "\n";
-        costs[6].text += "Armor : " + stats.GetResPhys() + "\n";
-        costs[6].text += "AP : " + stats.GetDegMag() + "\n";
-        costs[6].text += "AD : " + stats.GetDegPhys() + "\n";
-        costs[6].text += "MS : " + stats.GetMoveSpeed() + "\n";
-        costs[6].text += "Gold : " + stats.gold + "\n";
+        statsTexts[4].text = stats.GetResMag().ToString();
+        statsTexts[3].text = stats.GetResPhys().ToString();
+        statsTexts[1].text = stats.GetDegMag().ToString();
+        statsTexts[0].text = stats.GetDegPhys().ToString();
+        statsTexts[2].text = stats.GetMoveSpeed().ToString();
+        //costs[6].text += "Gold : " + stats.gold + "\n";
 
-        costs[5].text = "Niveau : " + stats.GetLvl();
+        levelText.text = stats.GetLvl().ToString();
         float percentHP = ((stats.GetHealth() * 100) / stats.GetMaxHealth()) / 100;
         health.fillAmount = percentHP;
-        costs[3].text = stats.GetHealth() + " / " + stats.GetMaxHealth();
+        healthText.text = stats.GetHealth() + " / " + stats.GetMaxHealth();
         float percentMana = ((stats.GetMana() * 100) / stats.GetMaxMana()) / 100;
         mana.fillAmount = percentMana;
-        costs[4].text = stats.GetMana() + " / " + stats.GetMaxMana();
+        manaText.text = stats.GetMana() + " / " + stats.GetMaxMana();
 
         if (stats.GetSkill1().isCooldown)
         {
-            spells[0].fillAmount -= 1 / stats.GetSkill1().Cooldown * Time.deltaTime;//cd
-            if(spells[0].fillAmount <= 0)
+            cd[0].fillAmount -= 1 / stats.GetSkill1().Cooldown * Time.deltaTime;//cd
+            if(cd[0].fillAmount <= 0)
             {
-                spells[0].fillAmount = 10f;
+                cd[0].fillAmount = 10f;
             }
         }
         if (stats.GetSkill2().isCooldown)
         {
-            spells[1].fillAmount -= 1 / stats.GetSkill2().Cooldown * Time.deltaTime;//cd
-            if (spells[1].fillAmount <= 0)
+            cd[1].fillAmount -= 1 / stats.GetSkill2().Cooldown * Time.deltaTime;//cd
+            if (cd[1].fillAmount <= 0)
             {
-                spells[1].fillAmount = 1f;
+                cd[1].fillAmount = 1f;
             }
             
         }
         if (stats.GetUlt().isCooldown)
         {
-            spells[2].fillAmount -= 1 / stats.GetUlt().Cooldown * Time.deltaTime;//cd
-            if (spells[2].fillAmount <= 0)
+            cd[2].fillAmount -= 1 / stats.GetUlt().Cooldown * Time.deltaTime;//cd
+            if (cd[2].fillAmount <= 0)
             {
-                spells[2].fillAmount = 1f;
+                cd[2].fillAmount = 1f;
             }
+        }
+
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            statsPanel.SetActive(true);
+        }
+        
+        if (Input.GetKeyUp(KeyCode.C))
+        {
+            statsPanel.SetActive(false);
         }
 
     }

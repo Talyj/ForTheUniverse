@@ -11,6 +11,7 @@ public class AsteroidsBehaviour : BasicAIStats
     private float range;
     private List<IDamageable> targets;
     private float cpt;
+    private VoidManager VM;
 
     // Start is called before the first frame update
     void Start()
@@ -20,6 +21,7 @@ public class AsteroidsBehaviour : BasicAIStats
         BaseInit();
         SetupForAI();
         cpt = 0;
+        VM = FindObjectOfType<VoidManager>();
     }
 
     // Update is called once per frame
@@ -43,6 +45,25 @@ public class AsteroidsBehaviour : BasicAIStats
                     else { DamageMana(); }
                 }
             }
+        }
+    }
+
+    public override void HealthBehaviour()
+    {
+        if (GetHealth() >= GetMaxHealth())
+        {
+            SetHealth(GetMaxHealth());
+        }
+        if (GetMana() >= GetMaxMana())
+        {
+            SetMana(GetMaxMana());
+        }
+
+        if (GetHealth() <= 0)
+        {
+            VM.nbAsteroide--;
+            //PhotonView.Get(this).RPC("SendKillfeed", RpcTarget.All, PhotonNetwork.LocalPlayer.NickName, Cible.name);
+            PhotonNetwork.Destroy(gameObject);
         }
     }
 
