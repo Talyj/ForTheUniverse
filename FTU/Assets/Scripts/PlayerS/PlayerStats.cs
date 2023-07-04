@@ -88,6 +88,10 @@ public class PlayerStats : PlayerMovement
             
             //photonView.RPC("GiveExperience", RpcTarget.All, new object[] { });
             var rend = GetComponents<Renderer>();
+            foreach(Transform child in transform)
+            {
+                child.GetComponent<Renderer>().enabled = false;
+            }
             if (rend != null)
             {
                 for (int i = 0; i < rend.Length; i++)
@@ -106,14 +110,21 @@ public class PlayerStats : PlayerMovement
 
     IEnumerator Spawn(Renderer[] rend)
     {
-        if (transform.position != deathPos)
+        //if (transform.position != deathPos)
+        //{
+        //    transform.position = deathPos;
+        GetComponent<CameraWork>().isFollowing = false;
+        GetComponent<IDamageable>()._navMeshAgent.ResetPath();
+        yield return new WaitForSeconds(respawnCooldown);
+        transform.position = respawnPos;
+        foreach (Transform child in transform)
         {
-            transform.position = deathPos;
-            yield return new WaitForSeconds(respawnCooldown);
-
-            SetDefault(rend);
-            transform.position = respawnPos;
+            child.GetComponent<Renderer>().enabled = true;
         }
+        GetComponent<CameraWork>().isFollowing = true;
+
+        SetDefault(rend);
+        //}
     }
 
     public void ItemEquip()
@@ -154,7 +165,7 @@ public class PlayerStats : PlayerMovement
     //SPE = true => Magique
     protected void SetUpCharacters(Role role, bool range, bool spe)
     {
-        SetMaxMana(500f);
+        //SetMaxMana(500f);
         switch (role)
         {
             case Role.dps:

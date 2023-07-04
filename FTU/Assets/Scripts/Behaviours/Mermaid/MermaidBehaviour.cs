@@ -181,11 +181,11 @@ public class MermaidBehaviour : PlayerStats
             Debug.Log(skills[1].Name + " lanc�e");
             skills[1].isCooldown = true;
 
-            /*Quaternion rotation = Quaternion.LookRotation(SpawnPrefab2.position - SpawnPrefab.position);
-            Vector3 direction = SpawnPrefab2.position - SpawnPrefab.position;
+            //Quaternion rotation = Quaternion.LookRotation(SpawnPrefab2.position - SpawnPrefab.position);
+            //Vector3 direction = SpawnPrefab2.position - SpawnPrefab.position;
 
-            var proj = PhotonNetwork.Instantiate(windArea.name, transform.position, rotation);*/
-            
+            //var proj = PhotonNetwork.Instantiate(windArea.name, transform.position, rotation);
+
 
             CheckPassive();
             StartCoroutine(CoolDown(skills[1]));

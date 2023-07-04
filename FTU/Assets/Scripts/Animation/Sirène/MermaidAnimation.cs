@@ -11,6 +11,7 @@ public class MermaidAnimation : MonoBehaviour {
     public VisualEffect sort2; 
     public ParticleSystem ulti;
 
+    public MermaidBehaviour source;
     public GameObject fishPrefab; // Les prefabs 
     public GameObject flaquePrefab; 
     public GameObject windPrefab; 
@@ -25,6 +26,10 @@ public class MermaidAnimation : MonoBehaviour {
     public float speed = 1.0f; // La vitesse dU poisson
     public float life_flaque = 5.0f;
 
+    private void Start()
+    {
+        source = GetComponentInParent<MermaidBehaviour>();
+    }
 
     void Update() {
 
@@ -83,8 +88,6 @@ public class MermaidAnimation : MonoBehaviour {
     private IEnumerator SpawnFish(float delay) {
         yield return new WaitForSeconds(delay);
         currentFish =  PhotonNetwork.Instantiate(fishPrefab.name, transform.TransformPoint(pointA), Quaternion.identity);
-
-        var source = GetComponentInParent<MermaidBehaviour>();
         
         var dir = transform.forward;
         currentFish.GetComponent<PoissoinProjBehaviour>().SetDamages(source.GetDegMag(), IDamageable.DamageType.magique);
@@ -120,9 +123,7 @@ public class MermaidAnimation : MonoBehaviour {
 
             GameObject wind = PhotonNetwork.Instantiate(windPrefab.name, parentVFX.transform.position, parentVFX.transform.rotation);
             wind.transform.parent = parentVFX.transform;
-            
-            var source = GetComponentInParent<MermaidBehaviour>();
-            
+                        
             wind.GetComponent<WindAreaBehaviour>().SetDamages(source.GetDegMag(), IDamageable.DamageType.magique);
             wind.GetComponent<WindAreaBehaviour>().direction = newVFX.transform.forward;
             wind.GetComponent<WindAreaBehaviour>().source = source;
@@ -156,7 +157,6 @@ public class MermaidAnimation : MonoBehaviour {
     {
         ulti.gameObject.SetActive(true);
         animator.SetTrigger("Ulti");
-        var source = GetComponentInParent<MermaidBehaviour>();
         var area = PhotonNetwork.Instantiate(charmePrefab.name, transform.position, Quaternion.identity);
         area.transform.parent = ulti.transform;
         area.GetComponent<CharmAreaBehaviour>().source = source;

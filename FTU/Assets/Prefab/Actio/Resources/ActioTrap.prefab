@@ -225,7 +225,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4969228089485955481}
   - component: {fileID: 6293711241467731531}
-  - component: {fileID: -8606380761895542958}
   - component: {fileID: 3315279768011229249}
   - component: {fileID: 2518470951542793186}
   - component: {fileID: 2763753724275169985}
@@ -246,7 +245,7 @@ Transform:
   m_GameObject: {fileID: 5746010598429444899}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.15, y: 0.15, z: 0.15}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4055187778032353543}
@@ -275,20 +274,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &-8606380761895542958
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5746010598429444899}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 06a663d5bf0e94f47ab42b7aad8c35b2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 6293711241467731531}
-  lifetime: 3
 --- !u!114 &3315279768011229249
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -301,9 +286,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bbc88bd0c6b5814dbd9ae7f89b4cb28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  source: {fileID: 0}
   typeDegats: 0
   degats: 0
   skills: {fileID: 11400000, guid: bd80d36f60f8c984cb6f4c6f960344fe, type: 2}
+  animator: {fileID: 6293711241467731531}
+  lifetime: 3
 --- !u!65 &2518470951542793186
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -315,8 +303,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 3.0750968, y: 0.5965473, z: 2.686311}
-  m_Center: {x: -0.003565053, y: 0.20172635, z: -0.0073321657}
+  m_Size: {x: 3.0750968, y: 11.180497, z: 2.6863112}
+  m_Center: {x: -0.003565053, y: 5.4937034, z: -0.0073321657}
 --- !u!114 &2763753724275169985
 MonoBehaviour:
   m_ObjectHideFlags: 0

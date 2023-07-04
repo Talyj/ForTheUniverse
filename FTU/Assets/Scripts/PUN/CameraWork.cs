@@ -24,8 +24,8 @@ public class CameraWork : MonoBehaviourPun
     public Transform player;
 
     // cached transform of the target
-    Transform cameraTransform;
-    bool isFollowing;
+    [SerializeField] public Transform cameraTransform;
+    [SerializeField] public bool isFollowing;
     // Cache for camera offset
     Vector3 cameraOffset = Vector3.zero;
     public float zoomLevel;
@@ -81,16 +81,18 @@ public class CameraWork : MonoBehaviourPun
             OnStartFollowing();
         }
 
-
-        // only follow is explicitly declared
-        if (isFollowing)
+        if (cameraTransform)
         {
-            Follow();
-        }
-        else
-        {
-            MoveCamera();
-            Zoom();
+            // only follow is explicitly declared
+            if (isFollowing)
+            {
+                Follow();
+            }
+            else
+            {
+                MoveCamera();
+                Zoom();
+            }
         }
 
     }

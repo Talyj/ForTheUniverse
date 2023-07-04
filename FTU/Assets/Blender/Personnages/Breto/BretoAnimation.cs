@@ -105,13 +105,14 @@ public class BretoAnimation : MonoBehaviour {
 
     private IEnumerator Sonar()
     {
-        for (int i = 0; i < 5; i++) {
-            GameObject wave = PhotonNetwork.Instantiate(sonar.name, transform.position, transform.rotation);
-            wave.transform.parent = transform;
-            wave.GetComponent<ScanBehaviour>().source = GetComponentInParent<BretoBehaviour>();
-            wave.SetActive(true);
-            yield return new WaitForSeconds(temps_sonar/5);
-        }
+        GameObject wave = PhotonNetwork.Instantiate(sonar.name, transform.position, transform.rotation);
+        wave.transform.parent = transform;
+        wave.GetComponent<ScanBehaviour>().source = GetComponentInParent<BretoBehaviour>();
+        wave.SetActive(true);
+        yield return new WaitForSeconds(temps_sonar/5);
+        //for (int i = 0; i < 5; i++)
+        //{
+        //}
     }
 
     private IEnumerator TriggerVFXAfterDelay(VisualEffect vfx, float delay) {
