@@ -45,7 +45,7 @@ public class GolemBehaviour : BasicAIStats
     {
         if(attackCooldown <= 0)
         {
-            Cible.GetComponent<IDamageable>().TakeDamage(GetDegMag(), DamageType.brut);
+            Cible.GetComponent<IDamageable>().TakeDamage(GetDegMag(), DamageType.brut,photonView.ViewID);
             attackCooldown = 5;
         }
         attackCooldown -= Time.deltaTime;

@@ -251,7 +251,7 @@ public class SunBehaviour : PlayerStats
             {
                 if (other.GetComponent<IDamageable>().team != team)
                 {
-                    other.GetComponent<IDamageable>().TakeDamage(GetDegMag(), DamageType.physique);
+                    other.GetComponent<IDamageable>().TakeDamage(GetDegMag(), DamageType.physique,photonView.ViewID);
                 }
             }
         }
@@ -286,6 +286,7 @@ public class SunBehaviour : PlayerStats
             proj.GetComponent<BigStickBehaviour>().SetDamages(GetDegMag(), DamageType.magique);
             proj.GetComponent<BigStickBehaviour>().direction = direction;
             proj.GetComponent<BigStickBehaviour>().team = team;
+            proj.GetComponent<BigStickBehaviour>().SetCreator(photonView);
 
             StartCoroutine(CoolDown(skills[2]));
         }

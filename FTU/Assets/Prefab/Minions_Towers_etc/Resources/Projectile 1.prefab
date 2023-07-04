@@ -271,6 +271,7 @@ MonoBehaviour:
   team:
     Name: 
     Code: 0
+  creator: {fileID: 0}
 --- !u!1 &5957241294032835023
 GameObject:
   m_ObjectHideFlags: 0

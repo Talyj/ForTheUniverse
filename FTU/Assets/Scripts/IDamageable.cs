@@ -430,34 +430,28 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         //    Mana = MaxMana;
         //}
 
-        //if (Health <= 0)
-        //{
-        //    //photonView.RPC("GiveExperience", RpcTarget.All, new object[] { });
-        //    if (gameObject.CompareTag("dd"))
-        //    {
-        //        //Victory
-        //    }
-        //    else if (gameObject.GetComponent<BasicAIStats>())
-        //    {
-        //        userId = gameObject.name;
-        //        //PhotonView.Get(this).RPC("SendKillfeed", RpcTarget.AllBuffered,  Cible.name, userId);
-        //        //PhotonView.Get(this).RPC("RPC_ReceiveKillfeed", RpcTarget.All,userId, Cible.name);
-        //        PhotonNetwork.Destroy(gameObject);
-        //    }
-        //    else if(gameObject.GetComponent<PlayerStats>())
-        //    {
-        //    //todo envoie de bon killer 
-        //        Debug.LogError("kill");
-        //        photonView.RPC("RPC_SendKillfeed", RpcTarget.AllBuffered, this.GetComponent<PhotonView>().ViewID, Cible.GetComponent<PhotonView>().ViewID);
-        //    }
-        //    //RPC_SendKillfeed(this.GetComponent<PhotonView>().ViewID, Cible.GetComponent<PhotonView>().ViewID);
-        //    //else if (PhotonNetwork.IsMasterClient)
-        //    //{
-        //    //    Debug.Log("dead");
-        //    //    PhotonNetwork.Destroy(gameObject.GetComponent<PhotonView>());
-        //    //}
-        //    //PhotonView.Get(this).RPC("RPC_ReceiveKillfeed", RpcTarget.All, PhotonNetwork.LocalPlayer.UserId, Cible.name);
-        //}
+        if (Health <= 0)
+        {
+            //photonView.RPC("GiveExperience", RpcTarget.All, new object[] { });
+            if (gameObject.CompareTag("dd"))
+            {
+                //Victory
+            }
+            else if (gameObject.GetComponent<BasicAIStats>())
+            {
+                //userId = gameObject.name;
+                //PhotonView.Get(this).RPC("SendKillfeed", RpcTarget.AllBuffered,  Cible.name, userId);
+                //PhotonView.Get(this).RPC("RPC_ReceiveKillfeed", RpcTarget.All,userId, Cible.name);
+                PhotonNetwork.Destroy(gameObject);
+            }
+            //RPC_SendKillfeed(this.GetComponent<PhotonView>().ViewID, Cible.GetComponent<PhotonView>().ViewID);
+            //else if (PhotonNetwork.IsMasterClient)
+            //{
+            //    Debug.Log("dead");
+            //    PhotonNetwork.Destroy(gameObject.GetComponent<PhotonView>());
+            //}
+            //PhotonView.Get(this).RPC("RPC_ReceiveKillfeed", RpcTarget.All, PhotonNetwork.LocalPlayer.UserId, Cible.name);
+        }
     }
 
 
@@ -547,6 +541,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         }
     }
 
+
     public IEnumerator CoolDown(Skills skill)
     {
         yield return new WaitForSeconds(skill.Cooldown);
@@ -576,7 +571,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         }
     }
 
-    public float TakeDamage(float DegatsRecu, DamageType type, bool toMana = false)
+    public float TakeDamage(float DegatsRecu, DamageType type,int de, bool toMana = false)
     {
         if (toMana)
         {
@@ -595,14 +590,33 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
                 break;
         }
         
-        photonView.RPC("DealDamages", RpcTarget.All,degRes);
+        photonView.RPC("DealDamages", RpcTarget.All,degRes,de);
         return degRes;
     }
 
     [PunRPC] // NE PEUT TRANSMETTRE QUE DES TYPE CLASSIQUE (int, float, bool)
-    public void DealDamages(float DegatsRecu)
+    public void DealDamages(float DegatsRecu,int de)
     {
         Health -= DegatsRecu;
+        string by = PhotonView.Find(de).gameObject.name;
+        Debug.Log(this.gameObject.name + " a recu " + DegatsRecu + " de " + by);
+        if (Health <= 0 && !gameObject.GetComponent<BasicAIStats>())
+        {
+            //Player killer = PhotonNetwork.CurrentRoom.GetPlayer(de);
+            PhotonView.Find(de).GetComponent<IDamageable>().photonView.RPC("GiveExperience", RpcTarget.AllBuffered);
+            PhotonView.Find(de).GetComponent<PlayerStats>().SetGold(300);
+        } else if (Health <= 0 && gameObject.GetComponent<BasicAIStats>() && enemyType == EnemyType.minion)
+        {
+            //Player killer = PhotonNetwork.CurrentRoom.GetPlayer(de);
+            PhotonView.Find(de).GetComponent<IDamageable>().photonView.RPC("GiveExperience",RpcTarget.AllBuffered);
+            PhotonView.Find(de).GetComponent<PlayerStats>().SetGold(50);
+        }
+        else if (Health <= 0 && gameObject.GetComponent<BasicAIStats>() && enemyType == EnemyType.golem)
+        {
+            //Player killer = PhotonNetwork.CurrentRoom.GetPlayer(de);
+            PhotonView.Find(de).GetComponent<IDamageable>().photonView.RPC("GiveExperience", RpcTarget.AllBuffered);
+            PhotonView.Find(de).GetComponent<PlayerStats>().SetGold(500);
+        }
     }
 
     [PunRPC] // NE PEUT TRANSMETTRE QUE DES TYPE CLASSIQUE (int, float, bool)
@@ -684,7 +698,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     {
         try
         {
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(0) && Time.deltaTime < GetAttackSpeed() / ((100 / +GetAttackSpeed()) * 0.01f))
             {
                 if (Vector3.Distance(gameObject.transform.position, Cible.transform.position) > GetAttackRange())
                 {
@@ -722,7 +736,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
                 {
                     if (Cible.GetComponent<IDamageable>().IsTargetable(team))
                     {
-                        Cible.GetComponent<IDamageable>().TakeDamage(GetDegPhys() + damageSupp, DamageType.physique);
+                        Cible.GetComponent<IDamageable>().TakeDamage(GetDegPhys() + damageSupp, DamageType.physique,this.photonView.ViewID);
                     }
                 }
                 else
@@ -788,13 +802,15 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     public void SpawnRangeAttack(GameObject Target, float dmgSupp = 0)
     {
         var bullets = PhotonNetwork.Instantiate(projPrefab.name, transform.position, Quaternion.identity);
-        bullets.GetPhotonView().TransferOwnership(PhotonNetwork.LocalPlayer);
+        //bullets.GetPhotonView().TransferOwnership(PhotonNetwork.LocalPlayer);
         //Debug.Log(bullets.GetComponent<Projectile>().playerId);
         //Debug.Log(userId);
+
         bullets.GetComponent<Projectile>().SetDamages(GetDegPhys() + dmgSupp, DamageType.physique);
         bullets.GetComponent<Projectile>().target = Target;
         bullets.GetComponent<Projectile>().targetSet = true;
         bullets.GetComponent<Projectile>().playerId = photonView.name;
+        bullets.GetComponent<Projectile>().SetCreator(photonView);
         //photonView.RPC("OnProjectileCreated", RpcTarget.OthersBuffered, bullets.GetPhotonView().ViewID, PhotonNetwork.LocalPlayer.ActorNumber);
     }
 

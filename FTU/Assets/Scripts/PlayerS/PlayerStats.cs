@@ -102,7 +102,7 @@ public class PlayerStats : PlayerMovement
             }
             else if (gameObject.GetComponent<BasicAIStats>())
             {
-                userId = gameObject.name;
+                //userId = gameObject.name;
                 //PhotonView.Get(this).RPC("SendKillfeed", RpcTarget.AllBuffered,  Cible.name, userId);
                 //PhotonView.Get(this).RPC("RPC_ReceiveKillfeed", RpcTarget.All,userId, Cible.name);
                 PhotonNetwork.Destroy(gameObject);
@@ -111,8 +111,17 @@ public class PlayerStats : PlayerMovement
             {
                 //todo envoie de bon killer 
                 Debug.Log("kill");
+                if (Cible != null)
+                {
+
+                    photonView.RPC("RPC_SendKillfeed", RpcTarget.AllBuffered, this.userId, Cible.GetComponent<IDamageable>().userId);
+                }
+                else
+                {
+                    photonView.RPC("RPC_SendKillfeed2", RpcTarget.AllBuffered, GetComponent<PhotonView>().ViewID);
+
+                }
             }
-                photonView.RPC("RPC_SendKillfeed", RpcTarget.AllBuffered, this.GetComponent<PhotonView>().ViewID, Cible.GetComponent<PhotonView>().ViewID);
             StartCoroutine(Death());
         }
         else
@@ -147,11 +156,20 @@ public class PlayerStats : PlayerMovement
     }
 
     [PunRPC]
-    public void RPC_SendKillfeed(int killerId, int victimId)
+    public void RPC_SendKillfeed(string killerId, string victimId)
     {
-        Player killer = PhotonNetwork.CurrentRoom.GetPlayer(killerId);
-        Player victim = PhotonNetwork.CurrentRoom.GetPlayer(victimId);
-        Debug.Log(killer + " a kill " + victim);
+        //Player killer = PhotonNetwork.CurrentRoom.GetPlayer(killerId);
+        //Player victim = PhotonNetwork.CurrentRoom.GetPlayer(victimId);
+        Debug.Log(killerId + " a kill " + victimId);
+        // Mettre à jour votre UI pour afficher les informations dans le killfeed
+    }
+
+    [PunRPC]
+    public void RPC_SendKillfeed2(string killerId)
+    {
+        //Player killer = PhotonNetwork.CurrentRoom.GetPlayer(killerId);
+        //Player victim = PhotonNetwork.CurrentRoom.GetPlayer(victimId);
+        Debug.Log(killerId +" is dead");
         // Mettre à jour votre UI pour afficher les informations dans le killfeed
     }
     IEnumerator Spawn(Renderer[] rend)

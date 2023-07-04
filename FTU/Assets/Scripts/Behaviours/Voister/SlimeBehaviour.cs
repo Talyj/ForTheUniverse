@@ -75,7 +75,7 @@ public class SlimeBehaviour : VoisterBehaviour, IPunObservable
 
             if (hitColliders != null)
             {
-                var dmgDealt = GetHealth() <= GetMaxHealth() * 0.2 ? targ.TakeDamage(GetDegMag() * 2f, DamageType.magique) : targ.TakeDamage(GetDegMag() * 1.5f, DamageType.magique);
+                var dmgDealt = GetHealth() <= GetMaxHealth() * 0.2 ? targ.TakeDamage(GetDegMag() * 2f, DamageType.magique, photonView.ViewID) : targ.TakeDamage(GetDegMag() * 1.5f, DamageType.magique, photonView.ViewID);
                 //calc dmg
                 foreach (var col in hitColliders)
                 {
@@ -93,23 +93,23 @@ public class SlimeBehaviour : VoisterBehaviour, IPunObservable
                 Collider[] hitCollidersTargets = Physics.OverlapSphere(Cible.gameObject.transform.position, 10f);
                 if (enemyClose)
                 {
-                    targ.TakeDamage(GetDegMag() * 2f, DamageType.magique);
+                    targ.TakeDamage(GetDegMag() * 2f, DamageType.magique,photonView.ViewID);
                     foreach(var col in hitCollidersTargets)
                     {
                         if (col.GetComponent<IDamageable>())
                         {
-                            col.GetComponent<IDamageable>().TakeDamage(GetDegMag() * 1.2f, DamageType.magique);
+                            col.GetComponent<IDamageable>().TakeDamage(GetDegMag() * 1.2f, DamageType.magique,photonView.ViewID);
                         }
                     }
                 }
                 else
                 {
-                    targ.TakeDamage(GetDegMag() * 1.5f, DamageType.magique);
+                    targ.TakeDamage(GetDegMag() * 1.5f, DamageType.magique, photonView.ViewID);
                     foreach (var col in hitColliders)
                     {
                         if (col.GetComponent<IDamageable>())
                         {
-                            col.GetComponent<IDamageable>().TakeDamage(GetDegMag() * 1f, DamageType.magique);
+                            col.GetComponent<IDamageable>().TakeDamage(GetDegMag() * 1f, DamageType.magique, photonView.ViewID);
                         }
                     }
                 }

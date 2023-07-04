@@ -50,6 +50,7 @@ public class ActioAnimation : MonoBehaviour {
     private IEnumerator PutTrap(float delay) {
         yield return new WaitForSeconds(delay);
         GameObject trapchild = PhotonNetwork.Instantiate(trap.name, transform.position, transform.rotation);
+        trap.GetComponent<Trap>().dps = gameObject.GetComponentInParent<ActioBehaviour>();
         //trapchild.transform.parent = transform.parent.transform;
         trapchild.SetActive(true);
     }

@@ -50,7 +50,7 @@ public class AsteroidsBehaviour : BasicAIStats
     {
         foreach (var target in targets)
         {
-            target.GetComponent<IDamageable>().TakeDamage(50, DamageType.brut);
+            target.GetComponent<IDamageable>().TakeDamage(50, DamageType.brut,photonView.ViewID);
         }
     }
 
@@ -58,7 +58,7 @@ public class AsteroidsBehaviour : BasicAIStats
     {
         foreach (var target in targets)
         {
-            target.GetComponent<IDamageable>().TakeDamage(50, DamageType.brut, true);
+            target.GetComponent<IDamageable>().TakeDamage(50, DamageType.brut,photonView.ViewID, true);
         }
     }
 

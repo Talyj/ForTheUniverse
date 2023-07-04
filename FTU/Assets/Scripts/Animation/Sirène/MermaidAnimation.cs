@@ -87,6 +87,7 @@ public class MermaidAnimation : MonoBehaviour {
         var source = GetComponentInParent<MermaidBehaviour>();
         
         var dir = transform.forward;
+        currentFish.GetComponent<PoissoinProjBehaviour>().SetCreator(source.photonView);
         currentFish.GetComponent<PoissoinProjBehaviour>().SetDamages(source.GetDegMag(), IDamageable.DamageType.magique);
         currentFish.GetComponent<PoissoinProjBehaviour>().source = source;
         currentFish.GetComponent<PoissoinProjBehaviour>().team = source.team;

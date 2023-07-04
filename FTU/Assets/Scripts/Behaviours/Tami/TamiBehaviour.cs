@@ -108,7 +108,7 @@ public class TamiBehaviour : PlayerStats
             SetMana(GetMana() - skills[0].Cost);
             Debug.Log(skills[0].Name + " lancée");
 
-            Cible.GetComponent<IDamageable>().TakeDamage(GetDegMag() * 1.75f, skills[0].degats);
+            Cible.GetComponent<IDamageable>().TakeDamage(GetDegMag() * 1.75f, skills[0].degats,photonView.ViewID);
             if(Cible.GetComponent<IDamageable>().GetHealth() <= 0)
             {
                 Passif();
@@ -198,6 +198,7 @@ public class TamiBehaviour : PlayerStats
                 proj.GetComponent<SpearBehaviour>().source = this;
                 proj.GetComponent<SpearBehaviour>().team = team;
                 proj.GetComponent<Rigidbody>().AddForce(dir.normalized * 30f, ForceMode.Impulse);
+                proj.GetComponent<SpearBehaviour>().SetCreator(photonView);
             }
 
             skills[2].isCooldown = true;

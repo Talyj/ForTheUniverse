@@ -133,7 +133,7 @@ public class ActioBehaviour : PlayerStats
 
     }
 
-    IEnumerator RangeAutoAttack()
+    IEnumerator RangeAutoAttack2()
     {
         while (Cible != null)
         {
@@ -156,7 +156,7 @@ public class ActioBehaviour : PlayerStats
         {
             if (Cible.GetComponent<IDamageable>().IsTargetable(team)) 
             {
-                Cible.GetComponent<IDamageable>().TakeDamage(GetDegPhys() + damageSupp, DamageType.physique);
+                Cible.GetComponent<IDamageable>().TakeDamage(GetDegPhys() + damageSupp, DamageType.physique,photonView.ViewID);
             }
         }
         else
@@ -182,7 +182,7 @@ public class ActioBehaviour : PlayerStats
     public void SpawnRangeAttack(EnemyType typeEnemy, GameObject Target, float dmgSupp = 0)
     {
         PhotonNetwork.Instantiate(projPrefab.name, SpawnPrefab.transform.position, Quaternion.identity);
-
+        projPrefab.GetComponent<Projectile>().SetCreator(this.photonView);
         projPrefab.GetComponent<Projectile>().SetDamages(GetDegPhys(), DamageType.physique);
         projPrefab.GetComponent<Projectile>().target = Target;
         projPrefab.GetComponent<Projectile>().targetSet = true;
@@ -243,6 +243,7 @@ public class ActioBehaviour : PlayerStats
         GameObject tir1 = PhotonNetwork.Instantiate(sp.name,SpawnPrefab.transform.position, Quaternion.identity);
         var dir = SpawnPrefab2.transform.position - SpawnPrefab.transform.position;
         tir1.GetComponent<Ball1>().dps = this;
+        tir1.GetComponent<Ball1>().SetCreator(photonView);
         tir1.GetComponent<Rigidbody>().AddForce(dir.normalized * 7.5f, ForceMode.Impulse);
         yield return new WaitForSeconds(2f);
 
@@ -251,6 +252,7 @@ public class ActioBehaviour : PlayerStats
         var dir2 = SpawnPrefab2.transform.position - SpawnPrefab.transform.position;
         GameObject tir2 = PhotonNetwork.Instantiate(sp2.name, SpawnPrefab.transform.position, Quaternion.identity);
         tir2.GetComponent<Ball2>().dps = this;
+        tir2.GetComponent<Ball2>().SetCreator(photonView);
         tir2.GetComponent<Rigidbody>().AddForce(dir2.normalized * 15f, ForceMode.Impulse);
         
         yield return new WaitForSeconds(2f);

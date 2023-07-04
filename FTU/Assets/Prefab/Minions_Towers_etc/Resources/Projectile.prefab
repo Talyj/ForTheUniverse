@@ -123,6 +123,7 @@ MonoBehaviour:
   team:
     Name: 
     Code: 0
+  creator: {fileID: 0}
 --- !u!114 &-7484010404481044025
 MonoBehaviour:
   m_ObjectHideFlags: 0

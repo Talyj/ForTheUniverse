@@ -26,6 +26,7 @@ public class ItemBehaviours : ScriptableObject
     public Sprite img;
     [Tooltip("Rarete")]
     public ItemRarete rarete;
+
 }
 
 public enum ItemRarete{

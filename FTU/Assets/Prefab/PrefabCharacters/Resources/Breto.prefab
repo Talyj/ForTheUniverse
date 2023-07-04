@@ -237,7 +237,7 @@ MonoBehaviour:
   ult: {fileID: 0}
   SpawnPrefab2: {fileID: 2052851039597146130}
   Ui: {fileID: 7004625990238323681}
-  animation_click: {fileID: 9210041884925740887, guid: cd71dc984909d1c45959c71c395cb4c0, type: 3}
+  animation_click: {fileID: 9210041884925740887, guid: bdc87124ecd61c04c9d6e9b9023c1b35, type: 3}
   animator: {fileID: 6719493775649935541}
   Position:
     m_InternalValue: {x: 0, y: 0, z: 0}

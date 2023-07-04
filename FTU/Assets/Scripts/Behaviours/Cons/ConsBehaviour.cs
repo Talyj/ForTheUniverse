@@ -94,7 +94,7 @@ public class ConsBehaviour : PlayerStats
                 if (Input.GetKeyDown(KeyCode.K))
                 {
                     //photonView.RPC("DealDamages",RpcTarget.All, new object[] { 9999 });
-                    TakeDamage(9999, DamageType.physique);
+                    TakeDamage(9999, DamageType.physique, photonView.ViewID);
                 }
                     if (Input.GetKeyDown(KeyCode.A))
                 {
@@ -335,7 +335,7 @@ public class ConsBehaviour : PlayerStats
                                 {
                                     degMult = 1;
                                 }
-                                col.gameObject.GetComponent<IDamageable>().TakeDamage(GetDegPhys() * degMult, DamageType.magique);
+                                col.gameObject.GetComponent<IDamageable>().TakeDamage(GetDegPhys() * degMult, DamageType.magique, photonView.ViewID);
                             }
                         }
                     }

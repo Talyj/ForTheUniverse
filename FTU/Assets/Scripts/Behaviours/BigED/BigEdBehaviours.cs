@@ -243,7 +243,7 @@ public class BigEdBehaviours : PlayerStats
                 {
                     if (hitCollider.GetComponent<IDamageable>().IsTargetable(team))
                     {
-                        hitCollider.GetComponent<IDamageable>().TakeDamage(skills[2].Damage, skills[2].degats);
+                        hitCollider.GetComponent<IDamageable>().TakeDamage(skills[2].Damage, skills[2].degats,photonView.ViewID);
                     }
                 }
             }
@@ -275,7 +275,7 @@ public class HeadImpact : MonoBehaviourPun
         {
 
             col.gameObject.GetComponent<IDamageable>().TakeCC(IDamageable.ControlType.slow, 2.55f);
-            col.gameObject.GetComponent<IDamageable>().TakeDamage(bg.skills[0].Damage, bg.skills[0].degats);
+            col.gameObject.GetComponent<IDamageable>().TakeDamage(bg.skills[0].Damage, bg.skills[0].degats,bg.photonView.ViewID);
             PhotonNetwork.Destroy(gameObject);
         }
 
