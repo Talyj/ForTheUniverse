@@ -437,7 +437,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         }
     }
 
-    protected void HealthBehaviour()
+    public virtual void HealthBehaviour()
     {
 
         if (Health >= MaxHealth)

@@ -7,6 +7,7 @@ public class VoidManager : MonoBehaviour
 {
     public GameObject asteroid;
     private float cpt;
+    public int nbAsteroide;
 
     // Start is called before the first frame update
     void Start()
@@ -18,7 +19,7 @@ public class VoidManager : MonoBehaviour
     void Update()
     {
         cpt -= Time.deltaTime;
-        if (cpt <= 0)
+        if (cpt <= 0 && nbAsteroide < 10)
         {
             cpt = 60;
             var qtyRand = Random.Range(1, 6);
@@ -40,5 +41,6 @@ public class VoidManager : MonoBehaviour
         var tempAst = PhotonNetwork.Instantiate(asteroid.name, position, Quaternion.identity);
         tempAst.GetComponent<AsteroidsBehaviour>().asteroidType = type;
         tempAst.GetComponent<IDamageable>().team.Code = 2;
+        nbAsteroide++;
     }
 }
