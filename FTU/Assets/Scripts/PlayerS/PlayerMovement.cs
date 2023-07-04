@@ -16,6 +16,7 @@ public class PlayerMovement : IDamageable
     public static GameObject localPlayerInstance;
     PhotonView myPV;
     public GameObject Ui;
+    public GameObject animation_click;
     //Movement Controlled by players
     Vector3 velocity;
     Rigidbody myRigidbody;
@@ -106,6 +107,7 @@ public class PlayerMovement : IDamageable
                     //}
                     _navMeshAgent.ResetPath();
                     _navMeshAgent.SetDestination(point);
+                    Instantiate(animation_click, new Vector3(point.x, 0.2f, point.z), Quaternion.identity);
                 }
             }
 
