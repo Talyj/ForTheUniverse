@@ -843,77 +843,69 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    public void EnterBush(BushBehavior bush)
     {
-        if (other.gameObject.CompareTag("Bush"))
+        
+        Debug.Log("InBush");
+        inBush++;
+        
+        if (inBush == 1)
         {
-            Debug.Log("InBush");
-            inBush++;
-            
-            if (inBush == 1)
+            Debug.Log($"Team code : {team.Code} - Team Name : {team.Name}");
+            var layer = team.Code == 0 ? "InvisibleDominion" : "InvisibleVeritas";
+            gameObject.layer = LayerMask.NameToLayer(layer);
+            transform.SetLayerRecursively(LayerMask.NameToLayer(layer));
+            BushManager.Instance().AddEntityToBush(bush.bushID, gameObject);
+            foreach (Transform child in gameObject.transform)
             {
-                Debug.Log($"Team code : {team.Code} - Team Name : {team.Name}");
-                var layer = team.Code == 0 ? "InvisibleDominion" : "InvisibleVeritas";
-                gameObject.layer = LayerMask.NameToLayer(layer);
-                transform.SetLayerRecursively(LayerMask.NameToLayer(layer));
-                BushManager.Instance().AddEntityToBush(other.gameObject.GetComponentInParent<BushBehavior>().bushID, gameObject);
-                foreach (Transform child in gameObject.transform)
+
+                if (!child.gameObject.CompareTag("minimapView"))
                 {
+                    child.gameObject.layer = LayerMask.NameToLayer(layer);
+                    child.SetLayerRecursively(LayerMask.NameToLayer(layer));
 
-                    if (!child.gameObject.CompareTag("minimapView"))
-                    {
-                        child.gameObject.layer = LayerMask.NameToLayer(layer);
-                        child.SetLayerRecursively(LayerMask.NameToLayer(layer));
-
-                    }
                 }
             }
         }
-        
+
     }
 
-    private void OnTriggerExit(Collider other)
+    public void ExitBush(BushBehavior bush)
     {
-        if (other.gameObject.CompareTag("Bush"))
-        {
-            Debug.Log("ExitBush");
-            inBush--;
-            
-            if (inBush <= 0)
-            {
-                switch (this.team.Code)
-                {
-                    case 0:
-                        foreach (Transform child in gameObject.transform)
-                        {
-                            if (!child.gameObject.CompareTag("minimapView"))
-                            {
-                                child.gameObject.layer = LayerMask.NameToLayer("Dominion");
-                                child.SetLayerRecursively(LayerMask.NameToLayer("Dominion"));
-
-                            }
-                        }
-                        break;
-                    case 1:
-                        foreach (Transform child in gameObject.transform)
-                        {
-                            if (!child.gameObject.CompareTag("minimapView"))
-                            {
-                                child.gameObject.layer = LayerMask.NameToLayer("Veritas");
-                                child.SetLayerRecursively(LayerMask.NameToLayer("Veritas"));
-
-                            }
-                        }
-                        break;
-                }
-                //gameObject.layer = LayerMask.NameToLayer("Player");
-
-                //transform.SetLayerRecursively(LayerMask.NameToLayer("Player"));
-                BushManager.Instance().RemoveEntityToBush(other.gameObject.GetComponentInParent<BushBehavior>().bushID, gameObject);
-            }
-        }
-
+        inBush--;
         
+        if (inBush <= 0)
+        {
+            switch (this.team.Code)
+            {
+                case 0:
+                    foreach (Transform child in gameObject.transform)
+                    {
+                        if (!child.gameObject.CompareTag("minimapView"))
+                        {
+                            child.gameObject.layer = LayerMask.NameToLayer("Dominion");
+                            child.SetLayerRecursively(LayerMask.NameToLayer("Dominion"));
+
+                        }
+                    }
+                    break;
+                case 1:
+                    foreach (Transform child in gameObject.transform)
+                    {
+                        if (!child.gameObject.CompareTag("minimapView"))
+                        {
+                            child.gameObject.layer = LayerMask.NameToLayer("Veritas");
+                            child.SetLayerRecursively(LayerMask.NameToLayer("Veritas"));
+
+                        }
+                    }
+                    break;
+            }
+            //gameObject.layer = LayerMask.NameToLayer("Player");
+
+            //transform.SetLayerRecursively(LayerMask.NameToLayer("Player"));
+            BushManager.Instance().RemoveEntityToBush(bush.bushID, gameObject);
+        }
     }
     
 }
@@ -930,6 +922,10 @@ public static class Utils
 {
     public static void SetLayerRecursively(this Transform parent, int layer)
     {
+        if (parent.gameObject.CompareTag("minimapView") || parent.gameObject.layer == LayerMask.NameToLayer("UI"))
+        {
+            return;
+        }
         parent.gameObject.layer = layer;
  
         for (int i = 0, count = parent.childCount; i < count; i++)
