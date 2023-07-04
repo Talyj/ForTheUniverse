@@ -1,4 +1,5 @@
 using Photon.Pun;
+using Photon.Realtime;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -78,7 +79,7 @@ public class PlayerStats : PlayerMovement
         {
             skills[i].isCooldown = false;
         }
-    }    
+    }
 
     public new void HealthBehaviour()
     {
@@ -94,25 +95,65 @@ public class PlayerStats : PlayerMovement
 
         if (GetHealth() <= 0)
         {
-            
-            //photonView.RPC("GiveExperience", RpcTarget.All, new object[] { });
-            var rend = GetComponents<Renderer>();
-            if (rend != null)
-            {
-                for (int i = 0; i < rend.Length; i++)
-                {
-                    rend[i].enabled = false;
-                }
 
+            if (gameObject.CompareTag("dd"))
+            {
+                //Victory
             }
-            StartCoroutine(Spawn(rend));
+            else if (gameObject.GetComponent<BasicAIStats>())
+            {
+                userId = gameObject.name;
+                //PhotonView.Get(this).RPC("SendKillfeed", RpcTarget.AllBuffered,  Cible.name, userId);
+                //PhotonView.Get(this).RPC("RPC_ReceiveKillfeed", RpcTarget.All,userId, Cible.name);
+                PhotonNetwork.Destroy(gameObject);
+            }
+            else if (gameObject.GetComponent<PlayerStats>())
+            {
+                //todo envoie de bon killer 
+                Debug.Log("kill");
+            }
+                photonView.RPC("RPC_SendKillfeed", RpcTarget.AllBuffered, this.GetComponent<PhotonView>().ViewID, Cible.GetComponent<PhotonView>().ViewID);
+            StartCoroutine(Death());
         }
         else
         {
-            Regen();
+            //Regen();
         }
     }
 
+
+    IEnumerator Death()
+    {
+        //Debug.Log(respawnCooldown);
+        //gameObject.SetActive(false);
+        SetDeath(true);
+        foreach (Transform child in gameObject.transform)
+        {
+            child.gameObject.SetActive(false);
+        }
+            gameObject.transform.position = deathPos;
+        yield return new WaitForSeconds(respawnCooldown);
+        foreach (Transform child in gameObject.transform)
+        {
+            child.gameObject.SetActive(true);
+        }
+        SetHealth(GetMaxHealth());
+        SetMana(GetMaxMana());
+        _navMeshAgent.ResetPath();
+        transform.position = respawnPos;
+        SetDeath(false);
+        gameObject.SetActive(true);
+       
+    }
+
+    [PunRPC]
+    public void RPC_SendKillfeed(int killerId, int victimId)
+    {
+        Player killer = PhotonNetwork.CurrentRoom.GetPlayer(killerId);
+        Player victim = PhotonNetwork.CurrentRoom.GetPlayer(victimId);
+        Debug.Log(killer + " a kill " + victim);
+        // Mettre à jour votre UI pour afficher les informations dans le killfeed
+    }
     IEnumerator Spawn(Renderer[] rend)
     {
         if (transform.position != deathPos)
@@ -144,6 +185,8 @@ public class PlayerStats : PlayerMovement
         var res = dmgSource * dmgMultiplier;
         return res;
     }
+
+   
 
     public void SetDefault(Renderer[] rend)
     {

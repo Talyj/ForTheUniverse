@@ -73,6 +73,8 @@ public class PlayerManager : MonoBehaviour
             _playerPrefab.GetComponent<IDamageable>().team.Name = player.GetPhotonTeam().Name;
             _playerPrefab.GetComponent<IDamageable>().userId = PhotonNetwork.LocalPlayer.UserId;
             _playerPrefab.GetComponent<PlayerStats>().playerManage = this;
+            _playerPrefab.GetComponent<PlayerStats>().deathPos = new Vector3(323.3f, 2.14f, -37.118f);
+            _playerPrefab.GetComponent<PlayerStats>().respawnPos = new Vector3(323.3f, 2.14f, -37.118f);
         }
         else if(player.GetPhotonTeam().Code == 1)
         {
@@ -81,6 +83,8 @@ public class PlayerManager : MonoBehaviour
             _playerPrefab.GetComponent<IDamageable>().team.Name = player.GetPhotonTeam().Name;
             _playerPrefab.GetComponent<IDamageable>().userId = PhotonNetwork.LocalPlayer.UserId;
             _playerPrefab.GetComponent<PlayerStats>().playerManage = this;
+            _playerPrefab.GetComponent<PlayerStats>().deathPos = new Vector3(-323.3f, 2.14f, -37.118f);
+            _playerPrefab.GetComponent<PlayerStats>().respawnPos = new Vector3(-323.3f, 2.14f, -37.118f);
         }
         PV.RPC("SyncTeam", RpcTarget.AllBuffered, player.GetPhotonTeam().Code, index);
     }

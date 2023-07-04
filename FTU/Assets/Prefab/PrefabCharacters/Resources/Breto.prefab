@@ -266,7 +266,7 @@ MonoBehaviour:
   entity: {fileID: 3060554245038704445}
   layerToIgnore:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 52223
 --- !u!54 &3060554245038704442
 Rigidbody:
   m_ObjectHideFlags: 0

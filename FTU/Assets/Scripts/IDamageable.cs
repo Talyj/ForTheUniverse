@@ -420,42 +420,47 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
 
     protected void HealthBehaviour()
     {
+        //Debug.Log("toto");
+        //if (Health >= MaxHealth)
+        //{
+        //    Health = MaxHealth;
+        //}
+        //if (Mana >= MaxMana)
+        //{
+        //    Mana = MaxMana;
+        //}
 
-        if (Health >= MaxHealth)
-        {
-            Health = MaxHealth;
-        }
-        if (Mana >= MaxMana)
-        {
-            Mana = MaxMana;
-        }
-
-        if (Health <= 0)
-        {
-            //photonView.RPC("GiveExperience", RpcTarget.All, new object[] { });
-            if (gameObject.CompareTag("dd"))
-            {
-                //Victory
-            }
-            else if (gameObject.GetComponent<BasicAIStats>())
-            {
-                userId = gameObject.name;
-                //PhotonView.Get(this).RPC("SendKillfeed", RpcTarget.AllBuffered,  Cible.name, userId);
-                //PhotonView.Get(this).RPC("RPC_ReceiveKillfeed", RpcTarget.All,userId, Cible.name);
-                PhotonNetwork.Destroy(gameObject);
-            }
-            else
-            {
-                PhotonView.Get(this).RPC("RPC_SendKillfeed", RpcTarget.All, this.GetComponent<PhotonView>().ViewID, Cible.GetComponent<PhotonView>().ViewID);
-            }
-            //else if (PhotonNetwork.IsMasterClient)
-            //{
-            //    Debug.Log("dead");
-            //    PhotonNetwork.Destroy(gameObject.GetComponent<PhotonView>());
-            //}
-            PhotonView.Get(this).RPC("RPC_ReceiveKillfeed", RpcTarget.All, PhotonNetwork.LocalPlayer.UserId, Cible.name);
-        }
+        //if (Health <= 0)
+        //{
+        //    //photonView.RPC("GiveExperience", RpcTarget.All, new object[] { });
+        //    if (gameObject.CompareTag("dd"))
+        //    {
+        //        //Victory
+        //    }
+        //    else if (gameObject.GetComponent<BasicAIStats>())
+        //    {
+        //        userId = gameObject.name;
+        //        //PhotonView.Get(this).RPC("SendKillfeed", RpcTarget.AllBuffered,  Cible.name, userId);
+        //        //PhotonView.Get(this).RPC("RPC_ReceiveKillfeed", RpcTarget.All,userId, Cible.name);
+        //        PhotonNetwork.Destroy(gameObject);
+        //    }
+        //    else if(gameObject.GetComponent<PlayerStats>())
+        //    {
+        //    //todo envoie de bon killer 
+        //        Debug.LogError("kill");
+        //        photonView.RPC("RPC_SendKillfeed", RpcTarget.AllBuffered, this.GetComponent<PhotonView>().ViewID, Cible.GetComponent<PhotonView>().ViewID);
+        //    }
+        //    //RPC_SendKillfeed(this.GetComponent<PhotonView>().ViewID, Cible.GetComponent<PhotonView>().ViewID);
+        //    //else if (PhotonNetwork.IsMasterClient)
+        //    //{
+        //    //    Debug.Log("dead");
+        //    //    PhotonNetwork.Destroy(gameObject.GetComponent<PhotonView>());
+        //    //}
+        //    //PhotonView.Get(this).RPC("RPC_ReceiveKillfeed", RpcTarget.All, PhotonNetwork.LocalPlayer.UserId, Cible.name);
+        //}
     }
+
+
 
     [PunRPC]
     public void SendKillfeed(string killerName, string victimName, PhotonMessageInfo info)
@@ -468,14 +473,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         photonView.RPC("GiveExperience", RpcTarget.All, new object[] { });
     }
 
-    [PunRPC]
-    public void RPC_SendKillfeed(int killerId, int victimId)
-    {
-        Player killer = PhotonNetwork.CurrentRoom.GetPlayer(killerId);
-        Player victim = PhotonNetwork.CurrentRoom.GetPlayer(victimId);
-        Debug.Log(killer + " a kill " + victim);
-        // Mettre à jour votre UI pour afficher les informations dans le killfeed
-    }
+    
 
     public void ExperienceBehaviour()
     {

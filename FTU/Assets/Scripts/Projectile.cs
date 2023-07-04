@@ -28,7 +28,7 @@ public class Projectile : MonoBehaviourPun
     {
         touched = false;
         DontDestroyOnLoad(gameObject);
-        DestroyBullet(10f);
+        DestroyBullet(5f);
     }
 
     public void Update()

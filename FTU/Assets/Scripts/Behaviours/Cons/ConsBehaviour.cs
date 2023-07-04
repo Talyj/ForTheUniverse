@@ -11,10 +11,11 @@ public class ConsBehaviour : PlayerStats
     [SerializeField]
     private int _passiveCounter;
     private bool isPassiveStart;
-    public GameObject[] spawns;
-    public GameObject[] lights;
+    //public GameObject[] spawns;
+    //public GameObject[] lights;
     //Skill 1
     public GameObject beam;
+    public GameObject sp;
 
     
     //Ulti
@@ -147,13 +148,13 @@ public class ConsBehaviour : PlayerStats
     }
     public void SpawnRangeAttackCons(GameObject Target, float dmgSupp = 0)
     {
-        var r = UnityEngine.Random.Range(0, spawns.Length);
-        foreach(var l in lights)
-        {
-            l.SetActive(false);
-        }
-        lights[r].SetActive(true);
-        var bullets = PhotonNetwork.Instantiate(projPrefab.name, spawns[r].transform.position, Quaternion.identity);
+        //var r = UnityEngine.Random.Range(0, spawns.Length);
+        //foreach(var l in lights)
+        //{
+        //    l.SetActive(false);
+        //}
+        //lights[r].SetActive(true);
+        var bullets = PhotonNetwork.Instantiate(projPrefab.name, sp.transform.position, Quaternion.identity);
 
         bullets.GetComponent<Projectile>().SetDamages(GetDegMag() + dmgSupp, DamageType.magique);
         bullets.GetComponent<Projectile>().target = Target;

@@ -798,7 +798,7 @@ MonoBehaviour:
   entity: {fileID: 9173982970317064210}
   layerToIgnore:
     serializedVersion: 2
-    m_Bits: 7167
+    m_Bits: 52223
 --- !u!114 &461897856848549218
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -871,6 +871,7 @@ MonoBehaviour:
   ult: {fileID: 0}
   SpawnPrefab2: {fileID: 1151145462356007709}
   Ui: {fileID: 1796007758404197142}
+  animator: {fileID: 0}
   Position:
     m_InternalValue: {x: 0, y: 0, z: 0}
   gold: 0
