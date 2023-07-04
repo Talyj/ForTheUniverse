@@ -8,6 +8,7 @@ public class AsteroidsBehaviour : BasicAIStats
 {
     //0 = Life, 1 = Mana
     public int asteroidType;
+
     private float range;
     private List<IDamageable> targets;
     private float cpt;
@@ -40,9 +41,14 @@ public class AsteroidsBehaviour : BasicAIStats
                     RefreshTargets(colliders);
                     if(asteroidType == 0)
                     {
+                        Debug.LogError("Damage");
                         DamageLife();
                     }
-                    else { DamageMana(); }
+                    else { 
+                        
+                        Debug.LogError("Mana");
+                        DamageMana(); 
+                        }
                 }
             }
         }
@@ -88,13 +94,18 @@ public class AsteroidsBehaviour : BasicAIStats
         var tempList = new List<IDamageable>();
         if (hitColliders != null)
         {
+            Debug.LogError("On me touche");
             foreach (var col in hitColliders)
             {
                 if (col.gameObject == this.gameObject) break;
                 //If the target is a player
-                if (col.GetComponent<PlayerStats>())
+                if (col.GetComponent<IDamageable>())
                 {
-                    tempList.Add(col.GetComponent<IDamageable>());
+                    if (col.GetComponent<IDamageable>().team.Code != team.Code) {
+                        Debug.LogError("Je suis une pute");
+                        tempList.Add(col.GetComponent<IDamageable>());
+                    }
+                    
                 }
             }
         }

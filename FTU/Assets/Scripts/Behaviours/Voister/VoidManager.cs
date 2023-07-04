@@ -2,10 +2,15 @@ using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.VFX;
 
 public class VoidManager : MonoBehaviour
 {
-    public GameObject asteroid;
+    public GameObject red_asteroid; // 0
+    public GameObject blue_asteroid; // 1
+
+    public VisualEffect meteore;
+
     private float cpt;
     public int nbAsteroide;
 
@@ -26,18 +31,27 @@ public class VoidManager : MonoBehaviour
             for(int i = 0; i < qtyRand; i++)
             {
                 var x = Random.Range(-175f, 175f);
-                var y = Random.Range(60f, 150f);
                 var z = Random.Range(-80f, 80f);
                 var type = Random.Range(0, 2);
-                SpawnAsteroid(asteroid, new Vector3(x, y, z), type);
+
+                VisualEffect meteoretutu = Instantiate(meteore, new Vector3(x, -2.24f, z), Quaternion.identity);
+                StartCoroutine(DestroyAnimation(meteoretutu, 5.0f));
+                if(type == 0) {
+                    StartCoroutine(SpawnAsteroidAfterDelay(red_asteroid, new Vector3(x, 1.702078f, z), type, 3.2f));
+                } else if(type == 1) {
+                    StartCoroutine(SpawnAsteroidAfterDelay(blue_asteroid, new Vector3(x, 1.702078f, z), type, 3.2f));
+                }
             }
-
-
         }
     }
 
-    public void SpawnAsteroid(GameObject asteroid, Vector3 position, int type)
-    {
+    private IEnumerator DestroyAnimation(VisualEffect vfx, float delay) {
+        yield return new WaitForSeconds(delay);
+        Destroy(vfx.gameObject);
+    }
+
+    private IEnumerator SpawnAsteroidAfterDelay(GameObject asteroid, Vector3 position, int type, float delay) {
+        yield return new WaitForSeconds(delay);
         var tempAst = PhotonNetwork.Instantiate(asteroid.name, position, Quaternion.identity);
         tempAst.GetComponent<AsteroidsBehaviour>().asteroidType = type;
         tempAst.GetComponent<IDamageable>().team.Code = 2;
