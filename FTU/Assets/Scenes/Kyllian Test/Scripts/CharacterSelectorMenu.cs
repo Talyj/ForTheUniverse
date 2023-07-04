@@ -53,6 +53,7 @@ public class CharacterSelectorMenu : MonoBehaviourPunCallbacks
         ExitGames.Client.Photon.Hashtable customProp = new ExitGames.Client.Photon.Hashtable();
         customProp.Add("championsSelected",index);
         MainMenuManager.Instance().GetLocalPlayer().SetCustomProperties(customProp);
+        StartCoroutine(ChangeCharacterBDD(index));
 
         if (GroupManager.Instance().GetGroup() == null)
         {
@@ -99,6 +100,16 @@ public class CharacterSelectorMenu : MonoBehaviourPunCallbacks
 
         
         DisplaySelectedChampion();
+    }
+
+    private IEnumerator ChangeCharacterBDD(int index)
+    {
+        var id = PhotonNetwork.LocalPlayer.CustomProperties["idBDD"];
+        var request = "http://awacoru.cluster027.hosting.ovh.net/changeCharacter.php?id=" + id + "&last_character=" + index;
+        WWW hs_get = new WWW(request);
+        
+        yield return hs_get;
+        Debug.Log(hs_get.text);
     }
     
     

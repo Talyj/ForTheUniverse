@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using Photon.Pun;
+using Photon.Realtime;
 using TMPro;
 using UnityEngine;
 
@@ -9,6 +10,7 @@ public class ConnectionToServer : MonoBehaviour
 {
     public TMP_InputField usernameInput;    
     public TMP_InputField passwordInput;
+    public TMP_Text profilName;
 
 
     public void ConnectionHander()
@@ -29,7 +31,7 @@ public class ConnectionToServer : MonoBehaviour
         
         Debug.Log(usernameInput.text);
         Debug.Log(passwordInput.text);
-        var highscoreURL = "http://localhost/ftu/PHP/accessServer.php?user=" +
+        var highscoreURL = "http://awacoru.cluster027.hosting.ovh.net/accessServer.php?user=" +
                               usernameInput.text + "&password=" +
                               passwordInput.text;
         WWW hs_get = new WWW(highscoreURL);
@@ -41,10 +43,12 @@ public class ConnectionToServer : MonoBehaviour
         }
         else
         {
-            if (hs_get.text == "200")
+            if (hs_get.text != "500")
             {
                 MainMenuManager.Instance().Connect();
                 PhotonNetwork.LocalPlayer.NickName = usernameInput.text;
+                //AuthenticationValues.UserId = int.Parse(hs_get.text);
+                profilName.text = usernameInput.text;
             }
         }
         yield return null;

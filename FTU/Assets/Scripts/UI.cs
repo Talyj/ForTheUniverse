@@ -23,6 +23,9 @@ public class UI : MonoBehaviour
     [SerializeField]
     GameObject statsPanel;
 
+    [SerializeField] private Image profilImage;
+    [SerializeField] private Sprite[] charaPP;
+    
     [SerializeField]
     private TMP_Text levelText, healthText, manaText;
 
@@ -46,6 +49,7 @@ public class UI : MonoBehaviour
         costs[0].text = stats.GetSkill1().Cost.ToString();
         costs[1].text = stats.GetSkill2().Cost.ToString();
         costs[2].text = stats.GetUlt().Cost.ToString();
+        profilImage.sprite = charaPP[stats.characterID];
     }
     // Update is called once per frame
     void Update()
