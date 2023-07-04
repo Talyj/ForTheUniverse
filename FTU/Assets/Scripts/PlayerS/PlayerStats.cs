@@ -15,7 +15,7 @@ public class PlayerStats : PlayerMovement
     public PlayerManager playerManage;
     private float respawnCooldown;
 
-    public List<ItemBehaviours> items = new List<ItemBehaviours>(4);
+    public List<ItemStats> items = new List<ItemStats>(4);
     public Role role;
 
 
@@ -216,6 +216,7 @@ public class PlayerStats : PlayerMovement
             SetResPhys(GetResPhys() + item.resPhys);
             SetDegPhys(GetDegPhys() + item.dmgPhys);
             SetDegMag(GetDegMag() + item.dmgMag);
+            item.OnUse();
         }
     }
 

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [CreateAssetMenu(fileName ="Item",menuName ="Items/new item")]
-public class ItemBehaviours : ScriptableObject
+public class ItemStats : ScriptableObject
 {
     public string nameItem;
     public float price;
@@ -27,6 +27,11 @@ public class ItemBehaviours : ScriptableObject
     [Tooltip("Rarete")]
     public ItemRarete rarete;
 
+    public virtual IEnumerator OnUse()
+    {
+        Debug.Log("No effect : " + nameItem);
+        yield return 0;
+    }
 }
 
 public enum ItemRarete{

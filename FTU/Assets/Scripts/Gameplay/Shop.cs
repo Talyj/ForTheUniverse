@@ -15,29 +15,35 @@ public class Shop : MonoBehaviourPun
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") && other.gameObject.GetComponent<IDamageable>().team.Code== teams.Code)
+        if (other.GetComponent<PlayerStats>())
         {
-            playerPrefab = other.gameObject.GetComponent<PlayerStats>();
-            if (Input.GetKeyDown(KeyCode.P))
+            if (other.gameObject.GetComponent<IDamageable>().team.Code == teams.Code)
             {
-                shopIsOpen = !shopIsOpen;
-                OpenOrCloseShop();
+                playerPrefab = other.gameObject.GetComponent<PlayerStats>();
+                if (Input.GetKeyDown(KeyCode.P))
+                {
+                    shopIsOpen = !shopIsOpen;
+                    OpenOrCloseShop();
+                }
+                Debug.Log("in shop");
             }
-            Debug.Log("in shop");
         }
     }
     private void OnTriggerStay(Collider other)
     {
-        if(other.CompareTag("Player") && other.gameObject.GetComponent<IDamageable>().team.Code == teams.Code)
+        if (other.GetComponent<PlayerStats>())
         {
-            playerPrefab = other.gameObject.GetComponent<PlayerStats>();
-            if (Input.GetKeyDown(KeyCode.P))
+            if(other.gameObject.GetComponent<IDamageable>().team.Code == teams.Code)
             {
-                shopIsOpen = !shopIsOpen;
-                OpenOrCloseShop();
+                playerPrefab = other.gameObject.GetComponent<PlayerStats>();
+                if (Input.GetKeyDown(KeyCode.P))
+                {
+                    shopIsOpen = !shopIsOpen;
+                    OpenOrCloseShop();
                 
-            }
+                }
             
+            }
         }
     }
     private void Update()
