@@ -81,6 +81,10 @@ public class CharacterSelectorMenu : MonoBehaviourPunCallbacks
         championPrefab.GetComponent<CameraWork>().enabled = false;
         championPrefab.GetComponent<Targeting>().enabled = false;
         championPrefab.GetComponent<Animator>().enabled = false;
+        foreach (var ui in championPrefab.GetComponentsInChildren<Canvas>())
+        {
+            ui.gameObject.SetActive(false);
+        }
     }
 
     public override void OnConnectedToMaster()

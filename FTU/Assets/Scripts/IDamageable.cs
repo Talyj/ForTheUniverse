@@ -846,7 +846,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
                 var layer = team.Code == 0 ? "InvisibleDominion" : "InvisibleVeritas";
                 gameObject.layer = LayerMask.NameToLayer(layer);
                 transform.SetLayerRecursively(LayerMask.NameToLayer(layer));
-                BushManager.Instance().AddEntityToBush(other.gameObject.GetComponent<BushBehavior>().bushID, gameObject);
+                BushManager.Instance().AddEntityToBush(other.gameObject.GetComponentInParent<BushBehavior>().bushID, gameObject);
             }
         }
 
@@ -876,7 +876,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
                 //gameObject.layer = LayerMask.NameToLayer("Player");
 
                 //transform.SetLayerRecursively(LayerMask.NameToLayer("Player"));
-                BushManager.Instance().RemoveEntityToBush(other.gameObject.GetComponent<BushBehavior>().bushID, gameObject);
+                BushManager.Instance().RemoveEntityToBush(other.gameObject.GetComponentInParent<BushBehavior>().bushID, gameObject);
             }
         }
 
