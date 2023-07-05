@@ -1,6 +1,4 @@
 using Photon.Pun;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,15 +17,9 @@ public class ShopUI : MonoBehaviourPun
         SetItemsInShop();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     private void SetItemsInShop()
     {
-        foreach(var item in itemPassifs.listItems)
+        foreach (var item in itemPassifs.listItems)
         {
             var itemTemp = Instantiate(itemToSpawn, new Vector3(0, 0, 0), Quaternion.identity);
             itemTemp.GetComponent<Items>().item = item;

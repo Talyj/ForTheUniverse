@@ -1,7 +1,5 @@
 using Photon.Pun;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,7 +8,7 @@ public class Items : MonoBehaviourPun
     public ItemStats item;
     public Shop shop;
     public Image img;
-    public Text nameItem,price;
+    public Text nameItem, price;
     public List<PlayerStats> stats;
 
     private void Start()
@@ -22,11 +20,11 @@ public class Items : MonoBehaviourPun
     }
     public void BuyItem()
     {
-        foreach(var player in stats)
+        foreach (var player in stats)
         {
             if (player.photonView.IsMine)
             {
-                if(player.gold >= item.price)
+                if (player.gold >= item.price)
                 {
                     player.gold -= item.price;
                     Debug.Log("Equip " + item.nameItem);

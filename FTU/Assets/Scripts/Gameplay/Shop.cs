@@ -1,6 +1,5 @@
 using Photon.Pun;
 using Photon.Pun.UtilityScripts;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -39,26 +38,26 @@ public class Shop : MonoBehaviourPun
         {
             if (other.gameObject.GetComponent<IDamageable>().team.Code == teams.Code)
             {
-                //playerPrefab = other.gameObject.GetComponent<PlayerStats>();
                 playerPrefab.Add(other.gameObject.GetComponent<PlayerStats>());
                 isIn = true;
             }
         }
     }
 
-    
+
     private void OnTriggerExit(Collider other)
     {
-        foreach(var player in playerPrefab)
+        foreach (var player in playerPrefab)
         {
             if (player.photonView.IsMine)
             {
-                if(playerPrefab.Contains(player))
+                if (playerPrefab.Contains(player))
                 {
                     playerPrefab.Remove(player);
                     isIn = false;
                     shopIsOpen = !shopIsOpen;
                     shopUI.SetActive(false);
+                    return;
                 }
             }
         }
@@ -67,7 +66,7 @@ public class Shop : MonoBehaviourPun
     {
         if (shopIsOpen == true)
         {
-            
+
             shopUI.SetActive(true);
         }
         else
