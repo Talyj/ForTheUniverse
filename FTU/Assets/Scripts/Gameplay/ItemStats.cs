@@ -26,12 +26,8 @@ public class ItemStats : ScriptableObject
     public Sprite img;
     [Tooltip("Rarete")]
     public ItemRarete rarete;
-
-    public virtual IEnumerator OnUse()
-    {
-        Debug.Log("No effect : " + nameItem);
-        yield return 0;
-    }
+    [Tooltip("ID passif (0 si aucun)")]
+    public int idPassif;
 }
 
 public enum ItemRarete{
