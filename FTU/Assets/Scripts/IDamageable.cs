@@ -98,7 +98,8 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
 
     //Damage
     public GameObject ult;
-
+    [SerializeField]
+    bool haveWarFog = false;
 
     public Transform SpawnPrefab2;
 
@@ -307,10 +308,11 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
 
     public void BaseInit()
     {
-        if (!gameObject.GetComponent<VoisterBehaviour>())
+        if (!gameObject.GetComponent<VoisterBehaviour>() && !gameObject.GetComponent<GolemBehaviour>())
         {
-        warfog = GetComponent<FogOfWar>();
-
+            warfog = GetComponent<FogOfWar>();
+            warfog.GoviewMeshFilter.SetActive(true);
+            haveWarFog = true;
         }
         SetMaxHealth(5000);
         SetMaxMana(50000);
@@ -331,14 +333,21 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         {
             case 0:
                 layer = "Dominion";
-                warfog.targetMask = LayerMask.GetMask("Veritas");
-                warfog.obstacleMask = LayerMask.GetMask("Dominion");
+                if (haveWarFog)
+                {
+                    warfog.targetMask = LayerMask.GetMask("Veritas");
+                    warfog.obstacleMask = LayerMask.GetMask("Dominion");
+                }
+                
                 SetGameLayerRecursive(gameObject, layer);
                 break;
             case 1:
                 layer = "Veritas";
-                warfog.obstacleMask = LayerMask.GetMask("Veritas");
-                warfog.targetMask = LayerMask.GetMask("Dominion");
+                if (haveWarFog)
+                {
+                    warfog.obstacleMask = LayerMask.GetMask("Veritas");
+                    warfog.targetMask = LayerMask.GetMask("Dominion");
+                }
                 SetGameLayerRecursive(gameObject, layer);
                 break;
         }
