@@ -6,6 +6,13 @@ using Photon.Realtime;
 using TMPro;
 using UnityEngine;
 
+
+public struct PlayerInfoDatabase
+{
+    public int id;
+    public string name;
+    public int score;
+}
 public class ConnectionToServer : MonoBehaviour
 {
     public TMP_InputField usernameInput;    
@@ -45,10 +52,16 @@ public class ConnectionToServer : MonoBehaviour
         {
             if (hs_get.text != "500")
             {
+                PlayerInfoDatabase playerInfoDatabase = JsonUtility.FromJson<PlayerInfoDatabase>(hs_get.text);
                 MainMenuManager.Instance().Connect();
-                PhotonNetwork.LocalPlayer.NickName = usernameInput.text;
+                PhotonNetwork.LocalPlayer.NickName = playerInfoDatabase.name;
                 //AuthenticationValues.UserId = int.Parse(hs_get.text);
-                profilName.text = usernameInput.text;
+                profilName.text = playerInfoDatabase.name;
+                ExitGames.Client.Photon.Hashtable customProp = new ExitGames.Client.Photon.Hashtable();
+                customProp.Add("idUser",playerInfoDatabase.id);
+                customProp.Add("elo_score",playerInfoDatabase.score);
+                MainMenuManager.Instance().GetLocalPlayer().SetCustomProperties(customProp);
+                
             }
         }
         yield return null;

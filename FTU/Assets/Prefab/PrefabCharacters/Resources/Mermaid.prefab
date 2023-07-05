@@ -198,6 +198,7 @@ MonoBehaviour:
   - {fileID: 5107734280915466453}
   - {fileID: 1024158584959204463}
   statsPanel: {fileID: 0}
+  OptionPanel: {fileID: 0}
   profilImage: {fileID: 0}
   charaPP: []
   levelText: {fileID: 8949695702497005707}
@@ -272,6 +273,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &3806698042274399858
 MonoBehaviour:
   m_ObjectHideFlags: 0

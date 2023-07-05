@@ -21,7 +21,7 @@ public class UI : MonoBehaviour
     [SerializeField]
     TMP_Text[] costs;
     [SerializeField]
-    GameObject statsPanel;
+    GameObject statsPanel, OptionPanel;
 
     [SerializeField] private Image profilImage;
     [SerializeField] private Sprite[] charaPP;
@@ -116,15 +116,9 @@ public class UI : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-            statsPanel.SetActive(true);
-        }
-        
-        if (Input.GetKeyUp(KeyCode.C))
-        {
-            statsPanel.SetActive(false);
-        }
+        statsPanel.SetActive(Input.GetKey(KeyCode.C));
 
+        OptionPanel.SetActive(Input.GetKey(KeyCode.Escape));
+        
     }
 }
