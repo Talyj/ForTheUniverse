@@ -109,6 +109,7 @@ MonoBehaviour:
   damageSupp: 0
   isAI: 0
   inBush: 0
+  warfog: {fileID: 0}
   _navMeshAgent: {fileID: 0}
   enemyType: 2
   passif: {fileID: 11400000, guid: 60a1a5ac534768a49a5c3b5156cba29a, type: 2}
@@ -197,6 +198,7 @@ MonoBehaviour:
   - {fileID: 194619726013929486}
   - {fileID: 5107734280915466453}
   - {fileID: 1024158584959204463}
+  statsPanel: {fileID: 0}
   levelText: {fileID: 8949695702497005707}
   healthText: {fileID: 5194979565238868989}
   manaText: {fileID: 3284950639183753929}
@@ -311,7 +313,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1675429051430411217}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 048f2d621b07cb44fae58b01b5476f0e, type: 3}
   m_Name: 
@@ -399,7 +401,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1485660905157023303
 Transform:
   m_ObjectHideFlags: 0
@@ -620,6 +622,7 @@ MonoBehaviour:
   team:
     Name: 
     Code: 0
+  creator: {fileID: 0}
   source: {fileID: 0}
   direction: {x: 0, y: 0, z: 0}
   scaleChange: {x: 0, y: 0, z: 0}
@@ -640,6 +643,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1675429051430411221}
     m_Modifications:
+    - target: {fileID: 1012087244437296352, guid: 50db51aaef718624a8f2ffc45d152c85, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 1012087244437296352, guid: 50db51aaef718624a8f2ffc45d152c85, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     - target: {fileID: 1761745059218773971, guid: 50db51aaef718624a8f2ffc45d152c85, type: 3}
       propertyPath: manaCible
       value: 
@@ -648,6 +659,22 @@ PrefabInstance:
       propertyPath: healthCible
       value: 
       objectReference: {fileID: 6632810762442962992}
+    - target: {fileID: 2391050020029136423, guid: 50db51aaef718624a8f2ffc45d152c85, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 2391050020029136423, guid: 50db51aaef718624a8f2ffc45d152c85, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 3290811920993884742, guid: 50db51aaef718624a8f2ffc45d152c85, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 3290811920993884742, guid: 50db51aaef718624a8f2ffc45d152c85, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     - target: {fileID: 3376652118336200784, guid: 50db51aaef718624a8f2ffc45d152c85, type: 3}
       propertyPath: m_Name
       value: NEwUI
@@ -740,6 +767,30 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6894569153948186274, guid: 50db51aaef718624a8f2ffc45d152c85, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 6894569153948186274, guid: 50db51aaef718624a8f2ffc45d152c85, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 7313717749028740860, guid: 50db51aaef718624a8f2ffc45d152c85, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 7313717749028740860, guid: 50db51aaef718624a8f2ffc45d152c85, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 7747770999967792596, guid: 50db51aaef718624a8f2ffc45d152c85, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 7747770999967792596, guid: 50db51aaef718624a8f2ffc45d152c85, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 50db51aaef718624a8f2ffc45d152c85, type: 3}
 --- !u!114 &194619726013929486 stripped

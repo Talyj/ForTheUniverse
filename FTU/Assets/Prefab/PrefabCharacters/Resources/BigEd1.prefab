@@ -500,6 +500,8 @@ MonoBehaviour:
   centerOffset: {x: 0, y: 0, z: 0}
   followOnStart: 0
   player: {fileID: 0}
+  cameraTransform: {fileID: 0}
+  isFollowing: 0
   zoomLevel: 0
 --- !u!114 &-788721242420910379
 MonoBehaviour:
@@ -538,6 +540,7 @@ MonoBehaviour:
   damageSupp: 0
   isAI: 0
   inBush: 0
+  warfog: {fileID: 0}
   _navMeshAgent: {fileID: 0}
   enemyType: 2
   passif: {fileID: 11400000, guid: 1ccf4fbedf3245f4790812ff7d16efe3, type: 2}
@@ -608,6 +611,7 @@ MonoBehaviour:
   - {fileID: 194619726013929486, guid: f350f475da558ad448b725cea3ecc90e, type: 3}
   - {fileID: 5107734280915466453, guid: f350f475da558ad448b725cea3ecc90e, type: 3}
   - {fileID: 1024158584959204463, guid: f350f475da558ad448b725cea3ecc90e, type: 3}
+  statsPanel: {fileID: 0}
   levelText: {fileID: 8949695702497005707, guid: f350f475da558ad448b725cea3ecc90e, type: 3}
   healthText: {fileID: 5194979565238868989, guid: f350f475da558ad448b725cea3ecc90e, type: 3}
   manaText: {fileID: 3284950639183753929, guid: f350f475da558ad448b725cea3ecc90e, type: 3}
@@ -626,7 +630,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3853125026446671208}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 048f2d621b07cb44fae58b01b5476f0e, type: 3}
   m_Name: 

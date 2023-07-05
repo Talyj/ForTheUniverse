@@ -58,7 +58,9 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
 
     //State
     public int inBush;
-
+    [Header("fog of war")]
+    [SerializeField]
+    public FogOfWar warfog;
     //Nav Mesh
     [HideInInspector] public UnityEngine.AI.NavMeshAgent _navMeshAgent;
 
@@ -305,6 +307,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
 
     public void BaseInit()
     {
+        warfog = GetComponent<FogOfWar>();
         SetMaxHealth(5000);
         SetMaxMana(50000);
         SetMaxMana(GetMaxMana());
@@ -324,10 +327,14 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         {
             case 0:
                 layer = "Dominion";
+                warfog.targetMask = LayerMask.GetMask("Veritas");
+                warfog.obstacleMask = LayerMask.GetMask("Dominion");
                 SetGameLayerRecursive(gameObject, layer);
                 break;
             case 1:
                 layer = "Veritas";
+                warfog.obstacleMask = LayerMask.GetMask("Veritas");
+                warfog.targetMask = LayerMask.GetMask("Dominion");
                 SetGameLayerRecursive(gameObject, layer);
                 break;
         }
@@ -565,16 +572,12 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
             {
                 float val = Mathf.FloorToInt(MaxHealth * 0.01f);
                 Health += val/2;
-                float val = Mathf.FloorToInt(MaxHealth * 0.1f);
-                Health += val / 2;
             }
 
             if (Mana < MaxMana)
             {
                 float val = Mathf.FloorToInt(MaxMana * 0.01f);
                 Mana += val/2;
-                float val = Mathf.FloorToInt(MaxMana * 0.1f);
-                Mana += val / 2;
             }
         }
     }

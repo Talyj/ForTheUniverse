@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &3586048429308054139
 Transform:
   m_ObjectHideFlags: 0
@@ -251,6 +251,7 @@ MonoBehaviour:
   damageSupp: 0
   isAI: 0
   inBush: 0
+  warfog: {fileID: 0}
   _navMeshAgent: {fileID: 0}
   enemyType: 2
   passif: {fileID: 11400000, guid: d2c9dc6b1ca2bc94ebe53101f1a9a950, type: 2}
@@ -325,6 +326,7 @@ MonoBehaviour:
   - {fileID: 194619726013929486, guid: f350f475da558ad448b725cea3ecc90e, type: 3}
   - {fileID: 5107734280915466453, guid: f350f475da558ad448b725cea3ecc90e, type: 3}
   - {fileID: 1024158584959204463, guid: f350f475da558ad448b725cea3ecc90e, type: 3}
+  statsPanel: {fileID: 0}
   levelText: {fileID: 8949695702497005707, guid: f350f475da558ad448b725cea3ecc90e, type: 3}
   healthText: {fileID: 5194979565238868989, guid: f350f475da558ad448b725cea3ecc90e, type: 3}
   manaText: {fileID: 3284950639183753929, guid: f350f475da558ad448b725cea3ecc90e, type: 3}
@@ -429,6 +431,8 @@ MonoBehaviour:
   centerOffset: {x: 0, y: 0, z: 0}
   followOnStart: 0
   player: {fileID: 0}
+  cameraTransform: {fileID: 0}
+  isFollowing: 0
   zoomLevel: 0
 --- !u!114 &1411291776681341111
 MonoBehaviour:
@@ -629,6 +633,30 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1744873933731375710}
     m_Modifications:
+    - target: {fileID: 1012087244437296352, guid: 50db51aaef718624a8f2ffc45d152c85, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 1012087244437296352, guid: 50db51aaef718624a8f2ffc45d152c85, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 2391050020029136423, guid: 50db51aaef718624a8f2ffc45d152c85, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 2391050020029136423, guid: 50db51aaef718624a8f2ffc45d152c85, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 3290811920993884742, guid: 50db51aaef718624a8f2ffc45d152c85, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 3290811920993884742, guid: 50db51aaef718624a8f2ffc45d152c85, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     - target: {fileID: 3376652118336200784, guid: 50db51aaef718624a8f2ffc45d152c85, type: 3}
       propertyPath: m_Name
       value: NEwUI
@@ -717,6 +745,30 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6894569153948186274, guid: 50db51aaef718624a8f2ffc45d152c85, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 6894569153948186274, guid: 50db51aaef718624a8f2ffc45d152c85, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 7313717749028740860, guid: 50db51aaef718624a8f2ffc45d152c85, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 7313717749028740860, guid: 50db51aaef718624a8f2ffc45d152c85, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 7747770999967792596, guid: 50db51aaef718624a8f2ffc45d152c85, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 7747770999967792596, guid: 50db51aaef718624a8f2ffc45d152c85, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 50db51aaef718624a8f2ffc45d152c85, type: 3}
 --- !u!224 &2688868715857962142 stripped
