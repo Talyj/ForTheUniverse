@@ -35,7 +35,9 @@ public class SlimeBehaviour : VoisterBehaviour, IPunObservable
         {
             HealthBehaviour();
             ExperienceBehaviour();
-            VoisterBaseAction();
+            VoisterBaseBehaviour();
+            //MovementTraining();
+            //SurviveTraining();
             CheckTarget();
 
 

@@ -4917,6 +4917,7 @@ GameObject:
   - component: {fileID: 6585006746754586022}
   - component: {fileID: 4039162852383895910}
   - component: {fileID: 2712914896419365003}
+  - component: {fileID: -2173678192811920268}
   m_Layer: 0
   m_Name: Mau Dom
   m_TagString: Untagged
@@ -4980,6 +4981,7 @@ MonoBehaviour:
   damageSupp: 0
   isAI: 0
   inBush: 0
+  _navMeshAgent: {fileID: 0}
   enemyType: 3
   passif: {fileID: 11400000, guid: 2c1e005c56d159a42b7b9d2798e74552, type: 2}
   skills:
@@ -5105,6 +5107,28 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!195 &-2173678192811920268
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7023784511445204347}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 40
+  m_Acceleration: 40
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 0
+  m_Height: 10
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!1 &7934337805505794112
 GameObject:
   m_ObjectHideFlags: 0

@@ -44,6 +44,8 @@ public class CrabBehaviour : VoisterBehaviour, IPunObservable
             if (GetCanAct() && GetCanMove())
             {
                 VoisterBaseBehaviour();
+                //MovementTraining();
+                //SurviveTraining();
                 GetNearestTarget();
                 //if (Cible)
                 //{

@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class Items : MonoBehaviourPun
 {
-    public ItemBehaviours item;
+    public ItemStats item;
     public Shop shop;
     public Image img;
     public Text nameItem,price;

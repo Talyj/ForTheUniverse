@@ -48,10 +48,14 @@ public class MinionsBehaviour : BasicAIMovement, IPunObservable
             if (GetHealth() > 0 && GetCanAct() && GetCanMove())
             {
                 GetNearestTargetMinion();
-                DefaultMovement();
+                cpt -= Time.deltaTime;
+                if(cpt <= 0)
+                {
+                    cpt = 0.1f;
+                    DefaultMovement();
+                }
                 if (Cible is null)
                 {
-                    //Debug.LogError("checkAttackIsnull");
                     isAttacking = false;
                 }
                 if (Cible)
@@ -61,13 +65,6 @@ public class MinionsBehaviour : BasicAIMovement, IPunObservable
                     gameObject.transform.LookAt(new Vector3(Cible.transform.position.x, transform.position.y, Cible.transform.position.z));
                 }
             }
-            //TODO this is made for test have to get rid of the lines later
-            //cpt += Time.deltaTime;
-            //if (cpt >= 30)
-            // {
-            //    cpt = 0;
-            //    PhotonNetwork.Destroy(gameObject);
-            //}
         }
 
     }
@@ -121,7 +118,7 @@ public class MinionsBehaviour : BasicAIMovement, IPunObservable
     }
 
     private void DefaultMovement()
-    {       
+    {
         if (!pathDone && !isAttacking && Cible == null)
         {
             if (way == Way.up)

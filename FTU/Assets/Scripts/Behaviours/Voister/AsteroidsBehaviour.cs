@@ -1,6 +1,4 @@
 using Photon.Pun;
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,6 +6,7 @@ public class AsteroidsBehaviour : BasicAIStats
 {
     //0 = Life, 1 = Mana
     public int asteroidType;
+
     private float range;
     private List<IDamageable> targets;
     private float cpt;
@@ -17,7 +16,7 @@ public class AsteroidsBehaviour : BasicAIStats
     void Start()
     {
         targets = new List<IDamageable>();
-        range = asteroidType == 0 ? 20 : 40;
+        range = asteroidType == 0 ? 20f : 40f;
         BaseInit();
         SetupForAI();
         cpt = 0;
@@ -33,16 +32,19 @@ public class AsteroidsBehaviour : BasicAIStats
             HealthBehaviour();
             if (GetHealth() > 0 && GetCanAct() && GetCanMove())
             {
-                if(cpt <= 0)
+                if (cpt <= 0)
                 {
                     cpt = 1f;
-                    var colliders = Physics.OverlapSphere(transform.position, range);
-                    RefreshTargets(colliders);
-                    if(asteroidType == 0)
+                    //var colliders = Physics.OverlapSphere(transform.position, range);
+                    //RefreshTargets(colliders);
+                    if (asteroidType == 0)
                     {
                         DamageLife();
                     }
-                    else { DamageMana(); }
+                    else
+                    {
+                        DamageMana();
+                    }
                 }
             }
         }
@@ -71,7 +73,7 @@ public class AsteroidsBehaviour : BasicAIStats
     {
         foreach (var target in targets)
         {
-            target.GetComponent<IDamageable>().TakeDamage(50, DamageType.brut,photonView.ViewID);
+            target.GetComponent<IDamageable>().TakeDamage(50, DamageType.brut, photonView.ViewID);
         }
     }
 
@@ -79,25 +81,26 @@ public class AsteroidsBehaviour : BasicAIStats
     {
         foreach (var target in targets)
         {
-            target.GetComponent<IDamageable>().TakeDamage(50, DamageType.brut,photonView.ViewID, true);
+            target.GetComponent<IDamageable>().TakeDamage(50, DamageType.brut, photonView.ViewID, true);
         }
     }
 
-    private void RefreshTargets(Collider[] hitColliders)
+    private void OnTriggerEnter(Collider other)
     {
-        var tempList = new List<IDamageable>();
-        if (hitColliders != null)
+        if (other.GetComponent<PlayerStats>())
         {
-            foreach (var col in hitColliders)
+            targets.Add(other.GetComponent<IDamageable>());
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.GetComponent<PlayerStats>())
+        {
+            if (targets.Contains(other.GetComponent<IDamageable>()))
             {
-                if (col.gameObject == this.gameObject) break;
-                //If the target is a player
-                if (col.GetComponent<PlayerStats>())
-                {
-                    tempList.Add(col.GetComponent<IDamageable>());
-                }
+                targets.Remove(other.GetComponent<IDamageable>());
             }
         }
-        targets = tempList;
     }
 }

@@ -423,21 +423,26 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     public virtual void HealthBehaviour()
     {
         //Debug.Log("toto");
-        //if (Health >= MaxHealth)
-        //{
-        //    Health = MaxHealth;
-        //}
-        //if (Mana >= MaxMana)
-        //{
-        //    Mana = MaxMana;
-        //}
+        if (Health >= MaxHealth)
+        {
+            Health = MaxHealth;
+        }
+        if (Mana >= MaxMana)
+        {
+            Mana = MaxMana;
+        }
 
         if (Health <= 0)
         {
             //photonView.RPC("GiveExperience", RpcTarget.All, new object[] { });
             if (gameObject.CompareTag("dd"))
             {
-                //Victory
+                var mainGame = FindObjectOfType<MainGame>();
+                if (mainGame)
+                {
+                    mainGame.SendVictoryMessage(team.Code);
+
+                }
             }
             else if (gameObject.GetComponent<BasicAIStats>())
             {
@@ -455,8 +460,6 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
             //PhotonView.Get(this).RPC("RPC_ReceiveKillfeed", RpcTarget.All, PhotonNetwork.LocalPlayer.UserId, Cible.name);
         }
     }
-
-
 
     [PunRPC]
     public void SendKillfeed(string killerName, string victimName, PhotonMessageInfo info)

@@ -296,7 +296,7 @@ public class VoisterBehaviour : BasicAIMovement, IPunObservable
 
     protected void MovementTraining()
     {
-        if (!collided)//if the car has not collided with the wall, it uses the neural network to get an output
+        if (!collided)
         {
             for (int i = 0; i < 5; i++)//draws five debug rays as inputs
             {
@@ -317,8 +317,9 @@ public class VoisterBehaviour : BasicAIMovement, IPunObservable
             float[] output = network.FeedForward(input);//Call to network to feedforward
 
             //TODO find a way to make output affect the attack/skills
-            transform.Rotate(0, output[0] * rotation, 0, Space.World);//controls the cars movement
-            transform.position += transform.right * output[1] * speed;//controls the cars turning
+            transform.Rotate(0, output[0] * rotation, 0, Space.World);
+            _navMeshAgent.SetDestination(transform.right * output[1] * speed);
+            //transform.position += transform.right * output[1] * speed;
         }
     }
 
