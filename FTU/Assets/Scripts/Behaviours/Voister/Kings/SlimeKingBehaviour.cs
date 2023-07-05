@@ -41,7 +41,7 @@ public class SlimeKingBehaviour : KingsBehaviour
             cpt -= Time.deltaTime;
             if (cpt <= 0)
             {
-                cpt = 10;
+                cpt = delaySpawn;
                 var randQty = Random.Range(1, 3);
                 for (int i = 0; i < randQty; i++)
                 {
