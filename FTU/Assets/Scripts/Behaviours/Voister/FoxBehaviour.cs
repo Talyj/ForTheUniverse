@@ -35,7 +35,7 @@ public class FoxBehaviour : VoisterBehaviour, IPunObservable
         {
             HealthBehaviour();
             ExperienceBehaviour();
-            VoisterBaseBehaviour();
+            VoisterBaseAction();
             //MovementTraining();
             //SurviveTraining();
             CheckTarget();

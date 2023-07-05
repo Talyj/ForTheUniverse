@@ -11,7 +11,8 @@ public class KingsBehaviour : BasicAIMovement
     //Setup in specific class
     protected string followersTag;
     [SerializeField] protected GameObject voister;
-    protected float cpt;
+    protected float cpt = 5;
+    protected float delaySpawn = 60;
 
     public void BaseSetupKing()
     {
