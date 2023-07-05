@@ -307,7 +307,11 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
 
     public void BaseInit()
     {
+        if (!gameObject.GetComponent<VoisterBehaviour>())
+        {
         warfog = GetComponent<FogOfWar>();
+
+        }
         SetMaxHealth(5000);
         SetMaxMana(50000);
         SetMaxMana(GetMaxMana());
@@ -323,21 +327,21 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
 
         inBush = 0;
         var layer = "Default";
-        //switch (this.team.Code)
-        //{
-        //    case 0:
-        //        layer = "Dominion";
-        //        warfog.targetMask = LayerMask.GetMask("Veritas");
-        //        warfog.obstacleMask = LayerMask.GetMask("Dominion");
-        //        SetGameLayerRecursive(gameObject, layer);
-        //        break;
-        //    case 1:
-        //        layer = "Veritas";
-        //        warfog.obstacleMask = LayerMask.GetMask("Veritas");
-        //        warfog.targetMask = LayerMask.GetMask("Dominion");
-        //        SetGameLayerRecursive(gameObject, layer);
-        //        break;
-        //}
+        switch (this.team.Code)
+        {
+            case 0:
+                layer = "Dominion";
+                warfog.targetMask = LayerMask.GetMask("Veritas");
+                warfog.obstacleMask = LayerMask.GetMask("Dominion");
+                SetGameLayerRecursive(gameObject, layer);
+                break;
+            case 1:
+                layer = "Veritas";
+                warfog.obstacleMask = LayerMask.GetMask("Veritas");
+                warfog.targetMask = LayerMask.GetMask("Dominion");
+                SetGameLayerRecursive(gameObject, layer);
+                break;
+        }
 
         //team = PhotonTeamsManager.Instance.GetAvailableTeams()[1];
 
