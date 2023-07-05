@@ -10,7 +10,7 @@ public class FOWEditor : Editor
     private void OnSceneGUI()
     {
         FogOfWar fog =  (FogOfWar)target;
-        Handles.color = Color.white;
+        Handles.color = Color.blue;
         Handles.DrawWireArc(fog.transform.position, Vector3.up, Vector3.forward, 360, fog.viewRadius);
         Vector3 viewAngleA = fog.DirFromAngle(-fog.viewAngle / 2, false);
         Vector3 viewAngleB = fog.DirFromAngle(fog.viewAngle / 2, false);

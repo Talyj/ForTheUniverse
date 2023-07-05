@@ -38,53 +38,8 @@ public class MinimapCam : MonoBehaviour
 	}
 
 
-	void Update()
-	{
-		//to move camera :
-		if (IspointerOverUiObject())
-		{
-			if (Input.GetMouseButton(0))
-			{
-
-
-				ray = cam.ScreenPointToRay(Input.mousePosition);
-
-
-				if (Physics.Raycast(ray, out hit, Mathf.Infinity, mask))
-				{
-					YPos = camToMove.transform.position.y;
-
-					movePoint = new Vector3(hit.point.x, YPos, hit.point.z - offset);
-					camToMove.transform.position = movePoint;
-
-				}
-			}
-		}
-
-		if (Input.GetMouseButtonDown(1) && IspointerOverUiObject())
-		{
-
-
-			Vector3 mousePos = cam.ScreenToViewportPoint(Input.mousePosition);
-			Vector3 worldPos = new Vector3(mousePos.x * mapWidth, 0, mousePos.y * mapHeight);
-
-			// Adjust for map proportions
-			worldPos.x *= (mapWidth / (float)Screen.width);
-			worldPos.z *= (mapHeight / (float)Screen.height);
-
-
-			//character.transform.position = worldPos;
-			Debug.Log(worldPos);
-
-
-			//if (Physics.Raycast(ray, out hit, Mathf.Infinity, mask))
-			//{
-
-			//    //your function move a selected unit to clicked area, etc.
-			//    Debug.LogError("ça bouge");
-			//}
-		}
-
+	void Update() {
+		
 	}
 
 
