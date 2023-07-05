@@ -6,6 +6,7 @@ using TMPro;
 using Photon.Realtime;
 using System.Linq;
 using Photon.Pun.UtilityScripts;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 public class Launch : MonoBehaviourPunCallbacks
 {
@@ -27,6 +28,11 @@ public class Launch : MonoBehaviourPunCallbacks
     public float timeBeetweenUpdate = 1.5f;
     float nextUpdateTime;
     
+    
+    //Matchmaking Variable
+    public const string ELO_PROP_KEY = "C0";
+    private TypedLobby sqlLobby = new TypedLobby("customSqlLobby", LobbyType.SqlLobby);
+    private LoadBalancingClient loadBalancingClient;
 
     private void Awake()
     {
@@ -52,9 +58,9 @@ public class Launch : MonoBehaviourPunCallbacks
 
     public override void OnJoinedLobby()
     {
+        Debug.Log("Joined lobby");
         LobbyJoin();
         // creer nouvelle fonction avec joinorcreate
-        Debug.Log("Joined lobby");
         //PhotonNetwork.NickName = "Player " + Random.Range(0, 1000).ToString("0000");
         
 
@@ -68,20 +74,48 @@ public class Launch : MonoBehaviourPunCallbacks
     
     public void LobbyJoin()
     {
-        Debug.Log("on room");
-        PhotonNetwork.JoinOrCreateRoom("AWA", new RoomOptions() { MaxPlayers = 4, BroadcastPropsChangeToAll = true },PhotonNetwork.CurrentLobby);
+        /*RoomOptions roomOptions = new RoomOptions();
+        roomOptions.MaxPlayers = 4;
+        roomOptions.BroadcastPropsChangeToAll = true;
+        roomOptions.CustomRoomProperties = new Hashtable { { ELO_PROP_KEY, PhotonNetwork.LocalPlayer.CustomProperties["elo_score"] } };
+        roomOptions.CustomRoomPropertiesForLobby = new string[]{ ELO_PROP_KEY}; // makes "C0" and "C1" available in the lobby
+        EnterRoomParams enterRoomParams = new EnterRoomParams();
+        enterRoomParams.RoomName = "AWA";
+        enterRoomParams.RoomOptions = roomOptions;
+        enterRoomParams.Lobby = sqlLobby;
+        //enterRoomParams.Lobby = PhotonNetwork.CurrentLobby;
+        //loadBalancingClient = new LoadBalancingClient();
+        //loadBalancingClient.OpJoinOrCreateRoom(enterRoomParams);
+        //PhotonNetwork.JoinOrCreateRoom("AWA", new RoomOptions() { MaxPlayers = 4, BroadcastPropsChangeToAll = true },PhotonNetwork.CurrentLobby);
+        PhotonNetwork.JoinRandomOrCreateRoom(roomName:"AWA", roomOptions:roomOptions,typedLobby:sqlLobby);*/
+
+        JoinRandomRoom();
+
     }
     public void CreateRoom()
     {
-        if (string.IsNullOrEmpty(roomName.text))
+        /*if (string.IsNullOrEmpty(roomName.text))
         {
             PhotonNetwork.CreateRoom(PhotonNetwork.NickName + " room",new RoomOptions() { MaxPlayers=4,BroadcastPropsChangeToAll=true});
         }
         else
         {
             PhotonNetwork.CreateRoom(roomName.text);
-        }
+        }*/
         //Debug.Log(PhotonNetwork.NickName);
+        
+        Debug.Log("create room");
+        RoomOptions roomOptions = new RoomOptions();
+        roomOptions.MaxPlayers = 4;
+        roomOptions.BroadcastPropsChangeToAll = true;
+        roomOptions.CustomRoomProperties = new Hashtable { { ELO_PROP_KEY, PhotonNetwork.LocalPlayer.CustomProperties["elo_score"] } };
+        roomOptions.CustomRoomPropertiesForLobby = new string[]{ ELO_PROP_KEY}; // makes "C0" and "C1" available in the lobby
+        /*EnterRoomParams enterRoomParams = new EnterRoomParams();
+        enterRoomParams.RoomName = "AWA";
+        enterRoomParams.RoomOptions = roomOptions;
+        enterRoomParams.Lobby = sqlLobby;*/
+        PhotonNetwork.CreateRoom(roomName:"AWA " + PhotonNetwork.LocalPlayer.NickName, roomOptions:roomOptions,typedLobby:sqlLobby);
+        
         MenuManager.Instance.OpenMenu("loading");
 
     }
@@ -98,6 +132,8 @@ public class Launch : MonoBehaviourPunCallbacks
     }
     public override void OnJoinedRoom()
     {
+        Debug.Log("on room");
+        Debug.Log(PhotonNetwork.CurrentRoom.CustomProperties[ELO_PROP_KEY]);
         MenuManager.Instance.OpenMenu("room");
         roomNameText.text = PhotonNetwork.CurrentRoom.Name;
             
@@ -143,6 +179,20 @@ public class Launch : MonoBehaviourPunCallbacks
         //MenuManager.Instance.OpenMenu("loading");
         UpdatePlayerList();
 
+    }
+
+    public bool JoinRandomRoom()
+    {
+        int elo = (int)PhotonNetwork.LocalPlayer.CustomProperties["elo_score"];
+        int[] boundaries = new[] { elo - 15, elo + 15 };
+        string sql = $"C0 BETWEEN {boundaries[0]} AND {boundaries[1]}";
+        Debug.Log(sql);
+        return PhotonNetwork.JoinRandomRoom(new Hashtable() {}, 4, MatchmakingMode.FillRoom, sqlLobby, sql);
+    }
+
+    public override void OnJoinRandomFailed(short returnCode, string message)
+    {
+        CreateRoom();
     }
 
     public override void OnLeftRoom()

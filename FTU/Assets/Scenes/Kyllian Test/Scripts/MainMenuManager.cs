@@ -1,3 +1,4 @@
+using System.Collections;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
@@ -68,6 +69,14 @@ public class MainMenuManager : MonoBehaviourPunCallbacks
     private void DisplayFriend(Player player)
     {
         Debug.Log(player.UserId);
+    }
+
+    public IEnumerator GetFriends()
+    {
+        var highscoreURL = "http://awacoru.cluster027.hosting.ovh.net/getFriends.php?user=" +
+                           MainMenuManager.Instance().GetLocalPlayer().CustomProperties["idUser"];
+        WWW hs_get = new WWW(highscoreURL);
+        yield return hs_get;
     }
 
     public Player GetLocalPlayer()

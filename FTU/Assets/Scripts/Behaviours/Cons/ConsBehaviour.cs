@@ -93,7 +93,7 @@ public class ConsBehaviour : PlayerStats
                 if (Input.GetKeyDown(KeyCode.K))
                 {
                     //photonView.RPC("DealDamages",RpcTarget.All, new object[] { 9999 });
-                    TakeDamage(9999, DamageType.physique, photonView.ViewID);
+                    TakeDamage(9999f, DamageType.physique, photonView.ViewID);
                 }
                     if (Input.GetKeyDown(KeyCode.A))
                 {

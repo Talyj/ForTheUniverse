@@ -163,7 +163,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &6424191766453000167
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -201,6 +200,7 @@ MonoBehaviour:
   team:
     Name: 
     Code: 0
+  creator: {fileID: 0}
   dps: {fileID: 0}
 --- !u!54 &-275584403640799070
 Rigidbody:
