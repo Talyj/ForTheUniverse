@@ -121,6 +121,7 @@ MonoBehaviour:
   team:
     Name: 
     Code: 0
+  creator: {fileID: 0}
   source: {fileID: 0}
   direction: {x: 0, y: 0, z: 0}
   scaleChange: {x: 0, y: 0, z: 0}

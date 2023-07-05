@@ -125,6 +125,7 @@ MonoBehaviour:
   team:
     Name: 
     Code: 0
+  creator: {fileID: 0}
   source: {fileID: 0}
   puddle: {fileID: 4502250090578076546, guid: 73a570051899389468aae2031cfff001, type: 3}
 --- !u!114 &-343245719357870577

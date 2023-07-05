@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using UnityEngine;
 using Photon.Pun;
 using TMPro;
@@ -20,8 +21,8 @@ public class Launch : MonoBehaviourPunCallbacks
     [SerializeField] Transform roomListContent;
     [SerializeField] GameObject roomListPrefab;
     [SerializeField] Transform playerListContentInRoom;
-    [SerializeField] GameObject playerListPrefab;
-    [SerializeField] PlayerListItem _playerListPrefab;
+    [SerializeField] GameObject playerListPrefabDominion, playerListPrefabVeritas;
+    [SerializeField] PlayerListItem _playerListPrefabDominion, _playerListPrefabVeritas;
     [SerializeField] List<PlayerListItem> playerList =new List<PlayerListItem>();
     [SerializeField] GameObject startGameButton;
 
@@ -88,8 +89,8 @@ public class Launch : MonoBehaviourPunCallbacks
         //loadBalancingClient.OpJoinOrCreateRoom(enterRoomParams);
         //PhotonNetwork.JoinOrCreateRoom("AWA", new RoomOptions() { MaxPlayers = 4, BroadcastPropsChangeToAll = true },PhotonNetwork.CurrentLobby);
         PhotonNetwork.JoinRandomOrCreateRoom(roomName:"AWA", roomOptions:roomOptions,typedLobby:sqlLobby);*/
-
-        JoinRandomRoom();
+        StartCoroutine(GetScore());
+        //JoinRandomRoom();
 
     }
     public void CreateRoom()
@@ -133,22 +134,38 @@ public class Launch : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         Debug.Log("on room");
-        Debug.Log(PhotonNetwork.CurrentRoom.CustomProperties[ELO_PROP_KEY]);
+        Debug.LogError(PhotonNetwork.CurrentRoom.CustomProperties[ELO_PROP_KEY]);
         MenuManager.Instance.OpenMenu("room");
+        
         roomNameText.text = PhotonNetwork.CurrentRoom.Name;
-            
         startGameButton.SetActive(PhotonNetwork.IsMasterClient);
+
+        
         UpdatePlayerList();
     }
+    private float AverageELORoom()
+    {
+        float res = 0;
+        foreach (var p in PhotonNetwork.CurrentRoom.Players.Values)
+        {
+            res += (float)p.CustomProperties["elo_score"];
+        }
 
+        return res / PhotonNetwork.CurrentRoom.Players.Count;
+    }
+    
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
+        PhotonNetwork.CurrentRoom.CustomProperties[ELO_PROP_KEY] = AverageELORoom();
+        Debug.LogError(PhotonNetwork.CurrentRoom.CustomProperties[ELO_PROP_KEY]);
         Debug.Log("join room+ " + newPlayer.NickName);
         UpdatePlayerList();
     }
 
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
+        PhotonNetwork.CurrentRoom.CustomProperties[ELO_PROP_KEY] = AverageELORoom();
+        Debug.Log(PhotonNetwork.CurrentRoom.CustomProperties[ELO_PROP_KEY]);
         Debug.Log(otherPlayer.NickName + " left team");
         otherPlayer.LeaveCurrentTeam();
         UpdatePlayerList();
@@ -183,15 +200,16 @@ public class Launch : MonoBehaviourPunCallbacks
 
     public bool JoinRandomRoom()
     {
-        int elo = (int)PhotonNetwork.LocalPlayer.CustomProperties["elo_score"];
-        int[] boundaries = new[] { elo - 15, elo + 15 };
-        string sql = $"C0 BETWEEN {boundaries[0]} AND {boundaries[1]}";
-        Debug.Log(sql);
+        float elo = (float)PhotonNetwork.LocalPlayer.CustomProperties["elo_score"];
+        float[] boundaries = new[] { elo - 15, elo + 15 };
+        string sql = $"C0 BETWEEN {boundaries[0].ToString("F2", CultureInfo.InvariantCulture)} AND {boundaries[1].ToString("F2", CultureInfo.InvariantCulture)}";
+        Debug.LogError(sql);
         return PhotonNetwork.JoinRandomRoom(new Hashtable() {}, 4, MatchmakingMode.FillRoom, sqlLobby, sql);
     }
 
     public override void OnJoinRandomFailed(short returnCode, string message)
     {
+        Debug.LogError(message);
         CreateRoom();
     }
 
@@ -231,7 +249,18 @@ public class Launch : MonoBehaviourPunCallbacks
         }
         foreach(var player in PhotonNetwork.CurrentRoom.Players)
         {
-            PlayerListItem newPlayerItem = Instantiate(_playerListPrefab, playerListContentInRoom);
+            PlayerListItem newPlayerItem = null;
+            if ((PhotonNetwork.CurrentRoom.PlayerCount - 1) % 2 == 0)
+            {
+                newPlayerItem= Instantiate(_playerListPrefabDominion, playerListPrefabDominion.GetComponent<RectTransform>());
+            }
+            else
+            {
+
+                newPlayerItem=Instantiate(_playerListPrefabVeritas, playerListPrefabVeritas.GetComponent<RectTransform>());
+                
+            }
+            //PlayerListItem newPlayerItem = Instantiate(_playerListPrefab, playerListContentInRoom);
             
 
             if(player.Value == PhotonNetwork.LocalPlayer)
@@ -249,7 +278,12 @@ public class Launch : MonoBehaviourPunCallbacks
     [PunRPC]
     public void SetTeams()
     {
-        foreach (Transform player in playerListContentInRoom)
+        foreach (Transform player in playerListPrefabDominion.GetComponent<RectTransform>())
+        {
+            Destroy(player.gameObject);
+        }
+        
+        foreach (Transform player in playerListPrefabVeritas.GetComponent<RectTransform>())
         {
             Destroy(player.gameObject);
         }
@@ -260,14 +294,14 @@ public class Launch : MonoBehaviourPunCallbacks
             
             if (players[i].GetPhotonTeam().Code == 0)
             {
-                PlayerListItem newPlayerItem= Instantiate(_playerListPrefab, playerListContentInRoom);
+                PlayerListItem newPlayerItem= Instantiate(_playerListPrefabDominion, playerListPrefabDominion.GetComponent<RectTransform>());
                 newPlayerItem.SetUp(players[i]);
                 playerList.Add(newPlayerItem);
             }
             else if(players[i].GetPhotonTeam().Code == 1)
             {
 
-                PlayerListItem newPlayerItem=Instantiate(_playerListPrefab, playerListContentInRoom);
+                PlayerListItem newPlayerItem=Instantiate(_playerListPrefabVeritas, playerListPrefabVeritas.GetComponent<RectTransform>());
                 newPlayerItem.SetUp(players[i]);
                 playerList.Add(newPlayerItem);
             }
@@ -295,4 +329,37 @@ public class Launch : MonoBehaviourPunCallbacks
         PhotonNetwork.LoadLevel(2);
 
     }
+
+
+    public IEnumerator GetScore()
+    {
+        int idUser = (int)PhotonNetwork.LocalPlayer.CustomProperties["idUser"];
+        int idCharacter = (int)PhotonNetwork.LocalPlayer.CustomProperties["championsSelected"] + 1;
+        
+        var score = $"http://awacoru.cluster027.hosting.ovh.net/computeScore.php?user={idUser}&chara={idCharacter}";
+        WWW request = new WWW(score);
+        yield return request;
+        
+        if (request.error != null)
+        {
+            print("There was an error getting the high score: " + request.error);
+        }
+        else
+        {
+            if (request.text != "500")
+            {
+                PlayerScore ps = JsonUtility.FromJson<PlayerScore>(request.text);
+                PhotonNetwork.LocalPlayer.CustomProperties["elo_score"] = ps.score;
+                Debug.LogError(ps.score);
+                JoinRandomRoom();
+            }
+        }
+        
+    }
+}
+
+
+public struct PlayerScore
+{
+    public float score;
 }
