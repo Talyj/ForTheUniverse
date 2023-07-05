@@ -26,6 +26,10 @@ public class CrabKingBehaviour : KingsBehaviour
         SetViewRange(30f);
         isAttacking = false;
         cpt = 10;
+
+        //Training
+        //InitNetworks();
+        //InvokeRepeating(nameof(CreateVoisters), 0.1f, timeframe);//repeating function
     }
 
     // Update is called once per frame
@@ -42,7 +46,7 @@ public class CrabKingBehaviour : KingsBehaviour
                 var randQty = Random.Range(1, 3);
                 for (int i = 0; i < randQty; i++)
                 {
-                    SpawnVoisters(voister, GetComponent<KingsBehaviour>());
+                    SpawnVoisters(voister);
                 }
             }
         }

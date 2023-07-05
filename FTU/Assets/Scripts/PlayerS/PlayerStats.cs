@@ -214,7 +214,7 @@ public class PlayerStats : PlayerMovement
             SetResPhys(GetResPhys() + item.resPhys);
             SetDegPhys(GetDegPhys() + item.dmgPhys);
             SetDegMag(GetDegMag() + item.dmgMag);
-            ItemPassifs.StartPassif(gameObject, item.idPassif);
+            GetComponent<ItemPassifs>().StartPassif(gameObject, item.idPassif);
         }
     }
 

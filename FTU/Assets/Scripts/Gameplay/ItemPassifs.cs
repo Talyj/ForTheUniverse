@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class ItemPassifs : MonoBehaviourPun
 {
-    public static void StartPassif(GameObject player, int passif)
+    public void StartPassif(GameObject player, int passif)
     {
         switch (passif)
         {
@@ -13,13 +13,13 @@ public class ItemPassifs : MonoBehaviourPun
                 Debug.Log("No passif");
                 break;
             case 1:
-                //StartCoroutine(ID5GriffeDominion(player));
+                StartCoroutine(ID5GriffeDominion(player));
                 break;
 
         }
     }
 
-    public static IEnumerator ID5GriffeDominion(GameObject gameObject)
+    public IEnumerator ID5GriffeDominion(GameObject gameObject)
     {
         var stack = 0;
         while(gameObject.GetComponent<IDamageable>().GetHealth() > 0)
