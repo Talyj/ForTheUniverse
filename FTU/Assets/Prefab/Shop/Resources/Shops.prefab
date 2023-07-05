@@ -1078,6 +1078,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   content: {fileID: 1091226576473741016}
   itemToSpawn: {fileID: 1005798373843222710, guid: eb00d312dda2af84982919d945a02b6e, type: 3}
+  shop: {fileID: 8925829201323470879}
   teamCode: 1
 --- !u!1 &1091226577136370778
 GameObject:
@@ -4079,6 +4080,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   content: {fileID: 8452164679050826158}
   itemToSpawn: {fileID: 1005798373843222710, guid: eb00d312dda2af84982919d945a02b6e, type: 3}
+  shop: {fileID: 1776072047502518300}
   teamCode: 0
 --- !u!1 &8452164677022338682
 GameObject:
