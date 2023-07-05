@@ -295,6 +295,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!54 &7213121623342912308
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -424,6 +425,7 @@ MonoBehaviour:
   - {fileID: 5107734280915466453, guid: f350f475da558ad448b725cea3ecc90e, type: 3}
   - {fileID: 1024158584959204463, guid: f350f475da558ad448b725cea3ecc90e, type: 3}
   statsPanel: {fileID: 0}
+  OptionPanel: {fileID: 0}
   profilImage: {fileID: 0}
   charaPP: []
   levelText: {fileID: 8949695702497005707, guid: f350f475da558ad448b725cea3ecc90e, type: 3}

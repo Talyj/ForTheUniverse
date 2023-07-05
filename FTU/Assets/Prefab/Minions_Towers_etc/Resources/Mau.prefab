@@ -162,6 +162,7 @@ MonoBehaviour:
   damageSupp: 0
   isAI: 0
   inBush: 0
+  warfog: {fileID: 0}
   _navMeshAgent: {fileID: 0}
   enemyType: 3
   passif: {fileID: 11400000, guid: 2c1e005c56d159a42b7b9d2798e74552, type: 2}

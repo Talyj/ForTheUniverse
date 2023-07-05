@@ -30,8 +30,8 @@ public class PlayerListItem : MonoBehaviourPunCallbacks
     public void Awake()
     {
         manag = GameObject.Find("RoomManager").GetComponentInChildren<PhotonTeamsManager>();
-        background.color = new Color(0f, 0f, 0f, 0f);
-        logoteam.color = new Color(0f, 0f, 0f, 0f);
+        /*background.color = new Color(0f, 0f, 0f, 0f);
+        logoteam.color = new Color(0f, 0f, 0f, 0f);*/
     }
 
     public void SetUp(Player _player)
@@ -47,9 +47,9 @@ public class PlayerListItem : MonoBehaviourPunCallbacks
         {
             team = _player.GetPhotonTeam();
             Debug.Log($"<color=green> Setup {player.GetPhotonTeam().Name}</color>");
-            background.sprite = sp[(int)player.CustomProperties["championsSelected"]];
-            background.color = new Color(255f, 255f, 255f, 0.25f);
-            if (player.GetPhotonTeam().Code == 0)
+            logoteam.sprite = sp[(int)player.CustomProperties["championsSelected"]];
+            //background.color = new Color(255f, 255f, 255f, 0.25f);
+            /*if (player.GetPhotonTeam().Code == 0)
             {
                 logoteam.sprite = teamicone[0];
 
@@ -59,7 +59,7 @@ public class PlayerListItem : MonoBehaviourPunCallbacks
 
                 logoteam.sprite = teamicone[1];
             }
-            logoteam.color = new Color(255f, 255f, 255f, 0.75f);
+            logoteam.color = new Color(255f, 255f, 255f, 0.75f);*/
         }
     }
     
@@ -72,12 +72,12 @@ public class PlayerListItem : MonoBehaviourPunCallbacks
         if (player.IsLocal)
         {
             //player.SetCustomProperties(new Hashtable { { PersoPlayerProp, charac.characterIndex } });
-            background.sprite = sp[(int)player.CustomProperties["championsSelected"]]; 
+            logoteam.sprite = sp[(int)player.CustomProperties["championsSelected"]]; 
             //if (player.CustomProperties.ContainsKey("_pp"))
             //{
             //    background.sprite = sp[(int)player.CustomProperties["_pp"]];
             //}
-            background.color = new Color(255f, 255f, 255f, 0.25f);
+            //background.color = new Color(255f, 255f, 255f, 0.25f);
         }
         
     }

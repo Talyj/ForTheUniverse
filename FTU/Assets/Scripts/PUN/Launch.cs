@@ -21,8 +21,8 @@ public class Launch : MonoBehaviourPunCallbacks
     [SerializeField] Transform roomListContent;
     [SerializeField] GameObject roomListPrefab;
     [SerializeField] Transform playerListContentInRoom;
-    [SerializeField] GameObject playerListPrefab;
-    [SerializeField] PlayerListItem _playerListPrefab;
+    [SerializeField] GameObject playerListPrefabDominion, playerListPrefabVeritas;
+    [SerializeField] PlayerListItem _playerListPrefabDominion, _playerListPrefabVeritas;
     [SerializeField] List<PlayerListItem> playerList =new List<PlayerListItem>();
     [SerializeField] GameObject startGameButton;
 
@@ -136,13 +136,13 @@ public class Launch : MonoBehaviourPunCallbacks
         Debug.Log("on room");
         Debug.LogError(PhotonNetwork.CurrentRoom.CustomProperties[ELO_PROP_KEY]);
         MenuManager.Instance.OpenMenu("room");
-        roomNameText.text = PhotonNetwork.CurrentRoom.Name;
         
+        roomNameText.text = PhotonNetwork.CurrentRoom.Name;
+        startGameButton.SetActive(PhotonNetwork.IsMasterClient);
 
-            startGameButton.SetActive(PhotonNetwork.IsMasterClient);
+        
         UpdatePlayerList();
     }
-
     private float AverageELORoom()
     {
         float res = 0;
@@ -249,7 +249,18 @@ public class Launch : MonoBehaviourPunCallbacks
         }
         foreach(var player in PhotonNetwork.CurrentRoom.Players)
         {
-            PlayerListItem newPlayerItem = Instantiate(_playerListPrefab, playerListContentInRoom);
+            PlayerListItem newPlayerItem = null;
+            if ((PhotonNetwork.CurrentRoom.PlayerCount - 1) % 2 == 0)
+            {
+                newPlayerItem= Instantiate(_playerListPrefabDominion, playerListPrefabDominion.GetComponent<RectTransform>());
+            }
+            else
+            {
+
+                newPlayerItem=Instantiate(_playerListPrefabVeritas, playerListPrefabVeritas.GetComponent<RectTransform>());
+                
+            }
+            //PlayerListItem newPlayerItem = Instantiate(_playerListPrefab, playerListContentInRoom);
             
 
             if(player.Value == PhotonNetwork.LocalPlayer)
@@ -267,7 +278,12 @@ public class Launch : MonoBehaviourPunCallbacks
     [PunRPC]
     public void SetTeams()
     {
-        foreach (Transform player in playerListContentInRoom)
+        foreach (Transform player in playerListPrefabDominion.GetComponent<RectTransform>())
+        {
+            Destroy(player.gameObject);
+        }
+        
+        foreach (Transform player in playerListPrefabVeritas.GetComponent<RectTransform>())
         {
             Destroy(player.gameObject);
         }
@@ -278,14 +294,14 @@ public class Launch : MonoBehaviourPunCallbacks
             
             if (players[i].GetPhotonTeam().Code == 0)
             {
-                PlayerListItem newPlayerItem= Instantiate(_playerListPrefab, playerListContentInRoom);
+                PlayerListItem newPlayerItem= Instantiate(_playerListPrefabDominion, playerListPrefabDominion.GetComponent<RectTransform>());
                 newPlayerItem.SetUp(players[i]);
                 playerList.Add(newPlayerItem);
             }
             else if(players[i].GetPhotonTeam().Code == 1)
             {
 
-                PlayerListItem newPlayerItem=Instantiate(_playerListPrefab, playerListContentInRoom);
+                PlayerListItem newPlayerItem=Instantiate(_playerListPrefabVeritas, playerListPrefabVeritas.GetComponent<RectTransform>());
                 newPlayerItem.SetUp(players[i]);
                 playerList.Add(newPlayerItem);
             }
