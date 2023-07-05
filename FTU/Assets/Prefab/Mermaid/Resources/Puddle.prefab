@@ -142,6 +142,8 @@ MonoBehaviour:
   team:
     Name: 
     Code: 0
+  creator: {fileID: 0}
+  mb: {fileID: 0}
 --- !u!114 &622784733083254824
 MonoBehaviour:
   m_ObjectHideFlags: 0

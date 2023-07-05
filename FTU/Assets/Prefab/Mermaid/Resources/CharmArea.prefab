@@ -123,6 +123,7 @@ MonoBehaviour:
   team:
     Name: 
     Code: 0
+  creator: {fileID: 0}
   source: {fileID: 0}
 --- !u!114 &8454814626253766065
 MonoBehaviour:
