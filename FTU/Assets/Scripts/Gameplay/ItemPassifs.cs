@@ -1,10 +1,13 @@
 using Photon.Pun;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class ItemPassifs : MonoBehaviourPun
 {
+    public ItemStats[] listItems;
+
     public void StartPassif(GameObject player, int passif)
     {
         switch (passif)

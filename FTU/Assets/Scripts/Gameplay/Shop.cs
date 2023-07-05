@@ -11,6 +11,25 @@ public class Shop : MonoBehaviourPun
     public GameObject shopUI;
     public PlayerStats playerPrefab;
     public bool shopIsOpen = false;
+    private bool isIn;
+
+    public void Start()
+    {
+        isIn = false;
+    }
+
+    private void Update()
+    {
+        if (isIn)
+        {
+            if (Input.GetKeyDown(KeyCode.P))
+            {
+                shopUI.GetComponent<ShopUI>().teamCode = teams.Code;
+                shopIsOpen = !shopIsOpen;
+                OpenOrCloseShop();
+            }
+        }
+    }
 
 
     private void OnTriggerEnter(Collider other)
@@ -20,42 +39,20 @@ public class Shop : MonoBehaviourPun
             if (other.gameObject.GetComponent<IDamageable>().team.Code == teams.Code)
             {
                 playerPrefab = other.gameObject.GetComponent<PlayerStats>();
-                if (Input.GetKeyDown(KeyCode.P))
-                {
-                    shopIsOpen = !shopIsOpen;
-                    OpenOrCloseShop();
-                }
-                Debug.Log("in shop");
+                isIn = true;
             }
         }
-    }
-    private void OnTriggerStay(Collider other)
-    {
-        if (other.GetComponent<PlayerStats>())
-        {
-            if(other.gameObject.GetComponent<IDamageable>().team.Code == teams.Code)
-            {
-                playerPrefab = other.gameObject.GetComponent<PlayerStats>();
-                if (Input.GetKeyDown(KeyCode.P))
-                {
-                    shopIsOpen = !shopIsOpen;
-                    OpenOrCloseShop();
-                
-                }
-            
-            }
-        }
-    }
-    private void Update()
-    {
-        
     }
 
     
     private void OnTriggerExit(Collider other)
     {
-        shopIsOpen = false;
-        OpenOrCloseShop();
+        if(other.GetComponent<PlayerStats>() == playerPrefab)
+        {
+            isIn = false;
+            shopIsOpen = !shopIsOpen;
+            shopUI.SetActive(false);
+        }
     }
     void OpenOrCloseShop()
     {

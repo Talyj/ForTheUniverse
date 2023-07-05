@@ -81,7 +81,10 @@ public class PlayerStats : PlayerMovement
 
     public new void HealthBehaviour()
     {
-
+        if (gameObject.name.ToLower().Contains("breto"))
+        {
+            Debug.LogError(GetMaxHealth());
+        }
         if (GetHealth() >= GetMaxHealth())
         {
             SetHealth(GetMaxHealth());
@@ -203,6 +206,12 @@ public class PlayerStats : PlayerMovement
         //}
     }
 
+    public void CallItemEquip()
+    {
+        photonView.RPC(nameof(ItemEquip), RpcTarget.All);
+    }
+
+    [PunRPC]
     public void ItemEquip()
     {
         foreach (var item in items)
@@ -214,7 +223,7 @@ public class PlayerStats : PlayerMovement
             SetResPhys(GetResPhys() + item.resPhys);
             SetDegPhys(GetDegPhys() + item.dmgPhys);
             SetDegMag(GetDegMag() + item.dmgMag);
-            GetComponent<ItemPassifs>().StartPassif(gameObject, item.idPassif);
+            FindObjectOfType<ItemPassifs>().StartPassif(gameObject, item.idPassif);
         }
     }
 

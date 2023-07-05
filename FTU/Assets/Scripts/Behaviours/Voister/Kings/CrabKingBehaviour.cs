@@ -26,10 +26,6 @@ public class CrabKingBehaviour : KingsBehaviour
         SetViewRange(30f);
         isAttacking = false;
         cpt = 10;
-
-        //Training
-        //InitNetworks();
-        //InvokeRepeating(nameof(CreateVoisters), 0.1f, timeframe);//repeating function
     }
 
     // Update is called once per frame

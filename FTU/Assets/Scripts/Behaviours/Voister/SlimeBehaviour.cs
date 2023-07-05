@@ -36,14 +36,13 @@ public class SlimeBehaviour : VoisterBehaviour, IPunObservable
             HealthBehaviour();
             ExperienceBehaviour();
             VoisterBaseAction();
-            //MovementTraining();
-            //SurviveTraining();
             CheckTarget();
 
 
             if (GetCanAct() && GetCanMove())
             {
                 VoisterBaseBehaviour();
+
                 GetNearestTarget();
                 //if (Cible)
                 //{
