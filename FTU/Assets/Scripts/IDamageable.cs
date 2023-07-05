@@ -41,6 +41,11 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     private float cptRegen = 0;
     public bool isAttacking;
 
+    //Animation mort
+    [SerializeField] private Material dissolveMaterial; 
+    [SerializeField] private RuntimeAnimatorController dissolveController; 
+    private float dissolveDuration = 1.0f; 
+
     //exp
     [SerializeField] protected float Exp;
     [SerializeField] protected float MaxExp;
@@ -440,7 +445,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         }
 
         if (Health <= 0)
-        {
+        {   
             //photonView.RPC("GiveExperience", RpcTarget.All, new object[] { });
             if (gameObject.CompareTag("dd"))
             {
@@ -450,13 +455,26 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
                     mainGame.SendVictoryMessage(team.Code);
 
                 }
-            }
+            } 
             else if (gameObject.GetComponent<BasicAIStats>())
             {
                 //userId = gameObject.name;
                 //PhotonView.Get(this).RPC("SendKillfeed", RpcTarget.AllBuffered,  Cible.name, userId);
                 //PhotonView.Get(this).RPC("RPC_ReceiveKillfeed", RpcTarget.All,userId, Cible.name);
-                PhotonNetwork.Destroy(gameObject);
+
+                foreach (var meshRenderer in GetComponentsInChildren<MeshRenderer>()) {
+                    meshRenderer.material = dissolveMaterial;
+
+                    var animator = meshRenderer.gameObject.GetComponent<Animator>();
+                    if (animator == null) {
+                        animator = meshRenderer.gameObject.AddComponent<Animator>();
+                    }
+
+                    animator.runtimeAnimatorController = dissolveController;
+                }
+
+                StartCoroutine(DissolveEffect());
+                //PhotonNetwork.Destroy(gameObject);
             }
             //RPC_SendKillfeed(this.GetComponent<PhotonView>().ViewID, Cible.GetComponent<PhotonView>().ViewID);
             //else if (PhotonNetwork.IsMasterClient)
@@ -466,6 +484,13 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
             //}
             //PhotonView.Get(this).RPC("RPC_ReceiveKillfeed", RpcTarget.All, PhotonNetwork.LocalPlayer.UserId, Cible.name);
         }
+    }
+
+    private IEnumerator DissolveEffect() {
+        yield return new WaitForSeconds(dissolveDuration);
+
+       //Destroy(gameObject);
+        PhotonNetwork.Destroy(gameObject);
     }
 
     [PunRPC]

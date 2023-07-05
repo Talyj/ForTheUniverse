@@ -97,6 +97,8 @@ MonoBehaviour:
   DegatsMagique: 0
   canUlt: 0
   isAttacking: 0
+  dissolveMaterial: {fileID: 0}
+  dissolveController: {fileID: 0}
   Exp: 0
   MaxExp: 0
   ExpRate: 0
@@ -199,6 +201,9 @@ MonoBehaviour:
   - {fileID: 5107734280915466453}
   - {fileID: 1024158584959204463}
   statsPanel: {fileID: 0}
+  OptionPanel: {fileID: 0}
+  profilImage: {fileID: 0}
+  charaPP: []
   levelText: {fileID: 8949695702497005707}
   healthText: {fileID: 5194979565238868989}
   manaText: {fileID: 3284950639183753929}
