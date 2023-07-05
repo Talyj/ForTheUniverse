@@ -1,7 +1,5 @@
 using Photon.Pun;
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ItemPassifs : MonoBehaviourPun
@@ -24,8 +22,7 @@ public class ItemPassifs : MonoBehaviourPun
 
     public IEnumerator ID5GriffeDominion(GameObject gameObject)
     {
-        var stack = 0;
-        while(gameObject.GetComponent<IDamageable>().GetHealth() > 0)
+        while (gameObject.GetComponent<IDamageable>().GetHealth() > 0)
         {
             Debug.LogError("GriffeDominionEffect");
             yield return new WaitForSeconds(1f);
