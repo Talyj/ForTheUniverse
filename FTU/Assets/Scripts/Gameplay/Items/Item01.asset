@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Item01
   m_EditorClassIdentifier: 
   nameItem: La Cape Hot
-  price: 5
+  price: 0
   health: 500
   mana: 500
   resPhys: 0
@@ -23,3 +23,4 @@ MonoBehaviour:
   attackSpeed: 0
   img: {fileID: 21300000, guid: fe66491c4a2d60c40ad07f93fe04e79f, type: 3}
   rarete: 3
+  idPassif: 0

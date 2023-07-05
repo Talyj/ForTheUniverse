@@ -25,7 +25,7 @@ public class MinionsBehaviour : BasicAIMovement, IPunObservable
         SetMoveSpeed(15f);
         SetDegMag(20f);
         SetDegPhys(20f);
-        SetViewRange(30f);
+        SetViewRange(15f);
         SetAttackSpeed(2f);
         SetEnemyType(EnemyType.minion);
         isAttacking = false;
@@ -49,7 +49,7 @@ public class MinionsBehaviour : BasicAIMovement, IPunObservable
             {
                 GetNearestTargetMinion();
                 cpt -= Time.deltaTime;
-                if(cpt <= 0)
+                if (cpt <= 0)
                 {
                     cpt = 0.1f;
                     DefaultMovement();
@@ -65,8 +65,8 @@ public class MinionsBehaviour : BasicAIMovement, IPunObservable
                     gameObject.transform.LookAt(new Vector3(Cible.transform.position.x, transform.position.y, Cible.transform.position.z));
                 }
             }
-        }
 
+        }
     }
 
     public void GetNearestTargetMinion()

@@ -861,10 +861,30 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         if (stream.IsWriting)
         {
             stream.SendNext(GetHealth());
+            stream.SendNext(GetMaxHealth());
+            stream.SendNext(GetMana());
+            stream.SendNext(GetMaxMana());
+            stream.SendNext(GetAttackSpeed());
+            stream.SendNext(GetAttackRange());
+            stream.SendNext(GetResPhys());
+            stream.SendNext(GetResMag());
+            stream.SendNext(GetDegPhys());
+            stream.SendNext(GetDegMag());
+            stream.SendNext(lvl);
         }
         else
         {
             SetHealth((float)stream.ReceiveNext());
+            SetMaxHealth((float)stream.ReceiveNext());
+            SetMana((float)stream.ReceiveNext());
+            SetMaxMana((float)stream.ReceiveNext());
+            SetAttackSpeed((float)stream.ReceiveNext());
+            SetAttackRange((float)stream.ReceiveNext());
+            SetResPhys((float)stream.ReceiveNext());
+            SetResMag((float)stream.ReceiveNext());
+            SetDegPhys((float)stream.ReceiveNext());
+            SetDegMag((float)stream.ReceiveNext());
+            SetLvl((int)stream.ReceiveNext());
         }
     }
 

@@ -18,6 +18,14 @@ public class KingsBehaviour : BasicAIMovement
     {
         numberOfFollower = 0;
         team.Code = 2;
+        populationSize = 20;
+        timeframe = 60f;
+
+        if (populationSize % 2 != 0)
+            populationSize = 10;//if population size is not even, sets it to fifty
+
+        //InitNetworks();
+        //InvokeRepeating(nameof(CreateVoisters), 0.1f, timeframe);//repeating function
     }
 
     public void BaseBehaviourKings()
@@ -55,11 +63,16 @@ public class KingsBehaviour : BasicAIMovement
         //voisters = new List<VoisterBehaviour>();
         //for (int i = 0; i < populationSize; i++)
         //{
+
+
         var x = Random.Range(-150, 150);
         var z = Random.Range(-50, 50);
 
         VoisterBehaviour voistertemp = PhotonNetwork.Instantiate(voister.name, new Vector3(x, transform.position.y, z), Quaternion.identity).GetComponent<VoisterBehaviour>();//create botes
         voistertemp.GetComponent<VoisterBehaviour>().kingVoisters = this;
+
+
+
         //voistertemp.network = networks[i];//deploys network to each learner
         //voisters.Add(voistertemp);
         //}
@@ -70,7 +83,7 @@ public class KingsBehaviour : BasicAIMovement
     }
 
     public float timeframe;
-    public int populationSize = 20;//creates population size
+    public int populationSize;//creates population size
     public GameObject prefab;//holds bot prefab
 
     public int[] layers = new int[3] { 6, 3, 2 };//initializing network to the right size
@@ -87,16 +100,6 @@ public class KingsBehaviour : BasicAIMovement
 
     //public string pathToSave = "Assets/AITraining/ModelSaveMove.txt";
     public string pathToSave = "Assets/AITraining/ModelSaveSurvive.txt";
-
-    // Start is called before the first frame update
-    public void Start()
-    {
-        if (populationSize % 2 != 0)
-            populationSize = 10;//if population size is not even, sets it to fifty
-
-        InitNetworks();
-        InvokeRepeating("CreateVoisters", 0.1f, timeframe);//repeating function
-    }
 
     public void InitNetworks()
     {

@@ -39,7 +39,7 @@ public class SpawnMinion : MonoBehaviour
                 if (/*mainGame.isPlaying && */cpt <= 0)
                 {
                     cpt = 120;
-                    for (int i = 0; i < 5; i++)
+                    for (int i = 0; i < 3; i++)
                     {
                         //1 == veritas , 0 == Dominion
                         SetMinions(BasicAIStats.Way.up, 1, i);
