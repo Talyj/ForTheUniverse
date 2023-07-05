@@ -12,6 +12,7 @@ public class PlayerStats : PlayerMovement
     public Vector3 deathPos;
     public PlayerManager playerManage;
     private float respawnCooldown;
+    
 
     public List<ItemStats> items = new List<ItemStats>(4);
     public Role role;
@@ -81,7 +82,16 @@ public class PlayerStats : PlayerMovement
 
     public new void HealthBehaviour()
     {
+        if(GetHealth() < GetMaxHealth())
+        {
+            healthDecreaseTimer += Time.deltaTime;
+        }
+        inFight = (healthDecreaseTimer >= 6f) ? false : true;
 
+        if (inFight == false)
+        {
+            Regen();
+        }
         if (GetHealth() >= GetMaxHealth())
         {
             SetHealth(GetMaxHealth());
@@ -122,16 +132,16 @@ public class PlayerStats : PlayerMovement
                 {
                     //todo envoie de bon killer 
                     Debug.Log("kill");
-                    if (Cible != null)
-                    {
+                    //if (Cible != null)
+                    //{
 
-                        photonView.RPC("RPC_SendKillfeed", RpcTarget.AllBuffered, this.userId, Cible.GetComponent<IDamageable>().userId);
-                    }
-                    else
-                    {
-                        photonView.RPC("RPC_SendKillfeed2", RpcTarget.AllBuffered, GetComponent<PhotonView>().ViewID);
+                    //    photonView.RPC("RPC_SendKillfeed", RpcTarget.AllBuffered, this.userId, Cible.GetComponent<IDamageable>().userId);
+                    //}
+                    //else
+                    //{
+                    //    photonView.RPC("RPC_SendKillfeed2", RpcTarget.AllBuffered, GetComponent<PhotonView>().ViewID);
 
-                    }
+                    //}
                 }
                 StartCoroutine(Death());
             }
