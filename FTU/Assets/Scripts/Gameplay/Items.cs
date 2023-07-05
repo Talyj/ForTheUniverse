@@ -11,12 +11,10 @@ public class Items : MonoBehaviourPun
     public Shop shop;
     public Image img;
     public Text nameItem,price;
-    public PlayerStats stats;
-    public int teamCode;
+    public List<PlayerStats> stats;
 
     private void Start()
     {
-        shop = FindObjectsOfType<Shop>().Single(x => x.teams.Code == teamCode);
         stats = shop.playerPrefab;
         img.sprite = item.img;
         nameItem.text = item.nameItem;
@@ -24,21 +22,22 @@ public class Items : MonoBehaviourPun
     }
     public void BuyItem()
     {
-        if (stats.photonView.IsMine)
+        foreach(var player in stats)
         {
-            if(stats.gold >= item.price)
+            if (player.photonView.IsMine)
             {
-                stats.gold -= item.price;
-                Debug.Log("Equip " + item.nameItem);
-                stats.items.Add(item);
-                stats.CallItemEquip();
-            }
-            else
-            {
-                Debug.Log("need gold");
+                if(player.gold >= item.price)
+                {
+                    player.gold -= item.price;
+                    Debug.Log("Equip " + item.nameItem);
+                    player.items.Add(item);
+                    player.CallItemEquip();
+                }
+                else
+                {
+                    Debug.Log("need gold");
+                }
             }
         }
-        
-
     }
 }

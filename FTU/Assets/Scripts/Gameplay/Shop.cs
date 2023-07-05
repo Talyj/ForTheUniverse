@@ -9,13 +9,14 @@ public class Shop : MonoBehaviourPun
     [SerializeField] PhotonTeamsManager manag;
     public PhotonTeam teams;
     public GameObject shopUI;
-    public PlayerStats playerPrefab;
+    public List<PlayerStats> playerPrefab;
     public bool shopIsOpen = false;
     private bool isIn;
 
     public void Start()
     {
         isIn = false;
+        playerPrefab = new List<PlayerStats>();
     }
 
     private void Update()
@@ -38,7 +39,8 @@ public class Shop : MonoBehaviourPun
         {
             if (other.gameObject.GetComponent<IDamageable>().team.Code == teams.Code)
             {
-                playerPrefab = other.gameObject.GetComponent<PlayerStats>();
+                //playerPrefab = other.gameObject.GetComponent<PlayerStats>();
+                playerPrefab.Add(other.gameObject.GetComponent<PlayerStats>());
                 isIn = true;
             }
         }
@@ -47,11 +49,18 @@ public class Shop : MonoBehaviourPun
     
     private void OnTriggerExit(Collider other)
     {
-        if(other.GetComponent<PlayerStats>() == playerPrefab)
+        foreach(var player in playerPrefab)
         {
-            isIn = false;
-            shopIsOpen = !shopIsOpen;
-            shopUI.SetActive(false);
+            if (player.photonView.IsMine)
+            {
+                if(playerPrefab.Contains(player))
+                {
+                    playerPrefab.Remove(player);
+                    isIn = false;
+                    shopIsOpen = !shopIsOpen;
+                    shopUI.SetActive(false);
+                }
+            }
         }
     }
     void OpenOrCloseShop()
