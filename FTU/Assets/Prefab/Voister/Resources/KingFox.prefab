@@ -273,6 +273,14 @@ MonoBehaviour:
   numberOfFollower: 0
   followersMax: 5
   voister: {fileID: 7297893142613042275, guid: 0cb92ee05e67d1541bdfe0daaefab110, type: 3}
+  timeframe: 0
+  populationSize: 0
+  prefab: {fileID: 0}
+  layers: 050000000300000002000000
+  MutationChance: 0.05
+  MutationStrength: 0.5
+  Gamespeed: 1
+  pathToSave: Assets/AITraining/ModelSaveSurvive.txt
 --- !u!1001 &1902601041405372545
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -250,7 +250,15 @@ MonoBehaviour:
   pathDone: 0
   numberOfFollower: 0
   followersMax: 5
-  voister: {fileID: 0}
+  voister: {fileID: 6458015037471900398, guid: f19573ecafd76c543a85c8ab8fe3ee34, type: 3}
+  timeframe: 0
+  populationSize: 0
+  prefab: {fileID: 0}
+  layers: 050000000300000002000000
+  MutationChance: 0.05
+  MutationStrength: 0.5
+  Gamespeed: 1
+  pathToSave: Assets/AITraining/ModelSaveSurvive.txt
 --- !u!195 &211247644007514586
 NavMeshAgent:
   m_ObjectHideFlags: 0

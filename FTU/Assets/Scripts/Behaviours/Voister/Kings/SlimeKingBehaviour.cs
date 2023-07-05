@@ -25,6 +25,10 @@ public class SlimeKingBehaviour : KingsBehaviour
         SetMoveSpeed(20f);
         SetViewRange(30f);
         isAttacking = false;
+
+        //Training
+        //InitNetworks();
+        //InvokeRepeating(nameof(CreateVoisters), 0.1f, timeframe);//repeating function
     }
 
     // Update is called once per frame
@@ -41,7 +45,7 @@ public class SlimeKingBehaviour : KingsBehaviour
                 var randQty = Random.Range(1, 3);
                 for (int i = 0; i < randQty; i++)
                 {
-                    SpawnVoisters(voister, GetComponent<KingsBehaviour>());
+                    SpawnVoisters(voister);
                 }
             }
         }

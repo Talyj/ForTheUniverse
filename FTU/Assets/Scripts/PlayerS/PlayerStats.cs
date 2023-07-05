@@ -1,6 +1,4 @@
 using Photon.Pun;
-using Photon.Realtime;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -216,7 +214,7 @@ public class PlayerStats : PlayerMovement
             SetResPhys(GetResPhys() + item.resPhys);
             SetDegPhys(GetDegPhys() + item.dmgPhys);
             SetDegMag(GetDegMag() + item.dmgMag);
-            item.OnUse();
+            GetComponent<ItemPassifs>().StartPassif(gameObject, item.idPassif);
         }
     }
 
