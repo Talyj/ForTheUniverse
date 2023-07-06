@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.VFX;
 
 public class RoarBehaviour : Projectile
 {
@@ -10,10 +11,13 @@ public class RoarBehaviour : Projectile
     private float timerDefault;
     //Speed bigger
     public Vector3 scaleChange;
+    [SerializeField]private VisualEffect roar_animation;
+    private VisualEffect roar_anim;
 
     public new void Start()
     {
         timerDefault = 1f;
+        //roar_anim = Instantiate(roar_animation, transform.position, transform.rotation, transform);
         StartCoroutine(Movement());
         StartCoroutine(SizeModification());
         StartCoroutine(DestroyBullet(timerDefault));
@@ -43,6 +47,7 @@ public class RoarBehaviour : Projectile
         float timer = timerDefault;
         while (timer >= 0)
         {
+            //roar_anim.transform.localScale += scaleChange;
             transform.localScale += scaleChange;
             timer -= Time.deltaTime;
             yield return new WaitForEndOfFrame();

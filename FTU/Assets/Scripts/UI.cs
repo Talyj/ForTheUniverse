@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -21,7 +23,7 @@ public class UI : MonoBehaviour
     [SerializeField]
     TMP_Text[] costs;
     [SerializeField]
-    GameObject statsPanel, OptionPanel;
+    GameObject statsPanel, OptionPanel, CiblePanel;
 
     [SerializeField] private Image profilImage;
     [SerializeField] private Sprite[] charaPP;
@@ -34,10 +36,23 @@ public class UI : MonoBehaviour
     [SerializeField]
     GameObject cibleHp, ciblePm;
 
+
+    [SerializeField] private GameObject feedKillPrefab, killFeedHolder;
+
+    [SerializeField] private GameObject[] itemScoreboardPrefab;
+    [SerializeField] private GameObject[] teamScoreboardPrefab;
+    [SerializeField] private GameObject scoreboard;
+    [SerializeField] TMP_Text[] scoreTeam;
+    [SerializeField] TMP_Text timeText;
+
+    private float time;
+    private PlayerStats[] statsPlayer;
+
     // Start is called before the first frame update
     void Start()
     {
         stats = gameObject.GetComponentInParent<PlayerStats>();
+        time = 0;
         BaseStats();
     }
 
@@ -50,6 +65,7 @@ public class UI : MonoBehaviour
         costs[1].text = stats.GetSkill2().Cost.ToString();
         costs[2].text = stats.GetUlt().Cost.ToString();
         profilImage.sprite = charaPP[stats.characterID];
+        CiblePanel.SetActive(false);
     }
     // Update is called once per frame
     void Update()
@@ -60,12 +76,12 @@ public class UI : MonoBehaviour
             ciblePm.SetActive(true);
             costsCible[0].enabled = true;
             costsCible[1].enabled = true;
-            float percentHPCible = ((stats.Cible.GetComponent<IDamageable>().GetHealth() * 100) / stats.Cible.GetComponent<IDamageable>().GetMaxHealth()) / 100;
+            float percentHPCible = (((int)stats.Cible.GetComponent<IDamageable>().GetHealth() * 100) / stats.Cible.GetComponent<IDamageable>().GetMaxHealth()) / 100;
             healthCible.fillAmount = percentHPCible;
-            costsCible[0].text = stats.Cible.GetComponent<IDamageable>().GetHealth() + " / " + stats.Cible.GetComponent<IDamageable>().GetMaxHealth();
+            costsCible[0].text = (int)stats.Cible.GetComponent<IDamageable>().GetHealth() + " / " + stats.Cible.GetComponent<IDamageable>().GetMaxHealth();
             float percentManaCible = ((stats.Cible.GetComponent<IDamageable>().GetMana() * 100) / stats.Cible.GetComponent<IDamageable>().GetMaxMana()) / 100;
             manaCible.fillAmount = percentManaCible;
-            costsCible[1].text = stats.Cible.GetComponent<IDamageable>().GetMana() + " / " + stats.Cible.GetComponent<IDamageable>().GetMaxMana();
+            costsCible[1].text = (int)stats.Cible.GetComponent<IDamageable>().GetMana() + " / " + stats.Cible.GetComponent<IDamageable>().GetMaxMana();
         }
         else
         {
@@ -120,5 +136,48 @@ public class UI : MonoBehaviour
 
         OptionPanel.SetActive(Input.GetKey(KeyCode.Escape));
         
+        scoreboard.SetActive(Input.GetKey(KeyCode.Tab));
+        
+        CiblePanel.SetActive(stats.Cible != null);
+        time += Time.deltaTime;
+        
+        //var minute = time/60
+
+        var timespan = TimeSpan.FromSeconds(time);
+        timeText.text = timespan.Minutes.ToString("00") + ":" + timespan.Seconds.ToString("00"); //time.ToString(@"hh:mm:ss:fff");
+        
+        if (statsPlayer.Length > 0)
+        {
+            int[] score = new int[] {0,0};
+
+            foreach (var ps in statsPlayer)
+            {
+                score[ps.team.Code] += (int)ps.kill;
+            }
+
+            scoreTeam[0].text = score[0].ToString();
+            scoreTeam[1].text = score[1].ToString();
+        }
+        
+    }
+
+    public void DisplayFeed(PhotonView killer, PhotonView victim)
+    {
+        Debug.Log(killFeedHolder);
+        var feedKill = Instantiate(feedKillPrefab, killFeedHolder.GetComponent<RectTransform>());
+        feedKill.GetComponent<FeedKillScript>().Initialize(killer, victim);
+    }
+
+
+    public void UpdateScoreboard()
+    {
+        statsPlayer = FindObjectsOfType<PlayerStats>();
+
+        foreach (var p in statsPlayer)
+        {
+            GameObject temp = Instantiate(itemScoreboardPrefab[p.team.Code], teamScoreboardPrefab[p.team.Code].GetComponent<RectTransform>()); ;
+            temp.GetComponent<ScoreboardItemScript>().Initialize(p.GetComponent<PhotonView>());
+            
+        }
     }
 }

@@ -18,6 +18,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     public GameObject Cible;
     //[SerializeField] public GameObject deathEffect;   
     public string userId;
+    public int idLastDamageTaken = -1;
     [Space]
     [Header("Stats")]
     [Space]
@@ -363,8 +364,13 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
 
     private void SetGameLayerRecursive(GameObject gameObject, string layer)
     {
-        if (!gameObject.CompareTag("minimapView"))
+        if (!gameObject.CompareTag("minimapView") && gameObject.layer != LayerMask.NameToLayer("UI"))
         {
+            /*if (enemyType == EnemyType.player)
+            {
+                Debug.Log($"{gameObject.name} - {LayerMask.LayerToName(gameObject.layer)}");
+            }*/
+            
             gameObject.layer = LayerMask.NameToLayer(layer);
             foreach (Transform child in gameObject.transform)
             {
@@ -432,9 +438,20 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
 
         if (Health <= 0)
         {   
+            foreach (var meshRenderer in GetComponentsInChildren<MeshRenderer>()) {
+                meshRenderer.material = dissolveMaterial;
+
+                var animator = meshRenderer.gameObject.GetComponent<Animator>();
+                if (animator == null) {
+                    animator = meshRenderer.gameObject.AddComponent<Animator>();
+                }
+
+                animator.runtimeAnimatorController = dissolveController;
+            }
             //photonView.RPC("GiveExperience", RpcTarget.All, new object[] { });
             if (gameObject.CompareTag("dd"))
             {
+
                 var mainGame = FindObjectOfType<MainGame>();
                 if (mainGame)
                 {
@@ -447,18 +464,6 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
                 //userId = gameObject.name;
                 //PhotonView.Get(this).RPC("SendKillfeed", RpcTarget.AllBuffered,  Cible.name, userId);
                 //PhotonView.Get(this).RPC("RPC_ReceiveKillfeed", RpcTarget.All,userId, Cible.name);
-
-                foreach (var meshRenderer in GetComponentsInChildren<MeshRenderer>()) {
-                    meshRenderer.material = dissolveMaterial;
-
-                    var animator = meshRenderer.gameObject.GetComponent<Animator>();
-                    if (animator == null) {
-                        animator = meshRenderer.gameObject.AddComponent<Animator>();
-                    }
-
-                    animator.runtimeAnimatorController = dissolveController;
-                }
-
                 StartCoroutine(DissolveEffect());
                 //PhotonNetwork.Destroy(gameObject);
             }
@@ -639,7 +644,8 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     public void DealDamages(float DegatsRecu, int de)
     {
         Health -= DegatsRecu;
-        
+
+        idLastDamageTaken = de;
         string by = PhotonView.Find(de).gameObject.name;
         //Debug.Log(this.gameObject.name + " a recu " + DegatsRecu + " de " + by);
         //Debug.Log(Health <= 0 && gameObject.GetComponent<BasicAIStats>());
@@ -654,7 +660,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
                     PhotonView.Find(de).GetComponent<PlayerStats>().kill += 1;
                     PhotonView.Find(de).GetComponent<IDamageable>().SetExp(75);
                     PhotonView.Find(de).GetComponent<PlayerStats>().SetGold(300);
-
+                    PhotonView.Find(de).GetComponent<PlayerStats>().Cible = null;
                 }
             }
             else if (gameObject.GetComponent<BasicAIStats>().GetEnemyType()== EnemyType.minion)
@@ -951,7 +957,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
             foreach (Transform child in gameObject.transform)
             {
 
-                if (!child.gameObject.CompareTag("minimapView"))
+                if (!child.gameObject.CompareTag("minimapView") && child.gameObject.layer != LayerMask.NameToLayer("UI"))
                 {
                     child.gameObject.layer = LayerMask.NameToLayer(layer);
                     child.SetLayerRecursively(LayerMask.NameToLayer(layer));
@@ -975,7 +981,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
                 case 0:
                     foreach (Transform child in gameObject.transform)
                     {
-                        if (!child.gameObject.CompareTag("minimapView"))
+                        if (!child.gameObject.CompareTag("minimapView") && child.gameObject.layer != LayerMask.NameToLayer("UI"))
                         {
                             child.gameObject.layer = LayerMask.NameToLayer("Dominion");
                             child.SetLayerRecursively(LayerMask.NameToLayer("Dominion"));
@@ -986,7 +992,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
                 case 1:
                     foreach (Transform child in gameObject.transform)
                     {
-                        if (!child.gameObject.CompareTag("minimapView"))
+                        if (!child.gameObject.CompareTag("minimapView") && child.gameObject.layer != LayerMask.NameToLayer("UI"))
                         {
                             child.gameObject.layer = LayerMask.NameToLayer("Veritas");
                             child.SetLayerRecursively(LayerMask.NameToLayer("Veritas"));

@@ -3,11 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.VFX;
 
 public class MauBehaviour : BasicAIMovement
 {
     //Skill1
     public GameObject roarArea;
+
+    [SerializeField]private VisualEffect stomp_animation;
 
     public MauBehaviour Instance;
 
@@ -16,6 +19,8 @@ public class MauBehaviour : BasicAIMovement
     public List<GameObject> enemyTargets = new List<GameObject>();
     public List<GameObject> AllyTargets = new List<GameObject>();
     public Transform templeTransform;
+
+
 
     // Start is called before the first frame update
     public void Start()
@@ -72,6 +77,7 @@ public class MauBehaviour : BasicAIMovement
                     transform.position = Vector3.MoveTowards(transform.position, new Vector3(templeTransform.position.x, transform.position.y, templeTransform.position.z), GetMoveSpeed() * Time.deltaTime);
                 }
             }
+
         }
     }
 
@@ -109,7 +115,7 @@ public class MauBehaviour : BasicAIMovement
                     break;
             }
         }
-        yield return new WaitForSeconds(30);
+        yield return new WaitForSeconds(3);
         StartCoroutine(UseSkill());
     }
 
@@ -129,8 +135,6 @@ public class MauBehaviour : BasicAIMovement
 
     public List<GameObject> GetTargetsAround(bool isAlly, float rangeMult = 1)
     {
-        
-
         Collider[] hitColliders = Physics.OverlapSphere(gameObject.transform.position, GetAttackRange() * rangeMult);
 
         if (hitColliders != null)
@@ -207,6 +211,7 @@ public class MauBehaviour : BasicAIMovement
     {
         target.GetComponent<IDamageable>().TakeDamage(GetDegMag() * 2, DamageType.magique, photonView.ViewID);
     }
+    
 
     //Copy that in a new character file (skill2)
     public void Stomp()
@@ -217,7 +222,9 @@ public class MauBehaviour : BasicAIMovement
             SetMana(GetMana() - skills[1].Cost);
             Debug.Log(skills[1].Name + " lanc�e");
             skills[1].isCooldown = true;
-
+            
+            Debug.Log("attaque lancé");
+            stomp_animation.Play();
             var stompTargets = GetTargetsAround(false, 0.5f);
             foreach(var tar in stompTargets)
             {
@@ -260,6 +267,7 @@ public class MauBehaviour : BasicAIMovement
             Debug.Log(skills[2].Name + " lanc�e");
 
             var allies = GetTargetsAround(true);
+
             var degMag = GetDegMag();
             var healBonus = (degMag * allies.Count) / 100;
             SetHealth(GetHealth() + (degMag + healBonus));

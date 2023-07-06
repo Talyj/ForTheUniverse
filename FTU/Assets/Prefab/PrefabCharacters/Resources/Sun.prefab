@@ -98,7 +98,6 @@ GameObject:
   - component: {fileID: 1744873933731375682}
   - component: {fileID: 1744873933731375683}
   - component: {fileID: 1744873933731375680}
-  - component: {fileID: 1744873933731375681}
   - component: {fileID: 4062727838768418162}
   - component: {fileID: 2388445953892775139}
   - component: {fileID: 1200662531547643349}
@@ -231,6 +230,7 @@ MonoBehaviour:
   cc: 0
   Cible: {fileID: 0}
   userId: 
+  idLastDamageTaken: -1
   Health: 0
   MaxHealth: 0
   AttackSpeed: 0
@@ -302,52 +302,6 @@ MonoBehaviour:
   layerToIgnore:
     serializedVersion: 2
     m_Bits: 52223
---- !u!114 &1744873933731375681
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1744873933731375706}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 400bbc4498ed0b24ea71791c827e3a3b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spells:
-  - {fileID: 5455701144384500373, guid: f350f475da558ad448b725cea3ecc90e, type: 3}
-  - {fileID: 8391341615431199127, guid: f350f475da558ad448b725cea3ecc90e, type: 3}
-  - {fileID: 4589954586233376818, guid: f350f475da558ad448b725cea3ecc90e, type: 3}
-  cd:
-  - {fileID: 1104319744410815542, guid: f350f475da558ad448b725cea3ecc90e, type: 3}
-  - {fileID: 4752924282689005740, guid: f350f475da558ad448b725cea3ecc90e, type: 3}
-  - {fileID: 967739853224685745, guid: f350f475da558ad448b725cea3ecc90e, type: 3}
-  health: {fileID: 955218290486235598, guid: f350f475da558ad448b725cea3ecc90e, type: 3}
-  mana: {fileID: 955218289594616725, guid: f350f475da558ad448b725cea3ecc90e, type: 3}
-  healthCible: {fileID: 6632810762442962992, guid: f350f475da558ad448b725cea3ecc90e, type: 3}
-  manaCible: {fileID: 6632810763674977668, guid: f350f475da558ad448b725cea3ecc90e, type: 3}
-  costsCible:
-  - {fileID: 0}
-  - {fileID: 0}
-  costs:
-  - {fileID: 194619726013929486, guid: f350f475da558ad448b725cea3ecc90e, type: 3}
-  - {fileID: 5107734280915466453, guid: f350f475da558ad448b725cea3ecc90e, type: 3}
-  - {fileID: 1024158584959204463, guid: f350f475da558ad448b725cea3ecc90e, type: 3}
-  statsPanel: {fileID: 0}
-  OptionPanel: {fileID: 0}
-  profilImage: {fileID: 0}
-  charaPP: []
-  levelText: {fileID: 8949695702497005707, guid: f350f475da558ad448b725cea3ecc90e, type: 3}
-  healthText: {fileID: 5194979565238868989, guid: f350f475da558ad448b725cea3ecc90e, type: 3}
-  manaText: {fileID: 3284950639183753929, guid: f350f475da558ad448b725cea3ecc90e, type: 3}
-  statsTexts:
-  - {fileID: 691184179147936668, guid: f350f475da558ad448b725cea3ecc90e, type: 3}
-  - {fileID: 6521298979026655324, guid: f350f475da558ad448b725cea3ecc90e, type: 3}
-  - {fileID: 4356434543636285435, guid: f350f475da558ad448b725cea3ecc90e, type: 3}
-  - {fileID: 965688806673067462, guid: f350f475da558ad448b725cea3ecc90e, type: 3}
-  - {fileID: 3145131805344328714, guid: f350f475da558ad448b725cea3ecc90e, type: 3}
-  cibleHp: {fileID: 955218290678717639, guid: f350f475da558ad448b725cea3ecc90e, type: 3}
-  ciblePm: {fileID: 955218289352532256, guid: f350f475da558ad448b725cea3ecc90e, type: 3}
 --- !u!114 &4062727838768418162
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -481,7 +435,7 @@ NavMeshAgent:
   m_AgentTypeID: 0
   m_Radius: 0.5
   m_Speed: 20
-  m_Acceleration: 200
+  m_Acceleration: 20
   avoidancePriority: 50
   m_AngularSpeed: 120
   m_StoppingDistance: 0

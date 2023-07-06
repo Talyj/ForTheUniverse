@@ -78,7 +78,7 @@ public class CharacterSelectorMenu : MonoBehaviourPunCallbacks
         {
             monoBehaviourPun.enabled = false;
         }
-        championPrefab.GetComponent<UI>().enabled = false;
+        //championPrefab.GetComponent<UI>().enabled = false;
         championPrefab.GetComponent<CameraWork>().enabled = false;
         championPrefab.GetComponent<Targeting>().enabled = false;
         championPrefab.GetComponent<Animator>().enabled = false;
@@ -105,7 +105,7 @@ public class CharacterSelectorMenu : MonoBehaviourPunCallbacks
     private IEnumerator ChangeCharacterBDD(int index)
     {
         var id = PhotonNetwork.LocalPlayer.CustomProperties["idBDD"];
-        var request = "http://awacoru.cluster027.hosting.ovh.net/changeCharacter.php?id=" + id + "&last_character=" + index;
+        var request = "http://awacoru.cluster027.hosting.ovh.net/unity/changeCharacter.php?id=" + id + "&last_character=" + index;
         WWW hs_get = new WWW(request);
         
         yield return hs_get;
