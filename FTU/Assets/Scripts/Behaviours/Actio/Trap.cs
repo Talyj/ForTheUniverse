@@ -10,7 +10,7 @@ public class Trap : MonoBehaviourPun, IPunObservable
     public Skills skills;
     public Animator animator;
     public float lifetime;
-    private byte teamCode;
+    public byte teamCode;
     // Start is called before the first frame update
     void Start()
     {
