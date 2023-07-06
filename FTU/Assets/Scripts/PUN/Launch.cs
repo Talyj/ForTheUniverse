@@ -249,8 +249,9 @@ public class Launch : MonoBehaviourPunCallbacks
         }
         foreach(var player in PhotonNetwork.CurrentRoom.Players)
         {
+            //Debug.Log(player.Key);
             PlayerListItem newPlayerItem = null;
-            if ((PhotonNetwork.CurrentRoom.PlayerCount - 1) % 2 == 0)
+            if ((player.Key - 1) % 2 == 0)
             {
                 newPlayerItem= Instantiate(_playerListPrefabDominion, playerListPrefabDominion.GetComponent<RectTransform>());
             }

@@ -231,6 +231,7 @@ MonoBehaviour:
   cc: 0
   Cible: {fileID: 0}
   userId: 
+  idLastDamageTaken: -1
   Health: 0
   MaxHealth: 0
   AttackSpeed: 0
@@ -335,6 +336,7 @@ MonoBehaviour:
   - {fileID: 1024158584959204463, guid: f350f475da558ad448b725cea3ecc90e, type: 3}
   statsPanel: {fileID: 0}
   OptionPanel: {fileID: 0}
+  CiblePanel: {fileID: 0}
   profilImage: {fileID: 0}
   charaPP: []
   levelText: {fileID: 8949695702497005707, guid: f350f475da558ad448b725cea3ecc90e, type: 3}
@@ -481,7 +483,7 @@ NavMeshAgent:
   m_AgentTypeID: 0
   m_Radius: 0.5
   m_Speed: 20
-  m_Acceleration: 200
+  m_Acceleration: 20
   avoidancePriority: 50
   m_AngularSpeed: 120
   m_StoppingDistance: 0

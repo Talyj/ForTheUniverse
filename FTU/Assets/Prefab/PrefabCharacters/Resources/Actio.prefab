@@ -480,6 +480,7 @@ MonoBehaviour:
   cc: 0
   Cible: {fileID: 0}
   userId: 
+  idLastDamageTaken: -1
   Health: 0
   MaxHealth: 0
   AttackSpeed: 0
@@ -564,6 +565,7 @@ MonoBehaviour:
   - {fileID: 2386450624223402231}
   statsPanel: {fileID: 0}
   OptionPanel: {fileID: 0}
+  CiblePanel: {fileID: 0}
   profilImage: {fileID: 0}
   charaPP: []
   levelText: {fileID: 5988483683392959507}

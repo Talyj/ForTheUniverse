@@ -315,6 +315,7 @@ MonoBehaviour:
   cc: 0
   Cible: {fileID: 0}
   userId: 
+  idLastDamageTaken: -1
   Health: 0
   MaxHealth: 0
   AttackSpeed: 0
@@ -322,9 +323,11 @@ MonoBehaviour:
   DegatsPhysique: 0
   DegatsMagique: 0
   canUlt: 0
+  inFight: 0
   isAttacking: 0
   dissolveMaterial: {fileID: 2100000, guid: 297606e2b68a71342b93ca62b35b0fa4, type: 2}
   dissolveController: {fileID: 9100000, guid: 4525d6e8cb4a3d544abbd7299be3cd8e, type: 2}
+  healthDecreaseTimer: -1
   Exp: 0
   MaxExp: 0
   ExpRate: 0
@@ -337,7 +340,6 @@ MonoBehaviour:
   damageSupp: 0
   isAI: 0
   inBush: 0
-  warfog: {fileID: 0}
   _navMeshAgent: {fileID: 0}
   enemyType: 0
   passif: {fileID: 0}

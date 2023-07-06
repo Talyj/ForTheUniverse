@@ -12,6 +12,7 @@ public class PlayerStats : PlayerMovement
     public Vector3 deathPos;
     public PlayerManager playerManage;
     private float respawnCooldown;
+    private bool isDead = false;
 
     [Header("KDA")]
     public float kill ;
@@ -79,6 +80,7 @@ public class PlayerStats : PlayerMovement
         respawnCooldown = 10.0f;
         SetEnemyType(EnemyType.player);
         inFight = false;
+        isDead = false;
         for (int i = 0; i < skills.Length; i++)
         {
             skills[i].isCooldown = false;
@@ -108,7 +110,6 @@ public class PlayerStats : PlayerMovement
 
         if (GetHealth() <= 0)
         {
-
             //photonView.RPC("GiveExperience", RpcTarget.All, new object[] { });
             var rend = GetComponents<Renderer>();
             foreach (Transform child in transform)
@@ -139,8 +140,20 @@ public class PlayerStats : PlayerMovement
                 }
                 else if (gameObject.GetComponent<PlayerStats>())
                 {
+                    if (!isDead)
+                    {
+                        if (idLastDamageTaken > 0)
+                        {
+                            photonView.RPC("RPC_SendKillfeed", RpcTarget.All, idLastDamageTaken, photonView.ViewID);
+                            idLastDamageTaken = -1;
+                        }
+                        else
+                        {
+                            photonView.RPC("RPC_SendKillfeed2", RpcTarget.All, photonView.ViewID);
+                        }
+                    }
                     //todo envoie de bon killer 
-                    Debug.Log("kill");
+                    //Debug.Log("kill");
                     //if (Cible != null)
                     //{
 
@@ -164,12 +177,17 @@ public class PlayerStats : PlayerMovement
 
     IEnumerator Death()
     {
+        isDead = true;
         //Debug.Log(respawnCooldown);
         //gameObject.SetActive(false);
         SetDeath(true);
         foreach (Transform child in gameObject.transform)
         {
-            child.gameObject.SetActive(false);
+            if (child.gameObject.layer != LayerMask.NameToLayer("UI"))
+            {
+                child.gameObject.SetActive(false);
+            }
+            
         }
         gameObject.transform.position = deathPos;
         yield return new WaitForSeconds(respawnCooldown);
@@ -183,31 +201,40 @@ public class PlayerStats : PlayerMovement
         transform.position = respawnPos;
         SetDeath(false);
         gameObject.SetActive(true);
+        isDead = false;
 
     }
 
     [PunRPC]
-    public void RPC_SendKillfeed(string killerId, string victimId)
+    public void RPC_SendKillfeed(int killerId, int victimId)
     {
+
+        var killer = PhotonView.Find(killerId);
+        var victim = PhotonView.Find(victimId);
+        //PhotonView.Find(idLastDamageTaken).gameObject.name, gameObject.name
         //Player killer = PhotonNetwork.CurrentRoom.GetPlayer(killerId);
         //Player victim = PhotonNetwork.CurrentRoom.GetPlayer(victimId);
-        Debug.Log(killerId + " a kill " + victimId);
+        Debug.Log(killer.gameObject.name + " a kill " + victim.gameObject.name);
         // Mettre � jour votre UI pour afficher les informations dans le killfeed
+        GetComponentInChildren<UI>().DisplayFeed(killer, victim);
     }
 
     [PunRPC]
-    public void RPC_SendKillfeed2(string killerId)
+    public void RPC_SendKillfeed2(int victimId)
     {
+        var victim = PhotonView.Find(victimId);
         //Player killer = PhotonNetwork.CurrentRoom.GetPlayer(killerId);
         //Player victim = PhotonNetwork.CurrentRoom.GetPlayer(victimId);
-        Debug.Log(killerId + " is dead");
+        Debug.Log(victim.gameObject.name + " is dead");
         // Mettre � jour votre UI pour afficher les informations dans le killfeed
+        GetComponentInChildren<UI>().DisplayFeed(null, victim);
     }
     IEnumerator Spawn(Renderer[] rend)
     {
         //if (transform.position != deathPos)
         //{
         //    transform.position = deathPos;
+        isDead = false;
         GetComponent<CameraWork>().isFollowing = false;
         GetComponent<IDamageable>()._navMeshAgent.ResetPath();
         yield return new WaitForSeconds(respawnCooldown);
