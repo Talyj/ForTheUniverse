@@ -78,7 +78,7 @@ public class CharacterSelectorMenu : MonoBehaviourPunCallbacks
         {
             monoBehaviourPun.enabled = false;
         }
-        championPrefab.GetComponent<UI>().enabled = false;
+        //championPrefab.GetComponent<UI>().enabled = false;
         championPrefab.GetComponent<CameraWork>().enabled = false;
         championPrefab.GetComponent<Targeting>().enabled = false;
         championPrefab.GetComponent<Animator>().enabled = false;

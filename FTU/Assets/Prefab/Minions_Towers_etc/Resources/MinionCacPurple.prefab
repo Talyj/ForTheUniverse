@@ -236,6 +236,7 @@ MonoBehaviour:
   cc: 0
   Cible: {fileID: 0}
   userId: 
+  idLastDamageTaken: -1
   Health: 0
   MaxHealth: 0
   AttackSpeed: 0

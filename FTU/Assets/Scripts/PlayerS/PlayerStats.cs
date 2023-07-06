@@ -144,11 +144,12 @@ public class PlayerStats : PlayerMovement
                     {
                         if (idLastDamageTaken > 0)
                         {
-                            photonView.RPC("RPC_SendKillfeed", RpcTarget.AllBuffered, PhotonView.Find(idLastDamageTaken).gameObject.name, gameObject.name);
+                            photonView.RPC("RPC_SendKillfeed", RpcTarget.All, idLastDamageTaken, photonView.ViewID);
+                            idLastDamageTaken = -1;
                         }
                         else
                         {
-                            photonView.RPC("RPC_SendKillfeed2", RpcTarget.AllBuffered, gameObject.name);
+                            photonView.RPC("RPC_SendKillfeed2", RpcTarget.All, photonView.ViewID);
                         }
                     }
                     //todo envoie de bon killer 
@@ -170,19 +171,23 @@ public class PlayerStats : PlayerMovement
             {
                 //Regen();
             }
-            isDead = true;
         }
     }
 
 
     IEnumerator Death()
     {
+        isDead = true;
         //Debug.Log(respawnCooldown);
         //gameObject.SetActive(false);
         SetDeath(true);
         foreach (Transform child in gameObject.transform)
         {
-            child.gameObject.SetActive(false);
+            if (child.gameObject.layer != LayerMask.NameToLayer("UI"))
+            {
+                child.gameObject.SetActive(false);
+            }
+            
         }
         gameObject.transform.position = deathPos;
         yield return new WaitForSeconds(respawnCooldown);
@@ -196,25 +201,33 @@ public class PlayerStats : PlayerMovement
         transform.position = respawnPos;
         SetDeath(false);
         gameObject.SetActive(true);
+        isDead = false;
 
     }
 
     [PunRPC]
-    public void RPC_SendKillfeed(string killerId, string victimId)
+    public void RPC_SendKillfeed(int killerId, int victimId)
     {
+
+        var killer = PhotonView.Find(killerId);
+        var victim = PhotonView.Find(victimId);
+        //PhotonView.Find(idLastDamageTaken).gameObject.name, gameObject.name
         //Player killer = PhotonNetwork.CurrentRoom.GetPlayer(killerId);
         //Player victim = PhotonNetwork.CurrentRoom.GetPlayer(victimId);
-        Debug.Log(killerId + " a kill " + victimId);
+        Debug.Log(killer.gameObject.name + " a kill " + victim.gameObject.name);
         // Mettre � jour votre UI pour afficher les informations dans le killfeed
+        GetComponentInChildren<UI>().DisplayFeed(killer, victim);
     }
 
     [PunRPC]
-    public void RPC_SendKillfeed2(string killerId)
+    public void RPC_SendKillfeed2(int victimId)
     {
+        var victim = PhotonView.Find(victimId);
         //Player killer = PhotonNetwork.CurrentRoom.GetPlayer(killerId);
         //Player victim = PhotonNetwork.CurrentRoom.GetPlayer(victimId);
-        Debug.Log(killerId + " is dead");
+        Debug.Log(victim.gameObject.name + " is dead");
         // Mettre � jour votre UI pour afficher les informations dans le killfeed
+        GetComponentInChildren<UI>().DisplayFeed(null, victim);
     }
     IEnumerator Spawn(Renderer[] rend)
     {
