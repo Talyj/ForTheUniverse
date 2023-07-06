@@ -383,24 +383,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         SetResMag(0);
         SetDegPhys(100);
         SetDegMag(100);
-        SetupMinimap();
     }
-
-    protected void SetupMinimap()
-    {
-        var MainGame = GameObject.FindObjectOfType<MainGame>();
-        if (MainGame != null)
-        {
-            foreach (Transform child in transform)
-            {
-                if (child.gameObject.CompareTag("minimapView"))
-                {
-                    child.GetComponent<Renderer>().material = MainGame.materialsMinimapView[team.Code];
-                }
-            }
-        }
-    }
-
 
     private void CheckCC()
     {
