@@ -2,7 +2,7 @@ using Photon.Pun;
 using System.Collections;
 using UnityEngine;
 
-public class Trap : MonoBehaviourPun, IPunObservable
+public class Trap : MonoBehaviourPun/*, IPunObservable*/
 {
     public ActioBehaviour source;
     public IDamageable.DamageType typeDegats;
@@ -57,16 +57,16 @@ public class Trap : MonoBehaviourPun, IPunObservable
         return false;
     }
 
-    void IPunObservable.OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    {
-        if (stream.IsWriting)
-        {
-            stream.SendNext(teamCode);
-        }
-        else
-        {
-            teamCode = (byte)stream.ReceiveNext();
-        }
-    }
+    //void IPunObservable.OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    //{
+    //    if (stream.IsWriting)
+    //    {
+    //        stream.SendNext(teamCode);
+    //    }
+    //    else
+    //    {
+    //        teamCode = (byte)stream.ReceiveNext();
+    //    }
+    //}
 
 }
