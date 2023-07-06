@@ -31,6 +31,7 @@ public class BushManager : MonoBehaviour
     public void AddEntityToBush(int idBush, GameObject go)
     {
         entitiesInBush[idBush].Add(go);
+        if (entitiesInBush[idBush] == null) return;
         if (entitiesInBush[idBush].Select(x => x.GetComponent<IDamageable>().team.Code).Distinct().Count() > 1)
         {
             foreach (var entity in entitiesInBush[idBush])
