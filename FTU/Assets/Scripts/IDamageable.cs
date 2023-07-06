@@ -432,9 +432,20 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
 
         if (Health <= 0)
         {   
+            foreach (var meshRenderer in GetComponentsInChildren<MeshRenderer>()) {
+                meshRenderer.material = dissolveMaterial;
+
+                var animator = meshRenderer.gameObject.GetComponent<Animator>();
+                if (animator == null) {
+                    animator = meshRenderer.gameObject.AddComponent<Animator>();
+                }
+
+                animator.runtimeAnimatorController = dissolveController;
+            }
             //photonView.RPC("GiveExperience", RpcTarget.All, new object[] { });
             if (gameObject.CompareTag("dd"))
             {
+
                 var mainGame = FindObjectOfType<MainGame>();
                 if (mainGame)
                 {
@@ -447,18 +458,6 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
                 //userId = gameObject.name;
                 //PhotonView.Get(this).RPC("SendKillfeed", RpcTarget.AllBuffered,  Cible.name, userId);
                 //PhotonView.Get(this).RPC("RPC_ReceiveKillfeed", RpcTarget.All,userId, Cible.name);
-
-                foreach (var meshRenderer in GetComponentsInChildren<MeshRenderer>()) {
-                    meshRenderer.material = dissolveMaterial;
-
-                    var animator = meshRenderer.gameObject.GetComponent<Animator>();
-                    if (animator == null) {
-                        animator = meshRenderer.gameObject.AddComponent<Animator>();
-                    }
-
-                    animator.runtimeAnimatorController = dissolveController;
-                }
-
                 StartCoroutine(DissolveEffect());
                 //PhotonNetwork.Destroy(gameObject);
             }
