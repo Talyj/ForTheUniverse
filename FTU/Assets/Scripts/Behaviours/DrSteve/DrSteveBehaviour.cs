@@ -57,7 +57,8 @@ public class DrSteveBehaviour : PlayerStats
         HealthBehaviour();
         ExperienceBehaviour();
         Passif();
-        Behaviour();        
+        Behaviour();
+        UseObject();
     }
 
     private void Behaviour()

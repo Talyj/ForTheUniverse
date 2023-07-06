@@ -66,7 +66,7 @@ public class ActioBehaviour : PlayerStats
         ExperienceBehaviour();
         //Passif();
         Behaviour();
-        
+        UseObject();
     }
 
     private void Behaviour()

@@ -60,8 +60,8 @@ public class SunBehaviour : PlayerStats
             Passif();
         }
         Behaviour();
+        UseObject();
 
-        
     }
 
     private void Behaviour()

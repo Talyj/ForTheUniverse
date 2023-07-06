@@ -55,6 +55,7 @@ public class ConsBehaviour : PlayerStats
         ExperienceBehaviour();
         Passif();
         Behaviour();
+        UseObject();
     }
 
     private void Behaviour()

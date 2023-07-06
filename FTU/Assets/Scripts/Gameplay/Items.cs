@@ -30,30 +30,51 @@ public class Items : MonoBehaviourPun
                     Debug.Log("Equip " + item.nameItem);
 
                     player.items.Add(item, 1);
-                    player.CallItemEquip();
+                    player.CallItemEquip(item.ID);
                 }
             }
         }
     }
 
-    private bool CanBuy(PlayerStats player, ItemStats item)
+    public void SellItem()
     {
-        //Check conso
-        if(item.rarete == ItemRarete.Consommable)
+        foreach (var player in stats)
         {
-            if (player.items.ContainsKey(item))
+            if (player.photonView.IsMine)
             {
-                player.items[item] += 1;
-                return false;
+                if (!CanBuy(player, item, true))
+                {
+                    player.gold += item.price * 0.75f;
+                    Debug.Log("Sold " + item.nameItem);
+
+                    player.items.Remove(item);
+                    player.CallItemEquip(item.ID, true);
+                }
             }
         }
-        //Check qty
-        if (player.items.Count > 4) return false;
+    }
+
+    private bool CanBuy(PlayerStats player, ItemStats item, bool toSell = false)
+    {
+        if (!toSell)
+        {
+            //Check conso
+            if(item.rarete == ItemRarete.Consommable)
+            {
+                if (player.items.ContainsKey(item))
+                {
+                    player.items[item] += 1;
+                    return false;
+                }
+            }
+            //Check qty
+            if (player.items.Count > 4) return false;
+        }
         //Check Duplicate
         if (player.items.ContainsKey(item))
         {
             return false;
         }
-        return true; ;
+        return true;
     }
 }

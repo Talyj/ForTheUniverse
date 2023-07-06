@@ -1,6 +1,7 @@
 using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class PlayerStats : PlayerMovement
@@ -22,7 +23,7 @@ public class PlayerStats : PlayerMovement
     public Dictionary<ItemStats, int> items = new Dictionary<ItemStats, int>();
     public Role role;
 
-
+    private ItemPassifs itemPassifs;
 
     #region Getter and Setter
 
@@ -71,6 +72,7 @@ public class PlayerStats : PlayerMovement
 
     public void PlayerStatsSetUp()
     {
+        itemPassifs = FindObjectOfType<ItemPassifs>();
         SetMaxExp(100);
         ExpRate = 1.85f;
         SetExp(0);
@@ -87,7 +89,7 @@ public class PlayerStats : PlayerMovement
 
     public new void HealthBehaviour()
     {
-        if(GetHealth() < GetMaxHealth())
+        if (GetHealth() < GetMaxHealth())
         {
             healthDecreaseTimer += Time.deltaTime;
         }
@@ -226,26 +228,105 @@ public class PlayerStats : PlayerMovement
         //}
     }
 
-    public void CallItemEquip()
+
+    //Items
+    #region items
+    protected void UseObject()
     {
-        photonView.RPC(nameof(ItemEquip), RpcTarget.All);
+        if (Input.GetKeyDown(KeyCode.Alpha0))
+        {
+            LaunchObjectEffect(0);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            LaunchObjectEffect(1);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            LaunchObjectEffect(2);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            LaunchObjectEffect(3);
+        }
+    }
+
+    private void LaunchObjectEffect(int posObject)
+    {
+        if (posObject < items.Count())
+        {
+            itemPassifs.StartPassif(gameObject, items.ElementAt(posObject).Key.idPassif, items.ElementAt(posObject).Key.rarete == ItemRarete.Consommable ? 1 : 0);
+            if (items.ElementAt(posObject).Key.rarete == ItemRarete.Consommable)
+            {
+                items[items.ElementAt(posObject).Key]--;
+                if (items[items.ElementAt(posObject).Key] <= 0)
+                {
+                    items.Remove(items.ElementAt(posObject).Key);
+                }
+            }
+        }
+        else
+        {
+            Debug.LogError("No item in this slot");
+        }
+    }
+
+    public void CallItemEquip(int ID, bool isUnequip = false)
+    {
+        if (isUnequip)
+        {
+            photonView.RPC(nameof(ItemUnequip), RpcTarget.All, ID);
+        }
+        else
+        {
+            photonView.RPC(nameof(ItemEquip), RpcTarget.All, ID);
+        }
     }
 
     [PunRPC]
-    public void ItemEquip()
+    public void ItemEquip(int ID)
     {
-        foreach (var item in items)
+        var item = GetItemFromID(ID);
+
+        SetMaxHealth(GetMaxHealth() + item.health);
+        SetMaxMana(GetMaxMana() + item.mana);
+        SetAttackSpeed(GetAttackSpeed() + item.attackSpeed);
+        SetResMag(GetResMag() + item.resMag);
+        SetResPhys(GetResPhys() + item.resPhys);
+        SetDegPhys(GetDegPhys() + item.dmgPhys);
+        SetDegMag(GetDegMag() + item.dmgMag);
+        if(item.rarete != ItemRarete.Consommable)
         {
-            SetMaxHealth(GetMaxHealth() + item.Key.health);
-            SetMaxMana(GetMaxMana() + item.Key.mana);
-            SetAttackSpeed(GetAttackSpeed() + item.Key.attackSpeed);
-            SetResMag(GetResMag() + item.Key.resMag);
-            SetResPhys(GetResPhys() + item.Key.resPhys);
-            SetDegPhys(GetDegPhys() + item.Key.dmgPhys);
-            SetDegMag(GetDegMag() + item.Key.dmgMag);
-            FindObjectOfType<ItemPassifs>().StartPassif(gameObject, item.Key.idPassif);
+            FindObjectOfType<ItemPassifs>().StartPassif(gameObject, item.idPassif, item.rarete == ItemRarete.Consommable ? 0 : 1);        
         }
     }
+
+    [PunRPC]
+    public void ItemUnequip(int ID)
+    {
+        var item = GetItemFromID(ID);
+
+        SetMaxHealth(GetMaxHealth() - item.health);
+        SetMaxMana(GetMaxMana() - item.mana);
+        SetAttackSpeed(GetAttackSpeed() - item.attackSpeed);
+        SetResMag(GetResMag() - item.resMag);
+        SetResPhys(GetResPhys() - item.resPhys);
+        SetDegPhys(GetDegPhys() - item.dmgPhys);
+        SetDegMag(GetDegMag() - item.dmgMag);
+    }
+
+    private ItemStats GetItemFromID(int id)
+    {
+        foreach(var item in itemPassifs.listItems)
+        {
+            if(id == item.ID)
+            {
+                return item;
+            }
+        }
+        return null;
+    }
+    #endregion
 
     public float DamageMultiplier(float dmgSource, float dmgMultiplier)
     {

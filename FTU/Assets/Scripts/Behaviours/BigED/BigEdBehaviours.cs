@@ -41,7 +41,8 @@ public class BigEdBehaviours : PlayerStats
         HealthBehaviour();
         ExperienceBehaviour();
         //Passif();
-        Behaviour();    
+        Behaviour();
+        UseObject();
     }
 
     private void Behaviour()

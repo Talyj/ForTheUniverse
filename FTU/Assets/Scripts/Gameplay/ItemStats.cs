@@ -3,6 +3,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Item", menuName = "Items/new item")]
 public class ItemStats : ScriptableObject
 {
+    public int ID;
     public string nameItem;
     public float price;
     [Tooltip("Augmente la vie max")]
@@ -21,6 +22,8 @@ public class ItemStats : ScriptableObject
     public float attackSpeed;
     [Tooltip("Image")]
     public Sprite img;
+    //[Tooltip("Quantité de l'objet")]
+    //public int qty;
     [Tooltip("Rarete")]
     public ItemRarete rarete;
     [Tooltip("ID passif (0 si aucun)")]

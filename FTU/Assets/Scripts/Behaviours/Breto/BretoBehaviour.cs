@@ -55,6 +55,7 @@ public class BretoBehaviour : PlayerStats
         ExperienceBehaviour();
         Passif();
         Behaviour();
+        UseObject();
     }
 
     private void Behaviour()

@@ -60,7 +60,8 @@ public class MermaidBehaviour : PlayerStats
         HealthBehaviour();
         ExperienceBehaviour();
         Passif();
-        Behaviour();        
+        Behaviour();
+        UseObject();
     }
 
     private void Behaviour()
