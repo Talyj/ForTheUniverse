@@ -309,6 +309,7 @@ public class PlayerStats : PlayerMovement
     {
         var item = GetItemFromID(ID);
 
+        if (item == null) return;
         SetMaxHealth(GetMaxHealth() + item.health);
         SetMaxMana(GetMaxMana() + item.mana);
         SetAttackSpeed(GetAttackSpeed() + item.attackSpeed);
@@ -327,6 +328,7 @@ public class PlayerStats : PlayerMovement
     {
         var item = GetItemFromID(ID);
 
+        if (item == null) return;
         SetMaxHealth(GetMaxHealth() - item.health);
         SetMaxMana(GetMaxMana() - item.mana);
         SetAttackSpeed(GetAttackSpeed() - item.attackSpeed);
