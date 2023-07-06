@@ -11,7 +11,7 @@ FTU/[Ll]ogs/
 FTU/[Mm]emoryCaptures/
 
 # Asset meta data should only be ignored when the corresponding asset is also ignored
-/[Aa]ssets/**/*.meta
+#/[Aa]ssets/**/*.meta
 
 #*.meta
 
@@ -75,5 +75,5 @@ FTU/UserSettings/Layouts/default-2021.dwlt
 FTU/Packages/packages-lock.json
 FTU/obj/Debug/PunDemos.DemoHubEditor.csproj.AssemblyReference.cache
 *.cache
-*.asset
+#*.asset
 *.dwlt

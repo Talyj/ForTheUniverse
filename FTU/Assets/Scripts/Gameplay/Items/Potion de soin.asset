@@ -10,18 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 699410f167c98b34cbb88c2d40fc7040, type: 3}
-  m_Name: Item01
+  m_Name: Potion de soin
   m_EditorClassIdentifier: 
-  ID: 0
-  nameItem: La Cape Hot
+  ID: 300
+  nameItem: Potion de soin
   price: 0
-  health: 500
-  mana: 500
+  health: 0
+  mana: 50
   resPhys: 0
   resMag: 0
   dmgPhys: 0
   dmgMag: 0
   attackSpeed: 0
-  img: {fileID: 21300000, guid: fe66491c4a2d60c40ad07f93fe04e79f, type: 3}
-  rarete: 3
-  idPassif: 0
+  img: {fileID: 21300000, guid: 04840d2c9d6b17b43baae9d6cd0f28ce, type: 3}
+  rarete: 0
+  idPassif: 300
