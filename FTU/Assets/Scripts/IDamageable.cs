@@ -676,10 +676,14 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
 
         //list des assits
         List<PlayerStats> assitPlayers = new List<PlayerStats>(5);
-        if (!assitPlayers.Contains(PhotonView.Find(de).GetComponent<PlayerStats>()))
+        if(PhotonView.Find(de).GetComponent<PlayerStats>() != null)
         {
-            assitPlayers.Add(PhotonView.Find(de).GetComponent<PlayerStats>());
+            if (!assitPlayers.Contains(PhotonView.Find(de).GetComponent<PlayerStats>()))
+            {
+                assitPlayers.Add(PhotonView.Find(de).GetComponent<PlayerStats>());
+            }
         }
+        
 
 
         string by = PhotonView.Find(de).gameObject.name;
