@@ -19,7 +19,7 @@ public class PlayerStats : PlayerMovement
     public float assist;
     public float  creep;
 
-    public List<ItemStats> items = new List<ItemStats>(4);
+    public Dictionary<ItemStats, int> items = new Dictionary<ItemStats, int>();
     public Role role;
 
 
@@ -236,14 +236,14 @@ public class PlayerStats : PlayerMovement
     {
         foreach (var item in items)
         {
-            SetMaxHealth(GetMaxHealth() + item.health);
-            SetMaxMana(GetMaxMana() + item.mana);
-            SetAttackSpeed(GetAttackSpeed() + item.attackSpeed);
-            SetResMag(GetResMag() + item.resMag);
-            SetResPhys(GetResPhys() + item.resPhys);
-            SetDegPhys(GetDegPhys() + item.dmgPhys);
-            SetDegMag(GetDegMag() + item.dmgMag);
-            FindObjectOfType<ItemPassifs>().StartPassif(gameObject, item.idPassif);
+            SetMaxHealth(GetMaxHealth() + item.Key.health);
+            SetMaxMana(GetMaxMana() + item.Key.mana);
+            SetAttackSpeed(GetAttackSpeed() + item.Key.attackSpeed);
+            SetResMag(GetResMag() + item.Key.resMag);
+            SetResPhys(GetResPhys() + item.Key.resPhys);
+            SetDegPhys(GetDegPhys() + item.Key.dmgPhys);
+            SetDegMag(GetDegMag() + item.Key.dmgMag);
+            FindObjectOfType<ItemPassifs>().StartPassif(gameObject, item.Key.idPassif);
         }
     }
 

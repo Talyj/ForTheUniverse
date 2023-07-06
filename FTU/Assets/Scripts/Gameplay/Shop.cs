@@ -47,11 +47,11 @@ public class Shop : MonoBehaviourPun
 
     private void OnTriggerExit(Collider other)
     {
-        foreach (var player in playerPrefab)
+        if (other.GetComponent<PlayerStats>())
         {
-            if (player.photonView.IsMine)
+            foreach (var player in playerPrefab)
             {
-                if (playerPrefab.Contains(player))
+                if (player.photonView.IsMine && other.GetComponent<PlayerStats>() == player)
                 {
                     playerPrefab.Remove(player);
                     isIn = false;

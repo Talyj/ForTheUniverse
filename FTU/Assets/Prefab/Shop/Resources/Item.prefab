@@ -98,6 +98,7 @@ MonoBehaviour:
   img: {fileID: 3146331289257755423}
   nameItem: {fileID: 8163632341821757671}
   price: {fileID: 4502466916035177430}
+  stats: []
 --- !u!1 &1400043586886784558
 GameObject:
   m_ObjectHideFlags: 0

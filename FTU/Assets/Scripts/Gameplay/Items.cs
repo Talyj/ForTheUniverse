@@ -24,18 +24,36 @@ public class Items : MonoBehaviourPun
         {
             if (player.photonView.IsMine)
             {
-                if (player.gold >= item.price)
+                if (player.gold >= item.price && CanBuy(player, item))
                 {
                     player.gold -= item.price;
                     Debug.Log("Equip " + item.nameItem);
-                    player.items.Add(item);
+
+                    player.items.Add(item, 1);
                     player.CallItemEquip();
-                }
-                else
-                {
-                    Debug.Log("need gold");
                 }
             }
         }
+    }
+
+    private bool CanBuy(PlayerStats player, ItemStats item)
+    {
+        //Check conso
+        if(item.rarete == ItemRarete.Consommable)
+        {
+            if (player.items.ContainsKey(item))
+            {
+                player.items[item] += 1;
+                return false;
+            }
+        }
+        //Check qty
+        if (player.items.Count > 4) return false;
+        //Check Duplicate
+        if (player.items.ContainsKey(item))
+        {
+            return false;
+        }
+        return true; ;
     }
 }
