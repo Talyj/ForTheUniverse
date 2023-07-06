@@ -771,6 +771,9 @@ MonoBehaviour:
   - {fileID: 5107734280915466453, guid: f350f475da558ad448b725cea3ecc90e, type: 3}
   - {fileID: 1024158584959204463, guid: f350f475da558ad448b725cea3ecc90e, type: 3}
   statsPanel: {fileID: 0}
+  OptionPanel: {fileID: 0}
+  profilImage: {fileID: 0}
+  charaPP: []
   levelText: {fileID: 8949695702497005707, guid: f350f475da558ad448b725cea3ecc90e, type: 3}
   healthText: {fileID: 5194979565238868989, guid: f350f475da558ad448b725cea3ecc90e, type: 3}
   manaText: {fileID: 3284950639183753929, guid: f350f475da558ad448b725cea3ecc90e, type: 3}
@@ -918,7 +921,11 @@ MonoBehaviour:
   DegatsPhysique: 0
   DegatsMagique: 0
   canUlt: 0
+  inFight: 0
   isAttacking: 0
+  dissolveMaterial: {fileID: 0}
+  dissolveController: {fileID: 0}
+  healthDecreaseTimer: -1
   Exp: 0
   MaxExp: 0
   ExpRate: 0
@@ -931,7 +938,6 @@ MonoBehaviour:
   damageSupp: 0
   isAI: 0
   inBush: 0
-  warfog: {fileID: 0}
   _navMeshAgent: {fileID: 0}
   enemyType: 2
   passif: {fileID: 11400000, guid: aeac9e0afe92f4048ad843146a63ec72, type: 2}
@@ -950,6 +956,10 @@ MonoBehaviour:
   respawnPos: {x: -313.3, y: 2.14, z: -37.118}
   deathPos: {x: 0, y: 0, z: 0}
   playerManage: {fileID: 0}
+  kill: 0
+  death: 0
+  assist: 0
+  creep: 0
   items: []
   role: 2
   spear: {fileID: 3320238210155644123, guid: d87d4669dc262d5498ac6e52fddd25db, type: 3}
@@ -1068,7 +1078,7 @@ NavMeshAgent:
   m_AgentTypeID: 0
   m_Radius: 0.5
   m_Speed: 20
-  m_Acceleration: 20
+  m_Acceleration: 200
   avoidancePriority: 50
   m_AngularSpeed: 120
   m_StoppingDistance: 0
@@ -1102,6 +1112,7 @@ MonoBehaviour:
   visibleTarget: []
   meshResolution: 3
   viewMeshFilter: {fileID: 7544644048009245397}
+  GoviewMeshFilter: {fileID: 0}
   edgeResolveIteration: 4
   edgeDstTreshold: 0.5
 --- !u!1001 &3904889967351495494

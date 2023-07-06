@@ -41,6 +41,7 @@ public class MauBehaviour : BasicAIMovement
             elmt.isCooldown = false;
         }
         StartCoroutine(UseSkill());
+        GetComponent<BoxCollider>().enabled = false;
         _navMeshAgent = this.GetComponent<NavMeshAgent>();
     }
 

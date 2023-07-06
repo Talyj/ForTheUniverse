@@ -12,7 +12,8 @@ public class GolemBehaviour : BasicAIStats
     [SerializeField] private GameObject otherGolem;
 
     [SerializeField] private VisualEffect attack_animation;
-    [SerializeField] private VisualEffect energy_sphere; 
+    [SerializeField] private VisualEffect energy_sphere;
+    private CapsuleCollider col;
 
     public void Start()
     {
@@ -28,6 +29,8 @@ public class GolemBehaviour : BasicAIStats
         SetEnemyType(EnemyType.golem);
         attackCooldown = 0;
         Cible = null;
+        col = GetComponent<CapsuleCollider>();
+        col.enabled = !isInvincible;
     }
 
     public void Update()
@@ -52,14 +55,13 @@ public class GolemBehaviour : BasicAIStats
             }
             Attack();
         }
-
+        HealthBehaviour();
         if (!isInvincible)
         {
-            HealthBehaviour();
+            col.enabled = !isInvincible;
         }
         else
         {
-            SetHealth(GetMaxHealth());
             CheckFirstGolem();
         }
 

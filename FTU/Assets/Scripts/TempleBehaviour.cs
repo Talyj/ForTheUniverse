@@ -13,6 +13,7 @@ public class TempleBehaviour : MonoBehaviour
     [SerializeField] private GameObject mau;
     private bool isAwake;
     public List<GolemBehaviour> golems;
+    public BoxCollider mauCollider;
 
     public void Start()
     {
@@ -115,9 +116,10 @@ public class TempleBehaviour : MonoBehaviour
         if (!isAwake)
         {
             isAwake = true;
-            var semiGod = PhotonNetwork.Instantiate(mau.name, new Vector3(gameObject.transform.position.x, 9, gameObject.transform.position.z), Quaternion.identity);
-            semiGod.GetComponent<MauBehaviour>().team = this.team;
-            semiGod.GetComponent<MauBehaviour>().templeTransform = gameObject.transform;
+            mauCollider.enabled = true;
+            //var semiGod = PhotonNetwork.Instantiate(mau.name, new Vector3(gameObject.transform.position.x, 9, gameObject.transform.position.z), Quaternion.identity);
+            //semiGod.GetComponent<MauBehaviour>().team = this.team;
+            //semiGod.GetComponent<MauBehaviour>().templeTransform = gameObject.transform;
             //Debug.Log("<color='pink'> " + semiGod.GetComponent<MauBehaviour>().teams+ "</color>");
         }
     }
