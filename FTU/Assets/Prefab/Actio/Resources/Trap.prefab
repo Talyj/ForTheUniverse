@@ -131,9 +131,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bbc88bd0c6b5814dbd9ae7f89b4cb28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  source: {fileID: 0}
   typeDegats: 0
   degats: 0
   skills: {fileID: 11400000, guid: bd80d36f60f8c984cb6f4c6f960344fe, type: 2}
+  animator: {fileID: -3667474358917484040}
+  lifetime: 0
 --- !u!114 &-6213841858262090526
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -184,7 +187,7 @@ Animator:
   m_GameObject: {fileID: 661485606619552371}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: c2cd61204b4d0cf409f5cd02d6364369, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
