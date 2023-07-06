@@ -15,6 +15,7 @@ public class FogOfWar : MonoBehaviour
 
     public float meshResolution;
     public MeshFilter viewMeshFilter;
+    public GameObject GoviewMeshFilter;
     public int edgeResolveIteration;
     public float edgeDstTreshold;
     Mesh viewMesh;

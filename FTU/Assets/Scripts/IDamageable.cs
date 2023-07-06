@@ -18,7 +18,9 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     public GameObject Cible;
     //[SerializeField] public GameObject deathEffect;   
     public string userId;
+    [Space]
     [Header("Stats")]
+    [Space]
     [SerializeField] private float Health, MaxHealth;
     private float MoveSpeed;
     [SerializeField] private float AttackSpeed;
@@ -35,7 +37,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     private bool isMoving;
     //private bool useSkills;
     [SerializeField] private bool canUlt;
-    private bool InCombat;
+    public bool inFight;
     private bool IsDead;
     private bool InRegen;
     private float cptRegen = 0;
@@ -46,12 +48,15 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     [SerializeField] private RuntimeAnimatorController dissolveController; 
     private float dissolveDuration = 1.0f; 
 
+    public float healthDecreaseTimer = -1f;
     //exp
     [SerializeField] protected float Exp;
     [SerializeField] protected float MaxExp;
     [SerializeField] protected float ExpRate;//multiplicateur de l'exp max
     [SerializeField] protected int lvl;
-
+    float healthAmount ;
+    float regenTimer = 0f;
+    [Space]
     [Header("Ranged variables")]
     public GameObject projPrefab;
     public Transform SpawnPrefab;
@@ -63,9 +68,6 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
 
     //State
     public int inBush;
-    [Header("fog of war")]
-    [SerializeField]
-    public FogOfWar warfog;
     //Nav Mesh
     [HideInInspector] public UnityEngine.AI.NavMeshAgent _navMeshAgent;
 
@@ -103,8 +105,6 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
 
     //Damage
     public GameObject ult;
-
-
     public Transform SpawnPrefab2;
 
     #region Getter and Setter
@@ -255,6 +255,10 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     {
         Health = value;
     }
+    public void HealthRegen(float value)
+    {
+        Health += value;
+    }
     public void SetMaxHealth(float value)
     {
         MaxHealth = value;
@@ -312,7 +316,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
 
     public void BaseInit()
     {
-        warfog = GetComponent<FogOfWar>();
+        healthAmount =25f;
         SetMaxHealth(5000);
         SetMaxMana(50000);
         SetMaxMana(GetMaxMana());
@@ -320,7 +324,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         canAct = true;
         //useSkills = true;
         canUlt = false;
-        InCombat = false;
+        inFight = false;
         InRegen = false;
 
         Health = MaxHealth;
@@ -328,21 +332,20 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
 
         inBush = 0;
         var layer = "Default";
-        //switch (this.team.Code)
-        //{
-        //    case 0:
-        //        layer = "Dominion";
-        //        warfog.targetMask = LayerMask.GetMask("Veritas");
-        //        warfog.obstacleMask = LayerMask.GetMask("Dominion");
-        //        SetGameLayerRecursive(gameObject, layer);
-        //        break;
-        //    case 1:
-        //        layer = "Veritas";
-        //        warfog.obstacleMask = LayerMask.GetMask("Veritas");
-        //        warfog.targetMask = LayerMask.GetMask("Dominion");
-        //        SetGameLayerRecursive(gameObject, layer);
-        //        break;
-        //}
+        switch (this.team.Code)
+        {
+            case 0:
+                layer = "Dominion";
+                
+                
+                SetGameLayerRecursive(gameObject, layer);
+                break;
+            case 1:
+                layer = "Veritas";
+                
+                SetGameLayerRecursive(gameObject, layer);
+                break;
+        }
 
         //team = PhotonTeamsManager.Instance.GetAvailableTeams()[1];
 
@@ -484,7 +487,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         Debug.Log(killerName + " a kill " + victimName);
         //Debug.LogFormat("Info: {0} sender {1} {2}", info.Sender, info.photonView, info.SentServerTime);
 
-        photonView.RPC("GiveExperience", RpcTarget.All, new object[] { });
+        //photonView.RPC("GiveExperience", RpcTarget.All, new object[] { });
     }
 
 
@@ -574,21 +577,36 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     public void Regen()
     {
         //cptRegen -= Time.deltaTime;
-        if(cptRegen <= 0)
-        cptRegen -= Time.deltaTime;
-        if (cptRegen <= 0)
-        {
-            cptRegen = 5.0f;
-            if (Health < MaxHealth)
-            {
-                float val = Mathf.FloorToInt(MaxHealth * 0.01f);
-                Health += val/2;
-            }
+        //if(cptRegen <= 0)
+        //cptRegen -= Time.deltaTime;
+        //if (cptRegen <= 0)
+        //{
+        //    cptRegen = 5.0f;
+        //    if (Health < MaxHealth)
+        //    {
+        //        float val = Mathf.FloorToInt(MaxHealth * 0.01f);
+        //        Health += val/2;
+        //    }
 
-            if (Mana < MaxMana)
+        //    if (Mana < MaxMana)
+        //    {
+        //        float val = Mathf.FloorToInt(MaxMana * 0.01f);
+        //        Mana += val/2;
+        //    }
+        //}
+        
+        
+        if (inFight == false)
+        {
+            if(regenTimer < 5f)
             {
-                float val = Mathf.FloorToInt(MaxMana * 0.01f);
-                Mana += val/2;
+                regenTimer += Time.deltaTime;
+            }
+            else
+            {
+                //Debug.Log( healthAmount);
+                HealthRegen(healthAmount);
+                regenTimer = 0f;
             }
         }
     }
@@ -613,6 +631,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         }
 
         photonView.RPC("DealDamages", RpcTarget.All, degRes, de);
+        healthDecreaseTimer = 0f;
         return degRes;
     }
 
@@ -620,37 +639,57 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     public void DealDamages(float DegatsRecu, int de)
     {
         Health -= DegatsRecu;
+        
         string by = PhotonView.Find(de).gameObject.name;
-        Debug.Log(this.gameObject.name + " a recu " + DegatsRecu + " de " + by);
-        if (Health <= 0 && !gameObject.GetComponent<BasicAIStats>())
+        //Debug.Log(this.gameObject.name + " a recu " + DegatsRecu + " de " + by);
+        //Debug.Log(Health <= 0 && gameObject.GetComponent<BasicAIStats>());
+        if (Health <= 0)
         {
-            //Player killer = PhotonNetwork.CurrentRoom.GetPlayer(de);
-            if (PhotonView.Find(de).GetComponent<PlayerStats>())
+            if (gameObject.GetComponent<PlayerStats>())
             {
-                PhotonView.Find(de).GetComponent<IDamageable>().GiveExperience();
-                PhotonView.Find(de).GetComponent<PlayerStats>().SetGold(300);
+                if (PhotonView.Find(de).GetComponent<PlayerStats>())
+                {
+                    Debug.Log(" 1");
+                    gameObject.GetComponent<PlayerStats>().death += 1;
+                    PhotonView.Find(de).GetComponent<PlayerStats>().kill += 1;
+                    PhotonView.Find(de).GetComponent<IDamageable>().SetExp(75);
+                    PhotonView.Find(de).GetComponent<PlayerStats>().SetGold(300);
 
+                }
             }
-            else if (Health <= 0 && gameObject.GetComponent<BasicAIStats>() && enemyType == EnemyType.minion)
+            else if (gameObject.GetComponent<BasicAIStats>().GetEnemyType()== EnemyType.minion)
             {
                 //Player killer = PhotonNetwork.CurrentRoom.GetPlayer(de);
                 //PhotonView.Find(de).GetComponent<IDamageable>().photonView.RPC("GiveExperience",RpcTarget.AllBuffered);
                 if (PhotonView.Find(de).GetComponent<PlayerStats>())
                 {
-                    PhotonView.Find(de).GetComponent<IDamageable>().GiveExperience();
+                Debug.Log(" 2");
+                    PhotonView.Find(de).GetComponent<IDamageable>().SetExp(25);
                     PhotonView.Find(de).GetComponent<PlayerStats>().SetGold(50);
-
+                    PhotonView.Find(de).GetComponent<PlayerStats>().creep += 1;
                 }
             }
-            else if (Health <= 0 && gameObject.GetComponent<BasicAIStats>() && enemyType == EnemyType.golem)
+            else if (gameObject.GetComponent<BasicAIStats>().GetEnemyType() == EnemyType.golem)
             {
                 if (PhotonView.Find(de).GetComponent<PlayerStats>())
                 {
-                    PhotonView.Find(de).GetComponent<IDamageable>().GiveExperience();
+                Debug.Log(" 3");
+                    PhotonView.Find(de).GetComponent<IDamageable>().SetExp(125);
                     PhotonView.Find(de).GetComponent<PlayerStats>().SetGold(500);
 
                 }
             }
+            else if ( gameObject.GetComponent<BasicAIStats>().GetEnemyType() == EnemyType.voister)
+            {
+                if (PhotonView.Find(de).GetComponent<PlayerStats>())
+                {
+                Debug.Log(" 4");
+                    PhotonView.Find(de).GetComponent<IDamageable>().SetExp(75);
+                    PhotonView.Find(de).GetComponent<PlayerStats>().SetGold(200);
+                    PhotonView.Find(de).GetComponent<PlayerStats>().creep += 1;
+                }
+            }
+                
         }
     }
 

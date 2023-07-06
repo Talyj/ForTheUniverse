@@ -107,6 +107,7 @@ public class Projectile : MonoBehaviourPun
     public void DealDamage(GameObject target, float dmg, IDamageable.DamageType typeDmg)
     {
         target.GetComponent<IDamageable>().TakeDamage(dmg, typeDmg,GetCreator().ViewID);
+        PhotonNetwork.Destroy(gameObject);
         //Debug.Log(playerId + " a fait " + dmg + " de degats " + typeDmg + " à :" + target.name);
     }
 

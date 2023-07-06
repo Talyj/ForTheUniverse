@@ -13,6 +13,12 @@ public class PlayerStats : PlayerMovement
     public PlayerManager playerManage;
     private float respawnCooldown;
 
+    [Header("KDA")]
+    public float kill ;
+    public float death;
+    public float assist;
+    public float  creep;
+
     public List<ItemStats> items = new List<ItemStats>(4);
     public Role role;
 
@@ -72,7 +78,7 @@ public class PlayerStats : PlayerMovement
         SetGold(500);
         respawnCooldown = 10.0f;
         SetEnemyType(EnemyType.player);
-
+        inFight = false;
         for (int i = 0; i < skills.Length; i++)
         {
             skills[i].isCooldown = false;
@@ -81,9 +87,15 @@ public class PlayerStats : PlayerMovement
 
     public new void HealthBehaviour()
     {
-        if (gameObject.name.ToLower().Contains("breto"))
+        if(GetHealth() < GetMaxHealth())
         {
-            Debug.LogError(GetMaxHealth());
+            healthDecreaseTimer += Time.deltaTime;
+        }
+        inFight = (healthDecreaseTimer >= 6f || healthDecreaseTimer <= -1f ) ? false : true;
+
+        if (inFight == false)
+        {
+            Regen();
         }
         if (GetHealth() >= GetMaxHealth())
         {
@@ -125,16 +137,16 @@ public class PlayerStats : PlayerMovement
                 {
                     //todo envoie de bon killer 
                     Debug.Log("kill");
-                    if (Cible != null)
-                    {
+                    //if (Cible != null)
+                    //{
 
-                        photonView.RPC("RPC_SendKillfeed", RpcTarget.AllBuffered, this.userId, Cible.GetComponent<IDamageable>().userId);
-                    }
-                    else
-                    {
-                        photonView.RPC("RPC_SendKillfeed2", RpcTarget.AllBuffered, GetComponent<PhotonView>().ViewID);
+                    //    photonView.RPC("RPC_SendKillfeed", RpcTarget.AllBuffered, this.userId, Cible.GetComponent<IDamageable>().userId);
+                    //}
+                    //else
+                    //{
+                    //    photonView.RPC("RPC_SendKillfeed2", RpcTarget.AllBuffered, GetComponent<PhotonView>().ViewID);
 
-                    }
+                    //}
                 }
                 StartCoroutine(Death());
             }
