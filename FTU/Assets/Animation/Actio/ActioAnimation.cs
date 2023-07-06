@@ -51,21 +51,14 @@ public class ActioAnimation : MonoBehaviour {
 
     private IEnumerator PutTrap(float delay) {
         yield return new WaitForSeconds(delay);
-        source.photonView.RPC(nameof(SpawnTrap), RpcTarget.All);
+        source.photonView.RPC(nameof(source.SpawnTrap), RpcTarget.All);
         //GameObject trapchild = PhotonNetwork.Instantiate(trap.name, new Vector3(transform.position.x, 0, transform.position.z), transform.rotation);
         //trapchild.GetComponent<Trap>().source = source;
         ////trapchild.transform.parent = transform.parent.transform;
         //trapchild.SetActive(true);
     }
 
-    [PunRPC]
-    public void SpawnTrap()
-    {
-        GameObject trapchild = PhotonNetwork.Instantiate(trap.name, new Vector3(transform.position.x, 0, transform.position.z), transform.rotation);
-        trapchild.GetComponent<Trap>().source = source;
-        //trapchild.transform.parent = transform.parent.transform;
-        trapchild.SetActive(true);
-    }
+
 
     public void Skill1Animation()
     {
