@@ -132,7 +132,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 619973488328082848}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 98853701f8a900940a87f47a1cc6b049, type: 3}
   m_Name: 
@@ -149,9 +149,11 @@ MonoBehaviour:
   DegatsPhysique: 0
   DegatsMagique: 0
   canUlt: 0
+  inFight: 0
   isAttacking: 0
   dissolveMaterial: {fileID: 2100000, guid: 297606e2b68a71342b93ca62b35b0fa4, type: 2}
   dissolveController: {fileID: 9100000, guid: 4525d6e8cb4a3d544abbd7299be3cd8e, type: 2}
+  healthDecreaseTimer: -1
   Exp: 0
   MaxExp: 0
   ExpRate: 0
@@ -164,7 +166,6 @@ MonoBehaviour:
   damageSupp: 0
   isAI: 0
   inBush: 0
-  warfog: {fileID: 0}
   _navMeshAgent: {fileID: 0}
   enemyType: 3
   passif: {fileID: 11400000, guid: 2c1e005c56d159a42b7b9d2798e74552, type: 2}
