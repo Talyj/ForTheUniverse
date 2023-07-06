@@ -54,17 +54,4 @@ public class Trap : MonoBehaviourPun/*, IPunObservable*/
         }
         return false;
     }
-
-    //void IPunObservable.OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    //{
-    //    if (stream.IsWriting)
-    //    {
-    //        stream.SendNext(teamCode);
-    //    }
-    //    else
-    //    {
-    //        teamCode = (byte)stream.ReceiveNext();
-    //    }
-    //}
-
 }
