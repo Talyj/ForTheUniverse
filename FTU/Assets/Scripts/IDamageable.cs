@@ -18,6 +18,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     public GameObject Cible;
     //[SerializeField] public GameObject deathEffect;   
     public string userId;
+    public int idLastDamageTaken = -1;
     [Space]
     [Header("Stats")]
     [Space]
@@ -639,7 +640,8 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     public void DealDamages(float DegatsRecu, int de)
     {
         Health -= DegatsRecu;
-        
+
+        idLastDamageTaken = de;
         string by = PhotonView.Find(de).gameObject.name;
         //Debug.Log(this.gameObject.name + " a recu " + DegatsRecu + " de " + by);
         //Debug.Log(Health <= 0 && gameObject.GetComponent<BasicAIStats>());
@@ -654,7 +656,6 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
                     PhotonView.Find(de).GetComponent<PlayerStats>().kill += 1;
                     PhotonView.Find(de).GetComponent<IDamageable>().SetExp(75);
                     PhotonView.Find(de).GetComponent<PlayerStats>().SetGold(300);
-
                 }
             }
             else if (gameObject.GetComponent<BasicAIStats>().GetEnemyType()== EnemyType.minion)
