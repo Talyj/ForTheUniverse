@@ -137,22 +137,15 @@ public class PlayerStats : PlayerMovement
                     //PhotonView.Get(this).RPC("RPC_ReceiveKillfeed", RpcTarget.All,userId, Cible.name);
                     PhotonNetwork.Destroy(gameObject);
                 }
-                else if (gameObject.GetComponent<PlayerStats>())
+                else if (gameObject.GetComponent<PlayerStats>() && GetDeath()==false)
                 {
-                    //todo envoie de bon killer 
+                    
                     Debug.Log("kill");
-                    //if (Cible != null)
-                    //{
-
-                    //    photonView.RPC("RPC_SendKillfeed", RpcTarget.AllBuffered, this.userId, Cible.GetComponent<IDamageable>().userId);
-                    //}
-                    //else
-                    //{
-                    //    photonView.RPC("RPC_SendKillfeed2", RpcTarget.AllBuffered, GetComponent<PhotonView>().ViewID);
-
-                    //}
-                }
+                    SetDeath(true);
+                    gameObject.GetComponent<PlayerStats>().death += 1;
                 StartCoroutine(Death());
+
+                }
             }
             else
             {
@@ -166,12 +159,14 @@ public class PlayerStats : PlayerMovement
     {
         //Debug.Log(respawnCooldown);
         //gameObject.SetActive(false);
-        SetDeath(true);
+        //death += 1;
+        healthDecreaseTimer = 0f;
+        _navMeshAgent.ResetPath();
         foreach (Transform child in gameObject.transform)
         {
             child.gameObject.SetActive(false);
         }
-        gameObject.transform.position = deathPos;
+        gameObject.transform.position = respawnPos;
         yield return new WaitForSeconds(respawnCooldown);
         foreach (Transform child in gameObject.transform)
         {
@@ -179,9 +174,10 @@ public class PlayerStats : PlayerMovement
         }
         SetHealth(GetMaxHealth());
         SetMana(GetMaxMana());
-        _navMeshAgent.ResetPath();
-        transform.position = respawnPos;
+        //Debug.Log(respawnPos);
+        gameObject.transform.position = respawnPos;
         SetDeath(false);
+        healthDecreaseTimer = 0f;
         gameObject.SetActive(true);
 
     }
