@@ -38,7 +38,7 @@ public class Projectile : MonoBehaviourPun
         if (photonView.IsMine)
         {
 
-            if(target == null)
+            if(target == null || target.GetComponent<IDamageable>().GetDeath() == true)
             {
                PhotonNetwork.Destroy(gameObject);
             }
@@ -107,7 +107,7 @@ public class Projectile : MonoBehaviourPun
     public void DealDamage(GameObject target, float dmg, IDamageable.DamageType typeDmg)
     {
         target.GetComponent<IDamageable>().TakeDamage(dmg, typeDmg,GetCreator().ViewID);
-        PhotonNetwork.Destroy(gameObject);
+        PhotonNetwork.Destroy(this.gameObject);
         //Debug.Log(playerId + " a fait " + dmg + " de degats " + typeDmg + " à :" + target.name);
     }
 
