@@ -51,7 +51,7 @@ public class MinionsBehaviour : BasicAIMovement, IPunObservable
                 cpt -= Time.deltaTime;
                 if (cpt <= 0)
                 {
-                    cpt = 0.1f;
+                    cpt = 0.5f;
                     DefaultMovement();
                 }
                 if (Cible is null)
