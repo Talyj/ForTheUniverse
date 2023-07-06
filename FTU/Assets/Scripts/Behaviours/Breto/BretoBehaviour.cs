@@ -66,6 +66,15 @@ public class BretoBehaviour : PlayerStats
             if (!isAttacking)
             {
                 CheckRangeAttack();
+                if (Input.GetKeyDown(KeyCode.K))
+                {
+                    //photonView.RPC("DealDamages",RpcTarget.All, new object[] { 9999 });
+                    TakeDamage(999f, DamageType.brut, photonView.ViewID);
+                }
+                if (Input.GetKeyDown(KeyCode.X))
+                {
+                    SetExp(99f);
+                }
                 if (Input.GetKeyDown(KeyCode.A))
                 {
                     Skill1();

@@ -3,6 +3,7 @@ using Photon.Pun.UtilityScripts;
 using Photon.Realtime;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
@@ -26,6 +27,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     private float MoveSpeed;
     [SerializeField] private float AttackSpeed;
     [SerializeField] private float AttackRange;
+    private float attackTimer=0f;
     private float ViewRange;
     private float Mana, MaxMana;
     private float ResistancePhysique; // calcul des resistance health = health - (DegatsPhysiqueRe�u -((ResistancePhysique * DegatsPhysiqueRe�u)/100)
@@ -39,7 +41,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     //private bool useSkills;
     [SerializeField] private bool canUlt;
     public bool inFight;
-    private bool IsDead;
+    [SerializeField] private bool IsDead;
     private bool InRegen;
     private float cptRegen = 0;
     public bool isAttacking;
@@ -55,6 +57,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     [SerializeField] protected float MaxExp;
     [SerializeField] protected float ExpRate;//multiplicateur de l'exp max
     [SerializeField] protected int lvl;
+    [SerializeField] protected bool lvlup=false;
     float healthAmount ;
     float regenTimer = 0f;
     [Space]
@@ -461,11 +464,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
             } 
             else if (gameObject.GetComponent<BasicAIStats>())
             {
-                //userId = gameObject.name;
-                //PhotonView.Get(this).RPC("SendKillfeed", RpcTarget.AllBuffered,  Cible.name, userId);
-                //PhotonView.Get(this).RPC("RPC_ReceiveKillfeed", RpcTarget.All,userId, Cible.name);
                 StartCoroutine(DissolveEffect());
-                //PhotonNetwork.Destroy(gameObject);
             }
             //RPC_SendKillfeed(this.GetComponent<PhotonView>().ViewID, Cible.GetComponent<PhotonView>().ViewID);
             //else if (PhotonNetwork.IsMasterClient)
@@ -499,30 +498,54 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
 
     public void ExperienceBehaviour()
     {
-        if (Exp >= MaxExp)
+        lvlup = (Exp >= MaxExp) ? true : false;
+        if (lvlup)
         {
-            float reste = Exp - MaxExp;
-            lvl += 1;
-            Exp = reste;
-            MaxExp = MaxExp * ExpRate;
-            print("lvl up");
-            if (lvl == 6)
-            {
-                SetCanUlt(true);
-            }
-            // augmentation des stats a faire
-            //test en dur a rendre plus automatique par scriptableobject surement
-            SetHealth(GetHealth() * 1.06f);
-            SetMaxHealth(GetMaxHealth() * 1.06f);
-            SetMana(GetMana() * 1.05f);
-            SetMaxMana(GetMaxMana() * 1.05f);
-            SetAttackSpeed(GetAttackSpeed() * 0.97f);
-            SetDegPhys(GetDegPhys() * 1.75f);
-            SetDegMag(GetDegMag() * 1.75f);
-            SetResMag(GetResMag() * 1.25f);
-            SetResPhys(GetResPhys() * 1.25f);
-            SetMoveSpeed(GetMoveSpeed() * 1.15f);
+            StartCoroutine(Levelling());
         }
+    }
+
+
+    IEnumerator Levelling()
+    {
+        lvlup = false;
+        float reste = Exp - MaxExp;
+        lvl += 1;
+        Exp = reste;
+        MaxExp = MaxExp * ExpRate;
+        print("lvl up");
+        if (lvl == 6)
+        {
+            SetCanUlt(true);
+        }
+
+
+        // augmentation des stats %
+        float percentHp = GetMaxHealth() * 0.08f;
+        float percentPm = GetMaxMana() * 0.08f;
+        float percentAs = GetAttackSpeed() * 0.97f;
+        float percentAd = GetDegPhys() * 0.045f;
+        float percentAp = GetDegMag() * 0.045f;
+        float percentAr = GetResMag() * 0.06f;
+        float percentRm = GetResPhys() * 0.06f;
+        float percentMs = GetMoveSpeed() * 0.01f;
+
+
+        //test en dur a rendre plus automatique par scriptableobject surement
+        SetMaxHealth(GetMaxHealth() +percentHp);
+        SetMaxMana(GetMaxMana()+percentPm);
+        SetAttackSpeed(GetAttackSpeed()+percentAs);
+        SetDegPhys(GetDegPhys()+percentAd);
+        SetDegMag(GetDegMag()+percentAp);
+        SetResMag(GetResMag()+percentAr);
+        SetResPhys(GetResPhys()+percentRm);
+        SetMoveSpeed(GetMoveSpeed()+percentMs);
+
+        if(GetHealth() == GetMaxHealth())
+        {
+            SetHealth(GetMaxHealth());
+        }
+        yield return null;
     }
 
     [PunRPC] // NE PEUT TRANSMETTRE QUE DES TYPE CLASSIQUE (int, float, bool)
@@ -534,11 +557,11 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         switch (Cible.GetComponent<IDamageable>().enemyType)
         {
             case EnemyType.minion:
-                expToGive = 1f;
+                expToGive = 12f * gameObject.GetComponent<PlayerStats>().GetLvl(); 
                 break;
             case EnemyType.player:
                 //expToGive = 1000 * gameObject.GetComponent<PlayerStats>().GetLvl();
-                expToGive = 10;
+                expToGive = 75 * gameObject.GetComponent<PlayerStats>().GetLvl(); 
                 break;
             case EnemyType.dieu:
                 expToGive = 10000;
@@ -554,14 +577,18 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         Collider[] hitColliders = Physics.OverlapSphere(gameObject.transform.position, 30f);
         if (hitColliders != null)
         {
+            Debug.Log("give exp 1");
             foreach (var col in hitColliders)
             {
+            Debug.Log("give exp 2");
                 var collider = col.GetComponent<IDamageable>();
+        Debug.Log("my enemytype " + collider.GetComponent<IDamageable>().enemyType);
                 if (collider)
                 {
-                    if (collider.team != team && collider.enemyType == EnemyType.player ||
-                        collider.team != team && collider.enemyType == EnemyType.voister)
+            Debug.Log("give exp 3");
+                    if (collider.team.Code != team.Code && collider.enemyType == EnemyType.player )
                     {
+            Debug.Log("give exp 4");
                         collider.SetExp(expToGive);
                     }
                 }
@@ -646,9 +673,17 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         Health -= DegatsRecu;
 
         idLastDamageTaken = de;
+
+        //list des assits
+        //List<PlayerStats> assitPlayers = new List<PlayerStats>(5);
+        //if (!assitPlayers.Contains(PhotonView.Find(de).GetComponent<PlayerStats>()))
+        //{
+        //    assitPlayers.Add(PhotonView.Find(de).GetComponent<PlayerStats>());
+        //}
+
+
         string by = PhotonView.Find(de).gameObject.name;
         //Debug.Log(this.gameObject.name + " a recu " + DegatsRecu + " de " + by);
-        //Debug.Log(Health <= 0 && gameObject.GetComponent<BasicAIStats>());
         if (Health <= 0)
         {
             if (gameObject.GetComponent<PlayerStats>())
@@ -656,17 +691,26 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
                 if (PhotonView.Find(de).GetComponent<PlayerStats>())
                 {
                     Debug.Log(" 1");
-                    gameObject.GetComponent<PlayerStats>().death += 1;
                     PhotonView.Find(de).GetComponent<PlayerStats>().kill += 1;
                     PhotonView.Find(de).GetComponent<IDamageable>().SetExp(75);
                     PhotonView.Find(de).GetComponent<PlayerStats>().SetGold(300);
                     PhotonView.Find(de).GetComponent<PlayerStats>().Cible = null;
+                    //foreach (PlayerStats item in assitPlayers)
+                    //{
+                    //    if (!item.Equals(PhotonView.Find(de).GetComponent<PlayerStats>()))
+                    //    {
+                    //        item.SetGold(150);
+                    //        item.SetExp(37.5f);
+                    //        item.assist += 1;
+                    //    }
+                        
+                    //}
                 }
             }
             else if (gameObject.GetComponent<BasicAIStats>().GetEnemyType()== EnemyType.minion)
             {
                 //Player killer = PhotonNetwork.CurrentRoom.GetPlayer(de);
-                //PhotonView.Find(de).GetComponent<IDamageable>().photonView.RPC("GiveExperience",RpcTarget.AllBuffered);
+                //PhotonView.Find(de).GetComponent<IDamageable>().photonView.RPC("GiveExperience",RpcTarget.All);
                 if (PhotonView.Find(de).GetComponent<PlayerStats>())
                 {
                 Debug.Log(" 2");
@@ -680,7 +724,8 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
                 if (PhotonView.Find(de).GetComponent<PlayerStats>())
                 {
                 Debug.Log(" 3");
-                    PhotonView.Find(de).GetComponent<IDamageable>().SetExp(125);
+                    //PhotonView.Find(de).GetComponent<IDamageable>().SetExp(125);
+                    PhotonView.Find(de).GetComponent<IDamageable>().photonView.RPC("GiveExperience", RpcTarget.All);
                     PhotonView.Find(de).GetComponent<PlayerStats>().SetGold(500);
 
                 }
@@ -778,7 +823,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     {
         try
         {
-            if (Input.GetMouseButtonDown(0) && Time.deltaTime < GetAttackSpeed() / ((100 / +GetAttackSpeed()) * 0.01f))
+            if (Input.GetMouseButtonDown(0) && Time.deltaTime < GetAttackSpeed() / ((100 / +GetAttackSpeed()) * 0.01f) && !isAttacking)
             {
                 if (Vector3.Distance(gameObject.transform.position, Cible.transform.position) > GetAttackRange())
                 {
@@ -786,6 +831,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
                 }
                 else
                 {
+                    isAttacking = true;
                     if (attackType == AttackType.Melee)
                     {
                         StartCoroutine(AutoAttack());
@@ -833,8 +879,8 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
             {
                 Cible = null;
             }
-
             yield return new WaitForSeconds(GetAttackSpeed() / ((100 / GetAttackSpeed()) * 0.01f));
+            isAttacking = false;
         }
 
     }
@@ -874,6 +920,8 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
             }
             var test = GetAttackSpeed() / ((100 / GetAttackSpeed()) * 0.01f);
             yield return new WaitForSeconds(test);
+
+            isAttacking = false;
         }
 
     }

@@ -57,6 +57,7 @@ public class BasicAIStats : IDamageable, IPunObservable
 
     public void BasicAttackIA()
     {
+        Debug.Log("minion attack");
         if (attackType == AttackType.Melee)
         {
             StartCoroutine(AutoAttack());
