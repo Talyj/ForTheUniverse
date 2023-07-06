@@ -314,8 +314,8 @@ public class ActioBehaviour : PlayerStats
     [PunRPC]
     public void SpawnTrap()
     {
-        GameObject trapchild = PhotonNetwork.Instantiate(trap.name, new Vector3(transform.position.x, 0, transform.position.z), transform.rotation);
-        trapchild.GetComponent<Trap>().source = source;
+        GameObject trapchild = PhotonNetwork.Instantiate(ult.name, new Vector3(transform.position.x, 0, transform.position.z), transform.rotation);
+        trapchild.GetComponent<Trap>().source = this;
         //trapchild.transform.parent = transform.parent.transform;
         trapchild.SetActive(true);
     }
