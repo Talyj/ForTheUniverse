@@ -16,10 +16,10 @@ public class PlayerStats : PlayerMovement
     private bool isDead = false;
 
     [Header("KDA")]
-    public float kill ;
+    public float kill;
     public float death;
     public float assist;
-    public float  creep;
+    public float creep;
 
     public Dictionary<ItemStats, int> items = new Dictionary<ItemStats, int>();
     public Role role;
@@ -95,7 +95,7 @@ public class PlayerStats : PlayerMovement
         {
             healthDecreaseTimer += Time.deltaTime;
         }
-        inFight = (healthDecreaseTimer >= 6f || healthDecreaseTimer <= -1f ) ? false : true;
+        inFight = (healthDecreaseTimer >= 6f || healthDecreaseTimer <= -1f) ? false : true;
 
         if (inFight == false)
         {
@@ -140,7 +140,7 @@ public class PlayerStats : PlayerMovement
                     //PhotonView.Get(this).RPC("RPC_ReceiveKillfeed", RpcTarget.All,userId, Cible.name);
                     PhotonNetwork.Destroy(gameObject);
                 }
-                else if (gameObject.GetComponent<PlayerStats>() && GetDeath()==false)
+                else if (gameObject.GetComponent<PlayerStats>() && GetDeath() == false)
                 {
                     if (!isDead)
                     {
@@ -153,13 +153,11 @@ public class PlayerStats : PlayerMovement
                         {
                             photonView.RPC("RPC_SendKillfeed2", RpcTarget.All, photonView.ViewID);
                         }
-                }
-                    
+                    }
                     Debug.Log("kill");
                     SetDeath(true);
                     gameObject.GetComponent<PlayerStats>().death += 1;
-                StartCoroutine(Death());
-
+                    StartCoroutine(Death());
                 }
             }
             else
@@ -184,7 +182,7 @@ public class PlayerStats : PlayerMovement
             {
                 child.gameObject.SetActive(false);
             }
-            
+
         }
         gameObject.transform.position = respawnPos;
         yield return new WaitForSeconds(respawnCooldown);
@@ -318,9 +316,9 @@ public class PlayerStats : PlayerMovement
         SetResPhys(GetResPhys() + item.resPhys);
         SetDegPhys(GetDegPhys() + item.dmgPhys);
         SetDegMag(GetDegMag() + item.dmgMag);
-        if(item.rarete != ItemRarete.Consommable)
+        if (item.rarete != ItemRarete.Consommable)
         {
-            FindObjectOfType<ItemPassifs>().StartPassif(gameObject, item.idPassif, item.rarete == ItemRarete.Consommable ? 0 : 1);        
+            FindObjectOfType<ItemPassifs>().StartPassif(gameObject, item.idPassif, item.rarete == ItemRarete.Consommable ? 0 : 1);
         }
     }
 
@@ -340,9 +338,9 @@ public class PlayerStats : PlayerMovement
 
     private ItemStats GetItemFromID(int id)
     {
-        foreach(var item in itemPassifs.listItems)
+        foreach (var item in itemPassifs.listItems)
         {
-            if(id == item.ID)
+            if (id == item.ID)
             {
                 return item;
             }
