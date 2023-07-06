@@ -3,6 +3,7 @@ using Photon.Pun.UtilityScripts;
 using Photon.Realtime;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
@@ -630,8 +631,18 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     public void DealDamages(float DegatsRecu, int de)
     {
         Health -= DegatsRecu;
-        
+
+
+        //List<PlayerStats> assitPlayers = new List<PlayerStats>(5);
+        //if (!assitPlayers.Contains(PhotonView.Find(de).GetComponent<PlayerStats>()))
+        //{
+        //    assitPlayers.Add(PhotonView.Find(de).GetComponent<PlayerStats>());
+        //}
+
+
         string by = PhotonView.Find(de).gameObject.name;
+        //list des assits
+        //List<PlayerStats> assitPlayers = new List<PlayerStats>()
         //Debug.Log(this.gameObject.name + " a recu " + DegatsRecu + " de " + by);
         //Debug.Log(Health <= 0 && gameObject.GetComponent<BasicAIStats>());
         if (Health <= 0)
@@ -645,7 +656,12 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
                     PhotonView.Find(de).GetComponent<PlayerStats>().kill += 1;
                     PhotonView.Find(de).GetComponent<IDamageable>().SetExp(75);
                     PhotonView.Find(de).GetComponent<PlayerStats>().SetGold(300);
-
+                    //foreach (PlayerStats item in assitPlayers)
+                    //{
+                    //    item.SetGold(150);
+                    //    item.SetExp(37.5f);
+                    //    item.assist += 1;
+                    //}
                 }
             }
             else if (gameObject.GetComponent<BasicAIStats>().GetEnemyType()== EnemyType.minion)
