@@ -173,6 +173,16 @@ public class UI : MonoBehaviour
     {
         statsPlayer = FindObjectsOfType<PlayerStats>();
 
+        for (int i = 0; i < teamScoreboardPrefab[0].transform.childCount; i++)
+        {
+            Destroy(teamScoreboardPrefab[0].transform.GetChild(i));
+        }
+        
+        for (int i = 0; i < teamScoreboardPrefab[1].transform.childCount; i++)
+        {
+            Destroy(teamScoreboardPrefab[1].transform.GetChild(i));
+        }
+        
         foreach (var p in statsPlayer)
         {
             GameObject temp = Instantiate(itemScoreboardPrefab[p.team.Code], teamScoreboardPrefab[p.team.Code].GetComponent<RectTransform>()); ;
