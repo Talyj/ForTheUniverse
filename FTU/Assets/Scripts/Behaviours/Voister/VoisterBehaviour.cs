@@ -14,7 +14,7 @@ public class VoisterBehaviour : BasicAIMovement, IPunObservable
     protected bool isNearKing;
     protected bool isTurned;
     protected bool isProtecting;
-    private int requiredNumberOfCharge;
+    protected int requiredNumberOfCharge;
 
 
     public enum actionState
@@ -61,22 +61,23 @@ public class VoisterBehaviour : BasicAIMovement, IPunObservable
         ExpRate = 1.85f;
         SetExp(0);
         SetLvl(1);
-        SetupMinimap();
     }
 
     protected void VoisterBaseAction()
     {
-        Regen();
+        //Regen();
     }
 
     protected void VoisterBaseBehaviour()
     {
+        //MovementTraining();
+        //SurviveTraining();
         if (Cible)
         {
             previousState = currentState;
             currentState = actionState.attack;
         }
-        else
+        else if(currentState == actionState.attack)
         {
             currentState = previousState;
         }
@@ -103,7 +104,7 @@ public class VoisterBehaviour : BasicAIMovement, IPunObservable
 
         }
     }
-
+    #region BasicBehavior
     protected void VoisterFeed()
     {
         try
@@ -114,13 +115,13 @@ public class VoisterBehaviour : BasicAIMovement, IPunObservable
                 previousState = currentState;
                 currentState = kingVoisters.numberOfFollower >= kingVoisters.followersMax ? actionState.patrol : actionState.protect;
             }
-            if (!isNearKing && _navMeshAgent.remainingDistance <= 15)
+            if (!isNearKing && _navMeshAgent.remainingDistance <= 5)
             {
                 isNearKing = true;
                 numberOfCharges++;
                 posToGo = spawnPoint;
             }
-            else if (isNearKing && _navMeshAgent.remainingDistance <= 15)
+            else if (isNearKing && _navMeshAgent.remainingDistance <= 5)
             {
                 isNearKing = false;
                 posToGo = kingVoisters.gameObject.transform.position;
@@ -144,7 +145,7 @@ public class VoisterBehaviour : BasicAIMovement, IPunObservable
                 kingVoisters.numberOfFollower++;
                 _navMeshAgent.ResetPath();
             }
-            transform.RotateAround(kingVoisters.transform.position, Vector3.up, GetMoveSpeed() * Time.deltaTime);
+            transform.RotateAround(kingVoisters.transform.position, Vector3.up, GetMoveSpeed() * Time.deltaTime);            
         }
         catch(MissingReferenceException e)
         {
@@ -277,13 +278,14 @@ public class VoisterBehaviour : BasicAIMovement, IPunObservable
             }
         }
     }
+#endregion
 
     #region training
     public float speed;
     public float rotation;
     public LayerMask raycastMask;//Mask for the sensors
 
-    protected float[] input = new float[7];// Input to the neural network
+    protected float[] input = new float[6];// Input to the neural network
     public NeuralNetwork network;
 
     public int position;//Checkpoint number on the course
@@ -300,13 +302,19 @@ public class VoisterBehaviour : BasicAIMovement, IPunObservable
         {
             for (int i = 0; i < 5; i++)//draws five debug rays as inputs
             {
-                Vector3 newVector = Quaternion.AngleAxis(i * 45 - 90, new Vector3(0, 1, 0)) * transform.right;//calculating angle of raycast
+                Vector3 newVector = Quaternion.AngleAxis(i * 45 - 90, new Vector3(0, 1, 0)) * transform.forward;//calculating angle of raycast
                 RaycastHit hit;
                 Ray Ray = new Ray(transform.position, newVector);
                 var raycastLenght = 100;
+                Debug.DrawRay(Ray.origin, Ray.direction * raycastLenght);
                 if (Physics.Raycast(Ray, out hit, raycastLenght, raycastMask) == true)
                 {
-                    input[i] = (raycastLenght - hit.distance) / raycastLenght;//return distance, 1 being close
+                    if (hit.collider.GetComponent<KingsBehaviour>())
+                    {
+                        input[i] = (raycastLenght - hit.distance) / raycastLenght;//return distance, 1 being close
+                        continue;
+                    }
+                    input[i] = 0;
                 }
                 else
                 {
@@ -318,8 +326,8 @@ public class VoisterBehaviour : BasicAIMovement, IPunObservable
 
             //TODO find a way to make output affect the attack/skills
             transform.Rotate(0, output[0] * rotation, 0, Space.World);
-            _navMeshAgent.SetDestination(transform.right * output[1] * speed);
-            //transform.position += transform.right * output[1] * speed;
+            transform.position += transform.forward * output[1] * 1;
+            _navMeshAgent.SetDestination(transform.position);
         }
     }
 

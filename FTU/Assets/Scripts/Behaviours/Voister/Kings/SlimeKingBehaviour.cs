@@ -25,10 +25,6 @@ public class SlimeKingBehaviour : KingsBehaviour
         SetMoveSpeed(20f);
         SetViewRange(30f);
         isAttacking = false;
-
-        //Training
-        //InitNetworks();
-        //InvokeRepeating(nameof(CreateVoisters), 0.1f, timeframe);//repeating function
     }
 
     // Update is called once per frame

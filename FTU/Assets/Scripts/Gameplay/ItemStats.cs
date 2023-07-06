@@ -1,9 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
-[CreateAssetMenu(fileName ="Item",menuName ="Items/new item")]
+[CreateAssetMenu(fileName = "Item", menuName = "Items/new item")]
 public class ItemStats : ScriptableObject
 {
     public string nameItem;
@@ -30,7 +27,8 @@ public class ItemStats : ScriptableObject
     public int idPassif;
 }
 
-public enum ItemRarete{
+public enum ItemRarete
+{
     Consommable,
     Objet,
     Talisman,

@@ -3,12 +3,16 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.VFX;
 
 public class GolemBehaviour : BasicAIStats
 {
     private float attackCooldown;
     [SerializeField] private bool isInvincible;
     [SerializeField] private GameObject otherGolem;
+
+    [SerializeField] private VisualEffect attack_animation;
+    [SerializeField] private VisualEffect energy_sphere; 
 
     public void Start()
     {
@@ -27,7 +31,17 @@ public class GolemBehaviour : BasicAIStats
     }
 
     public void Update()
-    {
+    { 
+        if (GetHealth() <= (0.2f*GetMaxHealth())) {
+            energy_sphere.SetFloat("SpawnRate", 50.0f);
+        } else if (GetHealth() <= (0.4f*GetMaxHealth())) {
+            energy_sphere.SetFloat("SpawnRate", 500.0f);
+        } else if (GetHealth() <= (0.6f*GetMaxHealth())) {
+            energy_sphere.SetFloat("SpawnRate", 5000.0f);
+        } else if (GetHealth() <= (0.8f*GetMaxHealth())) {
+            energy_sphere.SetFloat("SpawnRate", 50000.0f);
+        } 
+
         GetNearestTarget();
         if(Cible != null)
         {
@@ -55,10 +69,17 @@ public class GolemBehaviour : BasicAIStats
     {
         if(attackCooldown <= 0)
         {
+            VisualEffect vfx = Instantiate(attack_animation, Cible.transform.position, Quaternion.identity);
+            vfx.Play();
             Cible.GetComponent<IDamageable>().TakeDamage(GetDegMag(), DamageType.brut,photonView.ViewID);
             attackCooldown = 5;
         }
         attackCooldown -= Time.deltaTime;
+    }
+
+    private IEnumerator DestroyAttackVFX(VisualEffect vfx, float delay) {
+        yield return new WaitForSeconds(delay);
+        Destroy(vfx);
     }
 
     private void CheckFirstGolem()

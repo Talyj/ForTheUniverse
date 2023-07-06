@@ -113,7 +113,11 @@ public class PlayerStats : PlayerMovement
             var rend = GetComponents<Renderer>();
             foreach (Transform child in transform)
             {
-                child.GetComponent<Renderer>().enabled = false;
+                Renderer rChild;
+                if (child.TryGetComponent<Renderer>(out rChild))
+                {
+                    rChild.enabled = false;
+                }
             }
             if (rend != null)
             {
@@ -210,7 +214,11 @@ public class PlayerStats : PlayerMovement
         transform.position = respawnPos;
         foreach (Transform child in transform)
         {
-            child.GetComponent<Renderer>().enabled = true;
+            Renderer rChild;
+            if (child.TryGetComponent<Renderer>(out rChild))
+            {
+                rChild.enabled = false;
+            }
         }
         GetComponent<CameraWork>().isFollowing = true;
 
@@ -218,6 +226,12 @@ public class PlayerStats : PlayerMovement
         //}
     }
 
+    public void CallItemEquip()
+    {
+        photonView.RPC(nameof(ItemEquip), RpcTarget.All);
+    }
+
+    [PunRPC]
     public void ItemEquip()
     {
         foreach (var item in items)
@@ -229,7 +243,7 @@ public class PlayerStats : PlayerMovement
             SetResPhys(GetResPhys() + item.resPhys);
             SetDegPhys(GetDegPhys() + item.dmgPhys);
             SetDegMag(GetDegMag() + item.dmgMag);
-            GetComponent<ItemPassifs>().StartPassif(gameObject, item.idPassif);
+            FindObjectOfType<ItemPassifs>().StartPassif(gameObject, item.idPassif);
         }
     }
 

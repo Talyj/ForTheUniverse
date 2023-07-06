@@ -1,6 +1,7 @@
 using Photon.Pun;
 using Photon.Pun.UtilityScripts;
 using Photon.Realtime;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -22,7 +23,7 @@ public class MainGame : MonoBehaviourPun
     public Material[] materialsMinimapView;
 
     public GameObject canvas;
-    public Text textVictory;
+    public TMP_Text textVictory;
 
     public void Start()
     {

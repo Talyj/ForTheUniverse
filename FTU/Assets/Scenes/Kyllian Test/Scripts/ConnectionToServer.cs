@@ -17,8 +17,11 @@ public class ConnectionToServer : MonoBehaviour
 {
     public TMP_InputField usernameInput;    
     public TMP_InputField passwordInput;
+    public TMP_Text errorMessage;
     public TMP_Text profilName;
 
+    public GameObject formLogin;
+    public GameObject loadingImage;
 
     public void ConnectionHander()
     {
@@ -36,12 +39,14 @@ public class ConnectionToServer : MonoBehaviour
             PhotonNetwork.LocalPlayer.NickName = "Player " + Random.Range(0, 1000).ToString("0000");
         }*/
         
-        Debug.Log(usernameInput.text);
-        Debug.Log(passwordInput.text);
+        /*Debug.Log(usernameInput.text);
+        Debug.Log(passwordInput.text);*/
         var highscoreURL = "http://awacoru.cluster027.hosting.ovh.net/accessServer.php?user=" +
                               usernameInput.text + "&password=" +
                               passwordInput.text;
         WWW hs_get = new WWW(highscoreURL);
+        formLogin.SetActive(false);
+        loadingImage.SetActive(true);
         yield return hs_get;
 
         if (hs_get.error != null)
@@ -62,6 +67,13 @@ public class ConnectionToServer : MonoBehaviour
                 customProp.Add("elo_score",playerInfoDatabase.score);
                 MainMenuManager.Instance().GetLocalPlayer().SetCustomProperties(customProp);
                 
+            }
+            else
+            {
+                formLogin.SetActive(true);
+                loadingImage.SetActive(false);
+                errorMessage.gameObject.SetActive(true);
+                errorMessage.text = "Erreur : Nom d'utilisateur ou mot de passe erroné.";
             }
         }
         yield return null;

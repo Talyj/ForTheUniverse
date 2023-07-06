@@ -43,6 +43,12 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     private bool InRegen;
     private float cptRegen = 0;
     public bool isAttacking;
+
+    //Animation mort
+    [SerializeField] private Material dissolveMaterial; 
+    [SerializeField] private RuntimeAnimatorController dissolveController; 
+    private float dissolveDuration = 1.0f; 
+
     public float healthDecreaseTimer = -1f;
     //exp
     [SerializeField] protected float Exp;
@@ -381,24 +387,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         SetResMag(0);
         SetDegPhys(100);
         SetDegMag(100);
-        SetupMinimap();
     }
-
-    protected void SetupMinimap()
-    {
-        var MainGame = GameObject.FindObjectOfType<MainGame>();
-        if (MainGame != null)
-        {
-            foreach (Transform child in transform)
-            {
-                if (child.gameObject.CompareTag("minimapView"))
-                {
-                    child.GetComponent<Renderer>().material = MainGame.materialsMinimapView[team.Code];
-                }
-            }
-        }
-    }
-
 
     private void CheckCC()
     {
@@ -443,7 +432,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         }
 
         if (Health <= 0)
-        {
+        {   
             //photonView.RPC("GiveExperience", RpcTarget.All, new object[] { });
             if (gameObject.CompareTag("dd"))
             {
@@ -453,13 +442,26 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
                     mainGame.SendVictoryMessage(team.Code);
 
                 }
-            }
+            } 
             else if (gameObject.GetComponent<BasicAIStats>())
             {
                 //userId = gameObject.name;
                 //PhotonView.Get(this).RPC("SendKillfeed", RpcTarget.AllBuffered,  Cible.name, userId);
                 //PhotonView.Get(this).RPC("RPC_ReceiveKillfeed", RpcTarget.All,userId, Cible.name);
-                PhotonNetwork.Destroy(gameObject);
+
+                foreach (var meshRenderer in GetComponentsInChildren<MeshRenderer>()) {
+                    meshRenderer.material = dissolveMaterial;
+
+                    var animator = meshRenderer.gameObject.GetComponent<Animator>();
+                    if (animator == null) {
+                        animator = meshRenderer.gameObject.AddComponent<Animator>();
+                    }
+
+                    animator.runtimeAnimatorController = dissolveController;
+                }
+
+                StartCoroutine(DissolveEffect());
+                //PhotonNetwork.Destroy(gameObject);
             }
             //RPC_SendKillfeed(this.GetComponent<PhotonView>().ViewID, Cible.GetComponent<PhotonView>().ViewID);
             //else if (PhotonNetwork.IsMasterClient)
@@ -469,6 +471,13 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
             //}
             //PhotonView.Get(this).RPC("RPC_ReceiveKillfeed", RpcTarget.All, PhotonNetwork.LocalPlayer.UserId, Cible.name);
         }
+    }
+
+    private IEnumerator DissolveEffect() {
+        yield return new WaitForSeconds(dissolveDuration);
+
+       //Destroy(gameObject);
+        PhotonNetwork.Destroy(gameObject);
     }
 
     [PunRPC]
@@ -915,10 +924,30 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         if (stream.IsWriting)
         {
             stream.SendNext(GetHealth());
+            stream.SendNext(GetMaxHealth());
+            stream.SendNext(GetMana());
+            stream.SendNext(GetMaxMana());
+            stream.SendNext(GetAttackSpeed());
+            stream.SendNext(GetAttackRange());
+            stream.SendNext(GetResPhys());
+            stream.SendNext(GetResMag());
+            stream.SendNext(GetDegPhys());
+            stream.SendNext(GetDegMag());
+            stream.SendNext(lvl);
         }
         else
         {
             SetHealth((float)stream.ReceiveNext());
+            SetMaxHealth((float)stream.ReceiveNext());
+            SetMana((float)stream.ReceiveNext());
+            SetMaxMana((float)stream.ReceiveNext());
+            SetAttackSpeed((float)stream.ReceiveNext());
+            SetAttackRange((float)stream.ReceiveNext());
+            SetResPhys((float)stream.ReceiveNext());
+            SetResMag((float)stream.ReceiveNext());
+            SetDegPhys((float)stream.ReceiveNext());
+            SetDegMag((float)stream.ReceiveNext());
+            SetLvl((int)stream.ReceiveNext());
         }
     }
 
