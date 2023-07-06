@@ -105,7 +105,7 @@ public class CharacterSelectorMenu : MonoBehaviourPunCallbacks
     private IEnumerator ChangeCharacterBDD(int index)
     {
         var id = PhotonNetwork.LocalPlayer.CustomProperties["idBDD"];
-        var request = "http://awacoru.cluster027.hosting.ovh.net/changeCharacter.php?id=" + id + "&last_character=" + index;
+        var request = "http://awacoru.cluster027.hosting.ovh.net/unity/changeCharacter.php?id=" + id + "&last_character=" + index;
         WWW hs_get = new WWW(request);
         
         yield return hs_get;

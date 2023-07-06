@@ -337,7 +337,7 @@ public class Launch : MonoBehaviourPunCallbacks
         int idUser = (int)PhotonNetwork.LocalPlayer.CustomProperties["idUser"];
         int idCharacter = (int)PhotonNetwork.LocalPlayer.CustomProperties["championsSelected"] + 1;
         
-        var score = $"http://awacoru.cluster027.hosting.ovh.net/computeScore.php?user={idUser}&chara={idCharacter}";
+        var score = $"http://awacoru.cluster027.hosting.ovh.net/unity/computeScore.php?user={idUser}&chara={idCharacter}";
         WWW request = new WWW(score);
         yield return request;
         

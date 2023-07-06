@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Photon.Pun;
@@ -38,10 +39,20 @@ public class UI : MonoBehaviour
 
     [SerializeField] private GameObject feedKillPrefab, killFeedHolder;
 
+    [SerializeField] private GameObject[] itemScoreboardPrefab;
+    [SerializeField] private GameObject[] teamScoreboardPrefab;
+    [SerializeField] private GameObject scoreboard;
+    [SerializeField] TMP_Text[] scoreTeam;
+    [SerializeField] TMP_Text timeText;
+
+    private float time;
+    private PlayerStats[] statsPlayer;
+
     // Start is called before the first frame update
     void Start()
     {
         stats = gameObject.GetComponentInParent<PlayerStats>();
+        time = 0;
         BaseStats();
     }
 
@@ -125,7 +136,28 @@ public class UI : MonoBehaviour
 
         OptionPanel.SetActive(Input.GetKey(KeyCode.Escape));
         
+        scoreboard.SetActive(Input.GetKey(KeyCode.Tab));
+        
         CiblePanel.SetActive(stats.Cible != null);
+        time += Time.deltaTime;
+        
+        //var minute = time/60
+
+        var timespan = TimeSpan.FromSeconds(time);
+        timeText.text = timespan.Minutes.ToString("00") + ":" + timespan.Seconds.ToString("00"); //time.ToString(@"hh:mm:ss:fff");
+        
+        if (statsPlayer.Length > 0)
+        {
+            int[] score = new int[] {0,0};
+
+            foreach (var ps in statsPlayer)
+            {
+                score[ps.team.Code] += (int)ps.kill;
+            }
+
+            scoreTeam[0].text = score[0].ToString();
+            scoreTeam[1].text = score[1].ToString();
+        }
         
     }
 
@@ -134,5 +166,18 @@ public class UI : MonoBehaviour
         Debug.Log(killFeedHolder);
         var feedKill = Instantiate(feedKillPrefab, killFeedHolder.GetComponent<RectTransform>());
         feedKill.GetComponent<FeedKillScript>().Initialize(killer, victim);
+    }
+
+
+    public void UpdateScoreboard()
+    {
+        statsPlayer = FindObjectsOfType<PlayerStats>();
+
+        foreach (var p in statsPlayer)
+        {
+            GameObject temp = Instantiate(itemScoreboardPrefab[p.team.Code], teamScoreboardPrefab[p.team.Code].GetComponent<RectTransform>()); ;
+            temp.GetComponent<ScoreboardItemScript>().Initialize(p.GetComponent<PhotonView>());
+            
+        }
     }
 }

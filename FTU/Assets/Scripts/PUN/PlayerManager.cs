@@ -59,6 +59,7 @@ public class PlayerManager : MonoBehaviour
         _playerPrefab.GetComponent<IDamageable>().userId = PhotonNetwork.LocalPlayer.UserId;
         _playerPrefab.GetComponent<PlayerStats>().playerManage = this;
         PV.RPC("SyncTeam", RpcTarget.AllBuffered, player.GetPhotonTeam().Code, index);
+        PV.RPC("UpdateScoreboard", RpcTarget.AllBuffered);
     }
 
     [PunRPC]
@@ -70,6 +71,17 @@ public class PlayerManager : MonoBehaviour
         var prefab = chara.First(x => x.characterID == index);
         prefab.team.Code = team;
         prefab.team.Name = player.GetPhotonTeam().Name;
+    }
+
+    [PunRPC]
+    void UpdateScoreboard()
+    {
+        var chara = FindObjectsOfType<PlayerStats>();
+
+        foreach (var p in chara)
+        {
+            p.GetComponentInChildren<UI>().UpdateScoreboard();
+        }
     }
 
 

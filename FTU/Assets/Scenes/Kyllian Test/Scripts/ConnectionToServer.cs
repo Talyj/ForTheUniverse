@@ -41,7 +41,7 @@ public class ConnectionToServer : MonoBehaviour
         
         /*Debug.Log(usernameInput.text);
         Debug.Log(passwordInput.text);*/
-        var highscoreURL = "http://awacoru.cluster027.hosting.ovh.net/accessServer.php?user=" +
+        var highscoreURL = "http://awacoru.cluster027.hosting.ovh.net/unity/accessServer.php?user=" +
                               usernameInput.text + "&password=" +
                               passwordInput.text;
         WWW hs_get = new WWW(highscoreURL);

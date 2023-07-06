@@ -73,7 +73,7 @@ public class MainMenuManager : MonoBehaviourPunCallbacks
 
     public IEnumerator GetFriends()
     {
-        var highscoreURL = "http://awacoru.cluster027.hosting.ovh.net/getFriends.php?user=" +
+        var highscoreURL = "http://awacoru.cluster027.hosting.ovh.net/unity/getFriends.php?user=" +
                            MainMenuManager.Instance().GetLocalPlayer().CustomProperties["idUser"];
         WWW hs_get = new WWW(highscoreURL);
         yield return hs_get;
