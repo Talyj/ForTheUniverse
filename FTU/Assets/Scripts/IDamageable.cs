@@ -840,39 +840,6 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
                     }
                 }
             }
-
-            //AA V2
-            //if (Input.GetMouseButtonDown(0) && !isAttacking)
-            //{
-            //    isAttacking = true;
-            //    float attackSpeed = GetAttackSpeed();
-            //    float attackDelay = 1.0f / attackSpeed;
-
-            //    if (Time.time >= attackTimer + attackDelay)
-            //    {
-            //        if (Vector3.Distance(gameObject.transform.position, Cible.transform.position) > GetAttackRange())
-            //        {
-            //            print("Hors de portée");
-            //        }
-            //        else
-            //        {
-            //            if (attackType == AttackType.Melee)
-            //            {
-            //                StartCoroutine(AutoAttack());
-            //            }
-            //            else if (attackType == AttackType.Ranged)
-            //            {
-            //                StartCoroutine(RangeAutoAttack());
-            //            }
-
-            //            attackTimer = Time.time; // Mise à jour du compteur pour le temps écoulé depuis la dernière attaque
-            //        }
-            //    }
-            //    else
-            //    {
-            //        Debug.Log("cd aa");
-            //    }
-            //}
         }
         catch (Exception e)
         {
@@ -910,8 +877,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
             {
                 Cible = null;
             }
-            var test = GetAttackSpeed() / ((100 / GetAttackSpeed()) * 0.01f);
-            yield return new WaitForSeconds(test);
+            yield return new WaitForSeconds(GetAttackSpeed() / ((100 / GetAttackSpeed()) * 0.01f));
             isAttacking = false;
         }
 
