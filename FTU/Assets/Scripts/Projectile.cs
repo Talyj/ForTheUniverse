@@ -1,6 +1,7 @@
 using Photon.Pun;
 using Photon.Pun.UtilityScripts;
 using Photon.Realtime;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
@@ -48,33 +49,40 @@ public class Projectile : MonoBehaviourPun
 
     public void Behaviour()
     {
-        if (target)
+        try
         {
-            if (target == null)
+            if (target)
             {
-                target = null;
-            }
-
-            transform.position = Vector3.MoveTowards(transform.position, target.transform.position, vitesse * Time.deltaTime);
-
-            if (stopProjectile == false)
-            {
-                if (Vector3.Distance(transform.position, target.transform.position) < 0.75f)
-                    //if (touched)
+                if (target == null)
                 {
-                    if (target.GetComponent<IDamageable>().GetEnemyType() == IDamageable.EnemyType.minion ||
-                        target.GetComponent<IDamageable>().GetEnemyType() == IDamageable.EnemyType.voister ||
-                        target.GetComponent<IDamageable>().GetEnemyType() == IDamageable.EnemyType.player ||
-                        target.GetComponent<IDamageable>().GetEnemyType() == IDamageable.EnemyType.dieu ||
-                        target.GetComponent<IDamageable>().GetEnemyType() == IDamageable.EnemyType.golem)
+                    target = null;
+                }
+
+                transform.position = Vector3.MoveTowards(transform.position, target.transform.position, vitesse * Time.deltaTime);
+
+                if (stopProjectile == false)
+                {
+                    if (Vector3.Distance(transform.position, target.transform.position) < 0.75f)
+                        //if (touched)
                     {
+                        if (target.GetComponent<IDamageable>().GetEnemyType() == IDamageable.EnemyType.minion ||
+                            target.GetComponent<IDamageable>().GetEnemyType() == IDamageable.EnemyType.voister ||
+                            target.GetComponent<IDamageable>().GetEnemyType() == IDamageable.EnemyType.player ||
+                            target.GetComponent<IDamageable>().GetEnemyType() == IDamageable.EnemyType.dieu ||
+                            target.GetComponent<IDamageable>().GetEnemyType() == IDamageable.EnemyType.golem)
+                        {
                             touched = true;
                             DealDamage(target, degats, typeDegats);
                             stopProjectile = true;
                             PhotonNetwork.Destroy(gameObject);
+                        }
                     }
                 }
             }
+        }
+        catch(NullReferenceException e)
+        {
+            Debug.Log('No target');
         }
     }
 
