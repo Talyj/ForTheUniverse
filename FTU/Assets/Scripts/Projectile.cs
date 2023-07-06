@@ -82,7 +82,7 @@ public class Projectile : MonoBehaviourPun
         }
         catch(NullReferenceException e)
         {
-            Debug.Log('No target');
+            Debug.Log("No target");
         }
     }
 
