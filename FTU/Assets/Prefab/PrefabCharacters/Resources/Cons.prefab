@@ -295,6 +295,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!54 &7213121623342912308
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -335,7 +336,9 @@ MonoBehaviour:
   DegatsPhysique: 0
   DegatsMagique: 0
   canUlt: 0
+  inFight: 0
   isAttacking: 0
+  healthDecreaseTimer: 0
   Exp: 0
   MaxExp: 0
   ExpRate: 0
@@ -348,7 +351,6 @@ MonoBehaviour:
   damageSupp: 0
   isAI: 0
   inBush: 0
-  warfog: {fileID: 0}
   _navMeshAgent: {fileID: 0}
   enemyType: 2
   passif: {fileID: 11400000, guid: d09f1655006f44744a7e9ccd708e42c5, type: 2}
@@ -367,6 +369,10 @@ MonoBehaviour:
   respawnPos: {x: 313.3, y: 2.14, z: -37.118}
   deathPos: {x: 0, y: 0, z: 0}
   playerManage: {fileID: 0}
+  kill: 0
+  death: 0
+  assist: 0
+  creep: 0
   items: []
   role: 0
   _passiveCounter: 0
@@ -424,6 +430,7 @@ MonoBehaviour:
   - {fileID: 5107734280915466453, guid: f350f475da558ad448b725cea3ecc90e, type: 3}
   - {fileID: 1024158584959204463, guid: f350f475da558ad448b725cea3ecc90e, type: 3}
   statsPanel: {fileID: 0}
+  OptionPanel: {fileID: 0}
   profilImage: {fileID: 0}
   charaPP: []
   levelText: {fileID: 8949695702497005707, guid: f350f475da558ad448b725cea3ecc90e, type: 3}
@@ -495,6 +502,7 @@ MonoBehaviour:
   visibleTarget: []
   meshResolution: 3
   viewMeshFilter: {fileID: 3697460101968472430}
+  GoviewMeshFilter: {fileID: 0}
   edgeResolveIteration: 4
   edgeDstTreshold: 0.5
 --- !u!1001 &1671531511183916625

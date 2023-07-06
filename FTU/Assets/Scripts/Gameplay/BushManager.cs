@@ -21,7 +21,7 @@ public class BushManager : MonoBehaviour
         {
             _singleton = this;
             entitiesInBush = new List<GameObject>[7];
-            for (int i = 0; i < 6; i++)
+            for (int i = 0; i < entitiesInBush.Length; i++)
             {
                 entitiesInBush[i] = new List<GameObject>();
             }

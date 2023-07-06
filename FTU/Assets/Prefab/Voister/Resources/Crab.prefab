@@ -130,7 +130,9 @@ MonoBehaviour:
   DegatsPhysique: 0
   DegatsMagique: 0
   canUlt: 0
+  inFight: 0
   isAttacking: 0
+  healthDecreaseTimer: 0
   Exp: 0
   MaxExp: 0
   ExpRate: 0

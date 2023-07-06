@@ -42,12 +42,14 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     private bool InRegen;
     private float cptRegen = 0;
     public bool isAttacking;
-    public float healthDecreaseTimer = 0f;
+    public float healthDecreaseTimer = -1f;
     //exp
     [SerializeField] protected float Exp;
     [SerializeField] protected float MaxExp;
     [SerializeField] protected float ExpRate;//multiplicateur de l'exp max
     [SerializeField] protected int lvl;
+    float healthAmount ;
+    float regenTimer = 0f;
     [Space]
     [Header("Ranged variables")]
     public GameObject projPrefab;
@@ -247,6 +249,10 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     {
         Health = value;
     }
+    public void HealthRegen(float value)
+    {
+        Health += value;
+    }
     public void SetMaxHealth(float value)
     {
         MaxHealth = value;
@@ -304,7 +310,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
 
     public void BaseInit()
     {
-        
+        healthAmount =25f;
         SetMaxHealth(5000);
         SetMaxMana(50000);
         SetMaxMana(GetMaxMana());
@@ -579,8 +585,8 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         //        Mana += val/2;
         //    }
         //}
-        float healthAmount = GetHealth() * .05f;
-        float regenTimer = 0f;
+        
+        
         if (inFight == false)
         {
             if(regenTimer < 5f)
@@ -589,8 +595,8 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
             }
             else
             {
-                SetHealth(healthAmount);
-                SetHealth(Mathf.Clamp(GetHealth(), 0f, GetMaxHealth()));
+                //Debug.Log( healthAmount);
+                HealthRegen(healthAmount);
                 regenTimer = 0f;
             }
         }
@@ -624,8 +630,9 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     public void DealDamages(float DegatsRecu, int de)
     {
         Health -= DegatsRecu;
+        
         string by = PhotonView.Find(de).gameObject.name;
-        Debug.Log(this.gameObject.name + " a recu " + DegatsRecu + " de " + by);
+        //Debug.Log(this.gameObject.name + " a recu " + DegatsRecu + " de " + by);
         //Debug.Log(Health <= 0 && gameObject.GetComponent<BasicAIStats>());
         if (Health <= 0)
         {
@@ -634,6 +641,8 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
                 if (PhotonView.Find(de).GetComponent<PlayerStats>())
                 {
                     Debug.Log(" 1");
+                    gameObject.GetComponent<PlayerStats>().death += 1;
+                    PhotonView.Find(de).GetComponent<PlayerStats>().kill += 1;
                     PhotonView.Find(de).GetComponent<IDamageable>().SetExp(75);
                     PhotonView.Find(de).GetComponent<PlayerStats>().SetGold(300);
 
@@ -648,7 +657,7 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
                 Debug.Log(" 2");
                     PhotonView.Find(de).GetComponent<IDamageable>().SetExp(25);
                     PhotonView.Find(de).GetComponent<PlayerStats>().SetGold(50);
-
+                    PhotonView.Find(de).GetComponent<PlayerStats>().creep += 1;
                 }
             }
             else if (gameObject.GetComponent<BasicAIStats>().GetEnemyType() == EnemyType.golem)
@@ -667,8 +676,8 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
                 {
                 Debug.Log(" 4");
                     PhotonView.Find(de).GetComponent<IDamageable>().SetExp(75);
-                    PhotonView.Find(de).GetComponent<PlayerStats>().SetGold(300);
-
+                    PhotonView.Find(de).GetComponent<PlayerStats>().SetGold(200);
+                    PhotonView.Find(de).GetComponent<PlayerStats>().creep += 1;
                 }
             }
                 

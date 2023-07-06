@@ -12,7 +12,12 @@ public class PlayerStats : PlayerMovement
     public Vector3 deathPos;
     public PlayerManager playerManage;
     private float respawnCooldown;
-    
+
+    [Header("KDA")]
+    public float kill ;
+    public float death;
+    public float assist;
+    public float  creep;
 
     public List<ItemStats> items = new List<ItemStats>(4);
     public Role role;
@@ -73,7 +78,7 @@ public class PlayerStats : PlayerMovement
         SetGold(500);
         respawnCooldown = 10.0f;
         SetEnemyType(EnemyType.player);
-
+        inFight = false;
         for (int i = 0; i < skills.Length; i++)
         {
             skills[i].isCooldown = false;
@@ -86,7 +91,7 @@ public class PlayerStats : PlayerMovement
         {
             healthDecreaseTimer += Time.deltaTime;
         }
-        inFight = (healthDecreaseTimer >= 6f) ? false : true;
+        inFight = (healthDecreaseTimer >= 6f || healthDecreaseTimer <= -1f ) ? false : true;
 
         if (inFight == false)
         {
