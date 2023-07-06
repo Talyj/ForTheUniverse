@@ -10,12 +10,10 @@ public class Trap : MonoBehaviourPun/*, IPunObservable*/
     public Skills skills;
     public Animator animator;
     public float lifetime;
-    public byte teamCode;
     // Start is called before the first frame update
     void Start()
     {
         animator.enabled = false;
-        teamCode = source.team.Code;
     }
 
     // Update is called once per frame
@@ -49,7 +47,7 @@ public class Trap : MonoBehaviourPun/*, IPunObservable*/
     {
         if (target.GetComponent<IDamageable>())
         {
-            if (target.GetComponent<IDamageable>().team.Code != teamCode)
+            if (target.GetComponent<IDamageable>().team.Code != source.team.Code)
             {
                 return true;
             }
