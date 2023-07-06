@@ -675,11 +675,11 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         idLastDamageTaken = de;
 
         //list des assits
-        //List<PlayerStats> assitPlayers = new List<PlayerStats>(5);
-        //if (!assitPlayers.Contains(PhotonView.Find(de).GetComponent<PlayerStats>()))
-        //{
-        //    assitPlayers.Add(PhotonView.Find(de).GetComponent<PlayerStats>());
-        //}
+        List<PlayerStats> assitPlayers = new List<PlayerStats>(5);
+        if (!assitPlayers.Contains(PhotonView.Find(de).GetComponent<PlayerStats>()))
+        {
+            assitPlayers.Add(PhotonView.Find(de).GetComponent<PlayerStats>());
+        }
 
 
         string by = PhotonView.Find(de).gameObject.name;
@@ -695,16 +695,16 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
                     PhotonView.Find(de).GetComponent<IDamageable>().SetExp(75);
                     PhotonView.Find(de).GetComponent<PlayerStats>().SetGold(300);
                     PhotonView.Find(de).GetComponent<PlayerStats>().Cible = null;
-                    //foreach (PlayerStats item in assitPlayers)
-                    //{
-                    //    if (!item.Equals(PhotonView.Find(de).GetComponent<PlayerStats>()))
-                    //    {
-                    //        item.SetGold(150);
-                    //        item.SetExp(37.5f);
-                    //        item.assist += 1;
-                    //    }
-                        
-                    //}
+                    foreach (PlayerStats item in assitPlayers)
+                    {
+                        if (!item.Equals(PhotonView.Find(de).GetComponent<PlayerStats>()))
+                        {
+                            item.SetGold(150);
+                            item.SetExp(37.5f);
+                            item.assist += 1;
+                        }
+
+                    }
                 }
             }
             else if (gameObject.GetComponent<BasicAIStats>().GetEnemyType()== EnemyType.minion)
@@ -724,8 +724,8 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
                 if (PhotonView.Find(de).GetComponent<PlayerStats>())
                 {
                 Debug.Log(" 3");
-                    //PhotonView.Find(de).GetComponent<IDamageable>().SetExp(125);
-                    PhotonView.Find(de).GetComponent<IDamageable>().photonView.RPC("GiveExperience", RpcTarget.All);
+                    PhotonView.Find(de).GetComponent<IDamageable>().SetExp(125);
+                    //PhotonView.Find(de).GetComponent<IDamageable>().photonView.RPC("GiveExperience", RpcTarget.All);
                     PhotonView.Find(de).GetComponent<PlayerStats>().SetGold(500);
 
                 }
