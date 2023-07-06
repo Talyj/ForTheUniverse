@@ -113,7 +113,11 @@ public class PlayerStats : PlayerMovement
             var rend = GetComponents<Renderer>();
             foreach (Transform child in transform)
             {
-                child.GetComponent<Renderer>().enabled = false;
+                Renderer rChild;
+                if (child.TryGetComponent<Renderer>(out rChild))
+                {
+                    rChild.enabled = false;
+                }
             }
             if (rend != null)
             {
@@ -210,7 +214,11 @@ public class PlayerStats : PlayerMovement
         transform.position = respawnPos;
         foreach (Transform child in transform)
         {
-            child.GetComponent<Renderer>().enabled = true;
+            Renderer rChild;
+            if (child.TryGetComponent<Renderer>(out rChild))
+            {
+                rChild.enabled = false;
+            }
         }
         GetComponent<CameraWork>().isFollowing = true;
 
