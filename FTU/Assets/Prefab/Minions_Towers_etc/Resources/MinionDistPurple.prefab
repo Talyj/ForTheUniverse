@@ -132,7 +132,7 @@ Transform:
   m_GameObject: {fileID: 6776289700398819664}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 3, z: 1}
+  m_LocalScale: {x: 2, y: 5, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8500121935500156425}
@@ -245,6 +245,7 @@ MonoBehaviour:
   DegatsMagique: 0
   canUlt: 0
   inFight: 0
+  IsDead: 0
   isAttacking: 0
   dissolveMaterial: {fileID: 2100000, guid: 297606e2b68a71342b93ca62b35b0fa4, type: 2}
   dissolveController: {fileID: 9100000, guid: 4525d6e8cb4a3d544abbd7299be3cd8e, type: 2}
@@ -253,6 +254,7 @@ MonoBehaviour:
   MaxExp: 0
   ExpRate: 0
   lvl: 0
+  lvlup: 0
   projPrefab: {fileID: 3524439937703818370, guid: ca45cb44d81306e409c4149613d2cdd6, type: 3}
   SpawnPrefab: {fileID: 6776289700398819631}
   team:
