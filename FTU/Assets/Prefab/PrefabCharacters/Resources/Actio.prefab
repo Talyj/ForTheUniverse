@@ -515,7 +515,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: bd80d36f60f8c984cb6f4c6f960344fe, type: 2}
   ult: {fileID: 5746010598429444899, guid: 39a65789ffc25704fa9fb18712a52d1d, type: 3}
   SpawnPrefab2: {fileID: 8597483263996633619}
-  Ui: {fileID: 0}
+  Ui: {fileID: 2479643934491517665}
   animation_click: {fileID: 9210041884925740887, guid: bdc87124ecd61c04c9d6e9b9023c1b35, type: 3}
   animator: {fileID: 5765646088698268937}
   Position:
@@ -836,6 +836,11 @@ PrefabInstance:
       objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 50db51aaef718624a8f2ffc45d152c85, type: 3}
+--- !u!1 &2479643934491517665 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3376652118336200784, guid: 50db51aaef718624a8f2ffc45d152c85, type: 3}
+  m_PrefabInstance: {fileID: 915691096312267441}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &2479643934491517669 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3376652118336200788, guid: 50db51aaef718624a8f2ffc45d152c85, type: 3}

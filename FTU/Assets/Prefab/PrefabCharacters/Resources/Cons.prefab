@@ -252,6 +252,7 @@ MonoBehaviour:
   DegatsMagique: 0
   canUlt: 0
   inFight: 0
+  IsDead: 0
   isAttacking: 0
   dissolveMaterial: {fileID: 0}
   dissolveController: {fileID: 0}
@@ -260,6 +261,7 @@ MonoBehaviour:
   MaxExp: 0
   ExpRate: 0
   lvl: 0
+  lvlup: 0
   projPrefab: {fileID: 1442863784273826401, guid: 21489d385334c8a4a9c933e27f0f7f49, type: 3}
   SpawnPrefab: {fileID: 0}
   team:
@@ -277,7 +279,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 88586c5fab3fcef499f03b27e92d098c, type: 2}
   ult: {fileID: 0}
   SpawnPrefab2: {fileID: 5488236438643698054}
-  Ui: {fileID: 0}
+  Ui: {fileID: 367834012700812480}
   animation_click: {fileID: 9210041884925740887, guid: bdc87124ecd61c04c9d6e9b9023c1b35, type: 3}
   animator: {fileID: 2838189218122524992}
   Position:
@@ -290,7 +292,6 @@ MonoBehaviour:
   death: 0
   assist: 0
   creep: 0
-  items: []
   role: 0
   _passiveCounter: 0
   beam: {fileID: 3724081308419832764, guid: b737d936cc63a604cb7a69d50c428440, type: 3}
@@ -575,11 +576,27 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6016345115370708965, guid: 50db51aaef718624a8f2ffc45d152c85, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 6016345115370708965, guid: 50db51aaef718624a8f2ffc45d152c85, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     - target: {fileID: 6894569153948186274, guid: 50db51aaef718624a8f2ffc45d152c85, type: 3}
       propertyPath: m_fontAsset
       value: 
       objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     - target: {fileID: 6894569153948186274, guid: 50db51aaef718624a8f2ffc45d152c85, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 7203268237903475266, guid: 50db51aaef718624a8f2ffc45d152c85, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 7203268237903475266, guid: 50db51aaef718624a8f2ffc45d152c85, type: 3}
       propertyPath: m_sharedMaterial
       value: 
       objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -596,11 +613,24 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     - target: {fileID: 7747770999967792596, guid: 50db51aaef718624a8f2ffc45d152c85, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 8042914272454701585, guid: 50db51aaef718624a8f2ffc45d152c85, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 8042914272454701585, guid: 50db51aaef718624a8f2ffc45d152c85, type: 3}
       propertyPath: m_sharedMaterial
       value: 
       objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 50db51aaef718624a8f2ffc45d152c85, type: 3}
+--- !u!1 &367834012700812480 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3376652118336200784, guid: 50db51aaef718624a8f2ffc45d152c85, type: 3}
+  m_PrefabInstance: {fileID: 3154358277021189264}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &367834012700812484 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3376652118336200788, guid: 50db51aaef718624a8f2ffc45d152c85, type: 3}
