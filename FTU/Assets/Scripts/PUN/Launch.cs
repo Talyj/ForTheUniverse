@@ -186,7 +186,7 @@ public class Launch : MonoBehaviourPunCallbacks
     {
         PhotonNetwork.LeaveRoom();
         //MenuManager.Instance.OpenMenu("loading");
-        PhotonNetwork.LoadLevel(0);
+        //PhotonNetwork.LoadLevel(0);
         //UpdatePlayerList();
     }
 
@@ -216,6 +216,7 @@ public class Launch : MonoBehaviourPunCallbacks
     public override void OnLeftRoom()
     {
         MenuManager.Instance.OpenMenu("base");
+        PhotonNetwork.LoadLevel(0);
     }
 
     public override void OnRoomListUpdate(List<RoomInfo> roomList)

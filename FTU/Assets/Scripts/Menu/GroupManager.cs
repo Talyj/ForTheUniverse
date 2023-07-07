@@ -136,15 +136,21 @@ public class GroupManager : MonoBehaviourPunCallbacks
 
     public override void OnLeftRoom()
     {
+        
         // Supprime le joueur du groupe
-        Group group = groups[groupName];
-        group.RemoveMember(PhotonNetwork.LocalPlayer);
+        Group group;
 
-        // Si le joueur est le leader, détruit le groupe
-        if (PhotonNetwork.LocalPlayer.Equals(group.Leader))
+        if (groups.TryGetValue(groupName, out group))
         {
-            groups.Remove(groupName);
+            group.RemoveMember(PhotonNetwork.LocalPlayer);
+
+            // Si le joueur est le leader, détruit le groupe
+            if (PhotonNetwork.LocalPlayer.Equals(group.Leader))
+            {
+                groups.Remove(groupName);
+            }
         }
+
     }
 
     public override void OnPlayerLeftRoom(Player otherPlayer)

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.022530043, g: 0.12629731, b: 0.27148208, a: 1}
+  m_IndirectSpecularColor: {r: 0.99999905, g: 0, b: 0.99999905, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -12408,6 +12408,7 @@ MonoBehaviour:
   profilName: {fileID: 1756915643}
   formLogin: {fileID: 1455797737}
   loadingImage: {fileID: 900344174}
+  panelConnexion: {fileID: 1544318419}
 --- !u!1 &1455733471
 GameObject:
   m_ObjectHideFlags: 0
@@ -13302,7 +13303,7 @@ MonoBehaviour:
   m_text: Quitter
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9ed16961ce8da45428e921f3b0b9b529, type: 2}
-  m_sharedMaterial: {fileID: -6407389000792387030, guid: 9ed16961ce8da45428e921f3b0b9b529, type: 2}
+  m_sharedMaterial: {fileID: 3906318275060655366, guid: 9ed16961ce8da45428e921f3b0b9b529, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

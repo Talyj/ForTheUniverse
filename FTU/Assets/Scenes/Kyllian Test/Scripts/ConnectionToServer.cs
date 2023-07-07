@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography;
@@ -22,6 +23,18 @@ public class ConnectionToServer : MonoBehaviour
 
     public GameObject formLogin;
     public GameObject loadingImage;
+
+    public GameObject panelConnexion;
+
+    private void Start()
+    {
+        panelConnexion.SetActive(false);
+        Time.timeScale = 1f;
+        if (!PhotonNetwork.IsConnected)
+        {
+            panelConnexion.SetActive(true);
+        }
+    }
 
     public void ConnectionHander()
     {
