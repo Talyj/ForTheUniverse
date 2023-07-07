@@ -34,7 +34,7 @@ public class PlayerManager : MonoBehaviour
             //PV.RPC("SyncTeam", RpcTarget.AllBuffered, player.GetPhotonTeam().Name, index);
             Debug.LogFormat("My team is {0} I am {1} and a play : {2}", player.GetPhotonTeam().Name, player.NickName, playerPrefabs[index].name);
         }
-        
+
     }
     
     void CreateControllerV2()

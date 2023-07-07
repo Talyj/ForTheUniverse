@@ -363,6 +363,11 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         {
             col.enabled = true;
         }
+
+        if (!photonView.IsMine)
+        {
+            GetComponentInChildren<UI>().gameObject.SetActive(false);
+        }
     }
 
     private void SetGameLayerRecursive(GameObject gameObject, string layer)
