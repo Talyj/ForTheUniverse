@@ -8,7 +8,8 @@ public class ActioBehaviour : PlayerStats
     ActioBehaviour Instance;
     public GameObject sp2;
     public GameObject sp;
-
+    public int MaxTrap = 6;
+    List<GameObject> traps = new List<GameObject>();
 
     //Animation
     public ActioAnimation actioAnimation;
@@ -318,6 +319,12 @@ public class ActioBehaviour : PlayerStats
         trapchild.GetComponent<Trap>().source = this;
         //trapchild.transform.parent = transform.parent.transform;
         trapchild.SetActive(true);
+        if (traps.Count >= MaxTrap)
+        {
+            PhotonNetwork.Destroy(traps[0]);
+            traps.RemoveAt(0);
+        }
+        traps.Add(trapchild);
     }
 
 }

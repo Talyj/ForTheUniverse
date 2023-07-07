@@ -513,7 +513,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d1d081d36b02486469d4f255d2aeb07f, type: 2}
   - {fileID: 11400000, guid: ed0b927bc1b3ed2448745b507ecaedfb, type: 2}
   - {fileID: 11400000, guid: bd80d36f60f8c984cb6f4c6f960344fe, type: 2}
-  ult: {fileID: 661485606619552371, guid: 1687fa648e140dd4ca567e13a9f52450, type: 3}
+  ult: {fileID: 5746010598429444899, guid: 39a65789ffc25704fa9fb18712a52d1d, type: 3}
   SpawnPrefab2: {fileID: 8597483263996633619}
   Ui: {fileID: 0}
   animation_click: {fileID: 9210041884925740887, guid: bdc87124ecd61c04c9d6e9b9023c1b35, type: 3}
@@ -531,6 +531,7 @@ MonoBehaviour:
   role: 0
   sp2: {fileID: 112043609046724237, guid: 0e48eec9c9299ab4eb6bc2579e040541, type: 3}
   sp: {fileID: 6424191766453000166, guid: e2f14b3869d88d94b92bcd625944ac79, type: 3}
+  MaxTrap: 6
   actioAnimation: {fileID: 101653389804451736}
 --- !u!114 &7080008070478546163
 MonoBehaviour:
