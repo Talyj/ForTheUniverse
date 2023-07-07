@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
-public class Projectile : MonoBehaviourPun
+public class Projectile : MonoBehaviourPun, IPunObservable
 {
 
     private IDamageable.DamageType typeDegats;
@@ -125,6 +125,18 @@ public class Projectile : MonoBehaviourPun
         if (photonView.IsMine)
         {
             PhotonNetwork.Destroy(gameObject);
+        }
+    }
+
+    void IPunObservable.OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            stream.SendNext(team.Code);
+        }
+        else
+        {
+            team.Code = (byte)stream.ReceiveNext();
         }
     }
 }
