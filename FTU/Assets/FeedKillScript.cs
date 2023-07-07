@@ -28,7 +28,8 @@ public class FeedKillScript : MonoBehaviour
 
     public void Initialize(PhotonView killer, PhotonView victim)
     {
-        if (killer != null)
+        IDamageable killerID;
+        if (killer != null && killer.TryGetComponent(out killerID) && killerID.characterID > 0)
         {
             Debug.Log(killer.gameObject.GetComponent<IDamageable>().team.Code);
             Debug.Log(HEX_COLOR[(int)killer.gameObject.GetComponent<IDamageable>().team.Code]);
