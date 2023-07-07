@@ -374,7 +374,7 @@ GameObject:
   - component: {fileID: -2173678192811920268}
   m_Layer: 0
   m_Name: Mau Dom
-  m_TagString: Untagged
+  m_TagString: dd
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -413,6 +413,7 @@ MonoBehaviour:
   cc: 0
   Cible: {fileID: 0}
   userId: 
+  idLastDamageTaken: -1
   Health: 0
   MaxHealth: 0
   AttackSpeed: 0
@@ -421,6 +422,7 @@ MonoBehaviour:
   DegatsMagique: 0
   canUlt: 0
   inFight: 0
+  IsDead: 0
   isAttacking: 0
   dissolveMaterial: {fileID: 2100000, guid: 297606e2b68a71342b93ca62b35b0fa4, type: 2}
   dissolveController: {fileID: 9100000, guid: 4525d6e8cb4a3d544abbd7299be3cd8e, type: 2}
@@ -429,6 +431,7 @@ MonoBehaviour:
   MaxExp: 0
   ExpRate: 0
   lvl: 0
+  lvlup: 0
   projPrefab: {fileID: 0}
   SpawnPrefab: {fileID: 0}
   team:
@@ -453,7 +456,6 @@ MonoBehaviour:
   pathDone: 0
   roarArea: {fileID: 315106767154584745, guid: 3f33656f6f5aaf44fb14b5942e3a9a0f, type: 3}
   stomp_animation: {fileID: 4831337741123550938}
-  ultime_animation: {fileID: 454714330084937585, guid: d31c0c5a6cb2e9e4abdf68c73b5328a1, type: 3}
   Instance: {fileID: 0}
   enemyTargets: []
   AllyTargets: []
