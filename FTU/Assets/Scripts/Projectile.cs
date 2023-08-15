@@ -116,7 +116,7 @@ public class Projectile : MonoBehaviourPun, IPunObservable
     {
         target.GetComponent<IDamageable>().TakeDamage(dmg, typeDmg,GetCreator().ViewID);
         PhotonNetwork.Destroy(this.gameObject);
-        //Debug.Log(playerId + " a fait " + dmg + " de degats " + typeDmg + " à :" + target.name);
+        //Debug.Log(playerId + " a fait " + dmg + " de degats " + typeDmg + " Ã  :" + target.name);
     }
 
     protected IEnumerator DestroyBullet(float time)
