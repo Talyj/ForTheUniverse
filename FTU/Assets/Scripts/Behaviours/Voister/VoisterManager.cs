@@ -8,6 +8,7 @@ public class VoisterManager : MonoBehaviour
     //0 == crab, 1 == fox, 2 == slime
     [SerializeField] private GameObject[] voisters;
     [SerializeField] private KingsBehaviour[] kings;
+    [HideInInspector] public int food;
     private float cpt;
     private KingsBehaviour currentKing;
     private bool isRespawning;
@@ -15,7 +16,7 @@ public class VoisterManager : MonoBehaviour
     void Start()
     {
         isRespawning = false;
-
+        food = 10;
         var randKing = Random.Range(0, 3);
         if (PhotonNetwork.IsMasterClient)
         {
@@ -27,7 +28,7 @@ public class VoisterManager : MonoBehaviour
     {
         if (PhotonNetwork.IsMasterClient)
         {
-            if (CheckCurrentKing() && !isRespawning)
+            if (CurrentKingIsDead() && !isRespawning)
             {
                 isRespawning = true;
                 StartCoroutine(SpawnKings());
@@ -35,7 +36,7 @@ public class VoisterManager : MonoBehaviour
         }
     }
 
-    private bool CheckCurrentKing()
+    private bool CurrentKingIsDead()
     {
         if (!currentKing | currentKing.GetHealth() <= 0) return true;
         return false;
@@ -46,6 +47,7 @@ public class VoisterManager : MonoBehaviour
         yield return new WaitForSeconds(60);
         var randKing = Random.Range(0, 2);
         currentKing = PhotonNetwork.Instantiate(kings[randKing].name, new Vector3(0, 2.5f, 0), Quaternion.identity).GetComponent<KingsBehaviour>();
+        currentKing.voisterManager = this;
         isRespawning = false;
 
     }

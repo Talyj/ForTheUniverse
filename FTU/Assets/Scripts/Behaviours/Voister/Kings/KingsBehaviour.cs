@@ -14,12 +14,34 @@ public class KingsBehaviour : BasicAIMovement
     protected float cpt = 5;
     protected float delaySpawn = 60;
 
+    private List<VoisterBehaviour> allVoisters = new List<VoisterBehaviour>();
+
+    //Utility AI
+    [HideInInspector] public VoisterManager voisterManager;
+    [HideInInspector] public WorldState ws;
+    List<Action> allActions = new List<Action>();
+    Action feed;
+    Action gard;
+    Action patrol;
+    Action attack;
+
     public void BaseSetupKing()
     {
         numberOfFollower = 0;
         team.Code = 2;
         populationSize = 20;
         timeframe = 60f;
+        #region utilityAI setup
+        ws = new WorldState(voisterManager.food);
+
+        //Action
+        feed = new Action("FEED", WorldState.VoisterAction.FEED);
+        gard = new Action("GARD", WorldState.VoisterAction.GARD);
+        patrol = new Action("PATROL", WorldState.VoisterAction.PATROL);
+        attack = new Action("ASSAULT", WorldState.VoisterAction.ATTACK);
+
+        allActions = new List<Action>() { feed, gard, patrol, attack };
+        #endregion
 
         if (populationSize % 2 != 0)
             populationSize = 10;//if population size is not even, sets it to fifty
@@ -31,23 +53,53 @@ public class KingsBehaviour : BasicAIMovement
     public void BaseBehaviourKings()
     {
         HealthBehaviour();
+        voisterManager.food = ws.food;
     }
 
-    // Update is called once per frame
-    void Update()
+    private int GetMaxFromList(List<float> valueList, List<Action> returnObject)
     {
-
+        float maxValue = 0;
+        int res = 0;
+        for(int i = 0; i < valueList.Count; i++)
+        {
+            if (valueList[i] > maxValue)
+            {
+                maxValue = valueList[i];
+                res = (int)returnObject[i].action;
+            }
+        }
+        return res;
     }
 
-    protected void CheckProtector()
+    private int UtilityAIMain()
     {
-        var targs = Physics.OverlapSphere(transform.position, 20).Where(w => w.gameObject.CompareTag(followersTag));
-        Debug.Log(numberOfFollower);
-        numberOfFollower = targs.Count() < numberOfFollower ? targs.Count() : numberOfFollower;
+        if (ws.GetValue((int)WorldState.VoisterAction.FEED) < WorldState.OBJECTIVEQTY[(int)WorldState.VoisterAction.FEED] &&
+            ws.GetValue((int)WorldState.VoisterAction.GARD) < WorldState.OBJECTIVEQTY[(int)WorldState.VoisterAction.GARD] &&
+            ws.GetValue((int)WorldState.VoisterAction.PATROL) < WorldState.OBJECTIVEQTY[(int)WorldState.VoisterAction.PATROL] &&
+            ws.GetValue((int)WorldState.VoisterAction.ATTACK) < WorldState.OBJECTIVEQTY[(int)WorldState.VoisterAction.ATTACK])
+        {
+            List<float> utilityScore = new List<float>();
+
+            for(int i = 0; i < allActions.Count; i++)
+            {
+                utilityScore.Add(allActions[i].UpdateValue(ws, allActions[i].action));
+                if (allActions[i].CanDo(ws))
+                {
+                    if(ws.GetValue((int)allActions[i].action) >= WorldState.OBJECTIVEQTY[(int)allActions[i].action])
+                    {
+                        continue;
+                    }
+                }
+                ws.IncrementValue((int)allActions[i].action);
+            }
+            return GetMaxFromList(utilityScore, allActions);
+        }
+        return 999;
     }
 
     protected void SpawnVoisters(GameObject voister)
     {
+        #region machinelearning
         //Time.timeScale = Gamespeed;//sets gamespeed, which will increase to speed up training
         //if (voisters != null)
         //{
@@ -64,23 +116,37 @@ public class KingsBehaviour : BasicAIMovement
         //for (int i = 0; i < populationSize; i++)
         //{
 
-
-        var x = Random.Range(-150, 150);
-        var z = Random.Range(-50, 50);
-
-        VoisterBehaviour voistertemp = PhotonNetwork.Instantiate(voister.name, new Vector3(x, transform.position.y, z), Quaternion.identity).GetComponent<VoisterBehaviour>();//create botes
-        voistertemp.GetComponent<VoisterBehaviour>().kingVoisters = this;
-
-
-
         //voistertemp.network = networks[i];//deploys network to each learner
         //voisters.Add(voistertemp);
         //}
+        #endregion
+
+        float x, z;
+
+        var voisterAction = UtilityAIMain();
+
+        if(voisterAction == 1)
+        {
+            x = transform.position.x + 5;
+            z = transform.position.z;
+        }
+        else
+        {
+            x = Random.Range(-150, 150);
+            z = Random.Range(-50, 50);
+        }
+
+        VoisterBehaviour voistertemp = PhotonNetwork.Instantiate(voister.name, new Vector3(x, transform.position.y, z), Quaternion.identity).GetComponent<VoisterBehaviour>();
+        voistertemp.GetComponent<VoisterBehaviour>().kingVoisters = this;
+        voistertemp.currentState = allActions[voisterAction].action;
 
 
+        allVoisters.Add(voistertemp);
 
-        //var voisterTemp = PhotonNetwork.Instantiate(voister.name, new Vector3(x, king.transform.position.y, z), Quaternion.identity);
+
     }
+
+    #region machinelearning
 
     public float timeframe;
     public int populationSize;//creates population size
@@ -154,4 +220,5 @@ public class KingsBehaviour : BasicAIMovement
             networks[i].Mutate((int)(1 / MutationChance), MutationStrength);
         }
     }
+    #endregion
 }
