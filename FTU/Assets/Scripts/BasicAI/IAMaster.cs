@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using TMPro;
 using UnityEngine;
@@ -38,8 +40,10 @@ public class IAMaster : MonoBehaviour
     }
 
 
-    public TMP_Text score1, score2, gold1, gold2, tour1, tour2;
-    public int score1Val, score2Val, gold1Val, gold2Val, tour1Val, tour2Val;
+    public TMP_Text score1, score2, gold1, gold2, tour1, tour2, ecartKillText,ecartGoldText;
+    private int score1Val, score2Val, gold1Val, gold2Val, tour1Val, tour2Val;
+
+    private float ecartKill, ecartGold;
 
     private List<float> x;
     private List<float> y;
@@ -50,6 +54,10 @@ public class IAMaster : MonoBehaviour
     private List<float> yToAdd;
     
     public Button[] zones;
+    
+    //PMC Settings
+    public int NbRepetitions = 10000;
+    public float NbSteps = 0.01f;
     
 
     /**region IMPORT**/
@@ -87,7 +95,7 @@ public class IAMaster : MonoBehaviour
         
         try
         {
-            int[] npl = new int[] {6, 6};
+            int[] npl = new int[] {2, 6};
        
             GCHandle handle = GCHandle.Alloc(npl, GCHandleType.Pinned);
         
@@ -107,6 +115,14 @@ public class IAMaster : MonoBehaviour
             
 
             //savePMC(pmc, "./test.txt".ToCharArray());
+
+            
+            /*for (int i = 0; i < 3000; i++)
+            {
+                GetNewRandomValue();
+                yToAdd.AddRange(new float[]{-1, -1, 1, -1, -1, 1});
+                AddToTrain();
+            }*/
         }
         catch (Exception e)
         {
@@ -131,28 +147,47 @@ public class IAMaster : MonoBehaviour
         tour1Val = Random.Range(0, 5);
         tour2Val = Random.Range(0, 5);
         
+        /*score1Val = 37;
+        score2Val = 20;
+        gold1Val = 1500;
+        gold2Val = 800;
+        tour1Val = 0;
+        tour2Val = 0;*/
+        
+        var widespanKill = score1Val + score2Val;
+        var widespanGold = gold1Val + gold2Val;
+
+        ecartKill = (float)score1Val / widespanKill;
+        ecartGold = (float)gold1Val / widespanGold;
+
+        /*ecartGold = 0.8f;
+        ecartKill = 0.8f;*/
+        
         score1.text = score1Val.ToString();
         score2.text = score2Val.ToString();
         gold1.text = gold1Val.ToString();
         gold2.text = gold2Val.ToString();
         tour1.text = tour1Val.ToString();
         tour2.text = tour2Val.ToString();
+        ecartKillText.text = ecartKill.ToString("0.0000");
+        ecartGoldText.text = ecartGold.ToString("0.0000");
     }
     
     public void AddToTrain()
     {
-        x.Add(score1Val);
-        x.Add(score2Val);
-        x.Add(gold1Val);
-        x.Add(gold2Val);
-        x.Add(tour1Val);
-        x.Add(tour2Val);
+        x.Add(ecartKill);
+        x.Add(ecartGold);
         
         y.AddRange(yToAdd);
 
+        
+        //Debug.Log($"{y[0]} , {y[1]} , {y[2]} , {y[3]} , {y[4]} , {y[5]}");
+        //Debug.Log($"Added to training : {x.Count/2}");
         GetNewRandomValue();
+        //Debug.Log($"{yToAdd[0]} , {yToAdd[1]} , {yToAdd[2]} , {yToAdd[3]} , {yToAdd[4]} , {yToAdd[5]}");
         yToAdd.Clear();
         yToAdd.AddRange(new float[]{-1,-1,-1,-1,-1,-1});
+        //Debug.Log($"{yToAdd[0]} , {yToAdd[1]} , {yToAdd[2]} , {yToAdd[3]} , {yToAdd[4]} , {yToAdd[5]}");
 
         foreach (var b in zones)
         {
@@ -170,33 +205,39 @@ public class IAMaster : MonoBehaviour
         
         IntPtr pointerY = handleY.AddrOfPinnedObject();
         
-        trainPMC(pmc, 10000, 0.01f, pointerX, pointerY, 6, x.Count/6, 6, true );
+        Debug.Log($"Nb train item : {x.Count/2}");
+        Debug.Log($"Count x : {x.Count} - Count y : {y.Count}");
+        
+        trainPMC(pmc, NbRepetitions, NbSteps, pointerX, pointerY, x.Count/2, 2, 6, true );
     }
 
     public void Predict()
     {
+        pred.Clear();
+
+        pred.Add(ecartKill);
+        pred.Add(ecartGold);
+
+        Debug.Log(pred.Count);
+        Debug.Log($"{pred[0]} , {pred[1]}");
+        
         GCHandle handlePred = GCHandle.Alloc(pred.ToArray(), GCHandleType.Pinned);
         
         IntPtr pointerPred = handlePred.AddrOfPinnedObject();
         
         IntPtr res = predictPMC(pmc, pointerPred, true);
 
-        double[] prediction = new double[6];
+        Single[] prediction = new Single[7];
 
-        Marshal.Copy(res, prediction, 0, 6);
+        Marshal.Copy(res, prediction, 0, 7);
             
-        Debug.Log(prediction[0]);
-        Debug.Log(prediction[1]);
-        Debug.Log(prediction[2]);
-        Debug.Log(prediction[3]);
-        Debug.Log(prediction[4]);
-        Debug.Log(prediction[5]);
+        Debug.Log($"{prediction[0]} , {prediction[1]} , {prediction[2]} , {prediction[3]} , {prediction[4]} , {prediction[5]}, {prediction[6]}");
 
-        for (int i = 0; i < 6; i++)
+        for (int i = 1; i < 7; i++)
         {
             if (prediction[i] > 0)
             {
-                zones[i].GetComponent<Image>().color = Color.green;
+                zones[i - 1].GetComponent<Image>().color = Color.green;
             }
         }
     }
@@ -209,5 +250,43 @@ public class IAMaster : MonoBehaviour
         
         zones[index].GetComponent<Image>().color = value == 1 ? Color.green : Color.white;
         
+    }
+
+
+    public void Save()
+    {
+        using (StreamWriter writer = new StreamWriter("Assets/Scripts/BasicAI/test.txt"))
+        {
+            //Debug.Log($"Count x : {x.Count} - Count y : {y.Count}");
+            
+            for (int i = 0; i < x.Count / 2; i++)
+            {
+                var xLine = x.GetRange(2 * i, 2);
+                var yLine = y.GetRange(6 * i, 6);
+                
+                var xString = String.Join(",", xLine.ToArray());
+                var yString = String.Join(",", yLine.ToArray());
+                writer.WriteLine(xString + "=" + yString);
+            }
+        }
+    }
+
+    public void Import()
+    {
+        List<string> reader = File.ReadLines("Assets/Scripts/BasicAI/test.txt").ToList<string>();
+        x.Clear();
+        y.Clear();
+
+        foreach (var line in reader)
+        {
+            var split = line.Split("=");
+            var xArray = split[0].Split(",").Select(x => float.Parse(x)).ToList();
+            var yArray = split[1].Split(",").Select(x => float.Parse(x)).ToList();
+            
+            x.AddRange(xArray);
+            y.AddRange(yArray);
+        }
+        
+        Train();
     }
 }
