@@ -5,21 +5,19 @@ using UnityEngine;
 public class WorldState
 {
     //QTY REQUIRED
-    public static List<int> FOODREQUIRED = new List<int>() {2, 10, 15, 20};
-    //public static List<int> FEEDERREQUIRED = new List<int>() { 0, 2, 0, 0 };
-    //public static List<int> GARDREQUIRED = new List<int>() { 0, 0, 3, 0 };
-    //public static List<int> PATROLREQUIRED = new List<int>() { 0, 0, 0, 3 };
+    public static List<int> FOODREQUIRED = new List<int>() {3, 5, 15, 20};
+    public static List<int> FEEDERREQUIRED = new List<int>() { 0, 3, 5, 7 };
+    public int foodNeeded;
 
     //OBJECTIVE QTY
-    public const int MAXFEED = 10;
-    public const int MAXGARD = 5;
-    public const int MAXPATROL = 10;
-    public const int MAXATTACK = 20;
-    public static List<int> OBJECTIVEQTY = new List<int>() { 10, 5, 10, 20 };
+    public static List<int> OBJECTIVEQTY = new List<int>() { 15, 10, 5, 5 };
+
+    //CURRENT QTY
+    public List<int> currentQty = new List<int>() { 0, 0, 0, 0 };
 
 
 
-    public int food, elderFeeder, elderGard, elderPatrol, elderAttack;
+    public int food;
     //public (float, float) DomVerKill;
 
     //public List<(float, float)> DOMVERKILL = new List<(float, float)>();
@@ -38,10 +36,6 @@ public class WorldState
     {
         //Init world values
         food = foodValue;
-        elderFeeder = 0;
-        elderGard = 0;
-        elderPatrol = 0;
-        elderAttack = 0;
         //DomVerKill = (0.5f, 0.5f);
     }
 
@@ -51,23 +45,23 @@ public class WorldState
         {
             //Feeder
             case 0:
-                elderFeeder++;
+                currentQty[(int)VoisterAction.FEED]++;
                 break;
             //Gard
             case 1:
-                elderGard++;
+                currentQty[(int)VoisterAction.GARD]++;
                 break;
             //Patrol
             case 2:
-                elderPatrol++;
+                currentQty[(int)VoisterAction.PATROL]++;
                 break;
             //Attacker
             case 3:
-                elderAttack++;
+                currentQty[(int)VoisterAction.ATTACK]++;
                 break;
             //food
             case 10:
-                food++;
+                food += Random.Range(1, 3);
                 break;
         }
         DecreaseValue(id);
@@ -75,12 +69,9 @@ public class WorldState
 
     public void DecreaseValue(int ValueIncremented)
     {
-        if (ValueIncremented > FOODREQUIRED.Count) return;
+        if (ValueIncremented == 10) return;
 
         food -= FOODREQUIRED[ValueIncremented];
-        //elderFeeder -= FEEDERREQUIRED[ValueIncremented];
-        //elderGard -= GARDREQUIRED[ValueIncremented];
-        //elderPatrol -= PATROLREQUIRED[ValueIncremented];
     }
 
     public int GetValue(int id)
@@ -89,16 +80,16 @@ public class WorldState
         {
             //Feeder
             case 0:
-                return elderFeeder;
+                return currentQty[(int)VoisterAction.FEED];
             //Gard
             case 1:
-                return elderGard;
+                return currentQty[(int)VoisterAction.GARD];
             //Patrol
             case 2:
-                return elderPatrol;
+                return currentQty[(int)VoisterAction.PATROL];
             //Attacker
             case 3:
-                return elderAttack;
+                return currentQty[(int)VoisterAction.ATTACK];
             //food
             case 10:
                 return food;

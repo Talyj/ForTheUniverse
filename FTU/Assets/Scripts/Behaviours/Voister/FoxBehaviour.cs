@@ -26,6 +26,7 @@ public class FoxBehaviour : VoisterBehaviour, IPunObservable
         SetMoveSpeed(20f);
         SetViewRange(30f);
         isAttacking = false;
+        StartCoroutine(VoisterBaseBehaviour());
     }
 
     // Update is called once per frame
@@ -43,7 +44,7 @@ public class FoxBehaviour : VoisterBehaviour, IPunObservable
 
             if (GetCanAct() && GetCanMove())
             {
-                VoisterBaseBehaviour();
+                //VoisterBaseBehaviour();
                 GetNearestTarget();
                 //if (Cible)
                 //{

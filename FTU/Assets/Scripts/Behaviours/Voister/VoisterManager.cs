@@ -16,11 +16,13 @@ public class VoisterManager : MonoBehaviour
     void Start()
     {
         isRespawning = false;
-        food = 10;
+        food = 5;
+        cpt = 0;
         var randKing = Random.Range(0, 3);
         if (PhotonNetwork.IsMasterClient)
         {
             currentKing = PhotonNetwork.Instantiate(kings[randKing].name, new Vector3(0, 2.5f, 0), Quaternion.identity).GetComponent<KingsBehaviour>();
+            currentKing.voisterManager = this;
         }
     }
 
@@ -31,7 +33,7 @@ public class VoisterManager : MonoBehaviour
             if (CurrentKingIsDead() && !isRespawning)
             {
                 isRespawning = true;
-                StartCoroutine(SpawnKings());
+                //SpawnKings();
             }
         }
     }
@@ -42,9 +44,8 @@ public class VoisterManager : MonoBehaviour
         return false;
     }
 
-    public IEnumerator SpawnKings()
+    public void SpawnKings()
     {
-        yield return new WaitForSeconds(60);
         var randKing = Random.Range(0, 2);
         currentKing = PhotonNetwork.Instantiate(kings[randKing].name, new Vector3(0, 2.5f, 0), Quaternion.identity).GetComponent<KingsBehaviour>();
         currentKing.voisterManager = this;

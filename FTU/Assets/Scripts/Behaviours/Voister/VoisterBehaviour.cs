@@ -44,8 +44,10 @@ public class VoisterBehaviour : BasicAIMovement, IPunObservable
 
         SetEnemyType(EnemyType.voister);
         SetTeam(2);
+        SetMaxHealth(500);
+        SetHealth(GetMaxHealth());
         SetMaxMana(500);
-        SetMana(500);
+        SetMana(GetMaxMana());
         SetMaxExp(100);
         ExpRate = 1.85f;
         SetExp(0);
@@ -57,37 +59,55 @@ public class VoisterBehaviour : BasicAIMovement, IPunObservable
         //Regen();
     }
 
-    protected void VoisterBaseBehaviour()
+    protected IEnumerator VoisterBaseBehaviour()
     {
-        //MovementTraining();
-        //SurviveTraining();
-        if (Cible)
+        while(GetHealth() > 0)
         {
-            previousState = currentState;
-            currentState = VoisterAction.ATTACK;
+            //MovementTraining();
+            //SurviveTraining();
+            if (Cible)
+            {
+                previousState = currentState;
+                currentState = VoisterAction.ATTACK;
+            }
+            else if(currentState == VoisterAction.ATTACK)
+            {
+                currentState = previousState;
+            }
+            switch (currentState)
+            {
+                case VoisterAction.FEED:
+                    VoisterFeed();
+                    break;
+
+                case VoisterAction.GARD:
+                    VoisterProtect();
+                    break;
+
+                case VoisterAction.PATROL:
+                    VoisterPatrol();
+                    break;
+
+                case VoisterAction.ATTACK:
+                    //VoisterBasicAttack();
+                    Debug.Log("ATTACK");
+                    break;
+
+            }
+            yield return new WaitForSeconds(0.001f);
         }
-        else if(currentState == VoisterAction.ATTACK)
+    }
+
+    public new void HealthBehaviour()
+    {
+        //Debug.Log("toto");
+        if (GetHealth() >= GetMaxHealth())
         {
-            currentState = previousState;
+            SetHealth(GetMaxHealth());
         }
-        switch (currentState)
+        if (GetMana() >= GetMaxMana())
         {
-            case VoisterAction.FEED:
-                VoisterFeed();
-                break;
-
-            case VoisterAction.GARD:
-                VoisterProtect();
-                break;
-
-            case VoisterAction.PATROL:
-                VoisterPatrol();
-                break;
-
-            case VoisterAction.ATTACK:
-                VoisterBasicAttack();
-                break;
-
+            SetMana(GetMaxMana());
         }
     }
     #region BasicBehavior
@@ -118,28 +138,29 @@ public class VoisterBehaviour : BasicAIMovement, IPunObservable
         //{
         //    currentState = VoisterAction.patrol;
         //}
-
-        try
+        if (PhotonNetwork.IsMasterClient)
         {
-            if (!_navMeshAgent.isOnNavMesh) return;
-            if (!isNearKing && _navMeshAgent.remainingDistance <= 5)
+            try
             {
-                isNearKing = true;
-                kingVoisters.ws.food += Random.Range(1, 3);
-                posToGo = spawnPoint;
+                if (!_navMeshAgent.isOnNavMesh) return;
+                if (!isNearKing && _navMeshAgent.remainingDistance <= 5)
+                {
+                    isNearKing = true;
+                    //kingVoisters.ws.IncrementValue((int)WorldState.VoisterAction.FOOD);
+                    posToGo = spawnPoint;
+                }
+                else if (isNearKing && _navMeshAgent.remainingDistance <= 5)
+                {
+                    isNearKing = false;
+                    posToGo = kingVoisters.gameObject.transform.position;
+                }
+                _navMeshAgent.SetDestination(posToGo);
             }
-            else if (isNearKing && _navMeshAgent.remainingDistance <= 5)
+            catch (MissingReferenceException e)
             {
-                isNearKing = false;
-                posToGo = kingVoisters.gameObject.transform.position;
+                currentState = VoisterAction.PATROL;
             }
-            _navMeshAgent.SetDestination(posToGo);
         }
-        catch (MissingReferenceException e)
-        {
-            currentState = VoisterAction.PATROL;
-        }
-
     }
 
     protected void VoisterProtect()
@@ -165,7 +186,7 @@ public class VoisterBehaviour : BasicAIMovement, IPunObservable
             isProtecting = true;
             _navMeshAgent.ResetPath();
         }
-        transform.RotateAround(kingVoisters.transform.position, Vector3.up, GetMoveSpeed() * Time.deltaTime);
+        transform.RotateAround(kingVoisters.transform.position, Vector3.up, 30 * Time.deltaTime);
 
     }
 
@@ -293,7 +314,7 @@ public class VoisterBehaviour : BasicAIMovement, IPunObservable
             }
         }
     }
-#endregion
+    #endregion
 
     #region training
     public float speed;

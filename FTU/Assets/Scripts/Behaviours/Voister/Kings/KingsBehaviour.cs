@@ -11,10 +11,11 @@ public class KingsBehaviour : BasicAIMovement
     //Setup in specific class
     protected string followersTag;
     [SerializeField] protected GameObject voister;
-    protected float cpt = 5;
-    protected float delaySpawn = 60;
+    protected float cpt = 5f;
+    protected float delaySpawn = 5f;
 
     private List<VoisterBehaviour> allVoisters = new List<VoisterBehaviour>();
+    private VoisterBehaviour lastSpawned;
 
     //Utility AI
     [HideInInspector] public VoisterManager voisterManager;
@@ -31,6 +32,7 @@ public class KingsBehaviour : BasicAIMovement
         team.Code = 2;
         populationSize = 20;
         timeframe = 60f;
+
         #region utilityAI setup
         ws = new WorldState(voisterManager.food);
 
@@ -43,8 +45,14 @@ public class KingsBehaviour : BasicAIMovement
         allActions = new List<Action>() { feed, gard, patrol, attack };
         #endregion
 
-        if (populationSize % 2 != 0)
-            populationSize = 10;//if population size is not even, sets it to fifty
+        //VoisterBehaviour voistertemp = PhotonNetwork.Instantiate(voister.name, new Vector3(75, transform.position.y, -25), Quaternion.identity).GetComponent<VoisterBehaviour>();
+        //voistertemp.GetComponent<VoisterBehaviour>().kingVoisters = this;
+        //voistertemp.currentState = WorldState.VoisterAction.FEED;
+        //allVoisters.Add(voistertemp);
+        //ws.currentQty[(int)WorldState.VoisterAction.FEED] += 1;
+
+        //if (populationSize % 2 != 0)
+        //    populationSize = 10;//if population size is not even, sets it to fifty
 
         //InitNetworks();
         //InvokeRepeating(nameof(CreateVoisters), 0.1f, timeframe);//repeating function
@@ -53,7 +61,55 @@ public class KingsBehaviour : BasicAIMovement
     public void BaseBehaviourKings()
     {
         HealthBehaviour();
-        voisterManager.food = ws.food;
+        //ws.food = voisterManager.food;
+    }
+
+    protected void MainKing()
+    {
+        BaseBehaviourKings();
+
+        if (PhotonNetwork.IsMasterClient)
+        {
+            cpt -= Time.deltaTime;
+            if (cpt <= 0)
+            {
+                cpt = delaySpawn;
+                SpawnVoisters(voister);
+            }
+            UpdateListVoister(lastSpawned);
+        }
+    }
+
+    private void UpdateListVoister(VoisterBehaviour voisterTemp)
+    {
+        var listTemp = new List<VoisterBehaviour>();
+        foreach (var voi in allVoisters)
+        {
+            if (voi == null) continue;
+            if(voi.GetHealth() <= 0)
+            {
+                foreach (var meshRenderer in voi.GetComponentsInChildren<MeshRenderer>())
+                {
+                    meshRenderer.material = dissolveMaterial;
+
+                    var animator = meshRenderer.gameObject.GetComponent<Animator>();
+                    if (animator == null)
+                    {
+                        animator = meshRenderer.gameObject.AddComponent<Animator>();
+                    }
+
+                    animator.runtimeAnimatorController = dissolveController;
+                }
+                StartCoroutine(DissolveEffect(voi.gameObject));
+                ws.currentQty[(int)voi.currentState]--;
+                continue;
+            }
+            listTemp.Add(voi);
+        }
+
+        if (allVoisters.Contains(lastSpawned)) return;
+        allVoisters = listTemp;
+        allVoisters.Add(voisterTemp);
     }
 
     private int GetMaxFromList(List<float> valueList, List<Action> returnObject)
@@ -73,9 +129,11 @@ public class KingsBehaviour : BasicAIMovement
 
     private int UtilityAIMain()
     {
-        if (ws.GetValue((int)WorldState.VoisterAction.FEED) < WorldState.OBJECTIVEQTY[(int)WorldState.VoisterAction.FEED] &&
-            ws.GetValue((int)WorldState.VoisterAction.GARD) < WorldState.OBJECTIVEQTY[(int)WorldState.VoisterAction.GARD] &&
-            ws.GetValue((int)WorldState.VoisterAction.PATROL) < WorldState.OBJECTIVEQTY[(int)WorldState.VoisterAction.PATROL] &&
+        bool canDoSomething = false;
+        var res = 999;
+        if (ws.GetValue((int)WorldState.VoisterAction.FEED) < WorldState.OBJECTIVEQTY[(int)WorldState.VoisterAction.FEED] |
+            ws.GetValue((int)WorldState.VoisterAction.GARD) < WorldState.OBJECTIVEQTY[(int)WorldState.VoisterAction.GARD] |
+            ws.GetValue((int)WorldState.VoisterAction.PATROL) < WorldState.OBJECTIVEQTY[(int)WorldState.VoisterAction.PATROL] |
             ws.GetValue((int)WorldState.VoisterAction.ATTACK) < WorldState.OBJECTIVEQTY[(int)WorldState.VoisterAction.ATTACK])
         {
             List<float> utilityScore = new List<float>();
@@ -83,16 +141,19 @@ public class KingsBehaviour : BasicAIMovement
             for(int i = 0; i < allActions.Count; i++)
             {
                 utilityScore.Add(allActions[i].UpdateValue(ws, allActions[i].action));
-                if (allActions[i].CanDo(ws))
+                if (allActions[i].CanDo(ws) && ws.GetValue((int)allActions[i].action) < WorldState.OBJECTIVEQTY[(int)allActions[i].action])
                 {
-                    if(ws.GetValue((int)allActions[i].action) >= WorldState.OBJECTIVEQTY[(int)allActions[i].action])
-                    {
-                        continue;
-                    }
+                    ws.IncrementValue((int)allActions[i].action);
+                    canDoSomething = true;
+                    break;
                 }
-                ws.IncrementValue((int)allActions[i].action);
             }
-            return GetMaxFromList(utilityScore, allActions);
+            Debug.Log($"food : {ws.food}, feed : {ws.GetValue(0)}, gard : {ws.GetValue(1)}, patrol : {ws.GetValue(2)}, attack : {ws.GetValue(3)}");
+            if (canDoSomething)
+            {
+                res = GetMaxFromList(utilityScore, allActions);
+            }
+            return res;
         }
         return 999;
     }
@@ -125,9 +186,11 @@ public class KingsBehaviour : BasicAIMovement
 
         var voisterAction = UtilityAIMain();
 
-        if(voisterAction == 1)
+        if (voisterAction >= 999) return;
+
+        if (voisterAction == 1)
         {
-            x = transform.position.x + 5;
+            x = transform.position.x + 15;
             z = transform.position.z;
         }
         else
@@ -136,14 +199,21 @@ public class KingsBehaviour : BasicAIMovement
             z = Random.Range(-50, 50);
         }
 
-        VoisterBehaviour voistertemp = PhotonNetwork.Instantiate(voister.name, new Vector3(x, transform.position.y, z), Quaternion.identity).GetComponent<VoisterBehaviour>();
-        voistertemp.GetComponent<VoisterBehaviour>().kingVoisters = this;
-        voistertemp.currentState = allActions[voisterAction].action;
+        lastSpawned = PhotonNetwork.Instantiate(voister.name, new Vector3(x, transform.position.y, z), Quaternion.identity).GetComponent<VoisterBehaviour>();
+        lastSpawned.GetComponent<VoisterBehaviour>().kingVoisters = this;
+        lastSpawned.currentState = allActions[voisterAction].action;
 
+    }
 
-        allVoisters.Add(voistertemp);
-
-
+    public void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.GetComponentInChildren<VoisterBehaviour>())
+        {
+            if (other.gameObject.GetComponentInChildren<VoisterBehaviour>().currentState == WorldState.VoisterAction.FEED)
+            {
+                ws.food += Random.Range(3, 50);
+            }
+        }
     }
 
     #region machinelearning

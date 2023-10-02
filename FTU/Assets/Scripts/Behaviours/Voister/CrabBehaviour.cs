@@ -23,11 +23,11 @@ public class CrabBehaviour : VoisterBehaviour, IPunObservable
         SetResPhys(50f);
         SetAttackSpeed(100f);
         SetAttackRange(30f);
-        SetMaxHealth(500f);
         
         SetMoveSpeed(20f);
         SetViewRange(30f);
         isAttacking = false;
+        StartCoroutine(VoisterBaseBehaviour());
     }
 
     // Update is called once per frame
@@ -43,7 +43,7 @@ public class CrabBehaviour : VoisterBehaviour, IPunObservable
 
             if (GetCanAct() && GetCanMove())
             {
-                VoisterBaseBehaviour();
+                //VoisterBaseBehaviour();
                 //MovementTraining();
                 //SurviveTraining();
                 GetNearestTarget();
