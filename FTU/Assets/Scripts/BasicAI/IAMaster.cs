@@ -240,6 +240,8 @@ public class IAMaster : MonoBehaviour
                 zones[i - 1].GetComponent<Image>().color = Color.green;
             }
         }
+        
+        // renvoyer les GameObjects rpz les centres des zones
     }
 
     public void ChangeValueOfZone(int index)
@@ -264,7 +266,7 @@ public class IAMaster : MonoBehaviour
                 var xLine = x.GetRange(2 * i, 2);
                 var yLine = y.GetRange(6 * i, 6);
                 
-                var xString = String.Join(",", xLine.ToArray());
+                var xString = String.Join(";", xLine.ToArray());
                 var yString = String.Join(",", yLine.ToArray());
                 writer.WriteLine(xString + "=" + yString);
             }
@@ -279,8 +281,9 @@ public class IAMaster : MonoBehaviour
 
         foreach (var line in reader)
         {
+            Debug.Log(line);
             var split = line.Split("=");
-            var xArray = split[0].Split(",").Select(x => float.Parse(x)).ToList();
+            var xArray = split[0].Split(";").Select(x => float.Parse(x)).ToList();
             var yArray = split[1].Split(",").Select(x => float.Parse(x)).ToList();
             
             x.AddRange(xArray);
