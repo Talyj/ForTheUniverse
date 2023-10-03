@@ -54,6 +54,8 @@ public class IAMaster : MonoBehaviour
     private List<float> yToAdd;
     
     public Button[] zones;
+
+    public GameObject[] zonesCenter;
     
     //PMC Settings
     public int NbRepetitions = 10000;
@@ -91,7 +93,11 @@ public class IAMaster : MonoBehaviour
         yToAdd = new List<float>();
         
         yToAdd.AddRange(new float[]{-1,-1,-1,-1,-1,-1});
-        GetNewRandomValue();
+        if (gold1)
+        {
+            GetNewRandomValue();
+        }
+        
         
         try
         {
@@ -211,16 +217,13 @@ public class IAMaster : MonoBehaviour
         trainPMC(pmc, NbRepetitions, NbSteps, pointerX, pointerY, x.Count/2, 2, 6, true );
     }
 
-    public void Predict()
+    public Single[] Predict()
     {
         pred.Clear();
 
         pred.Add(ecartKill);
         pred.Add(ecartGold);
 
-        Debug.Log(pred.Count);
-        Debug.Log($"{pred[0]} , {pred[1]}");
-        
         GCHandle handlePred = GCHandle.Alloc(pred.ToArray(), GCHandleType.Pinned);
         
         IntPtr pointerPred = handlePred.AddrOfPinnedObject();
@@ -230,9 +233,19 @@ public class IAMaster : MonoBehaviour
         Single[] prediction = new Single[7];
 
         Marshal.Copy(res, prediction, 0, 7);
-            
-        Debug.Log($"{prediction[0]} , {prediction[1]} , {prediction[2]} , {prediction[3]} , {prediction[4]} , {prediction[5]}, {prediction[6]}");
 
+        return prediction;
+
+        //Debug.Log($"{prediction[0]} , {prediction[1]} , {prediction[2]} , {prediction[3]} , {prediction[4]} , {prediction[5]}, {prediction[6]}");
+
+
+    }
+
+
+    public void PredictSceneTrain()
+    {
+        Single[] prediction = Predict();
+        
         for (int i = 1; i < 7; i++)
         {
             if (prediction[i] > 0)
@@ -240,8 +253,13 @@ public class IAMaster : MonoBehaviour
                 zones[i - 1].GetComponent<Image>().color = Color.green;
             }
         }
+    }
+
+    public List<GameObject> PredictZoneCenter()
+    {
+        Single[] prediction = Predict();
         
-        // renvoyer les GameObjects rpz les centres des zones
+        return zonesCenter.Where(x => prediction[zonesCenter.ToList().IndexOf(x)] > 0).ToList();
     }
 
     public void ChangeValueOfZone(int index)
