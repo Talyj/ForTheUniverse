@@ -35,7 +35,7 @@ namespace Com.MyCompany.MyGame
             {
                 if(PlayerMovement.localPlayerInstance == null)
                 {
-                    Debug.LogFormat("We are Instantiating LocalPlayer from {0}", SceneManager.GetActiveScene().name);
+                    //Debug.LogFormat("We are Instantiating LocalPlayer from {0}", SceneManager.GetActiveScene().name);
                     
                 }
                 else
