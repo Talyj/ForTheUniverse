@@ -54,8 +54,8 @@ public class MainMenuManager : MonoBehaviourPunCallbacks
         connectionPanel.SetActive(false);
         controlPanel.SetActive(true);
         characterHolder.SetActive(true);
-        Debug.Log("PUN Basics Tutorial/Launcher: OnConnectedToMaster() was called by PUN");
-        Debug.Log(PhotonNetwork.LocalPlayer.UserId);
+        //Debug.Log("PUN Basics Tutorial/Launcher: OnConnectedToMaster() was called by PUN");
+        //Debug.Log(PhotonNetwork.LocalPlayer.UserId);
         foreach (var player in PhotonNetwork.PlayerList)
         {
             var btn = Instantiate(buttonFriendList, contentFriendList.transform);

@@ -29,20 +29,6 @@ public class FoxKingBehaviour : KingsBehaviour
     // Update is called once per frame
     void Update()
     {
-        BaseBehaviourKings();
-
-        if (PhotonNetwork.IsMasterClient)
-        {
-            cpt -= Time.deltaTime;
-            if (cpt <= 0)
-            {
-                cpt = delaySpawn;
-                var randQty = Random.Range(1, 3);
-                for (int i = 0; i < randQty; i++)
-                {
-                    SpawnVoisters(voister);
-                }
-            }
-        }
+        MainKing();
     }
 }

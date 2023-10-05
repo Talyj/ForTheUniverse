@@ -41,12 +41,12 @@ public class PlayerListItem : MonoBehaviourPunCallbacks
         text.text = _player.NickName;
         if (player.GetPhotonTeam() == null)
         {
-            Debug.Log($"<color=red> Setup NO TEAM</color>");
+            //Debug.Log($"<color=red> Setup NO TEAM</color>");
         }
         else
         {
             team = _player.GetPhotonTeam();
-            Debug.Log($"<color=green> Setup {player.GetPhotonTeam().Name}</color>");
+            //Debug.Log($"<color=green> Setup {player.GetPhotonTeam().Name}</color>");
             logoteam.sprite = sp[(int)player.CustomProperties["championsSelected"]];
             //background.color = new Color(255f, 255f, 255f, 0.25f);
             /*if (player.GetPhotonTeam().Code == 0)
@@ -92,7 +92,7 @@ public class PlayerListItem : MonoBehaviourPunCallbacks
                 players[i].JoinTeam((byte)((i % 2 == 0) ? 0 : 1));
                 if (players[i].GetPhotonTeam() == null)
                 {
-                    Debug.Log($"<color=red> NO TEAM</color>");
+                    //Debug.Log($"<color=red> NO TEAM</color>");
                 }
             }
         }

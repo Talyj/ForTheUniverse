@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:FTU/Assets/Scenes/Kyllian Test/IA_Rattrapage.unity.meta
 guid: c8cae1cafbb5c1a44875f09ed0d8387b
+========
+guid: fc310c445232d2d48ba3824cd719d2f2
+>>>>>>>> Julien:FTU/Assets/Scenes/BetaScene/TestJulien.unity.meta
 DefaultImporter:
   externalObjects: {}
   userData: 

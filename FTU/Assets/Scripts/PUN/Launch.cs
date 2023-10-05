@@ -51,7 +51,7 @@ public class Launch : MonoBehaviourPunCallbacks
     private void Connect()
     {
         PhotonNetwork.JoinLobby();
-        Debug.Log("connected to master");
+        //Debug.Log("connected to master");
         PhotonNetwork.AutomaticallySyncScene = true;
         
     }
@@ -59,7 +59,7 @@ public class Launch : MonoBehaviourPunCallbacks
 
     public override void OnJoinedLobby()
     {
-        Debug.Log("Joined lobby");
+        //Debug.Log("Joined lobby");
         LobbyJoin();
         // creer nouvelle fonction avec joinorcreate
         //PhotonNetwork.NickName = "Player " + Random.Range(0, 1000).ToString("0000");
@@ -105,7 +105,7 @@ public class Launch : MonoBehaviourPunCallbacks
         }*/
         //Debug.Log(PhotonNetwork.NickName);
         
-        Debug.Log("create room");
+        //Debug.Log("create room");
         RoomOptions roomOptions = new RoomOptions();
         roomOptions.MaxPlayers = 4;
         roomOptions.BroadcastPropsChangeToAll = true;
@@ -124,8 +124,8 @@ public class Launch : MonoBehaviourPunCallbacks
 
     private void OnPlayerJoinedTeam(Player player, PhotonTeam team)
     {
-        Debug.LogFormat("Player {0} joined team {1}", player, team);
-        Debug.Log(player.GetPhotonTeam().Name);
+        //Debug.LogFormat("Player {0} joined team {1}", player, team);
+        //Debug.Log(player.GetPhotonTeam().Name);
     }
     private void OnPlayerLeftTeam(Player player, PhotonTeam team)
     {
@@ -133,8 +133,8 @@ public class Launch : MonoBehaviourPunCallbacks
     }
     public override void OnJoinedRoom()
     {
-        Debug.Log("on room");
-        Debug.LogError(PhotonNetwork.CurrentRoom.CustomProperties[ELO_PROP_KEY]);
+        //Debug.Log("on room");
+        //Debug.LogError(PhotonNetwork.CurrentRoom.CustomProperties[ELO_PROP_KEY]);
         MenuManager.Instance.OpenMenu("room");
         
         roomNameText.text = PhotonNetwork.CurrentRoom.Name;
@@ -203,13 +203,13 @@ public class Launch : MonoBehaviourPunCallbacks
         float elo = (float)PhotonNetwork.LocalPlayer.CustomProperties["elo_score"];
         float[] boundaries = new[] { elo - 15, elo + 15 };
         string sql = $"C0 BETWEEN {boundaries[0].ToString("F2", CultureInfo.InvariantCulture)} AND {boundaries[1].ToString("F2", CultureInfo.InvariantCulture)}";
-        Debug.LogError(sql);
+        //Debug.LogError(sql);
         return PhotonNetwork.JoinRandomRoom(new Hashtable() {}, 4, MatchmakingMode.FillRoom, sqlLobby, sql);
     }
 
     public override void OnJoinRandomFailed(short returnCode, string message)
     {
-        Debug.LogError(message);
+        //Debug.LogError(message);
         CreateRoom();
     }
 
@@ -328,7 +328,7 @@ public class Launch : MonoBehaviourPunCallbacks
         //        //load scene traning
         //        break;
         //}
-        PhotonNetwork.LoadLevel(2);
+        PhotonNetwork.LoadLevel(3);
 
     }
 
@@ -352,7 +352,7 @@ public class Launch : MonoBehaviourPunCallbacks
             {
                 PlayerScore ps = JsonUtility.FromJson<PlayerScore>(request.text);
                 PhotonNetwork.LocalPlayer.CustomProperties["elo_score"] = ps.score;
-                Debug.LogError(ps.score);
+                //Debug.LogError(ps.score);
                 JoinRandomRoom();
             }
         }

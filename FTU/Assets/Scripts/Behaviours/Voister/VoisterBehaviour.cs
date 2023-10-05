@@ -4,32 +4,24 @@ using System.Collections;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
+using static WorldState;
 
 public class VoisterBehaviour : BasicAIMovement, IPunObservable
 {
 
     public KingsBehaviour kingVoisters;
-    protected int numberOfCharges;
     protected Vector3 spawnPoint;
     protected bool isNearKing;
     protected bool isTurned;
     protected bool isProtecting;
-    protected int requiredNumberOfCharge;
 
+    //Somewhere add the number of enemy around
 
-    public enum actionState
-    {
-        feed,
-        protect,
-        patrol,
-        awoken,
-        attack
-    }
-    public actionState currentState;
-    public actionState previousState;
+    public VoisterAction currentState;
+    public VoisterAction previousState;
 
     #region getter
-    public actionState GetCurrentState()
+    public VoisterAction GetCurrentState()
     {
         return currentState;
     }
@@ -43,20 +35,19 @@ public class VoisterBehaviour : BasicAIMovement, IPunObservable
             Debug.LogError("No NavMeshAgent attached to " + gameObject.name);
         }
 
-        numberOfCharges = 0;
-        currentState = actionState.feed;
         spawnPoint = transform.position;
-        isNearKing = true;
+        isNearKing = Vector3.Distance(transform.position, kingVoisters.transform.position) >= 5 ? false : true;
         isTurned = false;
         isProtecting = false;
         GotFirstWayPoint = false;
         posToGo = new Vector3();
-        requiredNumberOfCharge = Random.Range(2, 5);
 
         SetEnemyType(EnemyType.voister);
         SetTeam(2);
+        SetMaxHealth(500);
+        SetHealth(GetMaxHealth());
         SetMaxMana(500);
-        SetMana(500);
+        SetMana(GetMaxMana());
         SetMaxExp(100);
         ExpRate = 1.85f;
         SetExp(0);
@@ -68,90 +59,135 @@ public class VoisterBehaviour : BasicAIMovement, IPunObservable
         //Regen();
     }
 
-    protected void VoisterBaseBehaviour()
+    protected IEnumerator VoisterBaseBehaviour()
     {
-        //MovementTraining();
-        //SurviveTraining();
-        if (Cible)
+        while(GetHealth() > 0)
         {
-            previousState = currentState;
-            currentState = actionState.attack;
+            //MovementTraining();
+            //SurviveTraining();
+            if (Cible)
+            {
+                previousState = currentState;
+                currentState = VoisterAction.ATTACK;
+            }
+            else if(currentState == VoisterAction.ATTACK)
+            {
+                currentState = previousState;
+            }
+            switch (currentState)
+            {
+                case VoisterAction.FEED:
+                    VoisterFeed();
+                    break;
+
+                case VoisterAction.GARD:
+                    VoisterProtect();
+                    break;
+
+                case VoisterAction.PATROL:
+                    VoisterPatrol();
+                    break;
+
+                case VoisterAction.ATTACK:
+                    //VoisterBasicAttack();
+                    Debug.Log("ATTACK");
+                    break;
+
+            }
+            yield return new WaitForSeconds(0.001f);
         }
-        else if(currentState == actionState.attack)
+    }
+
+    public new void HealthBehaviour()
+    {
+        //Debug.Log("toto");
+        if (GetHealth() >= GetMaxHealth())
         {
-            currentState = previousState;
+            SetHealth(GetMaxHealth());
         }
-        switch (currentState)
+        if (GetMana() >= GetMaxMana())
         {
-            case actionState.feed:
-                VoisterFeed();
-                break;
-
-            case actionState.protect:
-                VoisterProtect();
-                break;
-
-            case actionState.patrol:
-                VoisterPatrol();
-                break;
-
-            case actionState.awoken:
-                Debug.Log("Awoken");
-                break;
-            case actionState.attack:
-                VoisterBasicAttack();
-                break;
-
+            SetMana(GetMaxMana());
         }
     }
     #region BasicBehavior
     protected void VoisterFeed()
     {
-        try
+        //try
+        //{
+        //    if (!_navMeshAgent.isOnNavMesh) return;
+        //    if (numberOfCharges >= requiredNumberOfCharge && _navMeshAgent.remainingDistance <= 5)
+        //    {
+        //        previousState = currentState;
+        //        currentState = kingVoisters.numberOfFollower >= kingVoisters.followersMax ? VoisterAction.patrol : VoisterAction.protect;
+        //    }
+        //    if (!isNearKing && _navMeshAgent.remainingDistance <= 5)
+        //    {
+        //        isNearKing = true;
+        //        numberOfCharges++;
+        //        posToGo = spawnPoint;
+        //    }
+        //    else if (isNearKing && _navMeshAgent.remainingDistance <= 5)
+        //    {
+        //        isNearKing = false;
+        //        posToGo = kingVoisters.gameObject.transform.position;
+        //    }
+        //    _navMeshAgent.SetDestination(posToGo);
+        //}
+        //catch(MissingReferenceException e)
+        //{
+        //    currentState = VoisterAction.patrol;
+        //}
+        if (PhotonNetwork.IsMasterClient)
         {
-            if (!_navMeshAgent.isOnNavMesh) return;
-            if (numberOfCharges >= requiredNumberOfCharge && _navMeshAgent.remainingDistance <= 5)
+            try
             {
-                previousState = currentState;
-                currentState = kingVoisters.numberOfFollower >= kingVoisters.followersMax ? actionState.patrol : actionState.protect;
+                if (!_navMeshAgent.isOnNavMesh) return;
+                if (!isNearKing && _navMeshAgent.remainingDistance <= 5)
+                {
+                    isNearKing = true;
+                    //kingVoisters.ws.IncrementValue((int)WorldState.VoisterAction.FOOD);
+                    posToGo = spawnPoint;
+                }
+                else if (isNearKing && _navMeshAgent.remainingDistance <= 5)
+                {
+                    isNearKing = false;
+                    posToGo = kingVoisters.gameObject.transform.position;
+                }
+                _navMeshAgent.SetDestination(posToGo);
             }
-            if (!isNearKing && _navMeshAgent.remainingDistance <= 5)
+            catch (MissingReferenceException e)
             {
-                isNearKing = true;
-                numberOfCharges++;
-                posToGo = spawnPoint;
+                currentState = VoisterAction.PATROL;
             }
-            else if (isNearKing && _navMeshAgent.remainingDistance <= 5)
-            {
-                isNearKing = false;
-                posToGo = kingVoisters.gameObject.transform.position;
-            }
-            _navMeshAgent.SetDestination(posToGo);
         }
-        catch(MissingReferenceException e)
-        {
-            currentState = actionState.patrol;
-        }
-
     }
 
     protected void VoisterProtect()
     {
-        try
+        //try
+        //{
+        //    if (!isProtecting)
+        //    {
+        //        isProtecting = true;
+        //        kingVoisters.numberOfFollower++;
+        //        _navMeshAgent.ResetPath();
+        //    }
+        //    transform.RotateAround(kingVoisters.transform.position, Vector3.up, GetMoveSpeed() * Time.deltaTime);            
+        //}
+        //catch(MissingReferenceException e)
+        //{
+        //    previousState = currentState;
+        //    currentState = VoisterAction.patrol;
+        //}
+
+        if (!isProtecting)
         {
-            if (!isProtecting)
-            {
-                isProtecting = true;
-                kingVoisters.numberOfFollower++;
-                _navMeshAgent.ResetPath();
-            }
-            transform.RotateAround(kingVoisters.transform.position, Vector3.up, GetMoveSpeed() * Time.deltaTime);            
+            isProtecting = true;
+            _navMeshAgent.ResetPath();
         }
-        catch(MissingReferenceException e)
-        {
-            previousState = currentState;
-            currentState = actionState.patrol;
-        }
+        transform.RotateAround(kingVoisters.transform.position, Vector3.up, 30 * Time.deltaTime);
+
     }
 
     #region patrol
@@ -278,7 +314,7 @@ public class VoisterBehaviour : BasicAIMovement, IPunObservable
             }
         }
     }
-#endregion
+    #endregion
 
     #region training
     public float speed;
@@ -456,13 +492,4 @@ public class VoisterBehaviour : BasicAIMovement, IPunObservable
         }
     }
     #endregion
-}
-
-public class DataTraining
-{
-    public float wallDistance { get; set; }
-    public float enemyDistance { get; set; }
-    public float health { get; set; }
-    public int lvl { get; set; }
-
 }

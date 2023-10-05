@@ -47,9 +47,9 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
     public bool isAttacking;
 
     //Animation mort
-    [SerializeField] private Material dissolveMaterial; 
-    [SerializeField] private RuntimeAnimatorController dissolveController; 
-    private float dissolveDuration = 1.0f; 
+    [SerializeField] protected Material dissolveMaterial; 
+    [SerializeField] protected RuntimeAnimatorController dissolveController; 
+    protected float dissolveDuration = 1.0f; 
 
     public float healthDecreaseTimer = -1f;
     //exp
@@ -481,11 +481,17 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
         }
     }
 
-    private IEnumerator DissolveEffect() {
+    protected IEnumerator DissolveEffect() {
         yield return new WaitForSeconds(dissolveDuration);
 
        //Destroy(gameObject);
         PhotonNetwork.Destroy(gameObject);
+    }
+
+    protected IEnumerator DissolveEffect(GameObject objectToDestroy)
+    {
+        PhotonNetwork.Destroy(objectToDestroy);
+        yield return 0;
     }
 
     [PunRPC]
