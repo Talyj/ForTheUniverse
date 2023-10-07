@@ -10,6 +10,7 @@ public class WorldState
     public int foodNeeded;
 
     //OBJECTIVE QTY
+    //15, 10, 5, 5
     public static List<int> OBJECTIVEQTY = new List<int>() { 15, 10, 5, 5 };
 
     //CURRENT QTY

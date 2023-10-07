@@ -212,8 +212,8 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 40
-  m_Acceleration: 30
+  m_Speed: 10
+  m_Acceleration: 10
   avoidancePriority: 50
   m_AngularSpeed: 120
   m_StoppingDistance: 0
@@ -283,6 +283,9 @@ MonoBehaviour:
   followersMax: 5
   voister: {fileID: 7297893142613042275, guid: 0cb92ee05e67d1541bdfe0daaefab110, type: 3}
   voisterManager: {fileID: 0}
+  _patrolWaiting: 0
+  _totalWaitTime: 3
+  _switchProbability: 0.2
   timeframe: 0
   populationSize: 0
   prefab: {fileID: 0}

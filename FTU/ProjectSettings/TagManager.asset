@@ -22,6 +22,7 @@ TagManager:
   - minimapCam
   - minimapView
   - PlaneMinimapMove
+  - waypointBoss
   layers:
   - Default
   - TransparentFX
@@ -39,9 +40,6 @@ TagManager:
   - Map
   - Dominion
   - Veritas
-  - 
-  - 
-  - 
   - 
   - 
   - 

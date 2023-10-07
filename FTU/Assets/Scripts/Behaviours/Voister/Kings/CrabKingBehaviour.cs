@@ -25,7 +25,7 @@ public class CrabKingBehaviour : KingsBehaviour
         SetMoveSpeed(20f);
         SetViewRange(30f);
         isAttacking = false;
-        cpt = 10;
+        cptUtilityAI = 10;
     }
 
     // Update is called once per frame

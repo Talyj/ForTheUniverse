@@ -19,7 +19,7 @@ public class FoxBehaviour : VoisterBehaviour, IPunObservable
         SetDegPhys(30f);
         SetResMag(50f);
         SetResPhys(50f);
-        SetAttackSpeed(100f);
+        SetAttackSpeed(2f);
         SetAttackRange(30f);
         SetMaxHealth(500f);
 
@@ -45,7 +45,7 @@ public class FoxBehaviour : VoisterBehaviour, IPunObservable
             if (GetCanAct() && GetCanMove())
             {
                 //VoisterBaseBehaviour();
-                GetNearestTarget();
+                //GetNearestTarget();
                 //if (Cible)
                 //{
                 //    WalkToward();

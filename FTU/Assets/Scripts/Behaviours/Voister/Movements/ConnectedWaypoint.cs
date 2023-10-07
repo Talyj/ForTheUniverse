@@ -7,10 +7,16 @@ public class ConnectedWaypoint : Waypoint
     [SerializeField] protected float _connectivityRadius = 50f;
 
     List<ConnectedWaypoint> _connections;
+    public bool isForBoss;
+    public int teamCode;
 
     public void Start()
     {
         GameObject[] allWaypoints = GameObject.FindGameObjectsWithTag("waypoint");
+        if (isForBoss)
+        {
+            allWaypoints = GameObject.FindGameObjectsWithTag("waypointBoss");
+        }
 
         _connections = new List<ConnectedWaypoint>();
 
@@ -39,12 +45,12 @@ public class ConnectedWaypoint : Waypoint
 
     public ConnectedWaypoint NextWaypoint(ConnectedWaypoint previousWaypoint)
     {
-        if(_connections.Count == 0)
+        if (_connections.Count == 0)
         {
             Debug.LogError("No waypoint around");
             return null;
         }
-        else if(_connections.Count == 1 && _connections.Contains(previousWaypoint))
+        else if (_connections.Count == 1 && _connections.Contains(previousWaypoint))
         {
             return previousWaypoint;
         }
@@ -57,6 +63,30 @@ public class ConnectedWaypoint : Waypoint
             {
                 nextIndex = Random.Range(0, _connections.Count);
                 nextWaypoint = _connections[nextIndex];
+            } while (nextWaypoint == previousWaypoint);
+            return nextWaypoint;
+        }
+    }
+
+    public ConnectedWaypoint NextWaypoint(ConnectedWaypoint previousWaypoint, List<ConnectedWaypoint> authorizedWaypoints)
+    {
+        if (authorizedWaypoints.Count <= 0)
+        {            
+            return NextWaypoint(previousWaypoint);
+        }
+        else if (authorizedWaypoints.Count == 1 && authorizedWaypoints.Contains(previousWaypoint))
+        {
+            return previousWaypoint;
+        }
+        else
+        {
+            ConnectedWaypoint nextWaypoint;
+            int nextIndex = 0;
+
+            do
+            {
+                nextIndex = Random.Range(0, authorizedWaypoints.Count);
+                nextWaypoint = authorizedWaypoints[nextIndex];
             } while (nextWaypoint == previousWaypoint);
             return nextWaypoint;
         }

@@ -21,7 +21,7 @@ public class CrabBehaviour : VoisterBehaviour, IPunObservable
         SetDegPhys(30f);
         SetResMag(50f);
         SetResPhys(50f);
-        SetAttackSpeed(100f);
+        SetAttackSpeed(2f);
         SetAttackRange(30f);
         
         SetMoveSpeed(20f);
@@ -46,7 +46,7 @@ public class CrabBehaviour : VoisterBehaviour, IPunObservable
                 //VoisterBaseBehaviour();
                 //MovementTraining();
                 //SurviveTraining();
-                GetNearestTarget();
+                //GetNearestTarget();
                 //if (Cible)
                 //{
                 //    WalkToward();

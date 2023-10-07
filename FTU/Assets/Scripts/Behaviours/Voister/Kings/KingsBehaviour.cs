@@ -11,7 +11,9 @@ public class KingsBehaviour : BasicAIMovement
     //Setup in specific class
     protected string followersTag;
     [SerializeField] protected GameObject voister;
-    protected float cpt = 5f;
+    protected float cptUtilityAI = 5f;
+    protected float cptML = 5f;
+    //default to determine ~30sec to 1min ?
     protected float delaySpawn = 5f;
 
     private List<VoisterBehaviour> allVoisters = new List<VoisterBehaviour>();
@@ -26,12 +28,19 @@ public class KingsBehaviour : BasicAIMovement
     Action patrol;
     Action attack;
 
+    //Machine learning
+    IAMaster iaMaster;
+    [HideInInspector] public List<GameObject> listArea = new List<GameObject>();
+    [HideInInspector] public bool valueIsNew;
+
     public void BaseSetupKing()
     {
         numberOfFollower = 0;
         team.Code = 2;
         populationSize = 20;
         timeframe = 60f;
+
+        _navMeshAgent = this.GetComponent<UnityEngine.AI.NavMeshAgent>();
 
         #region utilityAI setup
         ws = new WorldState(voisterManager.food);
@@ -44,6 +53,11 @@ public class KingsBehaviour : BasicAIMovement
 
         allActions = new List<Action>() { feed, gard, patrol, attack };
         #endregion
+
+        #region Machine learning cpp setup
+        iaMaster = FindObjectOfType<IAMaster>();
+        valueIsNew = false;
+        #endregion        
 
         //VoisterBehaviour voistertemp = PhotonNetwork.Instantiate(voister.name, new Vector3(75, transform.position.y, -25), Quaternion.identity).GetComponent<VoisterBehaviour>();
         //voistertemp.GetComponent<VoisterBehaviour>().kingVoisters = this;
@@ -66,14 +80,31 @@ public class KingsBehaviour : BasicAIMovement
 
     protected void MainKing()
     {
-        BaseBehaviourKings();
-
         if (PhotonNetwork.IsMasterClient)
         {
-            cpt -= Time.deltaTime;
-            if (cpt <= 0)
+            KingMovements();
+            BaseBehaviourKings();
+
+            cptML -= Time.deltaTime;
+            if(cptML <= 0)
             {
-                cpt = delaySpawn;
+                cptML = 60f;
+                //TODO change this by a function that gives the correct value
+                iaMaster.GetNewRandomValue();
+                iaMaster.Import();
+                listArea = iaMaster.PredictZoneCenter();
+                //for(int i = 0; i < listArea.Count; i++)
+                //{
+                //    Debug.Log(listArea[i].name);
+                //}
+                valueIsNew = true;
+            }
+
+
+            cptUtilityAI -= Time.deltaTime;
+            if (cptUtilityAI <= 0)
+            {
+                cptUtilityAI = delaySpawn;
                 SpawnVoisters(voister);
             }
             UpdateListVoister(lastSpawned);
@@ -160,7 +191,7 @@ public class KingsBehaviour : BasicAIMovement
 
     protected void SpawnVoisters(GameObject voister)
     {
-        #region machinelearning
+        #region machinelearning (abandonné)
         //Time.timeScale = Gamespeed;//sets gamespeed, which will increase to speed up training
         //if (voisters != null)
         //{
@@ -211,12 +242,126 @@ public class KingsBehaviour : BasicAIMovement
         {
             if (other.gameObject.GetComponentInChildren<VoisterBehaviour>().currentState == WorldState.VoisterAction.FEED)
             {
-                ws.food += Random.Range(3, 50);
+                //TODO CHANGE TO NORMAL VALUES (1, 3)
+                ws.food += Random.Range(25, 50);
             }
         }
     }
 
-    #region machinelearning
+    #region patrol
+
+    [SerializeField] bool _patrolWaiting;
+    [SerializeField] float _totalWaitTime = 3f;
+    [SerializeField] float _switchProbability = 0.2f;
+
+    ConnectedWaypoint _currentWaypoint;
+    ConnectedWaypoint _previousWaypoint;
+
+    bool _travelling;
+    bool _waiting;
+    float _waitTimer;
+    int _waypointVisited;
+    bool GotFirstWayPoint;
+
+    protected void KingMovements()
+    {
+        if (!_navMeshAgent.isOnNavMesh) return;
+        if (!GotFirstWayPoint || valueIsNew)
+        {
+            valueIsNew = false;
+            InitFirstWaypoint();
+        }
+        if (_travelling && _navMeshAgent.remainingDistance <= 1.0f)
+        {
+            _travelling = false;
+            _waypointVisited++;
+
+            if (_patrolWaiting)
+            {
+                _waiting = true;
+                _waitTimer = 0f;
+            }
+            else
+            {
+                SetDestination();
+            }
+        }
+
+        if (_waiting)
+        {
+            _waitTimer += Time.deltaTime;
+            if (_waitTimer >= _totalWaitTime)
+            {
+                _waiting = false;
+                SetDestination();
+            }
+        }
+    }
+
+    public void InitFirstWaypoint()
+    {
+        _navMeshAgent = this.GetComponent<UnityEngine.AI.NavMeshAgent>();
+
+        if (_navMeshAgent == null)
+        {
+            Debug.LogError("No NavMeshAgent attached to " + gameObject.name);
+        }
+        else
+        {
+            if (_currentWaypoint == null)
+            {
+                GameObject[] allWaypoints = GameObject.FindGameObjectsWithTag("waypointBoss");
+                if (valueIsNew)
+                {
+                    allWaypoints = listArea.ToArray();
+                }
+
+                if (allWaypoints.Length > 0)
+                {
+                    while (_currentWaypoint == null)
+                    {
+                        var random = Random.Range(0, allWaypoints.Length);
+                        ConnectedWaypoint startWaypoint = allWaypoints[random].GetComponent<ConnectedWaypoint>();
+
+                        if (startWaypoint != null)
+                        {
+                            _currentWaypoint = startWaypoint;
+                        }
+                    }
+                    GotFirstWayPoint = true;
+                }
+                else
+                {
+                    Debug.LogError("no waypoint found");
+                    return;
+                }
+            }
+            SetDestination();
+        }
+
+    }
+
+    protected void SetDestination()
+    {
+        if (_waypointVisited > 0)
+        {
+            List<ConnectedWaypoint> authorizedWaypoints = new List<ConnectedWaypoint>();
+
+            foreach (var area in listArea)
+            {
+                authorizedWaypoints.Add(area.GetComponent<ConnectedWaypoint>());
+            }
+            ConnectedWaypoint nextWaypoint = _currentWaypoint.NextWaypoint(_previousWaypoint, authorizedWaypoints);
+            _previousWaypoint = _currentWaypoint;
+            _currentWaypoint = nextWaypoint;
+        }
+        _navMeshAgent.SetDestination(_currentWaypoint.transform.position);
+        _travelling = true;
+    }
+
+    #endregion
+
+    #region machinelearning (abandonné)
 
     public float timeframe;
     public int populationSize;//creates population size

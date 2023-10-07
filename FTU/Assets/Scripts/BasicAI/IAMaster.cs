@@ -40,7 +40,7 @@ public class IAMaster : MonoBehaviour
     }
 
 
-    public TMP_Text score1, score2, gold1, gold2, tour1, tour2, ecartKillText,ecartGoldText;
+    public TMP_Text score1, score2, gold1, gold2, tour1, tour2, ecartKillText, ecartGoldText;
     private int score1Val, score2Val, gold1Val, gold2Val, tour1Val, tour2Val;
 
     private float ecartKill, ecartGold;
@@ -97,8 +97,8 @@ public class IAMaster : MonoBehaviour
         {
             GetNewRandomValue();
         }
-        
-        
+
+
         try
         {
             int[] npl = new int[] {2, 6};
@@ -108,7 +108,7 @@ public class IAMaster : MonoBehaviour
             IntPtr pointer = handle.AddrOfPinnedObject();
             
             pmc = createPMC(pointer, npl.Length);
-            Debug.Log(pmc);
+            //Debug.Log(pmc);
             
             //checkPMC(pmc);
             
@@ -144,7 +144,7 @@ public class IAMaster : MonoBehaviour
         
     }
 
-    void GetNewRandomValue()
+    public void GetNewRandomValue()
     {
         score1Val = Random.Range(0, 51);
         score2Val = Random.Range(0, 51);
@@ -166,19 +166,27 @@ public class IAMaster : MonoBehaviour
         ecartKill = (float)score1Val / widespanKill;
         ecartGold = (float)gold1Val / widespanGold;
 
+        Debug.Log($"score1 : {score1Val}, gold1 : {gold1Val}, tour1 : {tour1Val}\nscore2 : {score2Val}, gold2 : {gold2Val}, tour2 : {tour2Val}  ecartKill : {ecartKill}, ecartGold : {ecartGold}");
+
         /*ecartGold = 0.8f;
         ecartKill = 0.8f;*/
-        
-        score1.text = score1Val.ToString();
-        score2.text = score2Val.ToString();
-        gold1.text = gold1Val.ToString();
-        gold2.text = gold2Val.ToString();
-        tour1.text = tour1Val.ToString();
-        tour2.text = tour2Val.ToString();
-        ecartKillText.text = ecartKill.ToString("0.0000");
-        ecartGoldText.text = ecartGold.ToString("0.0000");
+        try
+        {
+            score1.text = score1Val.ToString();
+            score2.text = score2Val.ToString();
+            gold1.text = gold1Val.ToString();
+            gold2.text = gold2Val.ToString();
+            tour1.text = tour1Val.ToString();
+            tour2.text = tour2Val.ToString();
+            ecartKillText.text = ecartKill.ToString("0.0000");
+            ecartGoldText.text = ecartGold.ToString("0.0000");
+        }
+        catch(Exception e)
+        {
+            //:)
+        }
     }
-    
+
     public void AddToTrain()
     {
         x.Add(ecartKill);
@@ -210,10 +218,10 @@ public class IAMaster : MonoBehaviour
         GCHandle handleY = GCHandle.Alloc(y.ToArray(), GCHandleType.Pinned);
         
         IntPtr pointerY = handleY.AddrOfPinnedObject();
-        
-        Debug.Log($"Nb train item : {x.Count/2}");
-        Debug.Log($"Count x : {x.Count} - Count y : {y.Count}");
-        
+
+        //Debug.Log($"Nb train item : {x.Count / 2}");
+        //Debug.Log($"Count x : {x.Count} - Count y : {y.Count}");
+
         trainPMC(pmc, NbRepetitions, NbSteps, pointerX, pointerY, x.Count/2, 2, 6, true );
     }
 
@@ -258,8 +266,9 @@ public class IAMaster : MonoBehaviour
     public List<GameObject> PredictZoneCenter()
     {
         Single[] prediction = Predict();
-        
+
         return zonesCenter.Where(x => prediction[zonesCenter.ToList().IndexOf(x)] > 0).ToList();
+        //return zonesCenter.Where(x => x.name == "Cube3" || x.name == "Cube6").ToList();
     }
 
     public void ChangeValueOfZone(int index)
@@ -299,7 +308,7 @@ public class IAMaster : MonoBehaviour
 
         foreach (var line in reader)
         {
-            Debug.Log(line);
+            //Debug.Log(line);
             var split = line.Split("=");
             var xArray = split[0].Split(";").Select(x => float.Parse(x)).ToList();
             var yArray = split[1].Split(",").Select(x => float.Parse(x)).ToList();

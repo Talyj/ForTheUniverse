@@ -1,6 +1,7 @@
 using Photon.Pun;
 using Photon.Pun.UtilityScripts;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
@@ -19,6 +20,9 @@ public class VoisterBehaviour : BasicAIMovement, IPunObservable
 
     public VoisterAction currentState;
     public VoisterAction previousState;
+
+    bool isSettingTargets;
+    int teamToAttack = 999;
 
     #region getter
     public VoisterAction GetCurrentState()
@@ -41,6 +45,7 @@ public class VoisterBehaviour : BasicAIMovement, IPunObservable
         isProtecting = false;
         GotFirstWayPoint = false;
         posToGo = new Vector3();
+        isSettingTargets = false;
 
         SetEnemyType(EnemyType.voister);
         SetTeam(2);
@@ -65,15 +70,6 @@ public class VoisterBehaviour : BasicAIMovement, IPunObservable
         {
             //MovementTraining();
             //SurviveTraining();
-            if (Cible)
-            {
-                previousState = currentState;
-                currentState = VoisterAction.ATTACK;
-            }
-            else if(currentState == VoisterAction.ATTACK)
-            {
-                currentState = previousState;
-            }
             switch (currentState)
             {
                 case VoisterAction.FEED:
@@ -81,16 +77,17 @@ public class VoisterBehaviour : BasicAIMovement, IPunObservable
                     break;
 
                 case VoisterAction.GARD:
+                    GetNearestTarget();
                     VoisterProtect();
                     break;
 
                 case VoisterAction.PATROL:
+                    GetNearestTarget();
                     VoisterPatrol();
                     break;
 
                 case VoisterAction.ATTACK:
-                    //VoisterBasicAttack();
-                    Debug.Log("ATTACK");
+                    VoisterAssault();
                     break;
 
             }
@@ -113,31 +110,6 @@ public class VoisterBehaviour : BasicAIMovement, IPunObservable
     #region BasicBehavior
     protected void VoisterFeed()
     {
-        //try
-        //{
-        //    if (!_navMeshAgent.isOnNavMesh) return;
-        //    if (numberOfCharges >= requiredNumberOfCharge && _navMeshAgent.remainingDistance <= 5)
-        //    {
-        //        previousState = currentState;
-        //        currentState = kingVoisters.numberOfFollower >= kingVoisters.followersMax ? VoisterAction.patrol : VoisterAction.protect;
-        //    }
-        //    if (!isNearKing && _navMeshAgent.remainingDistance <= 5)
-        //    {
-        //        isNearKing = true;
-        //        numberOfCharges++;
-        //        posToGo = spawnPoint;
-        //    }
-        //    else if (isNearKing && _navMeshAgent.remainingDistance <= 5)
-        //    {
-        //        isNearKing = false;
-        //        posToGo = kingVoisters.gameObject.transform.position;
-        //    }
-        //    _navMeshAgent.SetDestination(posToGo);
-        //}
-        //catch(MissingReferenceException e)
-        //{
-        //    currentState = VoisterAction.patrol;
-        //}
         if (PhotonNetwork.IsMasterClient)
         {
             try
@@ -146,41 +118,46 @@ public class VoisterBehaviour : BasicAIMovement, IPunObservable
                 if (!isNearKing && _navMeshAgent.remainingDistance <= 5)
                 {
                     isNearKing = true;
-                    //kingVoisters.ws.IncrementValue((int)WorldState.VoisterAction.FOOD);
-                    posToGo = spawnPoint;
+                    _navMeshAgent.SetDestination(spawnPoint);
                 }
                 else if (isNearKing && _navMeshAgent.remainingDistance <= 5)
                 {
                     isNearKing = false;
-                    posToGo = kingVoisters.gameObject.transform.position;
+                    StartCoroutine(FollowKing());
                 }
-                _navMeshAgent.SetDestination(posToGo);
             }
             catch (MissingReferenceException e)
             {
-                currentState = VoisterAction.PATROL;
+                //currentState = VoisterAction.PATROL;
             }
+        }
+    }
+
+    protected IEnumerator FollowKing()
+    {
+        while(!isNearKing)
+        {
+            _navMeshAgent.SetDestination(kingVoisters.gameObject.transform.position);
+            yield return new WaitForSeconds(0.1f);
         }
     }
 
     protected void VoisterProtect()
     {
-        //try
-        //{
-        //    if (!isProtecting)
-        //    {
-        //        isProtecting = true;
-        //        kingVoisters.numberOfFollower++;
-        //        _navMeshAgent.ResetPath();
-        //    }
-        //    transform.RotateAround(kingVoisters.transform.position, Vector3.up, GetMoveSpeed() * Time.deltaTime);            
-        //}
-        //catch(MissingReferenceException e)
-        //{
-        //    previousState = currentState;
-        //    currentState = VoisterAction.patrol;
-        //}
+        if (Cible)
+        {
+            VoisterBasicAttack();
+            return;
+        }
 
+        if (Vector3.Distance(gameObject.transform.position, kingVoisters.transform.position) > 20f)
+        {
+            _navMeshAgent.SetDestination(kingVoisters.transform.position);
+        }
+        else
+        {
+            _navMeshAgent.ResetPath();
+        }
         if (!isProtecting)
         {
             isProtecting = true;
@@ -207,6 +184,12 @@ public class VoisterBehaviour : BasicAIMovement, IPunObservable
 
     protected void VoisterPatrol()
     {
+        if (Cible)
+        {
+            VoisterBasicAttack();
+            return;
+        }
+
         if (!_navMeshAgent.isOnNavMesh) return;
         if (!GotFirstWayPoint)
         {
@@ -292,6 +275,64 @@ public class VoisterBehaviour : BasicAIMovement, IPunObservable
 
     #endregion
 
+    public void VoisterAssault()
+    {
+        //First get a way to identify the area
+        if (kingVoisters.valueIsNew && !isSettingTargets)
+        {
+            isSettingTargets = true;
+            SetTarget();
+        }
+
+        if(teamToAttack == 999)
+        {
+            VoisterPatrol();
+        }
+        else
+        {
+            if(Cible == null)
+            {
+                SetTarget();
+            }
+            VoisterBasicAttack();
+        }
+        Debug.Log(teamToAttack);
+
+            //Attack
+    }
+
+    protected void SetTarget()
+    {
+        List<GolemBehaviour> golems = new List<GolemBehaviour>();
+
+
+        //if dom > ver
+        if(kingVoisters.listArea.Where(x => x.GetComponent<ConnectedWaypoint>().teamCode == 0).ToArray().Length < kingVoisters.listArea.Where(x => x.GetComponent<ConnectedWaypoint>().teamCode == 1).ToArray().Length)
+        {
+            teamToAttack = 1;
+        }
+        //if ver > dom
+        else if(kingVoisters.listArea.Where(x => x.GetComponent<ConnectedWaypoint>().teamCode == 1).ToArray().Length < kingVoisters.listArea.Where(x => x.GetComponent<ConnectedWaypoint>().teamCode == 0).ToArray().Length)
+        {
+            teamToAttack = 0;
+        }
+
+        golems = FindObjectsOfType<GolemBehaviour>().Where(x => x.team.Code == teamToAttack).ToList();
+        //if (golems.Count <= 0) return;
+
+        foreach(var golem in golems)
+        {
+            if (golem.isInvincible) continue;
+            if(golem.team.Code == teamToAttack)
+            {
+                Cible = golem.gameObject;
+            }
+        }
+
+
+        isSettingTargets = false;
+    }
+
     protected void VoisterBasicAttack()
     {
         if (Cible == null)
@@ -312,6 +353,22 @@ public class VoisterBehaviour : BasicAIMovement, IPunObservable
             {
                 StartCoroutine(RangeAutoAttack());
             }
+        }
+    }
+
+    public new IEnumerator WalkToward()
+    {
+        while (Cible)
+        {
+            SetIsMoving(true);
+            _navMeshAgent.SetDestination(Cible.transform.position);
+            yield return new WaitForSeconds(0.1f);
+            if (_navMeshAgent.remainingDistance < GetAttackRange())
+            {
+                SetIsMoving(false);
+                _navMeshAgent.ResetPath();
+            }
+            yield return new WaitForSeconds(0.1f);
         }
     }
     #endregion

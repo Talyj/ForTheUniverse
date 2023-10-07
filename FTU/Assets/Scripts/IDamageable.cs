@@ -872,8 +872,8 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
             //anim.SetBool("AA", true);
             try
             {
-                if (Vector3.Distance(gameObject.transform.position, Cible.transform.position) < GetAttackRange() ||
-                    Vector3.Distance(gameObject.transform.position, Cible.transform.position) < GetAttackRange() * 5 && isAI)
+                if (Vector3.Distance(gameObject.transform.position, Cible.transform.position) < GetAttackRange() * 2 /*||
+                    Vector3.Distance(gameObject.transform.position, Cible.transform.position) < GetAttackRange() * 5 && isAI*/)
                 {
                     if (Cible.GetComponent<IDamageable>().IsTargetable(team))
                     {
@@ -893,9 +893,9 @@ public abstract class IDamageable : MonoBehaviourPun, IPunObservable
             catch (NullReferenceException e)
             {
                 Cible = null;
+                isAttacking = false;
             }
             yield return new WaitForSeconds(GetAttackSpeed() / ((100 / GetAttackSpeed()) * 0.01f));
-            isAttacking = false;
         }
 
     }
